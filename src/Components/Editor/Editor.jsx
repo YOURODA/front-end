@@ -11,6 +11,7 @@ import Icon from "@material-ui/core/Icon";
 import ExportCSV from "../Coreography/ExportCSV/ExportCSV";
 import socketIo from "socket.io-client";
 import CorDraw from "../Coreography/CorDraw";
+import CreateCor from "../CoreographyNew/CreateCor";
 import Box from "@material-ui/core/Box";
 import { Typography, CardHeader, Card, CardContent, CardActions } from "@material-ui/core";
 const useStyles = makeStyles(theme => ({
@@ -61,9 +62,10 @@ class Editor extends Component {
     }).then(response => {
       console.log("response: ", response.data.odaName)
       if (response.data.odaName) {
-        this.setState({ goCoreography: true })
+        return (this.setState({ goCoreography: true }))
       }
     });
+    this.setState({ goCoreography: true })
   }
   addOdaName(e) {
     this.odaName = e.target.value;
@@ -180,6 +182,7 @@ class Editor extends Component {
   };
 
   render() {
+    const {seconds}= this.state
     console.log(this.state.goCoreography)
     let timeOfSum = this.milisToMinutesAndSeconds(this.props.durationStamps);
     let currentTime = this.milisToMinutesAndSeconds(this.props.position_stamp);
@@ -223,7 +226,7 @@ class Editor extends Component {
               </Card>
             </Grid>
             <Grid item lg={3} md={12} xl={9} xs={12}>
-              <CorDraw />
+              <CreateCor seconds={this.milisToMinutesAndSeconds(this.props.durationStamps)} />
             </Grid>
             <Button
               className={useStyles.button}

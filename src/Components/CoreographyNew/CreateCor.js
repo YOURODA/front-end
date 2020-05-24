@@ -1,5 +1,5 @@
 import React, { forwardRef, Component } from "react";
-import * as actionTypes from "../../../store/actions/actionTypes";
+import * as actionTypes from "../../store/actions/actionTypes";
 import { connect } from "react-redux";
 import MaterialTable from "material-table";
 import AddBox from "@material-ui/icons/AddBox";
@@ -17,216 +17,93 @@ import Remove from "@material-ui/icons/Remove";
 import SaveAlt from "@material-ui/icons/SaveAlt";
 import Search from "@material-ui/icons/Search";
 import ViewColumn from "@material-ui/icons/ViewColumn";
-import { withStyles } from "@material-ui/styles";
-import FormLabel from '@material-ui/core/FormLabel';
-import FormControl from '@material-ui/core/FormControl';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormHelperText from '@material-ui/core/FormHelperText';
+import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
+// import { makeStyles } from "@material-ui/styles";
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import ListItemText from '@material-ui/core/ListItemText';
 import Checkbox from '@material-ui/core/Checkbox';
+import Button from '@material-ui/core/Button';
+import Divider from '@material-ui/core/Divider';
 
 
 class CreateCor extends Component {
-    constructor(props) {
-        super(props);
+  constructor(props) {
+    super(props);
 
-        this.state = {
-            data: [],
-            columns: [
-                { title: "Başlangıç", field: "startDate", type: "numeric" },
-                { title: "Sağ Üst Hareket", field: "rRobotsSpeed1", type: "numeric" },
-                { title: "Sağ Alt Hareket", field: "rRobotsSpeed2", type: "numeric" },
-                { title: "Sol Üst Hareket", field: "lRobotsSpeed1", type: "numeric" },
-                { title: "Sol Alt Hareket", field: "lRobotsSpeed2", type: "numeric" },
-                {
-                    title: "Sağ Robot Kırmızı",
-                    field: "rColor1",
-                    lookup: { "65534": "Aktif", "0": "Pasif" }
-
-                },
-                {
-                    title: "Sağ Robot Yeşil",
-                    field: "rColor2",
-                    lookup: { "65534": "Aktif", "0": "Pasif" }
-
-                },
-                {
-                    title: "Sağ Robot Mavi",
-                    field: "rColor3",
-                    lookup: { "65534": "Aktif", "0": "Pasif" }
-
-                },
-                {
-                    title: "Sol Robot Kırmızı",
-                    field: "lColor1",
-                    lookup: { "65534": "Aktif", "0": "Pasif" }
-
-                },
-                {
-                    title: "Sol Robot Yeşil",
-                    field: "lColor2",
-                    lookup: { "65534": "Aktif", "0": "Pasif" }
-
-                },
-                {
-                    title: "Sol Robot Mavi",
-                    field: "lColor3",
-                    lookup: { "65534": "Aktif", "0": "Pasif" }
-
-                },
-                {
-                    title: "Flaşör",
-                    field: "blinker",
-                    type: "numeric"
-                },
-                {
-                    title: "Sis Isıtıcı",
-                    field: "smokeHeater",
-                    lookup: { 1: "Aktif", 0: "Pasif" }
-                },
-                {
-                    title: "Sis",
-                    field: "smoke",
-                    lookup: { 1: "Aktif", 0: "Pasif" }
-                },
-            ]
-        };
-    }
-    onCsvData = () => { };
-    milisToMinutesAndSeconds = mil => {
-        let minutes = Math.floor(mil / 60000);
-        let seconds = ((mil % 60000) / 1000).toFixed(0);
-        let secondsOfSum = Math.floor(Number(minutes) * 60 + Number(seconds));
-        return secondsOfSum;
+    this.state = {
+        checked:[1],
+        secondList:[],
+        selectedSecond:0
     };
+  }
+  onCsvData = () => { };
+  milisToMinutesAndSeconds = mil => {
+    let minutes = Math.floor(mil / 60000);
+    let seconds = ((mil % 60000) / 1000).toFixed(0);
+    let secondsOfSum = Math.floor(Number(minutes) * 60 + Number(seconds));
+    return secondsOfSum;
+  };
 
-    componentDidMount() {
-        let corDataArray = [];
-        let timeOfSum = this.milisToMinutesAndSeconds(this.props.durationStamps);
-        for (let i = 0; i < timeOfSum; i++) {
-            corDataArray.push({
-                startDate: i,
-                rRobotsSpeed1: 300,
-                rRobotsSpeed2: 300,
-                lRobotsSpeed1: 40,
-                lRobotsSpeed2: 500,
-                rColor1: "65534",
-                rColor2: "65534",
-                rColor3: "65534",
-                lColor1: "0",
-                lColor2: "0",
-                lColor3: "0",
-                blinker: 0,
-                smokeHeater: 1,
-                smoke: 0
-            }
-            )
-        }
-        this.setState({ data: corDataArray })
-    }
+  setList= ()=>{
+    const {seconds} =this.props
+    let secondList = new Array(seconds).join('0').split('').map(parseFloat)
+    this.b = secondList.map((index,value)=> value)
+    console.log(seconds)
+  }
 
+  componentDidMount() {
+    this.setList()
+  }
 
-    render() {
-        let timeOfSum = this.milisToMinutesAndSeconds(this.props.durationStamps);
-        for (let i = 0; i < timeOfSum; i++) {
-            <div className={classes.root}>
-                <FormControl component="fieldset" className={classes.formControl}>
-                    <FormLabel component="legend">Assign responsibility</FormLabel>
-                    <FormGroup>
-                        <FormControlLabel
-                            control={<Checkbox checked={gilad} onChange={handleChange} name="gilad" />}
-                            label="Gilad Gray"
-                        />
-                        <FormControlLabel
-                            control={<Checkbox checked={jason} onChange={handleChange} name="jason" />}
-                            label="Jason Killian"
-                        />
-                        <FormControlLabel
-                            control={<Checkbox checked={antoine} onChange={handleChange} name="antoine" />}
-                            label="Antoine Llorca"
-                        />
-                    </FormGroup>
-                    <FormHelperText>Be careful</FormHelperText>
-                </FormControl>
-                <FormControl required error={error} component="fieldset" className={classes.formControl}>
-                    <FormLabel component="legend">Pick two</FormLabel>
-                    <FormGroup>
-                        <FormControlLabel
-                            control={<Checkbox checked={gilad} onChange={handleChange} name="gilad" />}
-                            label="Gilad Gray"
-                        />
-                        <FormControlLabel
-                            control={<Checkbox checked={jason} onChange={handleChange} name="jason" />}
-                            label="Jason Killian"
-                        />
-                        <FormControlLabel
-                            control={<Checkbox checked={antoine} onChange={handleChange} name="antoine" />}
-                            label="Antoine Llorca"
-                        />
-                    </FormGroup>
-                    <FormHelperText>You can display an error</FormHelperText>
-                </FormControl>
-            </div>
+  handleToggle  = (value) => () => {
+    console.log(value)
+    this.setState({selectedSecond:value})
+  };
 
-        }
-        this.setState({ data: corDataArray })
-        this.props.setCsvData(this.state.data);
-        console.log(this.state.data)
-        return (
-            <MaterialTable
-                icons={tableIcons}
-                title="Koregrafini Oluştur"
-                columns={this.state.columns}
-                data={this.state.data}
-                editable={{
-                    onRowAdd: newData =>
-                        new Promise(resolve => {
-                            setTimeout(() => {
-                                resolve();
-                                this.setState(prevState => {
-                                    const data = [...prevState.data];
-                                    data.push(newData);
-                                    return { prevState, data };
-                                });
-                            }, 600);
-                        }),
-                    onRowUpdate: (newData, oldData) =>
-                        new Promise(resolve => {
-                            setTimeout(() => {
-                                resolve();
-                                if (oldData) {
-                                    this.setState(prevState => {
-                                        const data = [...prevState.data];
-                                        data[data.indexOf(oldData)] = newData;
-                                        return { prevState, data };
-                                    });
-                                }
-                            }, 600);
-                        }),
-                    onRowDelete: oldData =>
-                        new Promise(resolve => {
-                            setTimeout(() => {
-                                resolve();
-                                this.setState(prevState => {
-                                    const data = [...prevState.data];
-                                    data.splice(data.indexOf(oldData), 1);
-                                    return { prevState, data };
-                                });
-                            }, 600);
-                        })
-                }}
-            />
-        );
-    }
+  render() {
+    const {selectedSecond}=this.state
+    this.props.setCsvData(this.state.data);
+    console.log(this.b)
+    return (
+        <div >
+        <Grid container spacing={3}>
+            <Grid item xs={4}>
+            <List >
+            {this.b?.map((value) => {
+                const labelId = `checkbox-list-label-${value}`;
+
+                return (
+                <>
+                    <ListItem key={value} role={undefined} dense button >
+                        <Button disabled={selectedSecond===value} onClick={this.handleToggle(value)} >
+                            <ListItemText id={labelId} primary={`${value + 0}. second`} />
+                        </Button> 
+                    </ListItem>
+                    <Divider />
+                </>
+                );
+            })}
+            </List>
+            </Grid>
+            <Grid item xs={8}>
+                <Paper >xs=8</Paper>
+            </Grid>
+        </Grid>
+      </div>
+    );
+  }
 }
 const mapStateToProps = state => {
-    return {
-        durationStamps: state.durationStamps,
-    };
+  return {
+    durationStamps: state.durationStamps,
+  };
 };
 const mapDispatchToProps = dispatch => {
-    return {
-        setCsvData: csvData => dispatch({ type: actionTypes.CSV_DATA, csvData })
-    };
+  return {
+    setCsvData: csvData => dispatch({ type: actionTypes.CSV_DATA, csvData })
+  };
 };
-export default withStyles(useStyles)(connect(mapStateToProps, mapDispatchToProps)(CreateCor));
+export default connect(mapStateToProps, mapDispatchToProps)(CreateCor);
