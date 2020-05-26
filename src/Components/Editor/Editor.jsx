@@ -183,7 +183,6 @@ class Editor extends Component {
 
   render() {
     const {seconds}= this.state
-    console.log(this.state.goCoreography)
     let timeOfSum = this.milisToMinutesAndSeconds(this.props.durationStamps);
     let currentTime = this.milisToMinutesAndSeconds(this.props.position_stamp);
     if (!timeOfSum) {
