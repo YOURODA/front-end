@@ -12,16 +12,9 @@ const initialState = {
   position_stamp: null,
   durationStamps: "00:00",
   csvData: [],
+  corData: [],
+  socket: null,
   onCloseCsvData: [],
-  // rRobotsSpeed: null,
-  // lRobotsSpeed: null,
-  // startDate: null,
-  // endDate: null,
-  // colorRrobots: null,
-  // colorLrobots: null,
-  // smoke: null,
-  // blinker: null,
-
   backgroundImage: "linear-gradient(rgb(58, 91, 95), rgb(6, 9, 10) 85%)"
 };
 
@@ -89,51 +82,21 @@ const reducer = (state = initialState, action) => {
         ...state,
         csvData: action.csvData
       };
+    case actionTypes.COR_DATA:
+      return {
+        ...state,
+        corData: action.corData
+      };
+    case actionTypes.SOCKET:
+      return {
+        ...state,
+        socket: action.socket
+      };
     case actionTypes.ON_CLOSE_CSV_DATA:
       return {
         ...state,
         csvData: action.onCloseCsvData
       };
-    // case actionTypes.RROBOTS_SPEED:
-    //   return {
-    //     ...state,
-    //     rRobotsSpeed: action.rRobotsSpeed
-    //   };
-    // case actionTypes.LROBOTS_SPEED:
-    //   return {
-    //     ...state,
-    //     lRobotsSpeed: action.lRobotsSpeed
-    //   };
-    // case actionTypes.START_DATE:
-    //   return {
-    //     ...state,
-    //     startDate: action.startDate
-    //   };
-    // case actionTypes.END_DATE:
-    //   return {
-    //     ...state,
-    //     endDate: action.endDate
-    //   };
-    // case actionTypes.COLOR_RROBOTS:
-    //   return {
-    //     ...state,
-    //     colorLrobots: action.colorLrobots
-    //   };
-    // case actionTypes.COLOR_LROBOTS:
-    //   return {
-    //     ...state,
-    //     colorLrobots: action.colorLrobots
-    //   };
-    // case actionTypes.SMOKE:
-    //   return {
-    //     ...state,
-    //     smoke: action.smoke
-    //   };
-    // case actionTypes.BLINKER:
-    //   return {
-    //     ...state,
-    //     blinker: action.blinker
-    //   };
     default:
       return state;
   }

@@ -90,7 +90,8 @@ class Editor extends Component {
     var socketio_url = 'http://localhost:5000'
     this.odaName = { name: "Corlu" }
     this.state.socket = socketIo.connect(socketio_url, connectionStrings);
-    this.state.socket.emit("Odaya Katıl", this.odaName);
+    this.state.socket.emit("Odaya Katil", this.odaName);
+    this.props.setScoketIO(this.state.socket);
   }
 
   getData = result => {
@@ -182,7 +183,7 @@ class Editor extends Component {
   };
 
   render() {
-    const {seconds}= this.state
+    const { seconds } = this.state
     let timeOfSum = this.milisToMinutesAndSeconds(this.props.durationStamps);
     let currentTime = this.milisToMinutesAndSeconds(this.props.position_stamp);
     if (!timeOfSum) {
@@ -279,6 +280,8 @@ const mapDispatchToProps = dispatch => {
   return {
     setPositionStamp: position_stamp =>
       dispatch({ type: actionTypes.NOW_POSITION_STAMP, position_stamp }),
+    setScoketIO: socket =>
+      dispatch({ type: actionTypes.SOCKET, socket }),
     setOnCloseCsvData: onCloseCsvData =>
       dispatch({ type: actionTypes.ON_CLOSE_CSV_DATA, onCloseCsvData }),
   };

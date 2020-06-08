@@ -17,16 +17,9 @@ export const PLAY_SONG_FAIL = "PLAY_SONG_FAIL";
 export const NOW_POSITION_STAMP = "NOW_POSITION_STAMP";
 export const DURATION_STAMP = "DURATION_STAMP";
 export const CSV_DATA = "CSV_DATA";
+export const COR_DATA = "COR_DATA";
 export const ON_CLOSE_CSV_DATA = "ON_CLOSE_CSV_DATA";
-
-// export const RROBOTS_SPEED = "RROBOTS_SPEED";
-// export const LROBOTS_SPEED = "LROBOTS_SPEED";
-// export const START_DATE = "START_DATE";
-// export const END_DATE = "END_DATE";
-// export const COLOR_RROBOTS = "COLOR_RROBOTS";
-// export const COLOR_LROBOTS = "COLOR_LROBOTS";
-// export const SMOKE = "SMOKE";
-// export const BLINKER = "BLINKER";
+export const SOCKET = "SOCKET";
 
 export const playSong = (uris, deviceId) => {
   return (dispatch, getState) => {
