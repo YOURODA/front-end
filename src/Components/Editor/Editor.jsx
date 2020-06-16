@@ -140,8 +140,8 @@ class Editor extends Component {
     }
     let stringCSV = JSON.stringify(this.state.excelData);
     const encodedString = { "base": new Buffer(stringCSV).toString('base64'), "time": this.milisToMinutesAndSeconds(this.props.durationStamps) }
-    this.state.socket.emit(
-      "csv_is_comming",
+    this.props.socket.emit(
+      "corData",
       encodedString
     );
     console.log(encodedString)
@@ -273,7 +273,9 @@ const mapStateToProps = state => {
     currently_playing: state.currently_playing,
     csvData: state.csvData,
     user: state.current_user,
-    onCloseCsvData: state.onCloseCsvData
+    onCloseCsvData: state.onCloseCsvData,
+    corData: state.corData,
+    socket: state.socket
   };
 };
 const mapDispatchToProps = dispatch => {

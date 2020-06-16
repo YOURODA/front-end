@@ -289,7 +289,7 @@ class CorDraw extends Component {
 }
 const mapStateToProps = state => {
   return {
-    durationStamps: state.durationStamps,
+    durationStamps: state.durationStamps
   };
 };
 const mapDispatchToProps = dispatch => {

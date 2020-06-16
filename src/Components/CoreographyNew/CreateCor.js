@@ -4,10 +4,10 @@ import { connect } from "react-redux";
 import { CirclePicker } from 'react-color';
 import {
   FormControlLabel, Card, CardHeader, Typography, CardContent,
-  NativeSelect, List, ListItem, ListItemText,
+  NativeSelect, List, ListItem, ListItemText, ListItemIcon, IconButton,
   ListItemSecondaryAction, Checkbox, Button,
-  Divider, Grid, Select,
-  InputLabel, MenuItem,
+  Divider, Grid, Select, Dialog, DialogActions, DialogContent, DialogTitle, DialogContentText,
+  InputLabel, MenuItem, TextField,
   FormControl,
   CardActions
 } from '@material-ui/core';
@@ -17,6 +17,7 @@ import CloudQueue from '@material-ui/icons/CloudQueue';
 import Highlight from '@material-ui/icons/Highlight';
 import HighlightOutlined from '@material-ui/icons/HighlightOutlined';
 import SaveIcon from '@material-ui/icons/Save';
+import CommentIcon from '@material-ui/icons/Comment';
 
 const colorPWM = 65534 / 256;
 class CreateCor extends Component {
@@ -25,6 +26,7 @@ class CreateCor extends Component {
 
     this.state = {
       checked: [1],
+      checkedMultiple: [],
       corData: [
         {
           startDate: 1,
@@ -43,7 +45,7 @@ class CreateCor extends Component {
         },
       ],
       secondList: [],
-      selectedSecond: 0,
+      selectedSecond: [],
       openVelocity: false,
       velocityRight: null,
       velocityLeft: null,
@@ -51,14 +53,21 @@ class CreateCor extends Component {
       locationLeft: null,
       selectedColor: '#fff',
       checkSmoke: 0,
+      openSelectSeconds: false,
       checkBlind: 1
     };
   }
-
+  selectSecondsForCoreographyOpen = () => {
+    this.setState({ openSelectSeconds: true });
+  }
+  selectSecondsForCoreographyClose = () => {
+    this.setState({ openSelectSeconds: false });
+  }
   saveCoreography = () => {
-    this.setState({
-      corData: [{
-        startDate: this.state.selectedSecond,
+    const dataForCor = []
+    this.state.checkedMultiple.forEach(second => {
+      dataForCor.push({
+        startDate: second,
         lRobotsSpeed1: this.state.velocityLeft ? this.state.velocityLeft : "0",
         lRobotsSpeed2: this.state.locationLeft ? this.state.locationLeft : "0",
         rRobotsSpeed1: this.state.velocityRight ? this.state.velocityRight : "0",
@@ -71,8 +80,13 @@ class CreateCor extends Component {
         lColor3: this.lColor3 ? this.lColor3 : "0",
         smoke: this.state.checkSmoke === true ? "1" : "0",
         blinker: this.state.checkBlind === true ? "1" : "0"
-      }]
+      })
     })
+    this.setState({
+      corData: dataForCor
+    })
+    console.log(dataForCor)
+    console.log(this.state.corData)
     this.props.setCorData(this.state.corData)
     //TO-DO odaya katıldıysa backend den bağlandı mesajı kontrolü
     console.log(this.props.socket)
@@ -116,17 +130,47 @@ class CreateCor extends Component {
     let getSeconds = new Array(seconds).join('0').split('').map(parseFloat)
     this.takenSecondList = getSeconds.map((index, value) => value)
   }
-
   componentDidMount() {
     this.setList()
+    const askTemperature = ''
+    try {
+      setInterval(() => {
+        console.log('nabun')
+        this.props.socket.emit("askTemperature", askTemperature);
+      }, 3000);
+    } catch (e) {
+      console.log(e);
+    }
+    // this.props.socket.emit("askTemperature", askTemperature =>
+    //   console.log(askTemperature)
+    // );
+    this.props.socket.on("temperature", askTemperature =>
+      console.log(askTemperature)
+    );
+  }
+  componentWillMount() {
+    this.props.socket.off('temperature')
   }
 
   handleToggle = (value) => {
     this.setState({ selectedSecond: value })
   };
+  handleToggleMultiple = (value) => {
+    const currentIndex = this.state.checkedMultiple.indexOf(value);
+    const newChecked = [...this.state.checkedMultiple];
+
+    if (currentIndex === -1) {
+      newChecked.push(value);
+    } else {
+      newChecked.splice(currentIndex, 1);
+    }
+    this.setState({ checkedMultiple: newChecked });
+    console.log(this.state.checkedMultiple)
+  };
+
 
   render() {
-    const { selectedSecond, velocityRight, locationRight, velocityLeft, locationLeft, openVelocity, selectedColor, checkBlind, checkSmoke } = this.state
+    const { selectedSecond, velocityRight, locationRight, velocityLeft, locationLeft, openVelocity, selectedColor, checkBlind, checkSmoke, openSelectSeconds, checkedMultiple } = this.state
     if (selectedColor !== null) {
       console.log(selectedColor)
     }
@@ -135,23 +179,33 @@ class CreateCor extends Component {
       <div>
         <Grid container spacing={3}>
           <Grid item xs={4}>
-            <List >
-              {this.takenSecondList &&
-                this.takenSecondList.map((value) => {
+            {this.takenSecondList &&
+              <List>
+                {this.takenSecondList.map((value) => {
                   const labelId = `checkbox-list-label-${value}`;
                   return (
                     <React.Fragment>
-                      <ListItem height="100%" width="100%" disabled={selectedSecond === value} onClick={() => this.handleToggle(value)} key={value} role={undefined} dense button >
-                        <ListItemText id={labelId} primary={`${value + 0}. second`} />
+                      <ListItem key={value} role={undefined} dense button onClick={() => this.handleToggleMultiple(value)}>
+                        <ListItemIcon>
+                          <Checkbox
+                            edge="start"
+                            checked={checkedMultiple.indexOf(value) !== -1}
+                            tabIndex={-1}
+                            disableRipple
+                            inputProps={{ 'aria-labelledby': labelId }}
+                          />
+                        </ListItemIcon>
+                        <ListItemText id={labelId} primary={`${value}.second`} />
                       </ListItem>
                       <Divider />
                     </React.Fragment>
                   );
                 })}
-            </List>
+              </List>
+            }
           </Grid>
           <Grid item xs={8}>
-            {this.state.selectedSecond &&
+            {this.state.checkedMultiple &&
               <React.Fragment>
                 <Card>
                   <CardContent>
@@ -200,7 +254,6 @@ class CreateCor extends Component {
                             onChangeComplete={this.handleLeftColorPWMValues}
                           />
                         </div>
-
                         <FormControlLabel
                           control={
                             <Checkbox
@@ -287,7 +340,6 @@ class CreateCor extends Component {
                     </Button>
                   </CardActions>
                 </Card>
-
               </React.Fragment>
             }
           </Grid>
