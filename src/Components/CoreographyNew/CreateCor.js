@@ -29,7 +29,24 @@ class CreateCor extends Component {
       checkedMultiple: [],
       corData: [
         {
-          startDate: 1,
+          startDate: '',
+          lRobotsSpeed1: 200,
+          lRobotsSpeed2: 200,
+          rRobotsSpeed1: 200,
+          rRobotsSpeed2: 200,
+          rColor1: "65534",
+          rColor2: "0",
+          rColor3: "0",
+          lColor1: "0",
+          lColor2: "0",
+          lColor3: "0",
+          smoke: 1,
+          // blinker: 5
+        },
+      ],
+      tryCorData: [
+        {
+          startDate: '',
           lRobotsSpeed1: 200,
           lRobotsSpeed2: 200,
           rRobotsSpeed1: 200,
@@ -63,34 +80,84 @@ class CreateCor extends Component {
   selectSecondsForCoreographyClose = () => {
     this.setState({ openSelectSeconds: false });
   }
-  saveCoreography = () => {
-    const dataForCor = []
+  tryCoreography = () => {
+    let tryDataForCor = []
     this.state.checkedMultiple.forEach(second => {
-      dataForCor.push({
-        startDate: second,
-        lRobotsSpeed1: this.state.velocityLeft ? this.state.velocityLeft : "0",
-        lRobotsSpeed2: this.state.locationLeft ? this.state.locationLeft : "0",
-        rRobotsSpeed1: this.state.velocityRight ? this.state.velocityRight : "0",
-        rRobotsSpeed2: this.state.locationRight ? this.state.locationRight : "0",
-        rColor1: this.rColor1 ? this.rColor1 : "0",
-        rColor2: this.rColor2 ? this.rColor2 : "0",
-        rColor3: this.rColor3 ? this.rColor3 : "0",
-        lColor1: this.lColor1 ? this.lColor1 : "0",
-        lColor2: this.lColor2 ? this.lColor2 : "0",
-        lColor3: this.lColor3 ? this.lColor3 : "0",
-        smoke: this.state.checkSmoke === true ? "1" : "0",
-        blinker: this.state.checkBlind === true ? "1" : "0"
+      tryDataForCor.push({
+        "startDate": second,
+        "lRobotsSpeed1": this.state.velocityLeft ? this.state.velocityLeft : "0",
+        "lRobotsSpeed2": this.state.locationLeft ? this.state.locationLeft : "0",
+        "rRobotsSpeed1": this.state.velocityRight ? this.state.velocityRight : "0",
+        "rRobotsSpeed2": this.state.locationRight ? this.state.locationRight : "0",
+        "rColor1": this.rColor1 ? this.rColor1 : "0",
+        "rColor2": this.rColor2 ? this.rColor2 : "0",
+        "rColor3": this.rColor3 ? this.rColor3 : "0",
+        "lColor1": this.lColor1 ? this.lColor1 : "0",
+        "lColor2": this.lColor2 ? this.lColor2 : "0",
+        "lColor3": this.lColor3 ? this.lColor3 : "0",
+        "smoke": this.state.checkSmoke === true ? "1" : "0",
+        "blinker": this.state.checkBlind === true ? "1" : "0"
       })
     })
     this.setState({
-      corData: dataForCor
+      tryCorData: tryDataForCor
     })
-    console.log(dataForCor)
-    console.log(this.state.corData)
+    console.log(this.tryDataForCor)
+    let stringCSV = JSON.stringify(this.state.tryCorData);
+    const encodedString = { "base": new Buffer(stringCSV).toString('base64'), "time": this.milisToMinutesAndSeconds(this.props.durationStamps) }
+    this.props.socket.emit(
+      "tryCor",
+      encodedString
+    );
+    console.log(encodedString)
+    // this.props.setCorData(this.state.corData)
+    //TO-DO odaya katıldıysa backend den bağlandı mesajı kontrolü
+    console.log(this.props.socket)
+    // this.props.socket.emit('tryCor', this.state.corData);
+  }
+  saveCoreography = () => {
+    for (let element of this.state.corData) {
+      console.log(element.startDate)
+      for (let second of this.state.checkedMultiple) {
+        if (second !== element.startDate) {
+          const dataForCor = [...this.state.corData]
+          dataForCor.push({
+            "startDate": second,
+            "lRobotsSpeed1": this.state.velocityLeft ? this.state.velocityLeft : "0",
+            "lRobotsSpeed2": this.state.locationLeft ? this.state.locationLeft : "0",
+            "rRobotsSpeed1": this.state.velocityRight ? this.state.velocityRight : "0",
+            "rRobotsSpeed2": this.state.locationRight ? this.state.locationRight : "0",
+            "rColor1": this.rColor1 ? this.rColor1 : "0",
+            "rColor2": this.rColor2 ? this.rColor2 : "0",
+            "rColor3": this.rColor3 ? this.rColor3 : "0",
+            "lColor1": this.lColor1 ? this.lColor1 : "0",
+            "lColor2": this.lColor2 ? this.lColor2 : "0",
+            "lColor3": this.lColor3 ? this.lColor3 : "0",
+            "smoke": this.state.checkSmoke === true ? "1" : "0",
+            "blinker": this.state.checkBlind === true ? "1" : "0"
+          })
+          this.setState({
+            corData: dataForCor
+          })
+        }
+      }
+
+    }
+
+    // console.log(this.dataForCor)
+
+    // console.log(this.state.corData)
+    let stringCSV = JSON.stringify(this.state.corData);
+    const encodedString = { "base": new Buffer(stringCSV).toString('base64'), "time": this.milisToMinutesAndSeconds(this.props.durationStamps) }
+    this.props.socket.emit(
+      "corData",
+      encodedString
+    );
+    console.log(encodedString)
     this.props.setCorData(this.state.corData)
     //TO-DO odaya katıldıysa backend den bağlandı mesajı kontrolü
     console.log(this.props.socket)
-    this.props.socket.emit("corData", this.state.corData);
+    // this.props.socket.emit('tryCor', this.state.corData);
   }
   handleClose = () => {
     this.setState({ openVelocity: false })
@@ -158,7 +225,7 @@ class CreateCor extends Component {
   handleToggleMultiple = (value) => {
     const currentIndex = this.state.checkedMultiple.indexOf(value);
     const newChecked = [...this.state.checkedMultiple];
-
+    console.log('new', newChecked)
     if (currentIndex === -1) {
       newChecked.push(value);
     } else {
@@ -171,9 +238,9 @@ class CreateCor extends Component {
 
   render() {
     const { selectedSecond, velocityRight, locationRight, velocityLeft, locationLeft, openVelocity, selectedColor, checkBlind, checkSmoke, openSelectSeconds, checkedMultiple } = this.state
-    if (selectedColor !== null) {
-      console.log(selectedColor)
-    }
+    // if (selectedColor !== null) {
+    //   console.log(selectedColor)
+    // }
     console.log(this.state.corData)
     return (
       <div>
@@ -283,9 +350,9 @@ class CreateCor extends Component {
                             }}
                           >
                             <option aria-label="None" value="" />
-                            <option value={10}>Low</option>
-                            <option value={20}>Medium</option>
-                            <option value={30}>High</option>
+                            <option value={40}>Low</option>
+                            <option value={300}>Medium</option>
+                            <option value={500}>High</option>
                           </Select>
                         </FormControl>
                         <FormControl variant="outlined" style={{ width: '100%' }}>
@@ -301,9 +368,9 @@ class CreateCor extends Component {
                             }}
                           >
                             <option aria-label="None" value="" />
-                            <option value={10}>Low</option>
-                            <option value={20}>Medium</option>
-                            <option value={30}>High</option>
+                            <option value={40}>Low</option>
+                            <option value={300}>Medium</option>
+                            <option value={500}>High</option>
                           </Select>
                         </FormControl>
                         <Typography variant="button">Select Color For Right Robot</Typography>
@@ -329,6 +396,15 @@ class CreateCor extends Component {
                     </Grid>
                   </CardContent>
                   <CardActions>
+                    <Button
+                      style={{ flex: 1 }}
+                      variant="contained"
+                      color="primary"
+                      size="small"
+                      startIcon={<SaveIcon />}
+                      onClick={this.tryCoreography}>
+                      Try it
+                    </Button>
                     <Button
                       style={{ flex: 1 }}
                       variant="contained"

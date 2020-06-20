@@ -186,9 +186,7 @@ class Editor extends Component {
     const { seconds } = this.state
     let timeOfSum = this.milisToMinutesAndSeconds(this.props.durationStamps);
     let currentTime = this.milisToMinutesAndSeconds(this.props.position_stamp);
-    if (!timeOfSum) {
-      toaster.danger("Lütfen Spotify Uygulamasından EW uygulamasını seçiniz.");
-    }
+
     return (
       <Grid container>
         {this.state.goCoreography === false &&
@@ -228,7 +226,7 @@ class Editor extends Component {
             <Grid item lg={3} md={12} xl={9} xs={12}>
               <CreateCor seconds={this.milisToMinutesAndSeconds(this.props.durationStamps)} />
             </Grid>
-            <Button
+            {/* <Button
               className={useStyles.button}
               variant="contained"
               color="primary"
@@ -256,7 +254,7 @@ class Editor extends Component {
                   fileName={this.state.fileName}
                 />
               </Button>
-            </div>
+            </div> */}
           </div>
         }
       </Grid>
