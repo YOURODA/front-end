@@ -25,6 +25,7 @@ class CreateCor extends Component {
     super(props);
 
     this.state = {
+      takenSecondList:null,
       checked: [1],
       checkedMultiple: [],
       corData: [
@@ -116,47 +117,74 @@ class CreateCor extends Component {
     // this.props.socket.emit('tryCor', this.state.corData);
   }
   saveCoreography = () => {
-    for (let element of this.state.corData) {
-      console.log(element.startDate)
-      for (let second of this.state.checkedMultiple) {
-        if (second !== element.startDate) {
-          const dataForCor = [...this.state.corData]
-          dataForCor.push({
-            "startDate": second,
-            "lRobotsSpeed1": this.state.velocityLeft ? this.state.velocityLeft : "0",
-            "lRobotsSpeed2": this.state.locationLeft ? this.state.locationLeft : "0",
-            "rRobotsSpeed1": this.state.velocityRight ? this.state.velocityRight : "0",
-            "rRobotsSpeed2": this.state.locationRight ? this.state.locationRight : "0",
-            "rColor1": this.rColor1 ? this.rColor1 : "0",
-            "rColor2": this.rColor2 ? this.rColor2 : "0",
-            "rColor3": this.rColor3 ? this.rColor3 : "0",
-            "lColor1": this.lColor1 ? this.lColor1 : "0",
-            "lColor2": this.lColor2 ? this.lColor2 : "0",
-            "lColor3": this.lColor3 ? this.lColor3 : "0",
-            "smoke": this.state.checkSmoke === true ? "1" : "0",
-            "blinker": this.state.checkBlind === true ? "1" : "0"
-          })
-          this.setState({
-            corData: dataForCor
-          })
-        }
-      }
+    const {durationStamps} = this.props
+    const {checkedMultiple,corData}= this.state
+    const second =  this.milisToMinutesAndSeconds(durationStamps)
+    let newcor = corData
+    // if(corData.length !== second){
+    //   newcor = Array.from(Array(3), () => 0)
+    // }
+    checkedMultiple.map(seconds=>{
+      newcor[seconds]= {
+                "startDate": seconds,
+                "lRobotsSpeed1": this.state.velocityLeft ? this.state.velocityLeft : "0",
+                "lRobotsSpeed2": this.state.locationLeft ? this.state.locationLeft : "0",
+                "rRobotsSpeed1": this.state.velocityRight ? this.state.velocityRight : "0",
+                "rRobotsSpeed2": this.state.locationRight ? this.state.locationRight : "0",
+                "rColor1": this.rColor1 ? this.rColor1 : "0",
+                "rColor2": this.rColor2 ? this.rColor2 : "0",
+                "rColor3": this.rColor3 ? this.rColor3 : "0",
+                "lColor1": this.lColor1 ? this.lColor1 : "0",
+                "lColor2": this.lColor2 ? this.lColor2 : "0",
+                "lColor3": this.lColor3 ? this.lColor3 : "0",
+                "smoke": this.state.checkSmoke === true ? "1" : "0",
+                "blinker": this.state.checkBlind === true ? "1" : "0"
+              }
+    })
+    console.log('corData',newcor);
+    console.log('checkedMultiple',checkedMultiple);
+    this.setState({corData:newcor})
+    // const dataForCor = this.state.corData
+    // for (let element of this.state.corData) {
+    //   console.log(element.startDate)
+    //   for (let second of this.state.checkedMultiple) {
+    //     if (second !== element.startDate) {
+    //       dataForCor.push({
+    //         "startDate": second,
+    //         "lRobotsSpeed1": this.state.velocityLeft ? this.state.velocityLeft : "0",
+    //         "lRobotsSpeed2": this.state.locationLeft ? this.state.locationLeft : "0",
+    //         "rRobotsSpeed1": this.state.velocityRight ? this.state.velocityRight : "0",
+    //         "rRobotsSpeed2": this.state.locationRight ? this.state.locationRight : "0",
+    //         "rColor1": this.rColor1 ? this.rColor1 : "0",
+    //         "rColor2": this.rColor2 ? this.rColor2 : "0",
+    //         "rColor3": this.rColor3 ? this.rColor3 : "0",
+    //         "lColor1": this.lColor1 ? this.lColor1 : "0",
+    //         "lColor2": this.lColor2 ? this.lColor2 : "0",
+    //         "lColor3": this.lColor3 ? this.lColor3 : "0",
+    //         "smoke": this.state.checkSmoke === true ? "1" : "0",
+    //         "blinker": this.state.checkBlind === true ? "1" : "0"
+    //       })
+          
+    //     }
+    //   }
 
-    }
-
+    // }
+    // this.setState({
+    //   corData: dataForCor
+    // })
     // console.log(this.dataForCor)
 
     // console.log(this.state.corData)
-    let stringCSV = JSON.stringify(this.state.corData);
-    const encodedString = { "base": new Buffer(stringCSV).toString('base64'), "time": this.milisToMinutesAndSeconds(this.props.durationStamps) }
-    this.props.socket.emit(
-      "corData",
-      encodedString
-    );
-    console.log(encodedString)
-    this.props.setCorData(this.state.corData)
+        // let stringCSV = JSON.stringify({corData});
+        // const encodedString = { "base": new Buffer(stringCSV).toString('base64'), "time": this.milisToMinutesAndSeconds(this.props.durationStamps) }
+        // this.props.socket.emit(
+        //   "corData",
+        //   encodedString
+        // );
+    // console.log(encodedString)
+    // this.props.setCorData(this.state.corData)
     //TO-DO odaya katıldıysa backend den bağlandı mesajı kontrolü
-    console.log(this.props.socket)
+    // console.log(this.props.socket)
     // this.props.socket.emit('tryCor', this.state.corData);
   }
   handleClose = () => {
@@ -195,7 +223,8 @@ class CreateCor extends Component {
   setList = () => {
     const { seconds } = this.props
     let getSeconds = new Array(seconds).join('0').split('').map(parseFloat)
-    this.takenSecondList = getSeconds.map((index, value) => value)
+    const takenSecondList= getSeconds.map((index, value) => value)
+    this.setState({takenSecondList })
   }
   componentDidMount() {
     this.setList()
@@ -237,7 +266,7 @@ class CreateCor extends Component {
 
 
   render() {
-    const { selectedSecond, velocityRight, locationRight, velocityLeft, locationLeft, openVelocity, selectedColor, checkBlind, checkSmoke, openSelectSeconds, checkedMultiple } = this.state
+    const { selectedSecond, velocityRight, locationRight, velocityLeft, locationLeft, openVelocity, selectedColor, checkBlind, checkSmoke, openSelectSeconds, checkedMultiple,takenSecondList } = this.state
     // if (selectedColor !== null) {
     //   console.log(selectedColor)
     // }
@@ -246,9 +275,9 @@ class CreateCor extends Component {
       <div>
         <Grid container spacing={3}>
           <Grid item xs={4}>
-            {this.takenSecondList &&
+            {takenSecondList &&
               <List>
-                {this.takenSecondList.map((value) => {
+                {takenSecondList.map((value) => {
                   const labelId = `checkbox-list-label-${value}`;
                   return (
                     <React.Fragment>

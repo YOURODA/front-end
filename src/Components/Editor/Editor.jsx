@@ -185,7 +185,6 @@ class Editor extends Component {
   render() {
     const { seconds } = this.state
     let timeOfSum = this.milisToMinutesAndSeconds(this.props.durationStamps);
-    let currentTime = this.milisToMinutesAndSeconds(this.props.position_stamp);
 
     return (
       <Grid container>
@@ -266,7 +265,6 @@ class Editor extends Component {
 
 const mapStateToProps = state => {
   return {
-    position_stamp: state.position_stamp,
     durationStamps: state.durationStamps,
     currently_playing: state.currently_playing,
     csvData: state.csvData,
@@ -278,8 +276,6 @@ const mapStateToProps = state => {
 };
 const mapDispatchToProps = dispatch => {
   return {
-    setPositionStamp: position_stamp =>
-      dispatch({ type: actionTypes.NOW_POSITION_STAMP, position_stamp }),
     setScoketIO: socket =>
       dispatch({ type: actionTypes.SOCKET, socket }),
     setOnCloseCsvData: onCloseCsvData =>
