@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
-import { Switch, Route, withRouter } from 'react-router-dom';
+import { Switch, Route, withRouter, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { SpotifyApiContext } from 'react-spotify-api';
 import axios from 'axios';
 import * as actionTypes from '../../store/actions/actionTypes';
+import Routes from '../../Routes'
 import MusicPlayer from '../../Components/MusicPlayer/MusicPlayer';
 import Login from '../../Components/Login/Login';
-
+import withTracker from '../../withTracker'
 import { withWidth } from '@material-ui/core';
-
 
 class Layout extends Component {
   state = {
@@ -34,7 +34,6 @@ class Layout extends Component {
 
   componentDidMount() {
     let params = this.getHashParams();
-    console.log(params);
     if (!this.props.user) {
       if ('access_token' in params) {
         axios
@@ -44,7 +43,6 @@ class Layout extends Component {
             }
           })
           .then(res => {
-            console.log(res)
             let newUser = {
               access_token: params.access_token,
               displayName: res.data.display_name,
@@ -58,17 +56,15 @@ class Layout extends Component {
           })
           .catch(err => console.log(err));
       } else {
-        window.location = `https://accounts.spotify.com/authorize?client_id=${
-          '8c8d6401e5c24c5585d2e89e93804cd1'
-          }&redirect_uri=${'http://localhost:3000/callback'}&scope=${
-          'streaming user-read-email'
-          }&response_type=token`;
+        // return <Link to={'https://accounts.spotify.com/authorize?client_id=' + '8c8d6401e5c24c5585d2e89e93804cd1' + '&redirect_uri=' + 'http://localhost:3000/party-selection' + '&scope=' +
+        //   'streaming user-read-email' + '&response_type=token'} />
+        window.location.replace('https://accounts.spotify.com/authorize?client_id=' + '8c8d6401e5c24c5585d2e89e93804cd1' + '&redirect_uri=' + 'http://localhost:3000/play-coreography' + '&scope=' +
+          'streaming user-read-email' + '&response_type=token')
       }
     }
   }
 
   logInUserAndGetInfo = newUser => {
-    console.log({ "newUser": newUser })
     this.props.setUser(newUser); // set user in redux state
     if (this.props.location.pathname === '/') {
       this.props.history.push('/browse/featured'); // if there is no page the user wants to go to
@@ -91,22 +87,14 @@ class Layout extends Component {
   }
   render() {
     return this.props.user ? (
-
-
-
-      <React.Fragment>
-
-        <SpotifyApiContext.Provider value={this.props.user.access_token}>
-
-          <MusicPlayer />
-
-
-        </SpotifyApiContext.Provider>
-      </React.Fragment>
-
+      <SpotifyApiContext.Provider value={this.props.user.access_token}>
+        <MusicPlayer />
+      </SpotifyApiContext.Provider>
     ) : (
         <Switch>
-          <Route component={Login} />
+          <Route path="/login" component={Login} />
+          {/* <Route path="/login" component={Login} />
+          <Route path="/login" component={Login} /> */}
         </Switch>
 
       );

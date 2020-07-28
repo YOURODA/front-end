@@ -17,6 +17,7 @@ import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import Slider from "@material-ui/lab/Slider";
 import { TrackDetailsLink } from "../UI/TrackDetailsLink";
 import Editor from "../Editor/Editor";
+import PartySelection from "../PartySelection/PartySelection";
 class MusicPlayer extends Component {
   constructor(props) {
     super(props);
@@ -58,7 +59,7 @@ class MusicPlayer extends Component {
     if (window.Spotify) {
       clearInterval(this.playerCheckInterval);
       this.player = new window.Spotify.Player({
-        name: "Ew WEB",
+        name: "O'da",
         getOAuthToken: cb => {
           cb(token);
         }
@@ -223,7 +224,7 @@ class MusicPlayer extends Component {
           style={{ marginTop: 20 }}
         >
           Oynatıcıyı etkinleştirmek için Spotify uygulamasına gidin, cihazlara
-          tıklayın ve Ew WEB uygulamasını seçin
+          tıklayın ve Oda WEB uygulamasını seçin
         </Typography>
       </Card>
     );
@@ -367,9 +368,10 @@ class MusicPlayer extends Component {
       // <Grid container style={containerStyle}>
 
       <div>
-        <div>
+        {/* <div>
           <Editor selectGoTime={this.onSeekSliderChange} />
-        </div>
+        </div> */}
+        <PartySelection />
         <CssBaseline>{mainContent}</CssBaseline>
       </div>
     );

@@ -14,6 +14,9 @@ import CorDraw from "../Coreography/CorDraw";
 import CreateCor from "../CoreographyNew/CreateCor";
 import Box from "@material-ui/core/Box";
 import { Typography, CardHeader, Card, CardContent, CardActions } from "@material-ui/core";
+import SmokeStatus from "../CoreographyNew/SmokeStatus";
+import CssBaseline from "@material-ui/core/CssBaseline/CssBaseline";
+// import SpotifyFooter from "../../Containers/SpotifyFooter/SpotifyFooter";
 const useStyles = makeStyles(theme => ({
   button: {
     margin: theme.spacing(1)
@@ -188,14 +191,14 @@ class Editor extends Component {
 
     return (
       <Grid container>
-        {this.state.goCoreography === false &&
+        {!timeOfSum &&
           <Box
             display="flex"
             justifyContent="center"
             alignItems="center"
             minHeight="100vh"
           >
-            <Card>
+            {/* <Card>
               <CardHeader>
                 <Typography variant="h5"> Cihazınıza isim veriniz.</Typography>
               </CardHeader>
@@ -210,10 +213,19 @@ class Editor extends Component {
                   Kaydet
                 </Button>
               </CardActions>
-            </Card>
+            </Card> */}
+            {/* <CssBaseline >
+              <SpotifyFooter
+                style={{
+                  fontFamily:
+                    "spotify-circular,Helvetica Neue,Helvetica,Arial,Hiragino Kaku Gothic Pro,Meiryo,MS Gothic,sans-serif"
+                }}
+              >
+              </SpotifyFooter>
+            </CssBaseline> */}
           </Box>
         }
-        {this.state.goCoreography && timeOfSum &&
+        {timeOfSum &&
           <div>
             <Grid item lg={3} md={12} xl={9} xs={12}>
               <Card style={{ textAlign: "center" }}>
