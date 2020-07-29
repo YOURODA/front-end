@@ -20,33 +20,32 @@ import CssBaseline from "@material-ui/core/CssBaseline/CssBaseline";
 const Routes = () => {
 
     return (
-        <Route path="/" component={PartySelection}>
-            {/* <Route component={PartySelection} /> */}
-            {/* <Redirect
+        <Switch>
+            <Redirect
                 exact
                 from="/"
                 to="/party-selection"
-            /> */}
+            />
 
-            <Route
+            <RouteWithLayout
                 component={PartySelection}
                 exact
-                // layout={PartySelection}
+                layout={PartySelection}
                 path="/party-selection"
             />
-            <Route
+            <RouteWithLayout
                 component={PlayParty}
                 exact
-                // layout={PlayParty}
+                layout={PlayParty}
                 path="/play-coreography"
             />
-            <Route
+            <RouteWithLayout
                 component={Editor}
                 exact
-                // layout={Editor}
+                layout={Editor}
                 path="/make-coreography"
             />
-        </ Route>
+        </Switch>
     );
     {/* ),
     {
