@@ -5,6 +5,7 @@ import { ThemeProvider } from '@material-ui/styles';
 import Routes from './Routes'
 import { createBrowserHistory } from 'history';
 import withTracker from './withTracker'
+import SpotifyFooter from './Containers/SpotifyFooter/SpotifyFooter'
 import CssBaseline from "@material-ui/core/CssBaseline/CssBaseline";
 // import Editor from './Components/Editor/Editor'
 // import OdaIdentify from './Components/OdaIdentify/OdaIdentify'
@@ -57,15 +58,7 @@ class App extends Component {
       <ThemeProvider theme={theme}>
         <Router history={browserHistory}>
           <Routes />
-          {/* <CssBaseline >
-            <Layout
-              style={{
-                fontFamily:
-                  "spotify-circular,Helvetica Neue,Helvetica,Arial,Hiragino Kaku Gothic Pro,Meiryo,MS Gothic,sans-serif"
-              }}
-            >
-            </Layout>
-          </CssBaseline> */}
+          {/* <SpotifyFooter /> */}
         </Router>
       </ThemeProvider>
     );

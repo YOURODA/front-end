@@ -14,12 +14,13 @@ import {
   CardContent,
   CardMedia,
   CardHeader,
+  CardActions,
   Grid,
+  CardActionArea,
 } from '@material-ui/core';
 import goParty from '../../images/goParty.png'
 import makeParty from '../../images/makeParty.png'
-import AllCoreographiesImage from "../PlayParty/AllCoreographiesImage";
-import PlayParty from "../PlayParty/PlayParty";
+// import PlayParty from "../MyPartyList/PlayCoreography";
 
 const useStyles = theme => ({
 
@@ -28,23 +29,42 @@ class PartySelection extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      goPlayCoreography: false
     };
   }
-
+  playCoreography = () => {
+    this.setState({ goPlayCoreography: true })
+  }
 
   render() {
+    if (this.state.goPlayCoreography) {
+      window.location = "/play-coreography"
+    }
     const { seconds } = this.state
     return (
       <Grid container spacing="4">
         <Grid item lg={6} sm={6} xl={6} xs={6}>
-          <RouterLink component={PlayParty} to="/play-coreography">
-            <img src={goParty} />
-          </RouterLink>
+          <Card>
+            <CardActionArea>
+              <CardContent>
+                <img src={goParty} />
+              </CardContent>
+              <CardActions>
+                <Button onClick={this.playCoreography} size="small" color="primary">
+                  Go Party
+               </Button>
+                <Button size="small" color="primary">
+                  Learn More
+              </Button>
+              </CardActions>
+            </CardActionArea>
+
+          </Card>
+          {/* <img src={goParty} />
         </Grid>
         <Grid item lg={6} sm={6} xl={6} xs={6}>
-          <RouterLink component={Editor} to="/make-coreography">
-            <img src={makeParty} />
-          </RouterLink>
+
+          <img src={makeParty} /> */}
         </Grid>
       </Grid>
     );

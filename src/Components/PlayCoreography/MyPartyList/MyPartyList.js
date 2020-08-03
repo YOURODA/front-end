@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import * as actionTypes from "../../store/actions/actionTypes";
+import * as actionTypes from "../../../store/actions/actionTypes";
 import { withStyles } from '@material-ui/styles';
-import Editor from '../Editor/Editor'
+import Editor from '../../Editor/Editor'
 import { Link as RouterLink } from 'react-router-dom'
 import {
     Typography,
@@ -19,15 +19,14 @@ import {
     DialogTitle,
     Grid,
 } from '@material-ui/core';
-import allCor from '../../images/all.png'
-import makeParty from '../../images/makeParty.png'
+import myPartyList from '../../../images/myPartyList.png'
 
 const useStyles = theme => ({
     button: {
         // margin: theme.spacing(1)
     }
 });
-class AllCoreographiesImage extends Component {
+class MyPartyList extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -69,7 +68,7 @@ class AllCoreographiesImage extends Component {
                             </CardActionArea>
                         </ButtonBase>
                     </Card> */}
-                    <img src={allCor} />
+                    <img src={myPartyList} />
                 </Grid>
             </Grid>
         );
@@ -78,21 +77,7 @@ class AllCoreographiesImage extends Component {
 
 
 
-const mapStateToProps = state => {
-    return {
-
-    };
-};
-const mapDispatchToProps = dispatch => {
-    return {
-        setAllCorPopUp: allCorPopUp =>
-            dispatch({ type: actionTypes.ALL_COR_POPUP, allCorPopUp }),
-        setOnCloseCsvData: onCloseCsvData =>
-            dispatch({ type: actionTypes.ON_CLOSE_CSV_DATA, onCloseCsvData }),
-    };
-};
-
 export default connect(
-    mapStateToProps,
+    null,
     null
-)(withStyles(useStyles)(AllCoreographiesImage));
+)(withStyles(useStyles)(MyPartyList));

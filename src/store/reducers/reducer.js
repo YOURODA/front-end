@@ -16,7 +16,7 @@ const initialState = {
   socket: null,
   onCloseCsvData: [],
   backgroundImage: "linear-gradient(rgb(58, 91, 95), rgb(6, 9, 10) 85%)",
-  allCorPopup: false
+  popUpAll: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -98,10 +98,10 @@ const reducer = (state = initialState, action) => {
         ...state,
         csvData: action.onCloseCsvData
       };
-    case actionTypes.ALL_COR_POPUP:
+    case actionTypes.POPUP_ALL:
       return {
         ...state,
-        allCorPopup: action.allCorPopup
+        popUpAll: action.popUpAll
       };
     default:
       return state;

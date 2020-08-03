@@ -20,8 +20,7 @@ export const CSV_DATA = "CSV_DATA";
 export const COR_DATA = "COR_DATA";
 export const ON_CLOSE_CSV_DATA = "ON_CLOSE_CSV_DATA";
 export const SOCKET = "SOCKET";
-export const ALL_COR_POPUP = "ALL_COR_POPUP";
-
+export const POPUP_ALL = "POPUP_ALL"
 export const playSong = (uris, deviceId) => {
   return (dispatch, getState) => {
     if (getState().current_user) {

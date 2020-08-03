@@ -11,7 +11,7 @@ import RouteWithLayout from './Components/RouteWithLayout/RouteWithLayout';
 import CreateCor from './Components/CoreographyNew/CreateCor'
 import Editor from './Components/Editor/Editor'
 import PartySelection from './Components/PartySelection/PartySelection'
-import PlayParty from './Components/PlayParty/PlayParty'
+import PlayCoreography from './Components/PlayCoreography/PlayCoreography'
 import MusicPlayer from './Components/MusicPlayer/MusicPlayer'
 import SpotifyFooter from './Containers/SpotifyFooter/SpotifyFooter'
 import CssBaseline from "@material-ui/core/CssBaseline/CssBaseline";
@@ -28,15 +28,15 @@ const Routes = () => {
             />
 
             <RouteWithLayout
-                component={PartySelection}
+                // component={PartySelection}
                 exact
                 layout={PartySelection}
                 path="/party-selection"
             />
             <RouteWithLayout
-                component={PlayParty}
+                // component={PlayParty}
                 exact
-                layout={PlayParty}
+                layout={PlayCoreography}
                 path="/play-coreography"
             />
             <RouteWithLayout
