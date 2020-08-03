@@ -232,14 +232,12 @@ class CorDraw extends Component {
     //   smokeHeater: "65534",
     //   smoke: "65534"
     // })
-    console.log(corDataArray)
     this.setState({ data: corDataArray })
   }
 
 
   render() {
     this.props.setCsvData(this.state.data);
-    console.log(this.state.data)
     return (
       <MaterialTable
         icons={tableIcons}

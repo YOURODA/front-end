@@ -147,10 +147,8 @@ class Editor extends Component {
       "corData",
       encodedString
     );
-    console.log(encodedString)
   };
   onCloseEveryComponent = () => {
-    console.log(this.props.csvData)
     this.props.csvData.forEach(element => {
       return element.startDate = 0,
         element.rRobotsSpeed1 = 40,

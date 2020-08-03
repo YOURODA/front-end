@@ -4,6 +4,7 @@ import MaterialTable from 'material-table';
 import { connect } from 'react-redux';
 import * as actionTypes from '../../../store/actions/actionTypes';
 import { Grid, Card } from '@material-ui/core';
+import APIServices from '../../Services/APIServices'
 const useStyles = (theme) => ({
     root: {
         flexGrow: 2,
@@ -37,25 +38,32 @@ class AllCoreographiesTable extends Component {
         super(props);
         this.state = {
             emptyDialog: [],
+            getAllCorData: []
         };
+        this.apiService = new APIServices();
     }
-    handleChange = (event) => {
-        this.setState({
-            selectedApplicationId: event.target.value.id,
-            selectedApplicationNames: event.target.value,
-        });
-    };
-    handleChangeMenu = (event) => {
-        this.setState({
-            selectedMenuIds: event.target.value.menuId,
-            selectedMenuName: event.target.value,
-            selectedMenu: event.target,
-        });
-    };
-    addUser(e) {
-        this.setState({
-            [e.target.id]: e.target.value,
-        });
+    // handleChange = (event) => {
+    //     this.setState({
+    //         selectedApplicationId: event.target.value.id,
+    //         selectedApplicationNames: event.target.value,
+    //     });
+    // };
+    // handleChangeMenu = (event) => {
+    //     this.setState({
+    //         selectedMenuIds: event.target.value.menuId,
+    //         selectedMenuName: event.target.value,
+    //         selectedMenu: event.target,
+    //     });
+    // // };
+    // addUser(e) {
+    //     this.setState({
+    //         [e.target.id]: e.target.value,
+    //     });
+    // }
+    componentDidMount() {
+        this.apiService.getAllCoreographies().then(response => {
+            this.setState({ getAllCorData: response.data.cor })
+        })
     }
     render() {
         const { classes } = this.props;
@@ -67,19 +75,17 @@ class AllCoreographiesTable extends Component {
                             tableRef={this.tableRef}
                             title=" "
                             columns={[
-                                { title: 'User Name', field: 'conversationId' },
-                                { title: 'Track Name', field: 'userName' ? 'userName' : '-' },
-                                { title: 'Coreography', field: 'platform' },
+                                { title: 'User Name', field: '' },
+                                { title: 'Track Name', field: 'trackName' },
+                                { title: 'Coreography Name', field: 'name' },
                                 {
                                     title: 'Coreography Date',
-                                    field: 'endTime',
+                                    field: 'createdAt',
                                 },
                             ]}
-                            // data={
-                            //     this.props.dialog.length > 0
-                            //         ? this.props.dialog
-                            //         : this.state.emptyDialog
-                            // }
+                            data={
+                                this.state.getAllCorData
+                            }
                             options={{
                                 pageSize: 10,
                                 search: false,
@@ -88,47 +94,20 @@ class AllCoreographiesTable extends Component {
                                 exportFileName: 'Rapor',
                                 headerStyle: { backgroundColor: '#EAEDED' },
                             }}
-                            // onRowClick={(evt, selectedRow) => {
-                            //     this.setState({
-                            //         selectedRow,
-                            //         openEditDialog: true,
-                            //         takeUsersMenuNames: [],
-                            //     });
-                            //     this.apiService
-                            //         .getMessageWithSessionId(selectedRow.id)
-                            //         .then((response) => {
-                            //             this.props.setPopUp(true);
-                            //             this.props.setDialogMessage(response.data);
-                            //         });
-                            // }}
-                            localization={{
-                                body: {
-                                    emptyDataSourceMessage: 'Gösterilecek kayıt yok',
-                                    editRow: {
-                                        deleteText: 'Kullanıcıyı silmek istediğinize emin misiniz?',
-                                        saveTooltip: 'Kaydet',
-                                        cancelTooltip: 'İptal',
-                                    },
-                                    editTooltip: 'Değiştir',
-                                    deleteTooltip: 'Sil',
-                                },
-                                toolbar: {
-                                    searchTooltip: 'Arama',
-                                    searchPlaceholder: 'Arama',
-                                    exportName: 'Çıktı al',
-                                },
-                                header: {
-                                    actions: 'İşlemler',
-                                },
-                                pagination: {
-                                    labelRowsSelect: 'satır',
-                                    labelDisplayedRows: '{count} satırdan {from}-{to} arası',
-                                    firstTooltip: 'İlk Sayfa',
-                                    previousTooltip: 'Önceki Sayfa',
-                                    nextTooltip: 'Sonraki Sayfa',
-                                    lastTooltip: 'Son Sayfa',
-                                },
-                            }}
+                        // onRowClick={(evt, selectedRow) => {
+                        //     this.setState({
+                        //         selectedRow,
+                        //         openEditDialog: true,
+                        //         takeUsersMenuNames: [],
+                        //     });
+                        //     this.apiService
+                        //         .getMessageWithSessionId(selectedRow.id)
+                        //         .then((response) => {
+                        //             this.props.setPopUp(true);
+                        //             this.props.setDialogMessage(response.data);
+                        //         });
+                        // }}
+
                         />
                     </Card>
                 </Grid>

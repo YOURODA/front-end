@@ -36,7 +36,6 @@ class AllCoreographiesSelect extends Component {
         };
     }
     handleOpen = () => {
-        // console.log('girdi')
         this.setState({ allCorPopUpCheck: true })
         this.props.setPopUpAll(true)
     };

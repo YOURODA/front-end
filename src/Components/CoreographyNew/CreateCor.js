@@ -104,17 +104,14 @@ class CreateCor extends Component {
     this.setState({
       tryCorData: tryDataForCor
     })
-    console.log(this.tryDataForCor)
     let stringCSV = JSON.stringify(this.state.tryCorData);
     const encodedString = { "base": new Buffer(stringCSV).toString('base64'), "time": this.milisToMinutesAndSeconds(this.props.durationStamps) }
     this.props.socket.emit(
       "tryCor",
       encodedString
     );
-    console.log(encodedString)
     // this.props.setCorData(this.state.corData)
     //TO-DO odaya katıldıysa backend den bağlandı mesajı kontrolü
-    console.log(this.props.socket)
     // this.props.socket.emit('tryCor', this.state.corData);
   }
   saveCoreography = () => {
@@ -142,8 +139,6 @@ class CreateCor extends Component {
         "blinker": this.state.checkBlind === true ? "1" : "0"
       }
     })
-    console.log('corData', newcor);
-    console.log('checkedMultiple', checkedMultiple);
     this.setState({ corData: newcor })
 
     // console.log(this.state.corData)

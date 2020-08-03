@@ -70,8 +70,6 @@ class AllCoreographiesPopUp extends Component {
     }
     render() {
         const { classes } = this.props;
-        console.log('59')
-        console.log(this.props.popUpAll)
         return (
             <div>
                 <Dialog
@@ -86,14 +84,14 @@ class AllCoreographiesPopUp extends Component {
                 >
                     <DialogTitle className={classes.content} id="form-dialog-title">
                         All Coreographies
-          </DialogTitle>
+                    </DialogTitle>
                     <DialogContent>
                         <AllCoreographiesTable />
                     </DialogContent>
                     <DialogActions>
                         <Button style={{ color: 'red' }} onClick={this.handleClose}>
-                            Çıkış
-            </Button>
+                            Exit
+                        </Button>
                     </DialogActions>
                 </Dialog>
             </div>
