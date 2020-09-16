@@ -371,7 +371,6 @@ class MusicPlayer extends Component {
         {/* <div>
           <Editor selectGoTime={this.onSeekSliderChange} />
         </div> */}
-        <PartySelection />
         <CssBaseline>{mainContent}</CssBaseline>
       </div>
     );

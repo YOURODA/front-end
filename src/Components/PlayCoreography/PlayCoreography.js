@@ -1,10 +1,15 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import { createBrowserHistory } from 'history';
+import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
+import { ThemeProvider } from '@material-ui/styles';
 import * as actionTypes from "../../store/actions/actionTypes";
 import { withStyles } from '@material-ui/styles';
 import SpotifyFooter from '../../Containers/SpotifyFooter/SpotifyFooter'
 import Editor from '../Editor/Editor'
 import { Link as RouterLink } from 'react-router-dom'
+import CssBaseline from "@material-ui/core/CssBaseline/CssBaseline";
 import CreateCor from '../CoreographyNew/CreateCor'
 // import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import {
@@ -22,9 +27,23 @@ import HitCoreographiesSelect from "./HitCoreographies/HitCoreographiesSelect";
 import MyStartsSelect from "./MyStars/MyStartsSelect";
 import MyPartyList from "./MyPartyList/MyPartyList";
 import Last100 from "./Last100/Last100";
-const useStyles = theme => ({
-    button: {
-        // margin: theme.spacing(1)
+const theme = createMuiTheme({
+    palette: {
+        primary: {
+            light: "#757ce8",
+            main: "#1db954",
+            dark: "#191414",
+            contrastText: "#fff"
+        },
+        secondary: {
+            light: "#ff7961",
+            main: "#ffffff",
+            dark: "#191414",
+            contrastText: "#000"
+        }
+    },
+    typography: {
+        useNextVariants: true
     }
 });
 class PlayCoreography extends Component {
@@ -33,8 +52,6 @@ class PlayCoreography extends Component {
         this.state = {
         };
     }
-
-
     render() {
         const { seconds } = this.state
         return (
@@ -61,14 +78,22 @@ class PlayCoreography extends Component {
                     <Grid item lg={3} sm={3} xl={3} xs={3}>
                         <Last100 />
                     </Grid>
-                    <SpotifyFooter />
                 </Grid>
+                <ThemeProvider theme={theme}>
+                    <CssBaseline >
+                        <SpotifyFooter
+                            style={{
+                                fontFamily:
+                                    "spotify-circular,Helvetica Neue,Helvetica,Arial,Hiragino Kaku Gothic Pro,Meiryo,MS Gothic,sans-serif"
+                            }}
+                        >
+                        </SpotifyFooter>
+                    </CssBaseline>
+                </ThemeProvider>
             </div>
         );
     }
 }
-
-
 
 const mapStateToProps = state => {
     return {
@@ -87,4 +112,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
     mapStateToProps,
     null
-)(withStyles(useStyles)(PlayCoreography));
+)(PlayCoreography);

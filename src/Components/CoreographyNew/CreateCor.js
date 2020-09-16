@@ -11,6 +11,7 @@ import {
   FormControl,
   CardActions
 } from '@material-ui/core';
+import CssBaseline from "@material-ui/core/CssBaseline/CssBaseline";
 import socketIo from "socket.io-client";
 import Cloud from '@material-ui/icons/Cloud';
 import CloudQueue from '@material-ui/icons/CloudQueue';
@@ -19,6 +20,7 @@ import HighlightOutlined from '@material-ui/icons/HighlightOutlined';
 import SaveIcon from '@material-ui/icons/Save';
 import CommentIcon from '@material-ui/icons/Comment';
 import SmokeStatus from "./SmokeStatus";
+import SpotifyFooter from "../../Containers/SpotifyFooter/SpotifyFooter";
 
 const colorPWM = 65534 / 256;
 class CreateCor extends Component {

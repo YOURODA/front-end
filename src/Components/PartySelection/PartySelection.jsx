@@ -29,42 +29,40 @@ class PartySelection extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      goPlayCoreography: false
+      goPlayCoreography: false,
+      makeParty: false
     };
   }
   playCoreography = () => {
     this.setState({ goPlayCoreography: true })
+  }
+  makePartyChecker = () => {
+    this.setState({ makeParty: true })
+
   }
 
   render() {
     if (this.state.goPlayCoreography) {
       window.location = "/play-coreography"
     }
-    const { seconds } = this.state
+    if (this.state.makeParty) {
+      window.location = "/make-coreography"
+    }
     return (
       <Grid container spacing="4">
         <Grid item lg={6} sm={6} xl={6} xs={6}>
           <Card>
             <CardActionArea>
-              <CardContent>
-                <img src={goParty} />
-              </CardContent>
-              <CardActions>
-                <Button onClick={this.playCoreography} size="small" color="primary">
-                  Go Party
-               </Button>
-                <Button size="small" color="primary">
-                  Learn More
-              </Button>
-              </CardActions>
+              <img onClick={this.playCoreography} src={goParty} />
             </CardActionArea>
-
           </Card>
-          {/* <img src={goParty} />
         </Grid>
         <Grid item lg={6} sm={6} xl={6} xs={6}>
-
-          <img src={makeParty} /> */}
+          <Card>
+            <CardActionArea>
+              <img onClick={this.makePartyChecker} src={makeParty} />
+            </CardActionArea>
+          </Card>
         </Grid>
       </Grid>
     );
