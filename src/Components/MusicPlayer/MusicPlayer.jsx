@@ -1,23 +1,24 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import * as actionTypes from "../../store/actions/actionTypes";
-import CssBaseline from "@material-ui/core/CssBaseline/CssBaseline";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import * as actionTypes from '../../store/actions/actionTypes';
+import CssBaseline from '@material-ui/core/CssBaseline/CssBaseline';
 import {
   Grid,
   Typography,
   Card,
   IconButton,
   CardContent,
-  CardMedia
-} from "@material-ui/core";
-import SkipNextIcon from "@material-ui/icons/SkipNext";
-import SkipPreviousIcon from "@material-ui/icons/SkipPrevious";
-import PauseIcon from "@material-ui/icons/Pause";
-import PlayArrowIcon from "@material-ui/icons/PlayArrow";
-import Slider from "@material-ui/lab/Slider";
-import { TrackDetailsLink } from "../UI/TrackDetailsLink";
-import Editor from "../Editor/Editor";
-import PartySelection from "../PartySelection/PartySelection";
+  CardMedia,
+} from '@material-ui/core';
+import SkipNextIcon from '@material-ui/icons/SkipNext';
+import SkipPreviousIcon from '@material-ui/icons/SkipPrevious';
+import PauseIcon from '@material-ui/icons/Pause';
+import PlayArrowIcon from '@material-ui/icons/PlayArrow';
+import Slider from '@material-ui/lab/Slider';
+import { TrackDetailsLink } from '../UI/TrackDetailsLink';
+import Editor from '../Editor/Editor';
+import PartySelection from '../PartySelection/PartySelection';
+import HeaterOnButton from '../HeaterOnButton/HeaterOnButton';
 class MusicPlayer extends Component {
   constructor(props) {
     super(props);
@@ -28,9 +29,9 @@ class MusicPlayer extends Component {
       playing: false,
       positionSliderValue: 50,
       volumeSliderValue: 50,
-      positionStamp: "00:00",
+      positionStamp: '00:00',
       //durationStamp: '00:00',
-      player_init_error: false
+      player_init_error: false,
     };
 
     this.player = null;
@@ -60,9 +61,9 @@ class MusicPlayer extends Component {
       clearInterval(this.playerCheckInterval);
       this.player = new window.Spotify.Player({
         name: "O'da",
-        getOAuthToken: cb => {
+        getOAuthToken: (cb) => {
           cb(token);
-        }
+        },
       });
     }
 
@@ -74,17 +75,19 @@ class MusicPlayer extends Component {
   };
 
   createEventHandlers = () => {
-    this.player.on("initialization_error", e => {
-      console.error("Initialization error ", e);
+    this.player.on('initialization_error', (e) => {
+      console.error('Initialization error ', e);
       this.setState({ player_init_error: true });
     });
-    this.player.on("authentication_error", e =>
-      console.error("Authentication error ", e)
+    this.player.on('authentication_error', (e) =>
+      console.error('Authentication error ', e)
     );
-    this.player.on("account_error", e => console.error("Account error ", e));
-    this.player.on("playback_error", e => console.error("Playback error ", e));
+    this.player.on('account_error', (e) => console.error('Account error ', e));
+    this.player.on('playback_error', (e) =>
+      console.error('Playback error ', e)
+    );
 
-    this.player.on("player_state_changed", state => {
+    this.player.on('player_state_changed', (state) => {
       if (state) {
         let { duration, position } = state;
         // duration = 100%
@@ -93,7 +96,7 @@ class MusicPlayer extends Component {
         this.setState({
           playingInfo: state,
           playing: !state.paused,
-          positionSliderValue: val
+          positionSliderValue: val,
         });
         if (this.props.isPlaying === state.paused) {
           this.props.setIsPlaying(!state.paused);
@@ -108,13 +111,13 @@ class MusicPlayer extends Component {
       }
     });
 
-    this.player.on("ready", data => {
+    this.player.on('ready', (data) => {
       let { device_id } = data;
       // await this.setState({ deviceId: device_id });
       this.setState({ deviceId: device_id }, () => {
         this.transferPlaybackHere();
       });
-      this.player.getVolume().then(vol => {
+      this.player.getVolume().then((vol) => {
         let volume = vol * 100;
         this.setState({ volumeSliderValue: volume });
       });
@@ -125,13 +128,13 @@ class MusicPlayer extends Component {
   };
 
   checkChangePosition = () => {
-    this.player.getCurrentState().then(state => {
+    this.player.getCurrentState().then((state) => {
       if (state && this.state.playing) {
         let { duration, position } = state;
         let val = (position * 100) / duration;
         if (val !== this.state.positionSliderValue) {
           this.setState({
-            positionSliderValue: val
+            positionSliderValue: val,
           });
         }
 
@@ -149,24 +152,24 @@ class MusicPlayer extends Component {
     // ONLY FOR PREMIUM USERS - transfer the playback automatically to the web app.
     // for normal users they have to go in the spotify app/website and change the device manually
     // user type is stored in redux state => this.props.user.type
-    if (this.props.user.product === "premium") {
+    if (this.props.user.product === 'premium') {
       const { deviceId } = this.state;
-      fetch("https://api.spotify.com/v1/me/player", {
-        method: "PUT",
+      fetch('https://api.spotify.com/v1/me/player', {
+        method: 'PUT',
         headers: {
           Authorization: `Bearer ${this.props.user.access_token}`,
-          "Content-Type": "application/json"
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           device_ids: [deviceId],
-          play: false
-        })
+          play: false,
+        }),
       })
-        .then(res => console.log(res))
-        .catch(e => console.error(e));
+        .then((res) => console.log(res))
+        .catch((e) => console.error(e));
     } else {
       console.log(
-        "Cannot transfer playback automatically because you are not a premium user."
+        'Cannot transfer playback automatically because you are not a premium user.'
       );
     }
   };
@@ -189,8 +192,8 @@ class MusicPlayer extends Component {
     let dur = this.state.playingInfo.duration;
     let seek = Math.floor((val * dur) / 100); // round number
     this.setState({ positionSliderValue: val });
-    console.log("valu değeri  " + val);
-    console.log("e değeri:  " + e);
+    console.log('valu değeri  ' + val);
+    console.log('e değeri:  ' + e);
     this.player.seek(seek).then(() => {
       console.log(`Seek song to ${seek} ms`);
     });
@@ -202,20 +205,20 @@ class MusicPlayer extends Component {
     this.player.setVolume(volume);
   };
 
-  milisToMinutesAndSeconds = mil => {
+  milisToMinutesAndSeconds = (mil) => {
     let minutes = Math.floor(mil / 60000);
     let seconds = ((mil % 60000) / 1000).toFixed(0);
-    return minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
+    return minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
   };
 
   render() {
     let mainContent = (
       <Card
         style={{
-          position: "fixed",
+          position: 'fixed',
           bottom: 0,
-          width: "100%",
-          height: 100
+          width: '100%',
+          height: 100,
         }}
       >
         <Typography
@@ -240,26 +243,26 @@ class MusicPlayer extends Component {
 
     if (this.player && this.state.playingInfo) {
       mainContent = (
-        <Card style={{ position: "fixed", bottom: 0, width: "100%" }}>
+        <Card style={{ position: 'fixed', bottom: 0, width: '100%' }}>
           <Grid
             container
             justify="space-between"
             spacing={0}
-            style={{ width: "100%", margin: 0 }}
+            style={{ width: '100%', margin: 0 }}
           >
             <Grid item xs={3}>
               <Card
                 style={{
-                  display: "flex",
-                  height: "100%",
-                  boxShadow: "none"
+                  display: 'flex',
+                  height: '100%',
+                  boxShadow: 'none',
                 }}
               >
                 <CardMedia
                   style={{
                     width: 80,
                     height: 80,
-                    margin: 10
+                    margin: 10,
                   }}
                   image={
                     this.state.playingInfo.track_window.current_track.album
@@ -269,20 +272,20 @@ class MusicPlayer extends Component {
                 />
                 <div
                   style={{
-                    display: "flex",
-                    alignItems: "center",
-                    paddingLeft: "16",
-                    paddingBottom: "16"
+                    display: 'flex',
+                    alignItems: 'center',
+                    paddingLeft: '16',
+                    paddingBottom: '16',
                   }}
                 >
-                  <CardContent style={{ flex: "1 0 auto" }}>
+                  <CardContent style={{ flex: '1 0 auto' }}>
                     <Typography variant="h5">
                       {this.state.playingInfo.track_window.current_track.name}
                     </Typography>
                     <Typography variant="subtitle1">
                       <TrackDetailsLink
                         to={
-                          "/album/" +
+                          '/album/' +
                           this.state.playingInfo.track_window.current_track.album.uri.substring(
                             14
                           )
@@ -299,7 +302,7 @@ class MusicPlayer extends Component {
               </Card>
             </Grid>
             <Grid item xs={4}>
-              <div style={{ textAlign: "center" }}>
+              <div style={{ textAlign: 'center' }}>
                 <IconButton
                   disabled={
                     this.state.playingInfo.track_window.previous_tracks
@@ -328,8 +331,8 @@ class MusicPlayer extends Component {
                   item
                   xs={2}
                   style={{
-                    textAlign: "center",
-                    marginTop: 5
+                    textAlign: 'center',
+                    marginTop: 5,
                   }}
                 >
                   <Typography>{this.state.positionStamp}</Typography>
@@ -344,8 +347,8 @@ class MusicPlayer extends Component {
                   item
                   xs={2}
                   style={{
-                    textAlign: "center",
-                    marginTop: 5
+                    textAlign: 'center',
+                    marginTop: 5,
                   }}
                 >
                   <Typography>{this.state.durationStamp}</Typography>
@@ -377,28 +380,28 @@ class MusicPlayer extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     user: state.current_user,
     playNow: state.play_now,
     currentlyPlaying: state.currently_playing,
     isPlaying: state.isPlaying,
     position_stamp: state.position_stamp,
-    durationStamps: state.durationStamps
+    durationStamps: state.durationStamps,
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
     resetPlayNow: () => dispatch({ type: actionTypes.RESET_PLAY_NOW }),
-    setCurrentlyPlaying: song =>
+    setCurrentlyPlaying: (song) =>
       dispatch({ type: actionTypes.SET_CURRENTLY_PLAYING, song }),
-    setIsPlaying: isPlaying =>
+    setIsPlaying: (isPlaying) =>
       dispatch({ type: actionTypes.SET_IS_PLAYING, isPlaying }),
-    setPositionStamp: position_stamp =>
+    setPositionStamp: (position_stamp) =>
       dispatch({ type: actionTypes.NOW_POSITION_STAMP, position_stamp }),
-    setDurationStamps: durationStamps =>
-      dispatch({ type: actionTypes.DURATION_STAMP, durationStamps })
+    setDurationStamps: (durationStamps) =>
+      dispatch({ type: actionTypes.DURATION_STAMP, durationStamps }),
   };
 };
 
