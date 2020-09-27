@@ -11,6 +11,7 @@ import {
   FormControl,
   CardActions
 } from '@material-ui/core';
+import CssBaseline from "@material-ui/core/CssBaseline/CssBaseline";
 import socketIo from "socket.io-client";
 import Cloud from '@material-ui/icons/Cloud';
 import CloudQueue from '@material-ui/icons/CloudQueue';
@@ -19,6 +20,11 @@ import HighlightOutlined from '@material-ui/icons/HighlightOutlined';
 import SaveIcon from '@material-ui/icons/Save';
 import CommentIcon from '@material-ui/icons/Comment';
 import SmokeStatus from "./SmokeStatus";
+import LeftHorizontalStatus from "./LeftHorizontalStatus"
+import LeftVerticalStatus from "./LeftVerticalStatus"
+import RightHorizontalStatus from "./RightHorizontalStatus"
+import RightVerticalStatus from "./RightVerticalStatus"
+import SpotifyFooter from "../../Containers/SpotifyFooter/SpotifyFooter";
 
 const colorPWM = 65534 / 256;
 class CreateCor extends Component {
@@ -273,42 +279,8 @@ class CreateCor extends Component {
                   <CardContent>
                     <Grid container spacing={3}>
                       <Grid item xs={6}>
-                        <FormControl variant="outlined" style={{ width: '100%' }}>
-                          <InputLabel htmlFor="outlined-age-native-simple">Left Light Robot Velocity</InputLabel>
-                          <Select
-                            native
-                            value={velocityLeft}
-                            onChange={this.handleChange}
-                            label="velocityLeft"
-                            inputProps={{
-                              name: 'velocityLeft',
-                              id: 'outlined-age-native-simple',
-                            }}
-                          >
-                            <option aria-label="None" value="" />
-                            <option value={40}>Low</option>
-                            <option value={300}>Medium</option>
-                            <option value={500}>High</option>
-                          </Select>
-                        </FormControl>
-                        <FormControl variant="outlined" style={{ width: '100%' }}>
-                          <InputLabel htmlFor="outlined-age-native-simple">Left Light Robot Location</InputLabel>
-                          <Select
-                            native
-                            value={locationLeft}
-                            onChange={this.handleChange}
-                            label="locationLeft"
-                            inputProps={{
-                              name: 'locationLeft',
-                              id: 'outlined-age-native-simple',
-                            }}
-                          >
-                            <option aria-label="None" value="" />
-                            <option value={40}>Low</option>
-                            <option value={300}>Medium</option>
-                            <option value={500}>High</option>
-                          </Select>
-                        </FormControl>
+                        <LeftHorizontalStatus />
+                        <LeftVerticalStatus />
                         <Typography variant="button">Select Color For Left Robot</Typography>
                         <div style={{ float: 'center' }}>
                           <CirclePicker
@@ -332,42 +304,8 @@ class CreateCor extends Component {
                           <Cloud />}
                       </Grid>
                       <Grid item xs={6}>
-                        <FormControl variant="outlined" style={{ width: '100%' }}>
-                          <InputLabel htmlFor="outlined-age-native-simple">Right Light Robot Velocity</InputLabel>
-                          <Select
-                            native
-                            value={velocityRight}
-                            onChange={this.handleChange}
-                            label="velocityRight"
-                            inputProps={{
-                              name: 'velocityRight',
-                              id: 'outlined-age-native-simple',
-                            }}
-                          >
-                            <option aria-label="None" value="" />
-                            <option value={40}>Low</option>
-                            <option value={300}>Medium</option>
-                            <option value={500}>High</option>
-                          </Select>
-                        </FormControl>
-                        <FormControl variant="outlined" style={{ width: '100%' }}>
-                          <InputLabel htmlFor="outlined-age-native-simple">Right Light Robot Location</InputLabel>
-                          <Select
-                            native
-                            value={locationRight}
-                            onChange={this.handleChange}
-                            label="locationRight"
-                            inputProps={{
-                              name: 'locationRight',
-                              id: 'outlined-age-native-simple',
-                            }}
-                          >
-                            <option aria-label="None" value="" />
-                            <option value={40}>Low</option>
-                            <option value={300}>Medium</option>
-                            <option value={500}>High</option>
-                          </Select>
-                        </FormControl>
+                        <RightHorizontalStatus />
+                        <RightVerticalStatus />
                         <Typography variant="button">Select Color For Right Robot</Typography>
                         <CirclePicker
                           color={this.state.selectedColor}

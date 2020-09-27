@@ -16,7 +16,7 @@ import Box from "@material-ui/core/Box";
 import { Typography, CardHeader, Card, CardContent, CardActions } from "@material-ui/core";
 import SmokeStatus from "../CoreographyNew/SmokeStatus";
 import CssBaseline from "@material-ui/core/CssBaseline/CssBaseline";
-// import SpotifyFooter from "../../Containers/SpotifyFooter/SpotifyFooter";
+import SpotifyFooterMakeCor from "../../Containers/SpotifyFooter/SpotifyFooterMakeCor";
 const useStyles = makeStyles(theme => ({
   button: {
     margin: theme.spacing(1)
@@ -196,7 +196,7 @@ class Editor extends Component {
             alignItems="center"
             minHeight="100vh"
           >
-            {/* <Card>
+            <Card>
               <CardHeader>
                 <Typography variant="h5"> Cihazınıza isim veriniz.</Typography>
               </CardHeader>
@@ -211,16 +211,7 @@ class Editor extends Component {
                   Kaydet
                 </Button>
               </CardActions>
-            </Card> */}
-            {/* <CssBaseline >
-              <SpotifyFooter
-                style={{
-                  fontFamily:
-                    "spotify-circular,Helvetica Neue,Helvetica,Arial,Hiragino Kaku Gothic Pro,Meiryo,MS Gothic,sans-serif"
-                }}
-              >
-              </SpotifyFooter>
-            </CssBaseline> */}
+            </Card>
           </Box>
         }
         {timeOfSum &&
@@ -266,6 +257,15 @@ class Editor extends Component {
             </div> */}
           </div>
         }
+        <CssBaseline >
+          <SpotifyFooterMakeCor
+            style={{
+              fontFamily:
+                "spotify-circular,Helvetica Neue,Helvetica,Arial,Hiragino Kaku Gothic Pro,Meiryo,MS Gothic,sans-serif"
+            }}
+          >
+          </SpotifyFooterMakeCor>
+        </CssBaseline>
       </Grid>
     );
   }

@@ -1,22 +1,27 @@
-import * as actionTypes from "../actions/actionTypes";
+import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
   current_user: null,
   recently_played: null,
   play_now: {
     type: null,
-    uri: null
+    uri: null,
   },
   currently_playing: null,
   isPlaying: false,
   position_stamp: null,
-  durationStamps: "00:00",
+  durationStamps: '00:00',
   csvData: [],
   corData: [],
   socket: null,
   onCloseCsvData: [],
-  backgroundImage: "linear-gradient(rgb(58, 91, 95), rgb(6, 9, 10) 85%)",
-  popUpAll: false
+  backgroundImage: 'linear-gradient(rgb(58, 91, 95), rgb(6, 9, 10) 85%)',
+  popUpAll: '',
+  modalData: {},
+  leftHorValue: null,
+  leftVerValue: null,
+  rightHorValue: null,
+  rightVerValue: null
 };
 
 const reducer = (state = initialState, action) => {
@@ -25,84 +30,105 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         isLoggedIn: true,
-        current_user: action.user
+        current_user: action.user,
       };
     case actionTypes.SET_RECENTLY_PLAYED:
       return {
         ...state,
-        recently_played: action.recently_played
+        recently_played: action.recently_played,
       };
     case actionTypes.SET_PLAY_NOW:
       return {
         ...state,
         play_now: {
           type: action.uri_type,
-          uri: action.uri
-        }
+          uri: action.uri,
+        },
       };
     case actionTypes.RESET_PLAY_NOW:
       return {
         ...state,
         play_now: {
           type: null,
-          uri: null
-        }
+          uri: null,
+        },
       };
     case actionTypes.SET_CURRENTLY_PLAYING:
       return {
         ...state,
-        currently_playing: action.song
+        currently_playing: action.song,
       };
     case actionTypes.SET_IS_PLAYING:
       return {
         ...state,
-        isPlaying: action.isPlaying
+        isPlaying: action.isPlaying,
       };
     case actionTypes.SET_BACKGROUND_IMAGE:
       return {
         ...state,
-        backgroundImage: action.backgroundImage
+        backgroundImage: action.backgroundImage,
       };
     case actionTypes.PLAY_SONG_START:
       return {
         ...state,
-        play_now: null
+        play_now: null,
       };
     case actionTypes.NOW_POSITION_STAMP:
       return {
         ...state,
-        position_stamp: action.position_stamp
+        position_stamp: action.position_stamp,
       };
     case actionTypes.DURATION_STAMP:
       return {
         ...state,
-        durationStamps: action.durationStamps
+        durationStamps: action.durationStamps,
       };
     case actionTypes.CSV_DATA:
       return {
         ...state,
-        csvData: action.csvData
+        csvData: action.csvData,
       };
     case actionTypes.COR_DATA:
       return {
         ...state,
-        corData: action.corData
+        corData: action.corData,
       };
     case actionTypes.SOCKET:
       return {
         ...state,
-        socket: action.socket
+        socket: action.socket,
       };
     case actionTypes.ON_CLOSE_CSV_DATA:
       return {
         ...state,
-        csvData: action.onCloseCsvData
+        csvData: action.onCloseCsvData,
       };
     case actionTypes.POPUP_ALL:
       return {
         ...state,
-        popUpAll: action.popUpAll
+        popUpAll: action.popUpAll,
       };
+    case actionTypes.LEFT_HOR_VALUE:
+      return {
+        ...state,
+        leftHorValue: action.leftHorValue,
+      };
+    case actionTypes.LEFT_VER_VALUE:
+      return {
+        ...state,
+        leftVerValue: action.leftVerValue,
+      };
+    case actionTypes.RIGHT_HOR_VALUE:
+      return {
+        ...state,
+        rightHorValue: action.rightHorValue,
+      };
+    case actionTypes.RIGHT_VER_VALUE:
+      return {
+        ...state,
+        rightVerValue: action.rightVerValue,
+      };
+
     default:
       return state;
   }

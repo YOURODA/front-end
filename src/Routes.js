@@ -40,7 +40,7 @@ const Routes = () => {
                 path="/play-coreography"
             />
             <RouteWithLayout
-                component={Editor}
+                // component={Editor}
                 exact
                 layout={Editor}
                 path="/make-coreography"
