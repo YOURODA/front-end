@@ -22,6 +22,11 @@ export const ON_CLOSE_CSV_DATA = 'ON_CLOSE_CSV_DATA';
 export const SOCKET = 'SOCKET';
 export const POPUP_ALL = 'POPUP_ALL';
 export const MODAL_DATA = 'MODAL_DATA';
+export const LEFT_HOR_VALUE = "LEFT_HOR_VALUE"
+export const LEFT_VER_VALUE = "LEFT_VER_VALUE"
+export const RIGHT_HOR_VALUE = "RIGHT_HOR_VALUE"
+export const RIGHT_VER_VALUE = "RIGHT_VER_VALUE"
+
 
 export const playSong = (uris, deviceId) => {
   return (dispatch, getState) => {

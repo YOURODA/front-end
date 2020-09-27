@@ -18,6 +18,10 @@ const initialState = {
   backgroundImage: 'linear-gradient(rgb(58, 91, 95), rgb(6, 9, 10) 85%)',
   popUpAll: '',
   modalData: {},
+  leftHorValue: null,
+  leftVerValue: null,
+  rightHorValue: null,
+  rightVerValue: null
 };
 
 const reducer = (state = initialState, action) => {
@@ -104,11 +108,27 @@ const reducer = (state = initialState, action) => {
         ...state,
         popUpAll: action.popUpAll,
       };
-    case actionTypes.MODAL_DATA:
+    case actionTypes.LEFT_HOR_VALUE:
       return {
         ...state,
-        modalData: action.modalData,
+        leftHorValue: action.leftHorValue,
       };
+    case actionTypes.LEFT_VER_VALUE:
+      return {
+        ...state,
+        leftVerValue: action.leftVerValue,
+      };
+    case actionTypes.RIGHT_HOR_VALUE:
+      return {
+        ...state,
+        rightHorValue: action.rightHorValue,
+      };
+    case actionTypes.RIGHT_VER_VALUE:
+      return {
+        ...state,
+        rightVerValue: action.rightVerValue,
+      };
+
     default:
       return state;
   }
