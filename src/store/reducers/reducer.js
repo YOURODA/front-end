@@ -21,7 +21,9 @@ const initialState = {
   leftHorValue: null,
   leftVerValue: null,
   rightHorValue: null,
-  rightVerValue: null
+  rightVerValue: null,
+  brightnessValue: null,
+  blinkerValue: null
 };
 
 const reducer = (state = initialState, action) => {
@@ -127,6 +129,16 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         rightVerValue: action.rightVerValue,
+      };
+    case actionTypes.BRIGHTNESS_VALUE:
+      return {
+        ...state,
+        brightnessValue: action.brightnessValue,
+      };
+    case actionTypes.BLINKER_VALUE:
+      return {
+        ...state,
+        blinkerValue: action.blinkerValue,
       };
 
     default:

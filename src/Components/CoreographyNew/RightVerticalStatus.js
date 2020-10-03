@@ -13,20 +13,20 @@ const useStyles = makeStyles({
     },
 });
 
-function RightVerticalStatus() {
+function RightVerticalStatus(props) {
     const classes = useStyles();
     const [value, setValue] = React.useState(30);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
-        this.props.setRightVerValue(newValue)
+        props.setRightVerValue(newValue)
     };
 
     return (
         <div className={classes.root}>
             <Typography id="continuous-slider" gutterBottom>
                 RiLiRo Vertical
-      </Typography>
+            </Typography>
             <Grid container spacing={2}>
                 <Grid item>
                     <SwapVertRounded />

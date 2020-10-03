@@ -26,6 +26,8 @@ export const LEFT_HOR_VALUE = "LEFT_HOR_VALUE"
 export const LEFT_VER_VALUE = "LEFT_VER_VALUE"
 export const RIGHT_HOR_VALUE = "RIGHT_HOR_VALUE"
 export const RIGHT_VER_VALUE = "RIGHT_VER_VALUE"
+export const BRIGHTNESS_VALUE = "BRIGHTNESS_VALUE"
+export const BLINKER_VALUE = "BLINKER_VALUE"
 
 
 export const playSong = (uris, deviceId) => {

@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Slider from '@material-ui/core/Slider';
-import SwapHorizRounded from '@material-ui/icons/SwapHorizRounded';
+import Flare from '@material-ui/icons/Flare';
 
 const useStyles = makeStyles({
     root: {
@@ -13,23 +13,24 @@ const useStyles = makeStyles({
     },
 });
 
-function RightHorizontalStatus(props) {
+function Brightness(props) {
     const classes = useStyles();
     const [value, setValue] = React.useState(30);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
-        props.setRightHorValue(newValue)
+        // console.log("setBrightnessValue,"+"150",newValue)
+        props.setBrightnessValue(newValue)
     };
 
     return (
         <div className={classes.root}>
             <Typography id="continuous-slider" gutterBottom>
-                RiLiRo Horizontal
-      </Typography>
+                Brightness
+            </Typography>
             <Grid container spacing={2}>
                 <Grid item>
-                    <SwapHorizRounded />
+                    <Flare />
                 </Grid>
                 <Grid item xs>
                     <Slider
@@ -43,7 +44,7 @@ function RightHorizontalStatus(props) {
 }
 const mapDispatchToProps = dispatch => {
     return {
-        setRightHorValue: rightHorValue => dispatch({ type: actionTypes.RIGHT_HOR_VALUE, rightHorValue })
+        setBrightnessValue: brightnessValue => dispatch({ type: actionTypes.BRIGHTNESS_VALUE, brightnessValue })
     };
 };
-export default connect(null, mapDispatchToProps)(RightHorizontalStatus);
+export default connect(null, mapDispatchToProps)(Brightness);

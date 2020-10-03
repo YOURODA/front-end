@@ -11,21 +11,18 @@ import {
   FormControl,
   CardActions
 } from '@material-ui/core';
-import CssBaseline from "@material-ui/core/CssBaseline/CssBaseline";
-import socketIo from "socket.io-client";
 import Cloud from '@material-ui/icons/Cloud';
 import CloudQueue from '@material-ui/icons/CloudQueue';
 import Highlight from '@material-ui/icons/Highlight';
 import HighlightOutlined from '@material-ui/icons/HighlightOutlined';
 import SaveIcon from '@material-ui/icons/Save';
-import CommentIcon from '@material-ui/icons/Comment';
 import SmokeStatus from "./SmokeStatus";
 import LeftHorizontalStatus from "./LeftHorizontalStatus"
 import LeftVerticalStatus from "./LeftVerticalStatus"
 import RightHorizontalStatus from "./RightHorizontalStatus"
 import RightVerticalStatus from "./RightVerticalStatus"
-import SpotifyFooter from "../../Containers/SpotifyFooter/SpotifyFooter";
-
+import Brightness from "./Brightness"
+import Blinker from "./Blinker"
 const colorPWM = 65534 / 256;
 class CreateCor extends Component {
   constructor(props) {
@@ -36,21 +33,21 @@ class CreateCor extends Component {
       checked: [1],
       checkedMultiple: [],
       corData: [
-        {
-          startDate: '',
-          lRobotsSpeed1: 200,
-          lRobotsSpeed2: 200,
-          rRobotsSpeed1: 200,
-          rRobotsSpeed2: 200,
-          rColor1: "65534",
-          rColor2: "0",
-          rColor3: "0",
-          lColor1: "0",
-          lColor2: "0",
-          lColor3: "0",
-          smoke: 1,
-          // blinker: 5
-        },
+        // {
+        //   startDate: '',
+        //   lRobotsSpeed1: 200,
+        //   lRobotsSpeed2: 200,
+        //   rRobotsSpeed1: 200,
+        //   rRobotsSpeed2: 200,
+        //   rColor1: "65534",
+        //   rColor2: "0",
+        //   rColor3: "0",
+        //   lColor1: "0",
+        //   lColor2: "0",
+        //   lColor3: "0",
+        //   smoke: 1,
+        //   // blinker: 5
+        // },
       ],
       tryCorData: [
         {
@@ -93,10 +90,10 @@ class CreateCor extends Component {
     this.state.checkedMultiple.forEach(second => {
       tryDataForCor.push({
         "startDate": second,
-        "lRobotsSpeed1": this.state.velocityLeft ? this.state.velocityLeft : "0",
-        "lRobotsSpeed2": this.state.locationLeft ? this.state.locationLeft : "0",
-        "rRobotsSpeed1": this.state.velocityRight ? this.state.velocityRight : "0",
-        "rRobotsSpeed2": this.state.locationRight ? this.state.locationRight : "0",
+        "leftHorValue": this.props.leftHorValue ? this.props.leftHorValue : "0",
+        "leftVerValue": this.props.leftVerValue ? this.props.leftVerValue : "0",
+        "rightHorValue": this.props.rightHorValue ? this.props.rightHorValue : "0",
+        "rightVerValue": this.props.rightVerValue ? this.props.rightVerValue : "0",
         "rColor1": this.rColor1 ? this.rColor1 : "0",
         "rColor2": this.rColor2 ? this.rColor2 : "0",
         "rColor3": this.rColor3 ? this.rColor3 : "0",
@@ -110,6 +107,7 @@ class CreateCor extends Component {
     this.setState({
       tryCorData: tryDataForCor
     })
+    // console.log(tryDataForCor)
     let stringCSV = JSON.stringify(this.state.tryCorData);
     const encodedString = { "base": new Buffer(stringCSV).toString('base64'), "time": this.milisToMinutesAndSeconds(this.props.durationStamps) }
     this.props.socket.emit(
@@ -128,33 +126,23 @@ class CreateCor extends Component {
     // if(corData.length !== second){
     //   newcor = Array.from(Array(3), () => 0)
     // }
+    //hor,0,ver,0,0,bright,red,green,blue,white,blinker,randomLight,background
     checkedMultiple.map(seconds => {
       newcor[seconds] = {
-        "startDate": seconds,
-        "lRobotsSpeed1": this.state.velocityLeft ? this.state.velocityLeft : "0",
-        "lRobotsSpeed2": this.state.locationLeft ? this.state.locationLeft : "0",
-        "rRobotsSpeed1": this.state.velocityRight ? this.state.velocityRight : "0",
-        "rRobotsSpeed2": this.state.locationRight ? this.state.locationRight : "0",
-        "rColor1": this.rColor1 ? this.rColor1 : "0",
-        "rColor2": this.rColor2 ? this.rColor2 : "0",
-        "rColor3": this.rColor3 ? this.rColor3 : "0",
-        "lColor1": this.lColor1 ? this.lColor1 : "0",
-        "lColor2": this.lColor2 ? this.lColor2 : "0",
-        "lColor3": this.lColor3 ? this.lColor3 : "0",
-        "smoke": this.state.checkSmoke === true ? "1" : "0",
-        "blinker": this.state.checkBlind === true ? "1" : "0"
+        startDate: seconds,
+        A: `${this.props.leftHorValue ? this.props.leftHorValue : "0"},0,${this.props.leftVerValue ? this.props.leftVerValue : "0"},0,0,${this.props.brightnessValue ? this.props.brightnessValue : "0"},${this.lColor1 ? this.lColor1 : "0"},${this.lColor2 ? this.lColor2 : "0"},${this.lColor3 ? this.lColor3 : "0"},0,${this.props.blinkerValue ? this.props.blinkerValue : "0"},0,0,${this.props.rightHorValue ? this.props.rightHorValue : "0"},0,${this.props.rightVerValue ? this.props.rightVerValue : "0"},0,0,${this.props.brightnessValue ? this.props.brightnessValue : "0"},${this.rColor1 ? this.rColor1 : "0"},${this.rColor2 ? this.rColor2 : "0"},${this.rColor3 ? this.rColor3 : "0"},0,${this.props.blinkerValue ? this.props.blinkerValue : "0"},0,0`, smoke: this.state.checkSmoke === true ? "1" : "0",//L
       }
     })
     this.setState({ corData: newcor })
-
-    // console.log(this.state.corData)
-    // let stringCSV = JSON.stringify({corData});
-    // const encodedString = { "base": new Buffer(stringCSV).toString('base64'), "time": this.milisToMinutesAndSeconds(this.props.durationStamps) }
-    // this.props.socket.emit(
-    //   "corData",
-    //   encodedString
-    // );
-    // console.log(encodedString)
+    console.log("saveData", newcor)
+    console.log(this.state.corData)
+    let stringCSV = JSON.stringify({ corData });
+    const encodedString = { "base": new Buffer(stringCSV).toString('base64'), "time": this.milisToMinutesAndSeconds(this.props.durationStamps) }
+    this.props.socket.emit(
+      "corData",
+      encodedString
+    );
+    console.log(encodedString)
     // this.props.setCorData(this.state.corData)
     //TO-DO odaya katıldıysa backend den bağlandı mesajı kontrolü
     // console.log(this.props.socket)
@@ -171,14 +159,14 @@ class CreateCor extends Component {
     this.setState({ openVelocity: true })
   };
   handleRightColorPWMValues = (event) => {
-    this.rColor1 = (Math.ceil(colorPWM * (event.rgb.r)).toString())
-    this.rColor2 = (Math.ceil(colorPWM * (event.rgb.g)).toString())
-    this.rColor3 = (Math.ceil(colorPWM * (event.rgb.b)).toString())
+    this.rColor1 = (Math.ceil((event.rgb.r)).toString())
+    this.rColor2 = (Math.ceil((event.rgb.g)).toString())
+    this.rColor3 = (Math.ceil((event.rgb.b)).toString())
   };
   handleLeftColorPWMValues = (event) => {
-    this.lColor1 = (Math.ceil(colorPWM * (event.rgb.r)).toString())
-    this.lColor2 = (Math.ceil(colorPWM * (event.rgb.g)).toString())
-    this.lColor3 = (Math.ceil(colorPWM * (event.rgb.b)).toString())
+    this.lColor1 = (Math.ceil((event.rgb.r)).toString())
+    this.lColor2 = (Math.ceil((event.rgb.g)).toString())
+    this.lColor3 = (Math.ceil((event.rgb.b)).toString())
   };
   handleChangeSmoke = (event) => {
     this.setState({ checkSmoke: event.target.checked })
@@ -238,11 +226,13 @@ class CreateCor extends Component {
 
 
   render() {
-    const { selectedSecond, velocityRight, locationRight, velocityLeft, locationLeft, openVelocity, selectedColor, checkBlind, checkSmoke, openSelectSeconds, checkedMultiple, takenSecondList } = this.state
-    // if (selectedColor !== null) {
-    //   console.log(selectedColor)
-    // }
-    console.log(this.state.corData)
+    const { checkBlind, checkSmoke, checkedMultiple, takenSecondList } = this.state
+    console.log("this.props.leftHorValue", this.props.leftHorValue)
+    console.log("this.props.leftVerValue", this.props.leftVerValue)
+    console.log("this.props.rightHorValue", this.props.rightHorValue)
+    console.log("this.props.rightVerValue", this.props.rightVerValue)
+    console.log("this.props.brightnessValue", this.props.brightnessValue)
+    console.log("this.props.blinkerValue", this.props.blinkerValue)
     return (
       <div>
         <Grid container spacing={3}>
@@ -311,17 +301,9 @@ class CreateCor extends Component {
                           color={this.state.selectedColor}
                           onChangeComplete={this.handleRightColorPWMValues}
                         />
-                        <FormControlLabel
-                          control={
-                            <Checkbox
-                              checked={checkBlind}
-                              onChange={this.handleChangeBlind}
-                              name="checkBlind"
-                              color="primary"
-                            />
-                          }
-                          label="Blinker"
-                        /> {checkBlind === 0 &&
+                        <Brightness />
+                        <Blinker />
+                        {checkBlind === 0 &&
                           <HighlightOutlined />}
                         {checkBlind === 1 &&
                           <Highlight />}
@@ -362,6 +344,13 @@ const mapStateToProps = state => {
   return {
     durationStamps: state.durationStamps,
     socket: state.socket,
+    leftHorValue: state.leftHorValue,
+    leftVerValue: state.leftVerValue,
+    rightHorValue: state.rightHorValue,
+    rightVerValue: state.rightVerValue,
+    brightnessValue: state.brightnessValue,
+    blinkerValue: state.blinkerValue
+
   };
 };
 const mapDispatchToProps = dispatch => {

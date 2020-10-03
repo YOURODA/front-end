@@ -13,14 +13,14 @@ const useStyles = makeStyles({
     },
 });
 
-function LeftHorizontalStatus() {
+function LeftHorizontalStatus(props) {
     const classes = useStyles();
     const [value, setValue] = React.useState(30);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
         console.log(newValue)
-        this.props.setLeftHorValue(newValue)
+        props.setLeftHorValue(newValue)
     };
 
     return (
