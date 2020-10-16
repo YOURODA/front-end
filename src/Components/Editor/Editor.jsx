@@ -17,6 +17,7 @@ import { Typography, CardHeader, Card, CardContent, CardActions } from "@materia
 import SmokeStatus from "../CoreographyNew/SmokeStatus";
 import CssBaseline from "@material-ui/core/CssBaseline/CssBaseline";
 import SpotifyFooterMakeCor from "../../Containers/SpotifyFooter/SpotifyFooterMakeCor";
+import SecondList from "../CoreographyNew/SecondList";
 const useStyles = makeStyles(theme => ({
   button: {
     margin: theme.spacing(1)
@@ -84,6 +85,8 @@ class Editor extends Component {
     });
   }
   componentDidMount() {
+    this.timeOfSum = this.milisToMinutesAndSeconds(this.props.durationStamps);
+    console.log("time of sum:", this.timeOfSum)
     var connectionStrings = {
       "force new connection": true,
       "reconnectionAttempts": "Infiniy",
@@ -174,22 +177,11 @@ class Editor extends Component {
     return secondsOfSum;
   };
 
-  secondsTable = () => {
-    let timeOfSum = this.milisToMinutesAndSeconds(this.props.durationStamps);
-    let tableSec = [];
-    for (let i = 0; i <= timeOfSum; i++) {
-      tableSec.push(i);
-    }
-    this.setState({ seconds: tableSec });
-  };
-
   render() {
     const { seconds } = this.state
-    let timeOfSum = this.milisToMinutesAndSeconds(this.props.durationStamps);
-
     return (
       <Grid container>
-        {!timeOfSum &&
+        {/* {!this.timeOfSum &&
           <Box
             display="flex"
             justifyContent="center"
@@ -213,20 +205,23 @@ class Editor extends Component {
               </CardActions>
             </Card>
           </Box>
-        }
-        {timeOfSum &&
-          <div>
+        } */}
+        <div>
+          <Grid container spacing={3}>
             <Grid item lg={3} md={12} xl={9} xs={12}>
               <Card style={{ textAlign: "center" }}>
                 <Typography center variant="h5">
-                  Şarkı süresi {timeOfSum} saniye
+                  Şarkı süresi {this.timeOfSum} saniye
                   </Typography>
               </Card>
-            </Grid>
-            <Grid item lg={3} md={12} xl={9} xs={12}>
-              <CreateCor seconds={this.milisToMinutesAndSeconds(this.props.durationStamps)} />
-            </Grid>
-            {/* <Button
+              {this.props.durationStamps > 0 &&
+                <div>
+                  <CreateCor />
+                </div>
+              }
+            </Grid >
+          </Grid>
+          {/* <Button
               className={useStyles.button}
               variant="contained"
               color="primary"
@@ -255,8 +250,8 @@ class Editor extends Component {
                 />
               </Button>
             </div> */}
-          </div>
-        }
+        </div>
+
         <CssBaseline >
           <SpotifyFooterMakeCor
             style={{
