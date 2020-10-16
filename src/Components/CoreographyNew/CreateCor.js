@@ -3,12 +3,9 @@ import * as actionTypes from "../../store/actions/actionTypes";
 import { connect } from "react-redux";
 import { CirclePicker } from 'react-color';
 import {
-  FormControlLabel, Card, CardHeader, Typography, CardContent,
-  NativeSelect, List, ListItem, ListItemText, ListItemIcon, IconButton,
-  ListItemSecondaryAction, Checkbox, Button,
-  Divider, Grid, Select, Dialog, DialogActions, DialogContent, DialogTitle, DialogContentText,
-  InputLabel, MenuItem, TextField,
-  FormControl,
+  FormControlLabel, Card, Typography, CardContent,
+  List, ListItem, ListItemText, ListItemIcon, Checkbox, Button,
+  Divider, Grid,
   CardActions
 } from '@material-ui/core';
 import Cloud from '@material-ui/icons/Cloud';
@@ -32,40 +29,8 @@ class CreateCor extends Component {
       takenSecondList: null,
       checked: [1],
       checkedMultiple: [],
-      corData: [
-        // {
-        //   startDate: '',
-        //   lRobotsSpeed1: 200,
-        //   lRobotsSpeed2: 200,
-        //   rRobotsSpeed1: 200,
-        //   rRobotsSpeed2: 200,
-        //   rColor1: "65534",
-        //   rColor2: "0",
-        //   rColor3: "0",
-        //   lColor1: "0",
-        //   lColor2: "0",
-        //   lColor3: "0",
-        //   smoke: 1,
-        //   // blinker: 5
-        // },
-      ],
-      tryCorData: [
-        {
-          startDate: '',
-          lRobotsSpeed1: 200,
-          lRobotsSpeed2: 200,
-          rRobotsSpeed1: 200,
-          rRobotsSpeed2: 200,
-          rColor1: "65534",
-          rColor2: "0",
-          rColor3: "0",
-          lColor1: "0",
-          lColor2: "0",
-          lColor3: "0",
-          smoke: 1,
-          // blinker: 5
-        },
-      ],
+      corData: [],
+      tryCorData: [],
       secondList: [],
       selectedSecond: [],
       openVelocity: false,
@@ -107,7 +72,6 @@ class CreateCor extends Component {
     this.setState({
       tryCorData: tryDataForCor
     })
-    // console.log(tryDataForCor)
     let stringCSV = JSON.stringify(this.state.tryCorData);
     const encodedString = { "base": new Buffer(stringCSV).toString('base64'), "time": this.milisToMinutesAndSeconds(this.props.durationStamps) }
     this.props.socket.emit(
@@ -123,19 +87,16 @@ class CreateCor extends Component {
     const { checkedMultiple, corData } = this.state
     const second = this.milisToMinutesAndSeconds(durationStamps)
     let newcor = corData
-    // if(corData.length !== second){
-    //   newcor = Array.from(Array(3), () => 0)
-    // }
     //hor,0,ver,0,0,bright,red,green,blue,white,blinker,randomLight,background
     checkedMultiple.map(seconds => {
       newcor[seconds] = {
-        startDate: seconds,
-        A: `${this.props.leftHorValue ? this.props.leftHorValue : "0"},0,${this.props.leftVerValue ? this.props.leftVerValue : "0"},0,0,${this.props.brightnessValue ? this.props.brightnessValue : "0"},${this.lColor1 ? this.lColor1 : "0"},${this.lColor2 ? this.lColor2 : "0"},${this.lColor3 ? this.lColor3 : "0"},0,${this.props.blinkerValue ? this.props.blinkerValue : "0"},0,0,${this.props.rightHorValue ? this.props.rightHorValue : "0"},0,${this.props.rightVerValue ? this.props.rightVerValue : "0"},0,0,${this.props.brightnessValue ? this.props.brightnessValue : "0"},${this.rColor1 ? this.rColor1 : "0"},${this.rColor2 ? this.rColor2 : "0"},${this.rColor3 ? this.rColor3 : "0"},0,${this.props.blinkerValue ? this.props.blinkerValue : "0"},0,0`, smoke: this.state.checkSmoke === true ? "1" : "0",//L
+        "startDate": seconds,
+        "robot": `${this.props.leftHorValue ? this.props.leftHorValue : "0"},0,${this.props.leftVerValue ? this.props.leftVerValue : "0"},0,0,${this.props.brightnessValue ? this.props.brightnessValue : "0"},${this.lColor1 ? this.lColor1 : "0"},${this.lColor2 ? this.lColor2 : "0"},${this.lColor3 ? this.lColor3 : "0"},"59",${this.props.blinkerValue ? this.props.blinkerValue : "0"},0,0,${this.props.rightHorValue ? this.props.rightHorValue : "0"},0,${this.props.rightVerValue ? this.props.rightVerValue : "0"},0,0,${this.props.brightnessValue ? this.props.brightnessValue : "0"},${this.rColor1 ? this.rColor1 : "0"},${this.rColor2 ? this.rColor2 : "0"},${this.rColor3 ? this.rColor3 : "0"},0,${this.props.blinkerValue ? this.props.blinkerValue : "0"},0,0`, smoke: this.state.checkSmoke === true ? "1" : "0",//L
+        "smoke": this.state.checkSmoke === true ? "1" : "0",//L
+
       }
     })
     this.setState({ corData: newcor })
-    console.log("saveData", newcor)
-    console.log(this.state.corData)
     let stringCSV = JSON.stringify({ corData });
     const encodedString = { "base": new Buffer(stringCSV).toString('base64'), "time": this.milisToMinutesAndSeconds(this.props.durationStamps) }
     this.props.socket.emit(
@@ -181,65 +142,42 @@ class CreateCor extends Component {
     return secondsOfSum;
   };
 
-  setList = () => {
-    const { seconds } = this.props
-    let getSeconds = new Array(seconds).join('0').split('').map(parseFloat)
-    const takenSecondList = getSeconds.map((index, value) => value)
-    this.setState({ takenSecondList })
-  }
-  componentDidMount() {
-    this.setList()
-    // const askTemperature = ''
-    // try {
-    //   setInterval(() => {
-    //     this.props.socket.emit("askTemperature", askTemperature);
-    //   }, 3000);
-    // } catch (e) {
-    //   console.log(e);
-    // }
-    // this.props.socket.emit("askTemperature", askTemperature =>
-    //   console.log(askTemperature)
-    // );
-    // this.props.socket.on("temperature", askTemperature =>
-    //   console.log(askTemperature)
-    // );
-  }
-  componentWillMount() {
-    // this.props.socket.off('temperature')
-  }
-
+  // setList = () => {
+  //   let clearSeconds = this.milisToMinutesAndSeconds(this.props.durationStamps)
+  //   let getSeconds = new Array(clearSeconds).join('0').split('').map(parseFloat)
+  //   this.clearSecondList = getSeconds.map((index, value) => value)
+  //   console.log("clearSecondList", this.clearSecondList)
+  // }
+  // componentDidMount() {
+  //   this.setList()
+  // }
   handleToggle = (value) => {
     this.setState({ selectedSecond: value })
   };
   handleToggleMultiple = (value) => {
     const currentIndex = this.state.checkedMultiple.indexOf(value);
     const newChecked = [...this.state.checkedMultiple];
-    console.log('new', newChecked)
     if (currentIndex === -1) {
       newChecked.push(value);
     } else {
       newChecked.splice(currentIndex, 1);
     }
     this.setState({ checkedMultiple: newChecked });
-    // console.log(this.state.checkedMultiple)
   };
 
 
   render() {
-    const { checkBlind, checkSmoke, checkedMultiple, takenSecondList } = this.state
-    console.log("this.props.leftHorValue", this.props.leftHorValue)
-    console.log("this.props.leftVerValue", this.props.leftVerValue)
-    console.log("this.props.rightHorValue", this.props.rightHorValue)
-    console.log("this.props.rightVerValue", this.props.rightVerValue)
-    console.log("this.props.brightnessValue", this.props.brightnessValue)
-    console.log("this.props.blinkerValue", this.props.blinkerValue)
+    const { checkBlind, checkSmoke, checkedMultiple } = this.state
+    let clearSeconds = this.milisToMinutesAndSeconds(this.props.durationStamps)
+    let getSeconds = new Array(clearSeconds).join('0').split('').map(parseFloat)
+    this.clearSecondList = getSeconds.map((index, value) => value)
     return (
       <div>
         <Grid container spacing={3}>
           <Grid item xs={4}>
-            {takenSecondList &&
+            {this.clearSecondList &&
               <List>
-                {takenSecondList.map((value) => {
+                {this.clearSecondList.map((value) => {
                   const labelId = `checkbox-list-label-${value}`;
                   return (
                     <React.Fragment>
