@@ -48,7 +48,7 @@ class CreateCor extends Component {
         saveCorData[seconds] = {
           "startDate": seconds,
           "robot": `${this.props.leftHorValue ? this.props.leftHorValue : "0"},0,${this.props.leftVerValue ? this.props.leftVerValue : "0"},0,0,${this.props.brightnessValue ? this.props.brightnessValue : "0"},${this.lColor1 ? this.lColor1 : "0"},${this.lColor2 ? this.lColor2 : "0"},${this.lColor3 ? this.lColor3 : "0"},"59",${this.props.blinkerValue ? this.props.blinkerValue : "0"},0,0,${this.props.rightHorValue ? this.props.rightHorValue : "0"},0,${this.props.rightVerValue ? this.props.rightVerValue : "0"},0,0,${this.props.brightnessValue ? this.props.brightnessValue : "0"},${this.rColor1 ? this.rColor1 : "0"},${this.rColor2 ? this.rColor2 : "0"},${this.rColor3 ? this.rColor3 : "0"},0,${this.props.blinkerValue ? this.props.blinkerValue : "0"},0,0`, smoke: this.state.checkSmoke === true ? "1" : "0",//L
-          "smoke": this.state.checkSmoke === true ? "1" : "0",//L
+          "smoke": this.state.checkSmoke ,//L
         }
       }
       if (saveCorData[seconds] && saveCorData[seconds].startDate !== seconds) {
@@ -101,7 +101,12 @@ class CreateCor extends Component {
     this.lColor3 = (Math.ceil((event.rgb.b)).toString())
   };
   handleChangeSmoke = (event) => {
-    this.setState({ checkSmoke: event.target.checked })
+    if(event.target.checked){
+      this.setState({ checkSmoke: 1 })
+    }
+    else{
+      this.setState({ checkSmoke: 0 })
+    }
   }
   milisToMinutesAndSeconds = mil => {
     let minutes = Math.floor(mil / 60000);

@@ -1,4 +1,6 @@
 import React from 'react';
+import { connect } from "react-redux";
+import * as actionTypes from "../../store/actions/actionTypes";
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import LinearProgress from '@material-ui/core/LinearProgress';
@@ -34,22 +36,18 @@ const useStyles = makeStyles({
     },
 });
 
-export default function SmokeStatus() {
+function SmokeStatus(props) {
     const classes = useStyles();
-    const [progress, setProgress] = React.useState(10);
-
-    React.useEffect(() => {
-        const timer = setInterval(() => {
-            setProgress((prevProgress) => (prevProgress >= 100 ? 10 : prevProgress + 10));
-        }, 800);
-        return () => {
-            clearInterval(timer);
-        };
-    }, []);
-
     return (
         <div className={classes.root}>
-            <LinearProgressWithLabel value={progress} />
+            <LinearProgressWithLabel value={props.smokeTemperature/3} />
         </div>
     );
 }
+const mapStateToProps = state => {
+    return {
+        smokeTemperature: state.smokeTemperature
+    };
+};
+export default connect(mapStateToProps, null)(SmokeStatus);
+

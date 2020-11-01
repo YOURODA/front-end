@@ -33,6 +33,7 @@ class Editor extends Component {
       goCoreography: false,
       finishTime: null,
       seconds: [],
+      smokeTemperature: null,
       socket: null,
       data: [],
       onCloseEveryThing: [
@@ -85,6 +86,7 @@ class Editor extends Component {
     });
   }
   componentDidMount() {
+    this.interval = setInterval(() => this.askTemperature(), 10000);
     this.timeOfSum = this.milisToMinutesAndSeconds(this.props.durationStamps);
     console.log("time of sum:", this.timeOfSum)
     var connectionStrings = {
@@ -98,6 +100,9 @@ class Editor extends Component {
     this.state.socket = socketIo.connect(socketio_url, connectionStrings);
     this.state.socket.emit("Odaya Katil", this.odaName);
     this.props.setScoketIO(this.state.socket);
+  }
+  componentWillUnmount() {
+    clearInterval(this.interval);
   }
 
   getData = result => {
@@ -176,6 +181,19 @@ class Editor extends Component {
     let secondsOfSum = Math.floor(Number(minutes) * 60 + Number(seconds));
     return secondsOfSum;
   };
+  askTemperature = () => {
+    console.log("59")
+    this.props.socket.emit(
+      "askTemperature",
+      this.temperatureToCelsius
+    );
+    this.props.socket.on(
+      "temperature", data => {
+        console.log(data.temperatureToCelsius)
+        this.props.setSmokeTemperature(data.temperatureToCelsius)
+      });
+    console.log(this.state.smokeTemperature)
+  }
 
   render() {
     const { seconds } = this.state
@@ -183,7 +201,7 @@ class Editor extends Component {
       <Grid container>
         {/* {!this.timeOfSum &&
           <Box
-            display="flex"
+            display="flex" 
             justifyContent="center"
             alignItems="center"
             minHeight="100vh"
@@ -285,6 +303,8 @@ const mapDispatchToProps = dispatch => {
       dispatch({ type: actionTypes.SOCKET, socket }),
     setOnCloseCsvData: onCloseCsvData =>
       dispatch({ type: actionTypes.ON_CLOSE_CSV_DATA, onCloseCsvData }),
+    setSmokeTemperature: smokeTemperature =>
+      dispatch({ type: actionTypes.SMOKE_TEMPERATURE, smokeTemperature }),
   };
 };
 

@@ -23,7 +23,8 @@ const initialState = {
   rightHorValue: null,
   rightVerValue: null,
   brightnessValue: null,
-  blinkerValue: null
+  blinkerValue: null,
+  smokeTemperature: null
 };
 
 const reducer = (state = initialState, action) => {
@@ -139,6 +140,11 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         blinkerValue: action.blinkerValue,
+      };
+    case actionTypes.SMOKE_TEMPERATURE:
+      return {
+        ...state,
+        smokeTemperature: action.smokeTemperature,
       };
 
     default:
