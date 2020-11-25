@@ -18,6 +18,7 @@ import SmokeStatus from "../CoreographyNew/SmokeStatus";
 import CssBaseline from "@material-ui/core/CssBaseline/CssBaseline";
 import SpotifyFooterMakeCor from "../../Containers/SpotifyFooter/SpotifyFooterMakeCor";
 import SecondList from "../CoreographyNew/SecondList";
+import APIServices from "../Services/APIServices"
 const useStyles = makeStyles(theme => ({
   button: {
     margin: theme.spacing(1)
@@ -54,22 +55,14 @@ class Editor extends Component {
         }
       ],
     };
+    this.apiService = new APIServices();
   }
   onClickAddOdaName = () => {
     let userData = {
-      email: this.props.user.email,
-      odaName: this.odaName
+      odaName: this.odaName,
+      userEmail: this.props.user.email
     };
-    axios({
-      url: "http://localhost:5000/odaIdentify",
-      method: "POST",
-      data: userData
-    }).then(response => {
-      console.log("response: ", response.data.odaName)
-      if (response.data.odaName) {
-        return (this.setState({ goCoreography: true }))
-      }
-    });
+    this.apiService.newOda(userData)
     this.setState({ goCoreography: true })
   }
   addOdaName(e) {
@@ -199,9 +192,9 @@ class Editor extends Component {
     const { seconds } = this.state
     return (
       <Grid container>
-        {/* {!this.timeOfSum &&
+        {this.state.goCoreography === false &&
           <Box
-            display="flex" 
+            display="flex"
             justifyContent="center"
             alignItems="center"
             minHeight="100vh"
@@ -223,23 +216,24 @@ class Editor extends Component {
               </CardActions>
             </Card>
           </Box>
-        } */}
-        <div>
-          <Grid container spacing={3}>
-            <Grid item lg={3} md={12} xl={9} xs={12}>
-              <Card style={{ textAlign: "center" }}>
-                <Typography center variant="h5">
-                  Şarkı süresi {this.timeOfSum} saniye
+        }
+        {this.state.goCoreography === true &&
+          <div>
+            <Grid container spacing={3}>
+              <Grid item lg={3} md={12} xl={9} xs={12}>
+                <Card style={{ textAlign: "center" }}>
+                  <Typography center variant="h5">
+                    Şarkı süresi {this.timeOfSum} saniye
                   </Typography>
-              </Card>
-              {this.props.durationStamps > 0 &&
-                <div>
-                  <CreateCor />
-                </div>
-              }
-            </Grid >
-          </Grid>
-          {/* <Button
+                </Card>
+                {this.props.durationStamps > 0 &&
+                  <div>
+                    <CreateCor />
+                  </div>
+                }
+              </Grid >
+            </Grid>
+            {/* <Button
               className={useStyles.button}
               variant="contained"
               color="primary"
@@ -268,7 +262,8 @@ class Editor extends Component {
                 />
               </Button>
             </div> */}
-        </div>
+          </div>
+        }
 
         <CssBaseline >
           <SpotifyFooterMakeCor

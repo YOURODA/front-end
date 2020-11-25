@@ -5,7 +5,7 @@ import { CirclePicker } from 'react-color';
 import {
   FormControlLabel, Card, Typography, CardContent,
   List, ListItem, ListItemText, ListItemIcon, Checkbox, Button,
-  Divider, Grid,
+  Divider, Grid, Paper,
   CardActions
 } from '@material-ui/core';
 import Cloud from '@material-ui/icons/Cloud';
@@ -20,6 +20,7 @@ import RightHorizontalStatus from "./RightHorizontalStatus"
 import RightVerticalStatus from "./RightVerticalStatus"
 import Brightness from "./Brightness"
 import Blinker from "./Blinker"
+import APIServices from '../Services/APIServices';
 import ObjectAssign from 'object-assign'
 
 class CreateCor extends Component {
@@ -34,8 +35,28 @@ class CreateCor extends Component {
       selectedSecond: [],
       selectedColor: '#fff',
       checkSmoke: 0,
-      checkBlind: 1
+      checkBlind: 1,
+      clearSecondList: [],
+      userCorData: []
     };
+    this.apiService = new APIServices();
+  }
+  componentDidMount() {
+    if (this.props.durationStamps) {
+      this.clearSeconds = Math.round(this.milisToMinutesAndSeconds(this.props.durationStamps) / 5)
+      this.getSeconds = Array.from(Array(this.clearSeconds).keys())
+      console.log("componentDidMount", this.props.durationStamps, ",", this.getSeconds)
+      this.setState({ clearSecondList: this.getSeconds })
+    }
+  }
+  componentDidUpdate(prevProps) {
+    if (this.props.durationStamps !== prevProps.durationStamps) {
+      this.clearSeconds = Math.round(this.milisToMinutesAndSeconds(this.props.durationStamps) / 5)
+      this.getSeconds = Array.from(Array(this.clearSeconds).keys())
+      console.log("componentDidUpdate", this.props.durationStamps, ",", this.getSeconds)
+      this.setState({ clearSecondList: this.getSeconds })
+
+    }
   }
   saveCoreography = (props) => {
     const { durationStamps } = this.props;
@@ -48,7 +69,7 @@ class CreateCor extends Component {
         saveCorData[seconds] = {
           "startDate": seconds,
           "robot": `${this.props.leftHorValue ? this.props.leftHorValue : "0"},0,${this.props.leftVerValue ? this.props.leftVerValue : "0"},0,0,${this.props.brightnessValue ? this.props.brightnessValue : "0"},${this.lColor1 ? this.lColor1 : "0"},${this.lColor2 ? this.lColor2 : "0"},${this.lColor3 ? this.lColor3 : "0"},"59",${this.props.blinkerValue ? this.props.blinkerValue : "0"},0,0,${this.props.rightHorValue ? this.props.rightHorValue : "0"},0,${this.props.rightVerValue ? this.props.rightVerValue : "0"},0,0,${this.props.brightnessValue ? this.props.brightnessValue : "0"},${this.rColor1 ? this.rColor1 : "0"},${this.rColor2 ? this.rColor2 : "0"},${this.rColor3 ? this.rColor3 : "0"},0,${this.props.blinkerValue ? this.props.blinkerValue : "0"},0,0`, smoke: this.state.checkSmoke === true ? "1" : "0",//L
-          "smoke": this.state.checkSmoke ,//L
+          "smoke": this.state.checkSmoke,//L
         }
       }
       if (saveCorData[seconds] && saveCorData[seconds].startDate !== seconds) {
@@ -86,6 +107,23 @@ class CreateCor extends Component {
     );
     this.props.setCorData(this.state.corData)
   }
+  saveUserCoreographyToDB = () => {
+    const { durationStamps } = this.props;
+    const { checkedMultiple, corData } = this.state;
+    let saveCorData = corData
+    //hor,0,ver,0,0,bright,red,green,blue,white,blinker,randomLight,background
+    checkedMultiple.forEach(seconds => {
+      saveCorData[seconds] = {
+        "startDate": seconds,
+        "robot": `${this.props.leftHorValue ? this.props.leftHorValue : "0"},0,${this.props.leftVerValue ? this.props.leftVerValue : "0"},0,0,${this.props.brightnessValue ? this.props.brightnessValue : "0"},${this.lColor1 ? this.lColor1 : "0"},${this.lColor2 ? this.lColor2 : "0"},${this.lColor3 ? this.lColor3 : "0"},"59",${this.props.blinkerValue ? this.props.blinkerValue : "0"},0,0,${this.props.rightHorValue ? this.props.rightHorValue : "0"},0,${this.props.rightVerValue ? this.props.rightVerValue : "0"},0,0,${this.props.brightnessValue ? this.props.brightnessValue : "0"},${this.rColor1 ? this.rColor1 : "0"},${this.rColor2 ? this.rColor2 : "0"},${this.rColor3 ? this.rColor3 : "0"},0,${this.props.blinkerValue ? this.props.blinkerValue : "0"},0,0`, smoke: this.state.checkSmoke === true ? "1" : "0",//L
+        "smoke": this.state.checkSmoke,//L
+      }
+      this.setState({ userCorData: saveCorData[seconds] })
+    })
+    this.apiService.createCoreography(this.state.userCorData)
+    this.setState({ goCoreography: true })
+  }
+
 
   handleChange = (event) => {
     this.setState({ [event.target.name]: event.target.value })
@@ -101,10 +139,10 @@ class CreateCor extends Component {
     this.lColor3 = (Math.ceil((event.rgb.b)).toString())
   };
   handleChangeSmoke = (event) => {
-    if(event.target.checked){
+    if (event.target.checked) {
       this.setState({ checkSmoke: 1 })
     }
-    else{
+    else {
       this.setState({ checkSmoke: 0 })
     }
   }
@@ -131,37 +169,37 @@ class CreateCor extends Component {
 
   render() {
     const { checkBlind, checkSmoke, checkedMultiple } = this.state
-    let clearSeconds = this.milisToMinutesAndSeconds(this.props.durationStamps)
-    let getSeconds = new Array(clearSeconds).join('0').split('').map(parseFloat)
-    this.clearSecondList = getSeconds.map((index, value) => value)
+    console.log("render", this.props.durationStamps, ",", this.getSeconds)
     return (
       <div>
         <Grid container spacing={3}>
           <Grid item xs={4}>
-            {this.clearSecondList &&
-              <List>
-                {this.clearSecondList.map((value) => {
-                  const labelId = `checkbox-list-label-${value}`;
-                  return (
-                    <React.Fragment>
-                      <ListItem key={value} role={undefined} dense button onClick={() => this.handleToggleMultiple(value)}>
-                        <ListItemIcon>
-                          <Checkbox
-                            edge="start"
-                            checked={checkedMultiple.indexOf(value) !== -1}
-                            tabIndex={-1}
-                            disableRipple
-                            inputProps={{ 'aria-labelledby': labelId }}
-                          />
-                        </ListItemIcon>
-                        <ListItemText id={labelId} primary={`${value}.second`} />
-                      </ListItem>
-                      <Divider />
-                    </React.Fragment>
-                  );
-                })}
-              </List>
-            }
+            <Paper style={{ maxHeight: 700, overflow: 'auto' }}>
+              {this.state.clearSecondList &&
+                <List>
+                  {this.state.clearSecondList.map((value) => {
+                    const labelId = `checkbox-list-label-${value}`;
+                    return (
+                      <React.Fragment>
+                        <ListItem key={value} role={undefined} dense button onClick={() => this.handleToggleMultiple(value)}>
+                          <ListItemIcon>
+                            <Checkbox
+                              edge="start"
+                              checked={checkedMultiple.indexOf(value) !== -1}
+                              tabIndex={-1}
+                              disableRipple
+                              inputProps={{ 'aria-labelledby': labelId }}
+                            />
+                          </ListItemIcon>
+                          <ListItemText id={labelId} primary={`${value}.second`} />
+                        </ListItem>
+                        <Divider />
+                      </React.Fragment>
+                    )
+                  })}
+                </List>
+              }
+            </Paper>
           </Grid>
           <Grid item xs={8}>
             {this.state.checkedMultiple &&
@@ -219,7 +257,7 @@ class CreateCor extends Component {
                       size="small"
                       startIcon={<SaveIcon />}
                       onClick={this.saveCoreography}>
-                      Save it
+                      Save For CH
                     </Button>
                     <Button
                       style={{ flex: 1 }}
@@ -229,6 +267,15 @@ class CreateCor extends Component {
                       startIcon={<SaveIcon />}
                       onClick={this.goParty}>
                       Go Party
+                    </Button>
+                    <Button
+                      style={{ flex: 1 }}
+                      variant="contained"
+                      color="primary"
+                      size="small"
+                      startIcon={<SaveIcon />}
+                      onClick={this.saveUserCoreographyToDB}>
+                      Save For MyCHR
                     </Button>
                   </CardActions>
                   <SmokeStatus />
@@ -250,7 +297,8 @@ const mapStateToProps = state => {
     rightHorValue: state.rightHorValue,
     rightVerValue: state.rightVerValue,
     brightnessValue: state.brightnessValue,
-    blinkerValue: state.blinkerValue
+    blinkerValue: state.blinkerValue,
+    user: state.current_user
 
   };
 };

@@ -45,7 +45,6 @@ class APIServices {
     };
     return await axios(serviceData);
   }
-
   async createCoreography(corData) {
     const serviceData = {
       method: 'POST',
