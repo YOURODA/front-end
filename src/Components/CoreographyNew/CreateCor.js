@@ -43,7 +43,7 @@ class CreateCor extends Component {
   }
   componentDidMount() {
     if (this.props.durationStamps) {
-      this.clearSeconds = Math.round(this.milisToMinutesAndSeconds(this.props.durationStamps) / 5)
+      this.clearSeconds = Math.round(this.milisToMinutesAndSeconds(this.props.durationStamps) / 3)
       this.getSeconds = Array.from(Array(this.clearSeconds).keys())
       console.log("componentDidMount", this.props.durationStamps, ",", this.getSeconds)
       this.setState({ clearSecondList: this.getSeconds })
@@ -51,7 +51,7 @@ class CreateCor extends Component {
   }
   componentDidUpdate(prevProps) {
     if (this.props.durationStamps !== prevProps.durationStamps) {
-      this.clearSeconds = Math.round(this.milisToMinutesAndSeconds(this.props.durationStamps) / 5)
+      this.clearSeconds = Math.round(this.milisToMinutesAndSeconds(this.props.durationStamps) / 3)
       this.getSeconds = Array.from(Array(this.clearSeconds).keys())
       console.log("componentDidUpdate", this.props.durationStamps, ",", this.getSeconds)
       this.setState({ clearSecondList: this.getSeconds })
@@ -191,7 +191,7 @@ class CreateCor extends Component {
                               inputProps={{ 'aria-labelledby': labelId }}
                             />
                           </ListItemIcon>
-                          <ListItemText id={labelId} primary={`${value}.second`} />
+                          <ListItemText id={labelId} primary={`${value*3} - ${(value*3)+3} second`} />
                         </ListItem>
                         <Divider />
                       </React.Fragment>
