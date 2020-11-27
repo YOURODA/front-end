@@ -14,10 +14,7 @@ import Highlight from '@material-ui/icons/Highlight';
 import HighlightOutlined from '@material-ui/icons/HighlightOutlined';
 import SaveIcon from '@material-ui/icons/Save';
 import SmokeStatus from "./SmokeStatus";
-import LeftHorizontalStatus from "./LeftHorizontalStatus"
-import LeftVerticalStatus from "./LeftVerticalStatus"
-import RightHorizontalStatus from "./RightHorizontalStatus"
-import RightVerticalStatus from "./RightVerticalStatus"
+import SilderInput from "./SilderInput"
 import Brightness from "./Brightness"
 import Blinker from "./Blinker"
 import APIServices from '../Services/APIServices';
@@ -37,7 +34,16 @@ class CreateCor extends Component {
       checkSmoke: 0,
       checkBlind: 1,
       clearSecondList: [],
-      userCorData: []
+      userCorData: [],
+      color:{
+        lColor1:0,
+        lColor2:0,
+        lColor3:0,
+        rColor1:0,
+        rColor2:0,
+        rColor3:0
+      }
+
     };
     this.apiService = new APIServices();
   }
@@ -45,7 +51,7 @@ class CreateCor extends Component {
     if (this.props.durationStamps) {
       this.clearSeconds = Math.round(this.milisToMinutesAndSeconds(this.props.durationStamps) / 3)
       this.getSeconds = Array.from(Array(this.clearSeconds).keys())
-      console.log("componentDidMount", this.props.durationStamps, ",", this.getSeconds)
+      // console.log("componentDidMount", this.props.durationStamps, ",", this.getSeconds)
       this.setState({ clearSecondList: this.getSeconds })
     }
   }
@@ -53,7 +59,7 @@ class CreateCor extends Component {
     if (this.props.durationStamps !== prevProps.durationStamps) {
       this.clearSeconds = Math.round(this.milisToMinutesAndSeconds(this.props.durationStamps) / 3)
       this.getSeconds = Array.from(Array(this.clearSeconds).keys())
-      console.log("componentDidUpdate", this.props.durationStamps, ",", this.getSeconds)
+      // console.log("componentDidUpdate", this.props.durationStamps, ",", this.getSeconds)
       this.setState({ clearSecondList: this.getSeconds })
 
     }
@@ -61,6 +67,7 @@ class CreateCor extends Component {
   saveCoreography = (props) => {
     const { durationStamps } = this.props;
     const { checkedMultiple, corData } = this.state;
+    const {lColor1,lColor2,lColor3,rColor1,rColor2,rColor3}= this.state.color
     const second = this.milisToMinutesAndSeconds(durationStamps)
     let saveCorData = corData
     //hor,0,ver,0,0,bright,red,green,blue,white,blinker,randomLight,background
@@ -68,15 +75,15 @@ class CreateCor extends Component {
       if (!saveCorData[seconds]) {
         saveCorData[seconds] = {
           "startDate": seconds,
-          "robot": `${this.props.leftHorValue ? this.props.leftHorValue : "0"},0,${this.props.leftVerValue ? this.props.leftVerValue : "0"},0,0,${this.props.brightnessValue ? this.props.brightnessValue : "0"},${this.lColor1 ? this.lColor1 : "0"},${this.lColor2 ? this.lColor2 : "0"},${this.lColor3 ? this.lColor3 : "0"},"59",${this.props.blinkerValue ? this.props.blinkerValue : "0"},0,0,${this.props.rightHorValue ? this.props.rightHorValue : "0"},0,${this.props.rightVerValue ? this.props.rightVerValue : "0"},0,0,${this.props.brightnessValue ? this.props.brightnessValue : "0"},${this.rColor1 ? this.rColor1 : "0"},${this.rColor2 ? this.rColor2 : "0"},${this.rColor3 ? this.rColor3 : "0"},0,${this.props.blinkerValue ? this.props.blinkerValue : "0"},0,0`, smoke: this.state.checkSmoke === true ? "1" : "0",//L
+          "robot": `${this.props.leftHorValue ? this.props.leftHorValue : "0"},0,${this.props.leftVerValue ? this.props.leftVerValue : "0"},0,0,${this.props.brightnessValue ? this.props.brightnessValue : "0"},${lColor1},${lColor2},${lColor3},"59",${this.props.blinkerValue ? this.props.blinkerValue : "0"},0,0,${this.props.rightHorValue ? this.props.rightHorValue : "0"},0,${this.props.rightVerValue ? this.props.rightVerValue : "0"},0,0,${this.props.brightnessValue ? this.props.brightnessValue : "0"},${rColor1},${rColor2},${rColor3},0,${this.props.blinkerValue ? this.props.blinkerValue : "0"},0,0`, smoke: this.state.checkSmoke === true ? "1" : "0",//L
           "smoke": this.state.checkSmoke,//L
         }
       }
       if (saveCorData[seconds] && saveCorData[seconds].startDate !== seconds) {
-        console.log(saveCorData[seconds].startDate)
+        // console.log(saveCorData[seconds].startDate)
         saveCorData[seconds] = {
           "startDate": seconds,
-          "robot": `${this.props.leftHorValue ? this.props.leftHorValue : "0"},0,${this.props.leftVerValue ? this.props.leftVerValue : "0"},0,0,${this.props.brightnessValue ? this.props.brightnessValue : "0"},${this.lColor1 ? this.lColor1 : "0"},${this.lColor2 ? this.lColor2 : "0"},${this.lColor3 ? this.lColor3 : "0"},"59",${this.props.blinkerValue ? this.props.blinkerValue : "0"},0,0,${this.props.rightHorValue ? this.props.rightHorValue : "0"},0,${this.props.rightVerValue ? this.props.rightVerValue : "0"},0,0,${this.props.brightnessValue ? this.props.brightnessValue : "0"},${this.rColor1 ? this.rColor1 : "0"},${this.rColor2 ? this.rColor2 : "0"},${this.rColor3 ? this.rColor3 : "0"},0,${this.props.blinkerValue ? this.props.blinkerValue : "0"},0,0`, smoke: this.state.checkSmoke === true ? "1" : "0",//L
+          "robot": `${this.props.leftHorValue ? this.props.leftHorValue : "0"},0,${this.props.leftVerValue ? this.props.leftVerValue : "0"},0,0,${this.props.brightnessValue ? this.props.brightnessValue : "0"},${lColor1},${lColor2},${lColor3},"59",${this.props.blinkerValue ? this.props.blinkerValue : "0"},0,0,${this.props.rightHorValue ? this.props.rightHorValue : "0"},0,${this.props.rightVerValue ? this.props.rightVerValue : "0"},0,0,${this.props.brightnessValue ? this.props.brightnessValue : "0"},${rColor1},${rColor2},${rColor3},0,${this.props.blinkerValue ? this.props.blinkerValue : "0"},0,0`, smoke: this.state.checkSmoke === true ? "1" : "0",//L
           "smoke": this.state.checkSmoke === true ? "1" : "0",//L
         }
       }
@@ -98,7 +105,7 @@ class CreateCor extends Component {
     // this.props.socket.emit('tryCor', this.state.corData);
   }
   goParty = () => {
-    const { checkedMultiple, corData } = this.state
+    const { checkedMultiple, corData,color } = this.state
     let stringCSV = JSON.stringify({ corData });
     const encodedString = { "base": new Buffer(stringCSV).toString('base64'), "time": this.milisToMinutesAndSeconds(this.props.durationStamps) }
     this.props.socket.emit(
@@ -129,14 +136,18 @@ class CreateCor extends Component {
     this.setState({ [event.target.name]: event.target.value })
   };
   handleRightColorPWMValues = (event) => {
-    this.rColor1 = (Math.ceil((event.rgb.r)).toString())
-    this.rColor2 = (Math.ceil((event.rgb.g)).toString())
-    this.rColor3 = (Math.ceil((event.rgb.b)).toString())
+    const {color}= this.state
+    color.rColor1 = (Math.ceil((event.rgb.r)).toString())
+    color.rColor2 = (Math.ceil((event.rgb.g)).toString())
+    color.rColor3 = (Math.ceil((event.rgb.b)).toString())
+    this.setState({color})
   };
   handleLeftColorPWMValues = (event) => {
-    this.lColor1 = (Math.ceil((event.rgb.r)).toString())
-    this.lColor2 = (Math.ceil((event.rgb.g)).toString())
-    this.lColor3 = (Math.ceil((event.rgb.b)).toString())
+    const {color}= this.state
+    color.lColor1 = (Math.ceil((event.rgb.r)).toString())
+    color.lColor2 = (Math.ceil((event.rgb.g)).toString())
+    color.lColor3 = (Math.ceil((event.rgb.b)).toString())
+    this.setState({color})
   };
   handleChangeSmoke = (event) => {
     if (event.target.checked) {
@@ -168,8 +179,8 @@ class CreateCor extends Component {
 
 
   render() {
-    const { checkBlind, checkSmoke, checkedMultiple } = this.state
-    console.log("render", this.props.durationStamps, ",", this.getSeconds)
+    const { checkBlind, checkSmoke, checkedMultiple ,color} = this.state
+    // console.log("render", this.props.durationStamps, ",", this.getSeconds)
     return (
       <div>
         <Grid container spacing={3}>
@@ -208,8 +219,7 @@ class CreateCor extends Component {
                   <CardContent>
                     <Grid container spacing={3}>
                       <Grid item xs={6}>
-                        <LeftHorizontalStatus />
-                        <LeftVerticalStatus />
+                        <SilderInput label={"LeLiRo Horizontal"} robot={"L"} color={ color}  />
                         <Typography variant="button">Select Color For Left Robot</Typography>
                         <div style={{ float: 'center' }}>
                           <CirclePicker
@@ -233,8 +243,7 @@ class CreateCor extends Component {
                           <Cloud />}
                       </Grid>
                       <Grid item xs={6}>
-                        <RightHorizontalStatus />
-                        <RightVerticalStatus />
+                      <SilderInput label={"RiLiRo Horizontal"} robot={"R"} color={ color}  />
                         <Typography variant="button">Select Color For Right Robot</Typography>
                         <CirclePicker
                           color={this.state.selectedColor}
