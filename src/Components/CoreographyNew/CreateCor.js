@@ -37,7 +37,8 @@ class CreateCor extends Component {
       checkSmoke: 0,
       checkBlind: 1,
       clearSecondList: [],
-      userCorData: []
+      userCorData: [],
+      openCreateUser: false
     };
     this.apiService = new APIServices();
   }
@@ -45,7 +46,6 @@ class CreateCor extends Component {
     if (this.props.durationStamps) {
       this.clearSeconds = Math.round(this.milisToMinutesAndSeconds(this.props.durationStamps) / 3)
       this.getSeconds = Array.from(Array(this.clearSeconds).keys())
-      console.log("componentDidMount", this.props.durationStamps, ",", this.getSeconds)
       this.setState({ clearSecondList: this.getSeconds })
     }
   }
@@ -53,7 +53,6 @@ class CreateCor extends Component {
     if (this.props.durationStamps !== prevProps.durationStamps) {
       this.clearSeconds = Math.round(this.milisToMinutesAndSeconds(this.props.durationStamps) / 3)
       this.getSeconds = Array.from(Array(this.clearSeconds).keys())
-      console.log("componentDidUpdate", this.props.durationStamps, ",", this.getSeconds)
       this.setState({ clearSecondList: this.getSeconds })
 
     }
@@ -61,7 +60,6 @@ class CreateCor extends Component {
   saveCoreography = (props) => {
     const { durationStamps } = this.props;
     const { checkedMultiple, corData } = this.state;
-    const second = this.milisToMinutesAndSeconds(durationStamps)
     let saveCorData = corData
     //hor,0,ver,0,0,bright,red,green,blue,white,blinker,randomLight,background
     checkedMultiple.forEach(seconds => {
@@ -73,7 +71,6 @@ class CreateCor extends Component {
         }
       }
       if (saveCorData[seconds] && saveCorData[seconds].startDate !== seconds) {
-        console.log(saveCorData[seconds].startDate)
         saveCorData[seconds] = {
           "startDate": seconds,
           "robot": `${this.props.leftHorValue ? this.props.leftHorValue : "0"},0,${this.props.leftVerValue ? this.props.leftVerValue : "0"},0,0,${this.props.brightnessValue ? this.props.brightnessValue : "0"},${this.lColor1 ? this.lColor1 : "0"},${this.lColor2 ? this.lColor2 : "0"},${this.lColor3 ? this.lColor3 : "0"},"59",${this.props.blinkerValue ? this.props.blinkerValue : "0"},0,0,${this.props.rightHorValue ? this.props.rightHorValue : "0"},0,${this.props.rightVerValue ? this.props.rightVerValue : "0"},0,0,${this.props.brightnessValue ? this.props.brightnessValue : "0"},${this.rColor1 ? this.rColor1 : "0"},${this.rColor2 ? this.rColor2 : "0"},${this.rColor3 ? this.rColor3 : "0"},0,${this.props.blinkerValue ? this.props.blinkerValue : "0"},0,0`, smoke: this.state.checkSmoke === true ? "1" : "0",//L
@@ -84,7 +81,6 @@ class CreateCor extends Component {
 
     })
     this.setState({ corData: saveCorData })
-    console.log("corData", corData)
     // console.log("corData", corData)
     // let stringCSV = JSON.stringify({ corData });
     // const encodedString = { "base": new Buffer(stringCSV).toString('base64'), "time": this.milisToMinutesAndSeconds(this.props.durationStamps) }
@@ -169,7 +165,6 @@ class CreateCor extends Component {
 
   render() {
     const { checkBlind, checkSmoke, checkedMultiple } = this.state
-    console.log("render", this.props.durationStamps, ",", this.getSeconds)
     return (
       <div>
         <Grid container spacing={3}>
@@ -191,7 +186,7 @@ class CreateCor extends Component {
                               inputProps={{ 'aria-labelledby': labelId }}
                             />
                           </ListItemIcon>
-                          <ListItemText id={labelId} primary={`${value*3} - ${(value*3)+3} second`} />
+                          <ListItemText id={labelId} primary={`${value * 3} - ${(value * 3) + 3} second`} />
                         </ListItem>
                         <Divider />
                       </React.Fragment>
@@ -299,7 +294,6 @@ const mapStateToProps = state => {
     brightnessValue: state.brightnessValue,
     blinkerValue: state.blinkerValue,
     user: state.current_user
-
   };
 };
 const mapDispatchToProps = dispatch => {

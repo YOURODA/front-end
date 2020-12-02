@@ -24,7 +24,8 @@ const initialState = {
   rightVerValue: null,
   brightnessValue: null,
   blinkerValue: null,
-  smokeTemperature: null
+  smokeTemperature: null,
+  createUserPopup: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -145,6 +146,11 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         smokeTemperature: action.smokeTemperature,
+      };
+    case actionTypes.CREATE_USER_POPUP:
+      return {
+        ...state,
+        createUserPopup: action.createUserPopup,
       };
 
     default:

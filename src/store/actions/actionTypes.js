@@ -29,6 +29,7 @@ export const RIGHT_VER_VALUE = "RIGHT_VER_VALUE"
 export const BRIGHTNESS_VALUE = "BRIGHTNESS_VALUE"
 export const BLINKER_VALUE = "BLINKER_VALUE"
 export const SMOKE_TEMPERATURE = "SMOKE_TEMPERATURE"
+export const CREATE_USER_POPUP = "CREATE_USER_POPUP"
 
 
 export const playSong = (uris, deviceId) => {
