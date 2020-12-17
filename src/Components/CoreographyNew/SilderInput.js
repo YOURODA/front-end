@@ -15,15 +15,15 @@ const useStyles = makeStyles({
 });
 
 function SilderInput(props) {
-    console.log("props",props)
-    const {rColor1,rColor2,rColor3,lColor1,lColor2,lColor3}= props.color
+    // console.log('colour',props.colourNumber)
+    const {rColor1,rColor2,rColor3,lColor1,lColor2,lColor3}= props.colour
+    // console.log('colour',props.color)
     const classes = useStyles();
     // const [value, setValue] = React.useState(30);
     const [state, setState] = useState({ x: 10, y: 10 });
     const debounceRedux = useCallback(debounce(e=>updateRedux(e), 1000), []);
     const backgroundColor = props.robot === "L"? `rgb(${lColor1}, ${lColor2}, ${lColor3})`:`rgb(${rColor1}, ${rColor2}, ${rColor3})`
-    console.log("backgroundColor",backgroundColor)
-
+    console.log('backgroundColor',backgroundColor)
     const updateRedux=(event)=>{
         const {robot} = props
         if (robot === "L"){
@@ -72,6 +72,12 @@ function SilderInput(props) {
         </div>
     );
 }
+const mapStateToProps = state => {
+    return {
+      colour: state.colour,
+    //   colourNumber:state.colourNumber
+    };
+  };
 const mapDispatchToProps = dispatch => {
     return {
         setLeftHorValue: leftHorValue => dispatch({ type: actionTypes.LEFT_HOR_VALUE, leftHorValue }),
@@ -80,4 +86,4 @@ const mapDispatchToProps = dispatch => {
         setRightVerValue: rightVerValue => dispatch({ type: actionTypes.RIGHT_VER_VALUE, rightVerValue })
     };
 };
-export default connect(null, mapDispatchToProps)(SilderInput);
+export default connect(mapStateToProps, mapDispatchToProps)(SilderInput);
