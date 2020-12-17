@@ -10,7 +10,6 @@ class APIServices {
     };
     return await axios(serviceData);
   }
-
   async newOda(odaName) {
     const serviceData = {
       method: 'POST',
@@ -19,6 +18,18 @@ class APIServices {
     };
     return await axios(serviceData);
   }
+  async isAvailableOdaNick(userData) {
+    let odaNickData = {
+      "odaNick": userData
+    }
+    const serviceData = {
+      method: 'POST',
+      url: Local_API + '/odaIdentify/isAvailableOdaNick',
+      data: odaNickData
+    };
+    return await axios(serviceData);
+  }
+
   async myOdas(email) {
     const serviceData = {
       method: 'GET',

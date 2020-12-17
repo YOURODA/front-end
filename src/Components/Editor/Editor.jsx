@@ -19,6 +19,7 @@ import CssBaseline from "@material-ui/core/CssBaseline/CssBaseline";
 import SpotifyFooterMakeCor from "../../Containers/SpotifyFooter/SpotifyFooterMakeCor";
 import SecondList from "../CoreographyNew/SecondList";
 import APIServices from "../Services/APIServices"
+import CreateUserPopUp from '../CoreographyNew/CreateUserPopUp'
 const useStyles = makeStyles(theme => ({
   button: {
     margin: theme.spacing(1)
@@ -36,7 +37,9 @@ class Editor extends Component {
       seconds: [],
       smokeTemperature: null,
       socket: null,
+      odaNick: null,
       data: [],
+      openCreateUserPopup: false,
       onCloseEveryThing: [
         {
           rRobotsSpeed1: 40,
@@ -57,16 +60,11 @@ class Editor extends Component {
     };
     this.apiService = new APIServices();
   }
-  onClickAddOdaName = () => {
-    let userData = {
-      odaName: this.odaName,
-      userEmail: this.props.user.email
-    };
-    this.apiService.newOda(userData)
-    this.setState({ goCoreography: true })
-  }
+  // onClickAddOdaName = () => {
+  //   this.newUser();
+  // }
   addOdaName(e) {
-    this.odaName = e.target.value;
+    this.setState({ odaNick: e.target.value })
   }
   changeStart(e) {
     this.setState({
@@ -77,6 +75,11 @@ class Editor extends Component {
     this.setState({
       finishTime: e.target.value
     });
+  }
+  createUser = () => {
+    // this.setState({ openCreateUserPopup: true })
+    this.props.setCreateUserPopup(true)
+
   }
   componentDidMount() {
     this.interval = setInterval(() => this.askTemperature(), 10000);
@@ -149,6 +152,15 @@ class Editor extends Component {
       encodedString
     );
   };
+  isAvailableOdaNickRes = () => {
+    // let userOdaNick = {
+    //   "odaNick": this.state.odaNick
+    // }
+    this.apiService.isAvailableOdaNick(this.state.odaNick).then(response => {
+      if (response.data.odaNick === this.state.odaNick)
+      this.setState({ goCoreography: true })
+    })
+  }
   onCloseEveryComponent = () => {
     this.props.csvData.forEach(element => {
       return element.startDate = 0,
@@ -175,7 +187,6 @@ class Editor extends Component {
     return secondsOfSum;
   };
   askTemperature = () => {
-    console.log("59")
     this.props.socket.emit(
       "askTemperature",
       this.temperatureToCelsius
@@ -200,6 +211,8 @@ class Editor extends Component {
             minHeight="100vh"
           >
             <Card>
+              {/* {this.props.createUserPopup === false &&
+                <> */}
               <CardHeader>
                 <Typography variant="h5"> Cihazınıza isim veriniz.</Typography>
               </CardHeader>
@@ -210,10 +223,18 @@ class Editor extends Component {
                   type="search" />
               </CardContent>
               <CardActions style={{ justifyContent: 'flex-end' }}>
-                <Button onClick={this.onClickAddOdaName} variant="contained" color="primary">
-                  Kaydet
+                <Button onClick={this.isAvailableOdaNickRes} variant="contained" color="primary">
+                  Go Coroegraphy
+                </Button>
+                <Button onClick={this.createUser} variant="contained" color="primary">
+                  Create User
                 </Button>
               </CardActions>
+              {/* </>
+              } */}
+              {this.props.createUserPopUp &&
+                <CreateUserPopUp />
+              }
             </Card>
           </Box>
         }
@@ -289,7 +310,8 @@ const mapStateToProps = state => {
     user: state.current_user,
     onCloseCsvData: state.onCloseCsvData,
     corData: state.corData,
-    socket: state.socket
+    socket: state.socket,
+    createUserPopUp: state.createUserPopup
   };
 };
 const mapDispatchToProps = dispatch => {
@@ -300,6 +322,7 @@ const mapDispatchToProps = dispatch => {
       dispatch({ type: actionTypes.ON_CLOSE_CSV_DATA, onCloseCsvData }),
     setSmokeTemperature: smokeTemperature =>
       dispatch({ type: actionTypes.SMOKE_TEMPERATURE, smokeTemperature }),
+    setCreateUserPopup: createUserPopup => dispatch({ type: actionTypes.CREATE_USER_POPUP, createUserPopup })
   };
 };
 
