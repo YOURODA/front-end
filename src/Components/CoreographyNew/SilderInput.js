@@ -15,7 +15,7 @@ const useStyles = makeStyles({
 });
 
 function SilderInput(props) {
-    const { rColor1, rColor2, rColor3, lColor1, lColor2, lColor3 } = props.color
+    const { rColor1, rColor2, rColor3, lColor1, lColor2, lColor3 } = props.colour
     const classes = useStyles();
     const [state, setState] = useState({ x: 10, y: 10 });
     const debounceRedux = useCallback(debounce(e => updateRedux(e), 1000), []);

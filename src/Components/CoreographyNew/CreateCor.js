@@ -72,7 +72,6 @@ class CreateCor extends Component {
     const { colour } = this.props;
     const { checkedMultiple, corData } = this.state;
     const { lColor1, lColor2, lColor3, rColor1, rColor2, rColor3 } = colour;
-    console.log("nedenObje")
     let saveCorData = corData;
     checkedMultiple.forEach((seconds) => {
       if (!saveCorData[seconds]) {
