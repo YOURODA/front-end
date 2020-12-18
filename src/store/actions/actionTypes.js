@@ -33,6 +33,8 @@ export const CREATE_USER_POPUP = "CREATE_USER_POPUP"
 export const CURRENT_TRACK_ID = "CURRENT_TRACK_ID"
 export const CREATE_COR_POPUP = "CREATE_COR_POPUP"
 export const USER_ID = "USER_ID"
+export const UPDATE_COLOUR = "UPDATE_COLOUR"
+export const UPDATE_COLOUR_NUMBER = "UPDATE_COLOUR_NUMBER"
 
 
 export const playSong = (uris, deviceId) => {

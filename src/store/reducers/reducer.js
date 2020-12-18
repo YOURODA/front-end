@@ -22,13 +22,28 @@ const initialState = {
   leftVerValue: null,
   rightHorValue: null,
   rightVerValue: null,
-  brightnessValue: null,
-  blinkerValue: null,
+  brightnessValue: {
+    L: 0,
+    R: 0
+  },
+  blinkerValue: {
+    L: 0,
+    R: 0
+  },
   smokeTemperature: null,
   createUserPopup: false,
   currentTrackId: null,
   createCorPopup: false,
-  userId: null
+  userId: null,
+  colourNumber: 0,
+  colour: {
+    lColor1: 0,
+    lColor2: 0,
+    lColor3: 0,
+    rColor1: 0,
+    rColor2: 0,
+    rColor3: 0
+  }
 };
 
 const reducer = (state = initialState, action) => {
@@ -138,22 +153,36 @@ const reducer = (state = initialState, action) => {
     case actionTypes.BRIGHTNESS_VALUE:
       return {
         ...state,
-        brightnessValue: action.brightnessValue,
+        brightnessValue: {
+          ...state.brightnessValue,
+          ...action.brightnessValue
+        },
       };
     case actionTypes.BLINKER_VALUE:
       return {
         ...state,
-        blinkerValue: action.blinkerValue,
+        blinkerValue: {
+          ...state.blinkerValue,
+          ...action.blinkerValue
+        },
       };
     case actionTypes.SMOKE_TEMPERATURE:
       return {
         ...state,
         smokeTemperature: action.smokeTemperature,
       };
-    case actionTypes.CREATE_USER_POPUP:
+    case actionTypes.UPDATE_COLOUR:
       return {
         ...state,
-        createUserPopup: action.createUserPopup,
+        colour: {
+          ...state.colour,
+          ...action.colour
+        },
+      };
+    case actionTypes.UPDATE_COLOUR_NUMBER:
+      return {
+        ...state,
+        colourNumber: action.colourNumber,
       };
     case actionTypes.CURRENT_TRACK_ID:
       return {

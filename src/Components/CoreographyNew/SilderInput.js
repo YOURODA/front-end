@@ -24,12 +24,12 @@ function SilderInput(props) {
     const updateRedux = (event) => {
         const { robot } = props
         if (robot === "L") {
-            props.setLeftHorValue((event.x)*2.5)
-            props.setLeftVerValue((event.y)*2.5)
+            props.setLeftHorValue((event.x) * 2.5)
+            props.setLeftVerValue((event.y) * 2.5)
         }
         if (robot === "R") {
             props.setRightHorValue((event.x) * 2.5)
-            props.setRightVerValue((event.y)*2.5)
+            props.setRightVerValue((event.y) * 2.5)
         }
     }
 
@@ -68,6 +68,12 @@ function SilderInput(props) {
         </div>
     );
 }
+const mapStateToProps = state => {
+    return {
+        colour: state.colour,
+        //   colourNumber:state.colourNumber
+    };
+};
 const mapDispatchToProps = dispatch => {
     return {
         setLeftHorValue: leftHorValue => dispatch({ type: actionTypes.LEFT_HOR_VALUE, leftHorValue }),
@@ -76,4 +82,4 @@ const mapDispatchToProps = dispatch => {
         setRightVerValue: rightVerValue => dispatch({ type: actionTypes.RIGHT_VER_VALUE, rightVerValue })
     };
 };
-export default connect(null, mapDispatchToProps)(SilderInput);
+export default connect(mapStateToProps, mapDispatchToProps)(SilderInput);
