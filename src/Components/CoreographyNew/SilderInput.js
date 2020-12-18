@@ -1,4 +1,4 @@
-import React,{useState,useCallback} from 'react';
+import React, { useState, useCallback } from 'react';
 import * as actionTypes from "../../store/actions/actionTypes";
 import { connect } from "react-redux";
 import { makeStyles } from '@material-ui/core/styles';
@@ -15,26 +15,22 @@ const useStyles = makeStyles({
 });
 
 function SilderInput(props) {
-    console.log("props",props)
-    const {rColor1,rColor2,rColor3,lColor1,lColor2,lColor3}= props.color
+    const { rColor1, rColor2, rColor3, lColor1, lColor2, lColor3 } = props.color
     const classes = useStyles();
-    // const [value, setValue] = React.useState(30);
     const [state, setState] = useState({ x: 10, y: 10 });
-    const debounceRedux = useCallback(debounce(e=>updateRedux(e), 1000), []);
-    const backgroundColor = props.robot === "L"? `rgb(${lColor1}, ${lColor2}, ${lColor3})`:`rgb(${rColor1}, ${rColor2}, ${rColor3})`
-    console.log("backgroundColor",backgroundColor)
+    const debounceRedux = useCallback(debounce(e => updateRedux(e), 1000), []);
+    const backgroundColor = props.robot === "L" ? `rgb(${lColor1}, ${lColor2}, ${lColor3})` : `rgb(${rColor1}, ${rColor2}, ${rColor3})`
 
-    const updateRedux=(event)=>{
-        const {robot} = props
-        if (robot === "L"){
-            props.setLeftHorValue(event.x)
-            props.setLeftVerValue(event.y)
+    const updateRedux = (event) => {
+        const { robot } = props
+        if (robot === "L") {
+            props.setLeftHorValue((event.x)*2.5)
+            props.setLeftVerValue((event.y)*2.5)
         }
-        if (robot === "R"){
-            props.setRightHorValue(event.x)
-            props.setRightVerValue(event.y) 
+        if (robot === "R") {
+            props.setRightHorValue((event.x) * 2.5)
+            props.setRightVerValue((event.y)*2.5)
         }
-        console.log(event)
     }
 
     const handleChange = (event) => {
@@ -49,24 +45,24 @@ function SilderInput(props) {
             </Typography>
             <Grid container spacing={2}>
                 <Grid item xs>
-                <Slider 
-                axis="xy"
-                styles={{
-                    track: {
-                      backgroundColor
-                    },
-                    active: {
-                      backgroundColor
-                    },
-                    thumb: {
-                      width: 40,
-                      height: 40,
-                      opacity: 0.8
-                    }
-                  }}
-                    x={state.x}
-                    y={state.y} 
-                    onChange={coordinates => handleChange(coordinates) } />
+                    <Slider
+                        axis="xy"
+                        styles={{
+                            track: {
+                                backgroundColor
+                            },
+                            active: {
+                                backgroundColor
+                            },
+                            thumb: {
+                                width: 40,
+                                height: 40,
+                                opacity: 0.8
+                            }
+                        }}
+                        x={state.x}
+                        y={state.y}
+                        onChange={coordinates => handleChange(coordinates)} />
                 </Grid>
             </Grid>
         </div>

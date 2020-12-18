@@ -12,63 +12,52 @@ import APIService from '../Services/APIServices'
 const odaName = "test2"
 function CreateUserPopUp(props) {
     const [open, setOpen] = React.useState(false);
-    const [odaName, setOdaName] = React.useState();
+    const [corName, setCorName] = React.useState();
     const [odaNick, setOdaNick] = React.useState();
+    const [giveNameOfCh, setGiveNameOfCh] = React.useState();
     const apiServices = new APIService()
 
-    const handleClickOpen = () => {
-        setOpen(true);
-        props.setCreateUserPopup(open)
-    };
+    // const handleClickOpen = () => {
+    //     setOpen(true);
+    //     props.setCreateCorPopup(open)
+    // };
 
     const handleClose = () => {
         setOpen(false);
-        props.setCreateUserPopup(open)
+        props.setCreateCorPopup(open)
     };
-    const getOdaName = (e) => {
+    const getCoreographyName = (e) => {
         console.log(e.target.value)
-        setOdaName(e.target.value)
+        setCorName(e.target.value)
     };
-    const getOdaNick = (e) => {
-        console.log(e.target.value)
-        setOdaNick(e.target.value)
-    };
-    const createNewUserAPI = () => {
-        apiServices.newUser(props.user.email, odaName, odaNick)
+
+    const createSaveCor = () => {
+        apiServices.createCoreography(corName, props.currently_playing, props.corData, props.currentTrackId, props.userId).then(response => {
+            console.log(response.data)
+        })
+    }
+    const giveNameOfCoroegraphy = (e) => {
+        setGiveNameOfCh(e.target.value)
     }
 
     return (
         <div>
-            <DialogTitle id="form-dialog-title">ODA NICK</DialogTitle>
+            <DialogTitle id="form-dialog-title">CREATE COREOGRAPHY</DialogTitle>
             <DialogContent>
                 <DialogContentText>
-                    Please enter your ODA nick for signin.
+                    Please give a name for your coreography.
                 </DialogContentText>
-                <TextField
-                    onChange={e => getOdaNick(e)}
-                    autoFocus
-                    margin="dense"
-                    id="name"
-                    label="ODA Nick"
-                    type="odaNick"
-                    fullWidth
-                />
-                <TextField
-                    onChange={e => getOdaName(e)}
-                    autoFocus
-                    margin="dense"
-                    id="name"
-                    label="ODA Name"
-                    type="odaName"
-                    fullWidth
-                />
+                <TextField onChange={e => getCoreographyName(e)}
+                    id="standard-search"
+                    label="Coroegraphy Name"
+                    type="search" />
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose} color="primary">
                     Cancel
-                    </Button>
-                <Button onClick={createNewUserAPI} color="primary">
-                    SignIn
+                </Button>
+                <Button onClick={createSaveCor} color="primary">
+                    Save
                     </Button>
             </DialogActions>
         </div>
@@ -78,12 +67,16 @@ const mapStateToProps = state => {
     return {
         createUserPopup: state.createUserPopup,
         user: state.current_user,
+        currentTrackId: state.currentTrackId,
+        currently_playing: state.currently_playing,
+        corData: state.corData,
+        userId: state.userId
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        setCreateUserPopup: createUserPopup => dispatch({ type: actionTypes.CREATE_USER_POPUP, createUserPopup })
+        setCreateCorPopup: createCorPopup => dispatch({ type: actionTypes.CREATE_COR_POPUP, createCorPopup })
     };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(CreateUserPopUp);

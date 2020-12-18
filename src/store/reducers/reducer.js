@@ -25,7 +25,10 @@ const initialState = {
   brightnessValue: null,
   blinkerValue: null,
   smokeTemperature: null,
-  createUserPopup: false
+  createUserPopup: false,
+  currentTrackId: null,
+  createCorPopup: false,
+  userId: null
 };
 
 const reducer = (state = initialState, action) => {
@@ -152,6 +155,22 @@ const reducer = (state = initialState, action) => {
         ...state,
         createUserPopup: action.createUserPopup,
       };
+    case actionTypes.CURRENT_TRACK_ID:
+      return {
+        ...state,
+        currentTrackId: action.currentTrackId,
+      };
+    case actionTypes.CREATE_COR_POPUP:
+      return {
+        ...state,
+        createCorPopup: action.createCorPopup,
+      };
+    case actionTypes.USER_ID:
+      return {
+        ...state,
+        userId: action.userId,
+      };
+
 
     default:
       return state;

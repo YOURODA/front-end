@@ -20,6 +20,7 @@ import SpotifyFooterMakeCor from "../../Containers/SpotifyFooter/SpotifyFooterMa
 import SecondList from "../CoreographyNew/SecondList";
 import APIServices from "../Services/APIServices"
 import CreateUserPopUp from '../CoreographyNew/CreateUserPopUp'
+const odaName = "test3"
 const useStyles = makeStyles(theme => ({
   button: {
     margin: theme.spacing(1)
@@ -57,6 +58,7 @@ class Editor extends Component {
           smoke: 0
         }
       ],
+      getUserId: null
     };
     this.apiService = new APIServices();
   }
@@ -96,6 +98,13 @@ class Editor extends Component {
     this.state.socket = socketIo.connect(socketio_url, connectionStrings);
     this.state.socket.emit("Odaya Katil", this.odaName);
     this.props.setScoketIO(this.state.socket);
+    if (this.props.user) {
+      this.apiService.isUserAvailable(this.props.user.email).then(response => {
+        console.log(response.data[0]._id)
+        this.setState({ getUserId: response.data[0]._id })
+      })
+      this.props.setUserId(this.state.getUserId)
+    }
   }
   componentWillUnmount() {
     clearInterval(this.interval);
@@ -153,12 +162,9 @@ class Editor extends Component {
     );
   };
   isAvailableOdaNickRes = () => {
-    // let userOdaNick = {
-    //   "odaNick": this.state.odaNick
-    // }
     this.apiService.isAvailableOdaNick(this.state.odaNick).then(response => {
       if (response.data.odaNick === this.state.odaNick)
-      this.setState({ goCoreography: true })
+        this.setState({ goCoreography: true })
     })
   }
   onCloseEveryComponent = () => {
@@ -201,6 +207,10 @@ class Editor extends Component {
 
   render() {
     const { seconds } = this.state
+    console.log(this.props.userId)
+    if (this.props.userId) {
+      this.state.goCoreography = true
+    }
     return (
       <Grid container>
         {this.state.goCoreography === false &&
@@ -306,12 +316,13 @@ const mapStateToProps = state => {
   return {
     durationStamps: state.durationStamps,
     currently_playing: state.currently_playing,
-    csvData: state.csvData,
+    playNow: state.play_now,
     user: state.current_user,
     onCloseCsvData: state.onCloseCsvData,
     corData: state.corData,
     socket: state.socket,
-    createUserPopUp: state.createUserPopup
+    createUserPopUp: state.createUserPopup,
+    userId: state.userId
   };
 };
 const mapDispatchToProps = dispatch => {
@@ -322,7 +333,9 @@ const mapDispatchToProps = dispatch => {
       dispatch({ type: actionTypes.ON_CLOSE_CSV_DATA, onCloseCsvData }),
     setSmokeTemperature: smokeTemperature =>
       dispatch({ type: actionTypes.SMOKE_TEMPERATURE, smokeTemperature }),
-    setCreateUserPopup: createUserPopup => dispatch({ type: actionTypes.CREATE_USER_POPUP, createUserPopup })
+    setCreateUserPopup: createUserPopup => dispatch({ type: actionTypes.CREATE_USER_POPUP, createUserPopup }),
+    setUserId: userId =>
+      dispatch({ type: actionTypes.USER_ID, userId })
   };
 };
 

@@ -2,11 +2,16 @@ import axios from 'axios';
 import { Local_API, Prod_API } from '../Config/Env';
 
 class APIServices {
-  async newUser(userData) {
+  async newUser(email, odaName, odaNick) {
+    let newUserData = {
+      "email": email,
+      "odaName": odaName,
+      "odaNick": odaNick
+    }
     const serviceData = {
       method: 'POST',
       url: Local_API + '/user/newuser',
-      data: userData,
+      data: newUserData,
     };
     return await axios(serviceData);
   }
@@ -56,11 +61,31 @@ class APIServices {
     };
     return await axios(serviceData);
   }
-  async createCoreography(corData) {
+  async isUserAvailable(email) {
+    const userEmail = {
+      "email": email
+    }
+    const serviceData = {
+      method: 'POST',
+      url: Local_API + '/user/isUserAvailable',
+      data: userEmail,
+    };
+    return await axios(serviceData);
+  }
+  async createCoreography(name, trackName, file, trackId, ownerId) {
+    console.log("createCoreography", name, trackName, file, trackId, ownerId)
+    const createCorData = {
+      "name": name,
+      "trackName": trackName,
+      "file": file,
+      "trackId": trackId,
+      "ownerId": ownerId,
+    }
+
     const serviceData = {
       method: 'POST',
       url: Local_API + '/choreography/create',
-      data: corData,
+      data: createCorData,
     };
     return await axios(serviceData);
   }

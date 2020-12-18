@@ -19,6 +19,7 @@ import { TrackDetailsLink } from '../UI/TrackDetailsLink';
 import Editor from '../Editor/Editor';
 import PartySelection from '../PartySelection/PartySelection';
 import HeaterOnButton from '../HeaterOnButton/HeaterOnButton';
+import APIServices from '../Services/APIServices';
 class MusicPlayer extends Component {
   constructor(props) {
     super(props);
@@ -37,10 +38,15 @@ class MusicPlayer extends Component {
     this.player = null;
     this.playerCheckInterval = null;
     this.positionCheckInterval = null;
+    this.apiService = new APIServices();
   }
 
   componentDidMount() {
     this.playerCheckInterval = setInterval(() => this.checkForPlayer(), 1000);
+    if (this.state.playingInfo) {
+      this.props.setCurrentTrackId(this.state.playingInfo.track_window.current_track.id);
+    }
+
     // let options = {
     //   method: "POST",
     //   headers: {
@@ -53,6 +59,7 @@ class MusicPlayer extends Component {
     //   console.log(response.data);
     // });
   }
+
 
   checkForPlayer = () => {
     const token = this.props.user.access_token;
@@ -107,6 +114,12 @@ class MusicPlayer extends Component {
         ) {
           let { current_track } = state.track_window;
           this.props.setCurrentlyPlaying(current_track.name);
+          this.props.setCurrentTrackId(this.state.playingInfo.track_window.current_track.id);
+          this.apiService.isUserAvailable(this.props.user.email).then(response => {
+            // console.log("isUserAvailable", response.data.user[0]._id)
+            this.setState({ getUserId: response.data.user[0]._id })
+            this.props.setUserId(this.state.getUserId)
+          })
         }
       }
     });
@@ -212,6 +225,7 @@ class MusicPlayer extends Component {
   };
 
   render() {
+
     let mainContent = (
       <Card
         style={{
@@ -402,6 +416,10 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({ type: actionTypes.NOW_POSITION_STAMP, position_stamp }),
     setDurationStamps: (durationStamps) =>
       dispatch({ type: actionTypes.DURATION_STAMP, durationStamps }),
+    setCurrentTrackId: (currentTrackId) =>
+      dispatch({ type: actionTypes.CURRENT_TRACK_ID, currentTrackId }),
+    setUserId: userId =>
+      dispatch({ type: actionTypes.USER_ID, userId })
   };
 };
 

@@ -30,6 +30,9 @@ export const BRIGHTNESS_VALUE = "BRIGHTNESS_VALUE"
 export const BLINKER_VALUE = "BLINKER_VALUE"
 export const SMOKE_TEMPERATURE = "SMOKE_TEMPERATURE"
 export const CREATE_USER_POPUP = "CREATE_USER_POPUP"
+export const CURRENT_TRACK_ID = "CURRENT_TRACK_ID"
+export const CREATE_COR_POPUP = "CREATE_COR_POPUP"
+export const USER_ID = "USER_ID"
 
 
 export const playSong = (uris, deviceId) => {
