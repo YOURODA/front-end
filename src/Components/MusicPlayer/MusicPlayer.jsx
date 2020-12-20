@@ -116,9 +116,11 @@ class MusicPlayer extends Component {
           this.props.setCurrentlyPlaying(current_track.name);
           this.props.setCurrentTrackId(this.state.playingInfo.track_window.current_track.id);
           this.apiService.isUserAvailable(this.props.user.email).then(response => {
-            // console.log("isUserAvailable", response.data.user[0]._id)
             this.setState({ getUserId: response.data.user[0]._id })
             this.props.setUserId(this.state.getUserId)
+            if (response.data.message) {
+              this.props.setIsUserAvailable(false)
+            }
           })
         }
       }
@@ -240,8 +242,7 @@ class MusicPlayer extends Component {
           align="center"
           style={{ marginTop: 20 }}
         >
-          Oynatıcıyı etkinleştirmek için Spotify uygulamasına gidin, cihazlara
-          tıklayın ve Oda WEB uygulamasını seçin
+          Please select connection device of ODA in Spotify.
         </Typography>
       </Card>
     );
@@ -419,7 +420,9 @@ const mapDispatchToProps = (dispatch) => {
     setCurrentTrackId: (currentTrackId) =>
       dispatch({ type: actionTypes.CURRENT_TRACK_ID, currentTrackId }),
     setUserId: userId =>
-      dispatch({ type: actionTypes.USER_ID, userId })
+      dispatch({ type: actionTypes.USER_ID, userId }),
+    setIsUserAvailable: isUserAvailable =>
+      dispatch({ type: actionTypes.IS_USER_AVALIABLE, isUserAvailable })
   };
 };
 

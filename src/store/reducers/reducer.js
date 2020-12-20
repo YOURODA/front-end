@@ -36,6 +36,7 @@ const initialState = {
   createCorPopup: false,
   userId: null,
   colourNumber: 0,
+  isUserAvailable: true,
   colour: {
     lColor1: 0,
     lColor2: 0,
@@ -189,6 +190,11 @@ const reducer = (state = initialState, action) => {
         ...state,
         currentTrackId: action.currentTrackId,
       };
+    case actionTypes.CREATE_USER_POPUP:
+      return {
+        ...state,
+        createUserPopup: action.createUserPopup,
+      };
     case actionTypes.CREATE_COR_POPUP:
       return {
         ...state,
@@ -198,6 +204,11 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         userId: action.userId,
+      };
+    case actionTypes.IS_USER_AVALIABLE:
+      return {
+        ...state,
+        isUserAvailable: action.isUserAvailable,
       };
 
 

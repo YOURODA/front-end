@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { Local_API, Prod_API } from '../Config/Env';
 
+const userApiService = Prod_API
+
 class APIServices {
   async newUser(email, odaName, odaNick) {
     let newUserData = {
@@ -10,7 +12,7 @@ class APIServices {
     }
     const serviceData = {
       method: 'POST',
-      url: Local_API + '/user/newuser',
+      url: userApiService + '/user/newuser',
       data: newUserData,
     };
     return await axios(serviceData);
@@ -18,7 +20,7 @@ class APIServices {
   async newOda(odaName) {
     const serviceData = {
       method: 'POST',
-      url: Local_API + '/odaIdentify/newOda',
+      url: userApiService + '/odaIdentify/newOda',
       data: odaName,
     };
     return await axios(serviceData);
@@ -29,7 +31,7 @@ class APIServices {
     }
     const serviceData = {
       method: 'POST',
-      url: Local_API + '/odaIdentify/isAvailableOdaNick',
+      url: userApiService + '/odaIdentify/isAvailableOdaNick',
       data: odaNickData
     };
     return await axios(serviceData);
@@ -38,25 +40,25 @@ class APIServices {
   async myOdas(email) {
     const serviceData = {
       method: 'GET',
-      url: Local_API + '/user/myOdas',
+      url: userApiService + '/user/myOdas',
       data: email,
     };
     return await axios(serviceData);
   }
 
   async getAllCoreographies() {
-    const serviceData = Local_API + '/choreography/allcor';
+    const serviceData = userApiService + '/choreography/allcor';
     return await axios.get(serviceData);
   }
 
   // async getMyCoreographies() {
-  //     const serviceData = Local_API + '/choreography/mycor';
+  //     const serviceData = userApiService + '/choreography/mycor';
   //     return await axios.get(serviceData);
   // }
   async getMyCoreographies(ownerId) {
     const serviceData = {
       method: 'POST',
-      url: Local_API + '/choreography/mycor',
+      url: userApiService + '/choreography/mycor',
       data: ownerId,
     };
     return await axios(serviceData);
@@ -67,7 +69,7 @@ class APIServices {
     }
     const serviceData = {
       method: 'POST',
-      url: Local_API + '/user/isUserAvailable',
+      url: userApiService + '/user/isUserAvailable',
       data: userEmail,
     };
     return await axios(serviceData);
@@ -84,7 +86,7 @@ class APIServices {
 
     const serviceData = {
       method: 'POST',
-      url: Local_API + '/choreography/create',
+      url: userApiService + '/choreography/create',
       data: createCorData,
     };
     return await axios(serviceData);

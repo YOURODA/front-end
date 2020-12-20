@@ -29,6 +29,7 @@ import Brightness from "./Brightness";
 import Blinker from "./Blinker";
 import APIServices from "../Services/APIServices";
 import RobotOptions from "./RobotOptions";
+import CreateCorPopUp from "./CreateCorPopUp";
 
 class CreateCor extends Component {
   constructor(props) {
@@ -123,7 +124,7 @@ class CreateCor extends Component {
     console.log("corData", corData);
   };
   goParty = () => {
-    const { checkedMultiple, corData } = this.state;
+    const { corData } = this.state;
     console.log("cordata", corData);
     let stringCSV = JSON.stringify({ corData });
     const encodedString = {
@@ -135,40 +136,9 @@ class CreateCor extends Component {
   };
   saveUserCoreographyToDB = () => {
     this.props.setCreateCorPopup(true)
-    const { durationStamps } = this.props;
-    const { checkedMultiple, corData } = this.state;
-    let saveCorData = corData;
-    //hor,0,ver,0,0,bright,red,green,blue,white,blinker,randomLight,background
-    checkedMultiple.forEach((seconds) => {
-      saveCorData[seconds] = {
-        startDate: seconds,
-        robot: `${this.props.leftHorValue ? this.props.leftHorValue : "0"},0,${
-          this.props.leftVerValue ? this.props.leftVerValue : "0"
-          },0,0,${
-          this.props.brightnessValue.L ? this.props.brightnessValue.L : "0"
-          },${this.lColor1 ? this.lColor1 : "0"},${
-          this.lColor2 ? this.lColor2 : "0"
-          },${this.lColor3 ? this.lColor3 : "0"},"59",${
-          this.props.blinkerValue.L ? this.props.blinkerValue.L : "0"
-          },0,0,${this.props.rightHorValue ? this.props.rightHorValue : "0"},0,${
-          this.props.rightVerValue ? this.props.rightVerValue : "0"
-          },0,0,${
-          this.props.brightnessValue.R ? this.props.brightnessValue.R : "0"
-          },${this.rColor1 ? this.rColor1 : "0"},${
-          this.rColor2 ? this.rColor2 : "0"
-          },${this.rColor3 ? this.rColor3 : "0"},0,${
-          this.props.blinkerValue.R ? this.props.blinkerValue.R : "0"
-          },0,0`,
-        smoke: this.state.checkSmoke === true ? "1" : "0", //L
-        smoke: this.state.checkSmoke, //L
-      };
-      this.setState({ userCorData: saveCorData[seconds] });
-    });
-    this.apiService.createCoreography(this.state.userCorData);
+    this.props.setCorData(this.state.corData);
     this.setState({ goCoreography: true });
   };
-
-
   handleChange = (event) => {
     this.setState({ [event.target.name]: event.target.value });
   };
@@ -256,6 +226,9 @@ class CreateCor extends Component {
                         <RobotOptions robot={"R"} />
                       </Grid>
                     </Grid>
+                    {this.props.createCorPopup &&
+                      <CreateCorPopUp />
+                    }
                     <Grid container spacing={3}>
                       <Grid item xs={11}>
                         <SmokeStatus />
@@ -284,7 +257,7 @@ class CreateCor extends Component {
                       startIcon={<SaveIcon />}
                       onClick={this.saveCoreography}
                     >
-                      Save For CH
+                      Save For Party
                     </Button>
                     <Button
                       style={{ flex: 1 }}
@@ -307,8 +280,6 @@ class CreateCor extends Component {
                       Save For MyCHR
                     </Button>
                   </CardActions>
-
-
                 </Card>
               </React.Fragment>
             )}
