@@ -201,18 +201,19 @@ class MusicPlayer extends Component {
     this.player.nextTrack();
   };
 
+
   onSeekSliderChange = (e, val) => {
     // duration = 100%
-    // ? = val%
+    //  = val%
     let dur = this.state.playingInfo.duration;
     let seek = Math.floor((val * dur) / 100); // round number
     this.setState({ positionSliderValue: val });
-    console.log('valu değeri  ' + val);
-    console.log('e değeri:  ' + e);
     this.player.seek(seek).then(() => {
       console.log(`Seek song to ${seek} ms`);
     });
+    this.props.setIsReturnMusic(false)
   };
+  
 
   onVolumeSliderChange = (e, val) => {
     let volume = val / 100; // val is between 0-100 and the volume accepted needs to be between 0-1
@@ -227,7 +228,10 @@ class MusicPlayer extends Component {
   };
 
   render() {
-
+    if(this.props.isReturnMusic){
+      console.log("başa alma çalıştı")
+      this.onSeekSliderChange("",0)
+    }
     let mainContent = (
       <Card
         style={{
@@ -403,6 +407,7 @@ const mapStateToProps = (state) => {
     isPlaying: state.isPlaying,
     position_stamp: state.position_stamp,
     durationStamps: state.durationStamps,
+    isReturnMusic: state.isReturnMusic
   };
 };
 
@@ -421,6 +426,8 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({ type: actionTypes.CURRENT_TRACK_ID, currentTrackId }),
     setUserId: userId =>
       dispatch({ type: actionTypes.USER_ID, userId }),
+    setIsReturnMusic: music =>
+      dispatch({ type: actionTypes.IS_RETURN_MUSIC, music }),
     setIsUserAvailable: isUserAvailable =>
       dispatch({ type: actionTypes.IS_USER_AVALIABLE, isUserAvailable })
   };

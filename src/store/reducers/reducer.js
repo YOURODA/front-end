@@ -44,7 +44,8 @@ const initialState = {
     rColor1: 0,
     rColor2: 0,
     rColor3: 0
-  }
+  },
+  isReturnMusic:false
 };
 
 const reducer = (state = initialState, action) => {
@@ -205,6 +206,11 @@ const reducer = (state = initialState, action) => {
         ...state,
         userId: action.userId,
       };
+    case actionTypes.IS_RETURN_MUSIC:
+      return{
+        ...state,
+        isReturnMusic: action.isReturnMusic
+      }
     case actionTypes.IS_USER_AVALIABLE:
       return {
         ...state,
