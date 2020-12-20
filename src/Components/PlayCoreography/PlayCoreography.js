@@ -53,23 +53,27 @@ class PlayCoreography extends Component {
         };
     }
     render() {
-        const { seconds } = this.state
+        const { userId } = this.props
         return (
             <div>
-                <Grid container spacing="10">
-                    <Grid item lg={12} sm={12} xl={12} xs={12} />
-                    <Grid item lg={2} sm={2} xl={2} xs={2} />
-                    <Grid item lg={3} sm={3} xl={3} xs={3}>
-                        <AllCoreographiesSelect />
-                    </Grid>
-                    <Grid item lg={3} sm={3} xl={3} xs={3}>
-                        <MyCoreographiesSelect />
-                    </Grid>
-                    <Grid item lg={3} sm={3} xl={3} xs={3}>
-                        <HitCoreographiesSelect />
-                    </Grid>
-                    <Grid item lg={2} sm={2} xl={2} xs={2} />
-                    <Grid item lg={3} sm={3} xl={3} xs={3}>
+
+                {userId &&
+                    <Grid container spacing="10">
+                        <Grid item lg={12} sm={12} xl={12} xs={12} />
+                        <Grid item lg={12} sm={12} xl={12} xs={12} />
+                        <Grid item lg={12} sm={12} xl={12} xs={12} />
+                        <Grid item lg={2} sm={2} xl={2} xs={2} />
+                        <Grid item lg={3} sm={3} xl={3} xs={3}>
+                            <AllCoreographiesSelect />
+                        </Grid>
+                        <Grid item lg={3} sm={3} xl={3} xs={3}>
+                            <MyCoreographiesSelect />
+                        </Grid>
+                        <Grid item lg={3} sm={3} xl={3} xs={3}>
+                            <HitCoreographiesSelect />
+                        </Grid>
+                        <Grid item lg={2} sm={2} xl={2} xs={2} />
+                        {/* <Grid item lg={3} sm={3} xl={3} xs={3}>
                         <MyStartsSelect />
                     </Grid>
                     <Grid item lg={3} sm={3} xl={3} xs={3}>
@@ -77,8 +81,9 @@ class PlayCoreography extends Component {
                     </Grid>
                     <Grid item lg={3} sm={3} xl={3} xs={3}>
                         <Last100 />
+                    </Grid> */}
                     </Grid>
-                </Grid>
+                }
                 <ThemeProvider theme={theme}>
                     <CssBaseline >
                         <SpotifyFooter
@@ -97,7 +102,7 @@ class PlayCoreography extends Component {
 
 const mapStateToProps = state => {
     return {
-
+        userId: state.userId
     };
 };
 const mapDispatchToProps = dispatch => {

@@ -1,16 +1,15 @@
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/styles';
 import { connect } from 'react-redux';
-import * as actionTypes from '../../../store/actions/actionTypes';
+import * as actionTypes from '../../store/actions/actionTypes';
 import {
-  Grid,
   Button,
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
 } from '@material-ui/core';
-import AllCoreographiesTable from './AllCoreographiesTable';
+import AllCoreographiesTable from './PlayCoreographiesTable';
 const useStyles = (theme) => ({
   root: {
     flexGrow: 2,
@@ -39,7 +38,7 @@ const useStyles = (theme) => ({
     marginTop: theme.spacing(1),
   },
 });
-class AllCoreographiesPopUp extends Component {
+class PlayCoreographiesPopUp extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -114,4 +113,4 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(useStyles)(AllCoreographiesPopUp));
+)(withStyles(useStyles)(PlayCoreographiesPopUp));

@@ -56,10 +56,24 @@ class APIServices {
   //     return await axios.get(serviceData);
   // }
   async getMyCoreographies(ownerId) {
+    let userIdData = {
+      "ownerId": ownerId
+    }
     const serviceData = {
       method: 'POST',
       url: userApiService + '/choreography/mycor',
-      data: ownerId,
+      data: userIdData,
+    };
+    return await axios(serviceData);
+  }
+  async getHitsCoreographies() {
+    let userData = {
+      "limit": 2
+    }
+    const serviceData = {
+      method: 'POST',
+      url: userApiService + '/choreography/hits',
+      data: userData,
     };
     return await axios(serviceData);
   }

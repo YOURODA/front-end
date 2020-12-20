@@ -2,23 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as actionTypes from '../../../store/actions/actionTypes';
 import { withStyles } from '@material-ui/styles';
-import Editor from '../../Editor/Editor';
-import AllCoreographiesPopUp from '../../PlayCoreography/AllCoreographies/AllCoreographiesPopUp';
-import { Link as RouterLink } from 'react-router-dom';
+import PlayCoreographiesPopUp from '../PlayCoreographiesPopUp';
 import {
-  Typography,
   Button,
-  ButtonBase,
-  Card,
-  CardContent,
-  CardMedia,
-  CardActionArea,
-  CardHeader,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  ClickAwayListener,
   Grid,
 } from '@material-ui/core';
 import allCor from '../../../images/all.png';
@@ -37,29 +23,22 @@ class AllCoreographiesSelect extends Component {
   }
   handleOpen = () => {
     this.setState({ allCorPopUpCheck: true });
-    this.props.setPopUpAll('All Coreographies');
+    this.props.setPopUpAll('All');
   };
 
   render() {
-    const { classes } = this.props;
     return (
       <Grid container spacing={4}>
         <Grid item lg={12} md={12} xl={12} xs={12}>
           <Button onClick={this.handleOpen}>
             <img src={allCor} />
           </Button>
-          <AllCoreographiesPopUp />
+          <PlayCoreographiesPopUp />
         </Grid>
       </Grid>
     );
   }
 }
-
-// const mapStateToProps = (state) => {
-//     return {
-//         popUpAll: state.popUpAll,
-//     };
-// };
 
 const mapDispatchToProps = (dispatch) => {
   return {

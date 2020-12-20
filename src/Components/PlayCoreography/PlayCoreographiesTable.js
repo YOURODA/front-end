@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 import { withStyles } from '@material-ui/styles';
 import MaterialTable from 'material-table';
 import { connect } from 'react-redux';
-import * as actionTypes from '../../../store/actions/actionTypes';
 import { Grid, Card } from '@material-ui/core';
-import APIServices from '../../Services/APIServices';
+import APIServices from '../Services/APIServices';
 const useStyles = (theme) => ({
   root: {
     flexGrow: 2,
@@ -42,41 +41,28 @@ class AllCoreographiesTable extends Component {
     };
     this.apiService = new APIServices();
   }
-  // handleChange = (event) => {
-  //     this.setState({
-  //         selectedApplicationId: event.target.value.id,
-  //         selectedApplicationNames: event.target.value,
-  //     });
-  // };
-  // handleChangeMenu = (event) => {
-  //     this.setState({
-  //         selectedMenuIds: event.target.value.menuId,
-  //         selectedMenuName: event.target.value,
-  //         selectedMenu: event.target,
-  //     });
-  // // };
-  // addUser(e) {
-  //     this.setState({
-  //         [e.target.id]: e.target.value,
-  //     });
-  // }
   componentDidMount() {
     const { popUpAll } = this.props;
-    this.apiService.getMyCoreographies(this.props.userId).then((response) => {
-      console.log('response', response);
-      this.setState({ getAllCorData: response.data.cor });
-    });
-    if (popUpAll)
-      switch (popUpAll) {
-        case 'All Coreographies':
-          this.apiService.getAllCoreographies().then((response) => {
-            this.setState({ getAllCorData: response.data.cor });
-          });
-          break;
-        case 'My Coreographie':
-          break;
-        default:
-      }
+    switch (popUpAll) {
+      case 'All':
+        this.apiService.getAllCoreographies().then((response) => {
+          this.setState({ getAllCorData: response.data.cor });
+        });
+        break;
+      case 'My':
+        this.setState(this.state.getAllCorData);
+        this.apiService.getMyCoreographies(this.props.userId).then((response) => {
+          this.setState({ getAllCorData: response.data.cor });
+        });
+        break;
+      case 'Hit':
+        this.setState(this.state.getAllCorData);
+        this.apiService.getHitsCoreographies().then((response) => {
+          this.setState({ getAllCorData: response.data.cor });
+        });
+        break;
+      default:
+    }
   }
   render() {
     const { classes } = this.props;
@@ -105,19 +91,6 @@ class AllCoreographiesTable extends Component {
                 exportFileName: 'Rapor',
                 headerStyle: { backgroundColor: '#EAEDED' },
               }}
-              // onRowClick={(evt, selectedRow) => {
-              //     this.setState({
-              //         selectedRow,
-              //         openEditDialog: true,
-              //         takeUsersMenuNames: [],
-              //     });
-              //     this.apiService
-              //         .getMessageWithSessionId(selectedRow.id)
-              //         .then((response) => {
-              //             this.props.setPopUp(true);
-              //             this.props.setDialogMessage(response.data);
-              //         });
-              // }}
             />
           </Card>
         </Grid>
@@ -129,17 +102,10 @@ class AllCoreographiesTable extends Component {
 const mapStateToProps = (state) => {
   return {
     popUpAll: state.popUpAll,
-    userId: state.current_user.id,
-  };
-};
-const mapDispatchToProps = (dispatch) => {
-  return {
-    // setDialogMessage: (dialogMessage) =>
-    //     dispatch({ type: actionTypes.DIALOG_MESSAGE, dialogMessage }),
-    // setPopUp: (popUp) => dispatch({ type: actionTypes.POPUP, popUp }),
+    userId: state.userId
   };
 };
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  null
 )(withStyles(useStyles)(AllCoreographiesTable));
