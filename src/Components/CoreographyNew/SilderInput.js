@@ -6,7 +6,6 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Slider from 'react-input-slider';
 import debounce from 'lodash.debounce';
-// import SwapHorizRounded from '@material-ui/icons/SwapHorizRounded';
 
 const useStyles = makeStyles({
     root: {

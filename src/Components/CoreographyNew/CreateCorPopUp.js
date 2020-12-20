@@ -32,8 +32,13 @@ function CreateUserPopUp(props) {
     };
 
     const createSaveCor = () => {
+        console.log(corName, props.currently_playing, props.corData, props.currentTrackId, props.userId)
         apiServices.createCoreography(corName, props.currently_playing, props.corData, props.currentTrackId, props.userId).then(response => {
             console.log(response.data)
+            if (response.status === 200) {
+                setOpen(false)
+                props.setCreateCorPopup(open)
+            }
         })
     }
     const giveNameOfCoroegraphy = (e) => {

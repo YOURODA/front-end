@@ -79,9 +79,9 @@ class Editor extends Component {
     });
   }
   createUser = () => {
-    // this.setState({ openCreateUserPopup: true })
     this.props.setCreateUserPopup(true)
-
+    console.log('geldi')
+    console.log(this.props.createUserPopUp)
   }
   componentDidMount() {
     this.interval = setInterval(() => this.askTemperature(), 10000);
@@ -220,43 +220,37 @@ class Editor extends Component {
             alignItems="center"
             minHeight="100vh"
           >
-            <Card>
-              {/* {this.props.createUserPopup === false &&
-                <> */}
-              <CardHeader>
-                <Typography variant="h5"> Cihazınıza isim veriniz.</Typography>
-              </CardHeader>
-              <CardContent>
-                <TextField onChange={e => this.addOdaName(e)}
-                  id="standard-search"
-                  label="Cihazınıza isim veriniz."
-                  type="search" />
-              </CardContent>
-              <CardActions style={{ justifyContent: 'flex-end' }}>
-                <Button onClick={this.isAvailableOdaNickRes} variant="contained" color="primary">
-                  Go Coroegraphy
+
+            {!this.props.createUserPopup && !this.props.isUserAvailable &&
+              <Card>
+                <CardHeader>
+                  <Typography variant="h5"> Cihazınıza isim veriniz.</Typography>
+                </CardHeader>
+                <CardContent>
+                  <TextField onChange={e => this.addOdaName(e)}
+                    id="standard-search"
+                    label="Cihazınıza isim veriniz."
+                    type="search" />
+                </CardContent>
+                <CardActions style={{ justifyContent: 'flex-end' }}>
+                  <Button onClick={this.isAvailableOdaNickRes} variant="contained" color="primary">
+                    Go Coroegraphy
                 </Button>
-                <Button onClick={this.createUser} variant="contained" color="primary">
-                  Create User
+                  <Button onClick={this.createUser} variant="contained" color="primary">
+                    Create User
                 </Button>
-              </CardActions>
-              {/* </>
-              } */}
-              {this.props.createUserPopUp &&
-                <CreateUserPopUp />
-              }
-            </Card>
+                </CardActions>
+              </Card>
+            }
+            {this.props.createUserPopUp &&
+              <CreateUserPopUp />
+            }
           </Box>
         }
         {this.state.goCoreography === true &&
           <div>
             <Grid container spacing={3}>
               <Grid item lg={3} md={12} xl={9} xs={12}>
-                <Card style={{ textAlign: "center" }}>
-                  <Typography center variant="h5">
-                    Şarkı süresi {this.timeOfSum} saniye
-                  </Typography>
-                </Card>
                 {this.props.durationStamps > 0 &&
                   <div>
                     <CreateCor />
@@ -322,7 +316,8 @@ const mapStateToProps = state => {
     corData: state.corData,
     socket: state.socket,
     createUserPopUp: state.createUserPopup,
-    userId: state.userId
+    userId: state.userId,
+    isUserAvailable: state.isUserAvailable
   };
 };
 const mapDispatchToProps = dispatch => {
