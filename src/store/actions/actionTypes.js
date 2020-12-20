@@ -35,6 +35,7 @@ export const CREATE_COR_POPUP = "CREATE_COR_POPUP"
 export const USER_ID = "USER_ID"
 export const UPDATE_COLOUR = "UPDATE_COLOUR"
 export const UPDATE_COLOUR_NUMBER = "UPDATE_COLOUR_NUMBER"
+export const IS_RETURN_MUSIC ="IS_RETURN_MUSIC"
 
 
 export const playSong = (uris, deviceId) => {

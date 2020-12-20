@@ -132,6 +132,7 @@ class CreateCor extends Component {
     };
     this.props.socket.emit("corData", encodedString);
     this.props.setCorData(this.state.corData);
+    this.props.setIsReturnMusic(true);
   };
   saveUserCoreographyToDB = () => {
     this.props.setCreateCorPopup(true)
@@ -332,6 +333,7 @@ const mapStateToProps = (state) => {
     user: state.current_user,
     colour: state.colour,
     colourNumber: state.colourNumber,
+    isReturnMusic: state.isReturnMusic
   };
 };
 const mapDispatchToProps = (dispatch) => {
@@ -343,6 +345,8 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({ type: actionTypes.UPDATE_COLOUR_NUMBER, number }),
     setColour: (colour) =>
       dispatch({ type: actionTypes.UPDATE_COLOUR, colour }),
+    setIsReturnMusic: isReturnMusic =>
+      dispatch({ type: actionTypes.IS_RETURN_MUSIC, isReturnMusic })
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(CreateCor);
