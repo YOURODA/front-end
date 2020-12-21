@@ -59,7 +59,7 @@ class SpotifyFooterMakeCor extends Component {
                 // return <Link to={'https://accounts.spotify.com/authorize?client_id=' + '8c8d6401e5c24c5585d2e89e93804cd1' + '&redirect_uri=' + 'http://localhost:3000/party-selection' + '&scope=' +
                 //   'streaming user-read-email' + '&response_type=token'} />
                 window.location.replace('https://accounts.spotify.com/authorize?client_id=' + '8c8d6401e5c24c5585d2e89e93804cd1' + '&redirect_uri=' + 'http://localhost:3000/make-coreography' + '&scope=' +
-                    'streaming user-read-email' + '&response_type=token')
+                    'streaming user-read-email user-read-playback-state' + '&response_type=token')
             }
         }
     }

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from "axios";
 import { connect } from 'react-redux';
 import * as actionTypes from '../../store/actions/actionTypes';
 import CssBaseline from '@material-ui/core/CssBaseline/CssBaseline';
@@ -202,16 +203,38 @@ class MusicPlayer extends Component {
   };
 
 
-  onSeekSliderChange = (e, val) => {
+  onSeekSliderChange = async (e, val) => {
     // duration = 100%
     //  = val%
+    const {user, isReturnMusic,setIsReturnMusic,currentTrackId} = this.props
+    setIsReturnMusic(false)
     let dur = this.state.playingInfo.duration;
     let seek = Math.floor((val * dur) / 100); // round number
     this.setState({ positionSliderValue: val });
-    this.player.seek(seek).then(() => {
+    console.log("isReturnMusic",isReturnMusic)
+    await this.player.seek(seek).then(() => {
       console.log(`Seek song to ${seek} ms`);
     });
-    this.props.setIsReturnMusic(false)
+    if(isReturnMusic){
+      const url=  `https://api.spotify.com/v1/me/player/play?device_id=${isReturnMusic}`;
+      axios({
+        url,
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${user.access_token}`,
+        },
+        data:{ "uris": [`spotify:track:${currentTrackId}`]}
+      })
+      .then((data) => {
+        this.props.setIsReturnMusic(false)
+        console.log(data);
+      })
+      .catch((error) => {
+        this.props.setIsReturnMusic(false)
+        console.log(error);
+      });
+    }
+    // this.props.setIsReturnMusic(false)
   };
   
 
@@ -228,8 +251,8 @@ class MusicPlayer extends Component {
   };
 
   render() {
-    if(this.props.isReturnMusic){
-      console.log("başa alma çalıştı")
+    if(!!this.props.isReturnMusic){
+      console.log("başa alma çalıştı",!!this.props.isReturnMusic,this.props.isReturnMusic)
       this.onSeekSliderChange("",0)
     }
     let mainContent = (
@@ -407,7 +430,8 @@ const mapStateToProps = (state) => {
     isPlaying: state.isPlaying,
     position_stamp: state.position_stamp,
     durationStamps: state.durationStamps,
-    isReturnMusic: state.isReturnMusic
+    isReturnMusic: state.isReturnMusic,
+    currentTrackId:state.currentTrackId
   };
 };
 

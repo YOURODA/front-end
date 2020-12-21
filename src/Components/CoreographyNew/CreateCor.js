@@ -30,6 +30,7 @@ import Blinker from "./Blinker";
 import APIServices from "../Services/APIServices";
 import RobotOptions from "./RobotOptions";
 import CreateCorPopUp from "./CreateCorPopUp";
+import SelectedDevicePopUp from "./SelectedDevicePopUp"
 
 class CreateCor extends Component {
   constructor(props) {
@@ -46,6 +47,7 @@ class CreateCor extends Component {
       checkBlind: 1,
       clearSecondList: [],
       userCorData: [],
+      selectedDevicePopUp:false
     };
     this.apiService = new APIServices();
   }
@@ -123,7 +125,14 @@ class CreateCor extends Component {
     this.setState({ corData: saveCorData });
     console.log("corData", corData);
   };
-  goParty = () => {
+  openSelectDevicePopUp=()=>{
+    this.setState({selectedDevicePopUp:true})
+  }
+  closeSelectDevicePopUp=()=>{
+    this.setState({selectedDevicePopUp:false})
+  }
+  goParty = (id) => {
+    this.closeSelectDevicePopUp()
     const { corData } = this.state;
     console.log("cordata", corData);
     let stringCSV = JSON.stringify({ corData });
@@ -133,7 +142,9 @@ class CreateCor extends Component {
     };
     this.props.socket.emit("corData", encodedString);
     this.props.setCorData(this.state.corData);
-    this.props.setIsReturnMusic(true);
+    this.props.setIsReturnMusic(id);
+    console.log("id go party",id)
+
   };
   saveUserCoreographyToDB = () => {
     this.props.setCreateCorPopup(true)
@@ -172,10 +183,11 @@ class CreateCor extends Component {
 
   render() {
     const { colour } = this.props;
-    const { checkBlind, checkSmoke, checkedMultiple } = this.state;
+    const { checkBlind, checkSmoke, checkedMultiple, selectedDevicePopUp } = this.state;
     // console.log("render", this.props.durationStamps, ",", this.getSeconds)
     return (
       <div>
+        {selectedDevicePopUp && <SelectedDevicePopUp send={(id)=> this.goParty(id)} onClose={this.closeSelectDevicePopUp} /> }
         <Grid container spacing={3}>
           <Grid item xs={4}>
             <Paper style={{ maxHeight: 700, overflow: "auto" }}>
@@ -266,7 +278,7 @@ class CreateCor extends Component {
                       color="primary"
                       size="small"
                       startIcon={<SaveIcon />}
-                      onClick={this.goParty}
+                      onClick={this.openSelectDevicePopUp}
                     >
                       Go Party
                     </Button>
