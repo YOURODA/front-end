@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import Slider from "@material-ui/core/Slider";
+import Slider from '@material-ui/lab/Slider';
 import Flare from "@material-ui/icons/Flare";
 import debounce from "lodash.debounce";
 

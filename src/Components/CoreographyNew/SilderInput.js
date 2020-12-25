@@ -16,19 +16,22 @@ const useStyles = makeStyles({
 function SilderInput(props) {
     const { rColor1, rColor2, rColor3, lColor1, lColor2, lColor3 } = props.colour
     const classes = useStyles();
-    const [state, setState] = useState({ x: 10, y: 10 });
+    const [state, setState] = useState({ x: 175, y: 255 });
     const debounceRedux = useCallback(debounce(e => updateRedux(e), 1000), []);
     const backgroundColor = props.robot === "L" ? `rgb(${lColor1}, ${lColor2}, ${lColor3})` : `rgb(${rColor1}, ${rColor2}, ${rColor3})`
 
     const updateRedux = (event) => {
         const { robot } = props
+        console.log("event.x", event.x)
+        console.log("event.y", 255-(event.y))
+
         if (robot === "L") {
-            props.setLeftHorValue((event.x) * 2.5)
-            props.setLeftVerValue((event.y) * 2.5)
+            props.setLeftHorValue(event.x)
+            props.setLeftVerValue(event.y)
         }
         if (robot === "R") {
-            props.setRightHorValue((event.x) * 2.5)
-            props.setRightVerValue((event.y) * 2.5)
+            props.setRightHorValue(event.x)
+            props.setRightVerValue(event.y)
         }
     }
 
@@ -45,6 +48,8 @@ function SilderInput(props) {
             <Grid container spacing={2}>
                 <Grid item xs>
                     <Slider
+                        xmax={255}
+                        ymax={255}
                         axis="xy"
                         styles={{
                             track: {

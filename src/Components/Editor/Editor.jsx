@@ -1,23 +1,15 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import * as actionTypes from "../../store/actions/actionTypes";
-import { Grid } from "grommet";
 import { makeStyles } from "@material-ui/styles";
-import { toaster } from "evergreen-ui";
 import Button from "@material-ui/core/Button";
-import axios from "axios"
 import TextField from '@material-ui/core/TextField';
-import Icon from "@material-ui/core/Icon";
-import ExportCSV from "../Coreography/ExportCSV/ExportCSV";
 import socketIo from "socket.io-client";
-import CorDraw from "../Coreography/CorDraw";
 import CreateCor from "../CoreographyNew/CreateCor";
 import Box from "@material-ui/core/Box";
-import { Typography, CardHeader, Card, CardContent, CardActions } from "@material-ui/core";
-import SmokeStatus from "../CoreographyNew/SmokeStatus";
+import { Typography, CardHeader, Card, CardContent, CardActions, Grid } from "@material-ui/core";
 import CssBaseline from "@material-ui/core/CssBaseline/CssBaseline";
 import SpotifyFooterMakeCor from "../../Containers/SpotifyFooter/SpotifyFooterMakeCor";
-import SecondList from "../CoreographyNew/SecondList";
 import APIServices from "../Services/APIServices"
 import CreateUserPopUp from '../CoreographyNew/CreateUserPopUp'
 const odaName = "test3"
@@ -93,7 +85,7 @@ class Editor extends Component {
       "timeout": 10000,
       "transports": ["websocket"]
     };
-    var socketio_url = 'http://localhost:5000'
+    var socketio_url = 'https://your-oda-back-end.herokuapp.com'
     this.odaName = { name: "Corlu" }
     this.state.socket = socketIo.connect(socketio_url, connectionStrings);
     this.state.socket.emit("Odaya Katil", this.odaName);
@@ -110,82 +102,12 @@ class Editor extends Component {
     clearInterval(this.interval);
   }
 
-  getData = result => {
-    this.setState({ data: result.data });
-  };
-  getBase64(file, cb) {
-    let reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = function () {
-      cb(reader.result)
-    };
-    reader.onerror = function (error) {
-      console.log('Error: ', error);
-    };
-
-  }
-  onCsvExcel = () => {
-    const dataForExcel = [];
-    if (this.props.csvData.length !== 0) {
-      this.props.csvData.forEach(element => {
-        dataForExcel.push({
-          "A": element.startDate,
-          "B": element.rRobotsSpeed1,
-          "C": element.rRobotsSpeed2,
-          "D": element.lRobotsSpeed1,
-          "E": element.lRobotsSpeed2,
-          "F": element.rColor1,
-          "G": element.rColor2,
-          "H": element.rColor3,
-          "I": element.lColor2,
-          "J": element.lColor3,
-          "K": element.blinker,
-          "L": element.smokeHeater,
-          "M": element.smoke,
-        });
-      });
-      // dataForExcel.push({
-      //   "Şarkı Süresi": this.milisToMinutesAndSeconds(
-      //     this.props.durationStamps
-      //   ),
-      //   "Çalan Şarkı İsmi": this.props.currently_playing
-      // });
-      this.setState({
-        excelData: dataForExcel
-      });
-    }
-    let stringCSV = JSON.stringify(this.state.excelData);
-    const encodedString = { "base": new Buffer(stringCSV).toString('base64'), "time": this.milisToMinutesAndSeconds(this.props.durationStamps) }
-    this.props.socket.emit(
-      "corData",
-      encodedString
-    );
-  };
   isAvailableOdaNickRes = () => {
     this.apiService.isAvailableOdaNick(this.state.odaNick).then(response => {
       if (response.data.odaNick === this.state.odaNick)
         this.setState({ goCoreography: true })
     })
   }
-  onCloseEveryComponent = () => {
-    this.props.csvData.forEach(element => {
-      return element.startDate = 0,
-        element.rRobotsSpeed1 = 40,
-        element.rRobotsSpeed2 = 40,
-        element.lRobotsSpeed1 = 40,
-        element.lRobotsSpeed2 = 40,
-        element.rColor1 = "0",
-        element.rColor2 = "0",
-        element.rColor3 = "0",
-        element.lColor2 = "0",
-        element.lColor3 = "0",
-        element.blinker = 0,
-        element.smokeHeater = 0,
-        element.smoke = 0
-    })
-    console.log(this.state.csvData)
-  }
-
   milisToMinutesAndSeconds = mil => {
     let minutes = Math.floor(mil / 60000);
     let seconds = ((mil % 60000) / 1000).toFixed(0);
@@ -206,8 +128,6 @@ class Editor extends Component {
   }
 
   render() {
-    const { seconds } = this.state
-    console.log(this.props.userId)
     if (this.props.userId) {
       this.state.goCoreography = true
     }
@@ -247,50 +167,12 @@ class Editor extends Component {
             }
           </Box>
         }
-        {this.state.goCoreography === true &&
-          <div>
-            <Grid container spacing={3}>
-              <Grid item lg={3} md={12} xl={9} xs={12}>
-                {this.props.durationStamps > 0 &&
-                  <div>
-                    <CreateCor />
-                  </div>
-                }
-              </Grid >
-            </Grid>
-            {/* <Button
-              className={useStyles.button}
-              variant="contained"
-              color="primary"
-              onClick={this.onCsvExcel}
-            >
-              HİSSET
-            </Button>
-            <Button
-              className={useStyles.button}
-              variant="contained"
-              color="primary"
-              onClick={this.onCloseEveryComponent}
-            >
-              KAPAT
-              </Button>
-            <div style={{ textAlign: "right" }}>
-              <Button
-                className={useStyles.button}
-                variant="contained"
-                color="primary"
-                endIcon={<Icon>Yolla</Icon>}
-              >
-                <ExportCSV
-                  csvData={this.state.excelData}
-                  fileName={this.state.fileName}
-                />
-              </Button>
-            </div> */}
-          </div>
+        {this.state.goCoreography === true && this.props.durationStamps > 0 &&
+          <Grid item lg={12} md={12} xl={12} xs={12}>
+            <CreateCor />
+          </Grid>
         }
-
-        <CssBaseline >
+        <Grid item lg={12} md={12} xl={12} xs={12}>
           <SpotifyFooterMakeCor
             style={{
               fontFamily:
@@ -298,7 +180,7 @@ class Editor extends Component {
             }}
           >
           </SpotifyFooterMakeCor>
-        </CssBaseline>
+        </Grid>
       </Grid>
     );
   }

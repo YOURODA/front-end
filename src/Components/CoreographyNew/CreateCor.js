@@ -1,11 +1,9 @@
-import React, { forwardRef, Component } from "react";
+import React, { Component } from "react";
 import * as actionTypes from "../../store/actions/actionTypes";
 import { connect } from "react-redux";
-import { CirclePicker } from "react-color";
 import {
   FormControlLabel,
   Card,
-  Typography,
   CardContent,
   List,
   ListItem,
@@ -18,15 +16,15 @@ import {
   Paper,
   CardActions,
 } from "@material-ui/core";
-import Cloud from "@material-ui/icons/Cloud";
-import CloudQueue from "@material-ui/icons/CloudQueue";
-import Highlight from "@material-ui/icons/Highlight";
-import HighlightOutlined from "@material-ui/icons/HighlightOutlined";
+// import Cloud from "@material-ui/icons/Cloud";
+// import CloudQueue from "@material-ui/icons/CloudQueue";
+// import Highlight from "@material-ui/icons/Highlight";
+// import HighlightOutlined from "@material-ui/icons/HighlightOutlined";
 import SaveIcon from "@material-ui/icons/Save";
 import SmokeStatus from "./SmokeStatus";
-import SilderInput from "./SilderInput";
-import Brightness from "./Brightness";
-import Blinker from "./Blinker";
+// import SilderInput from "./SilderInput";
+// import Brightness from "./Brightness";
+// import Blinker from "./Blinker";
 import APIServices from "../Services/APIServices";
 import RobotOptions from "./RobotOptions";
 import CreateCorPopUp from "./CreateCorPopUp";
@@ -35,7 +33,6 @@ import SelectedDevicePopUp from "./SelectedDevicePopUp"
 class CreateCor extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       checked: [1],
       checkedMultiple: [],
@@ -47,7 +44,7 @@ class CreateCor extends Component {
       checkBlind: 1,
       clearSecondList: [],
       userCorData: [],
-      selectedDevicePopUp:false
+      selectedDevicePopUp: false
     };
     this.apiService = new APIServices();
   }
@@ -67,11 +64,10 @@ class CreateCor extends Component {
         this.milisToMinutesAndSeconds(this.props.durationStamps) / 3
       );
       this.getSeconds = Array.from(Array(this.clearSeconds).keys());
-      // console.log("componentDidUpdate", this.props.durationStamps, ",", this.getSeconds)
       this.setState({ clearSecondList: this.getSeconds });
     }
   }
-  saveCoreography = (props) => {
+  saveCoreography = () => {
     const { colour } = this.props;
     const { checkedMultiple, corData } = this.state;
     const { lColor1, lColor2, lColor3, rColor1, rColor2, rColor3 } = colour;
@@ -125,11 +121,11 @@ class CreateCor extends Component {
     this.setState({ corData: saveCorData });
     console.log("corData", corData);
   };
-  openSelectDevicePopUp=()=>{
-    this.setState({selectedDevicePopUp:true})
+  openSelectDevicePopUp = () => {
+    this.setState({ selectedDevicePopUp: true })
   }
-  closeSelectDevicePopUp=()=>{
-    this.setState({selectedDevicePopUp:false})
+  closeSelectDevicePopUp = () => {
+    this.setState({ selectedDevicePopUp: false })
   }
   goParty = (id) => {
     this.closeSelectDevicePopUp()
@@ -143,7 +139,7 @@ class CreateCor extends Component {
     this.props.socket.emit("corData", encodedString);
     this.props.setCorData(this.state.corData);
     this.props.setIsReturnMusic(id);
-    console.log("id go party",id)
+    console.log("id go party", id)
 
   };
   saveUserCoreographyToDB = () => {
@@ -184,12 +180,10 @@ class CreateCor extends Component {
   render() {
     const { colour } = this.props;
     const { checkBlind, checkSmoke, checkedMultiple, selectedDevicePopUp } = this.state;
-    // console.log("render", this.props.durationStamps, ",", this.getSeconds)
     return (
-      <div>
-        {selectedDevicePopUp && <SelectedDevicePopUp send={(id)=> this.goParty(id)} onClose={this.closeSelectDevicePopUp} /> }
         <Grid container spacing={3}>
-          <Grid item xs={4}>
+        {selectedDevicePopUp && <SelectedDevicePopUp send={(id) => this.goParty(id)} onClose={this.closeSelectDevicePopUp} />}
+          <Grid item lg={4} md={4} xl={4} xs={4}>
             <Paper style={{ maxHeight: 700, overflow: "auto" }}>
               {this.state.clearSecondList && (
                 <List>
@@ -226,7 +220,7 @@ class CreateCor extends Component {
               )}
             </Paper>
           </Grid>
-          <Grid item xs={8}>
+          <Grid item lg={8} md={8} xl={8} xs={8}>
             {this.state.checkedMultiple && (
               <React.Fragment>
                 <Card>
@@ -298,7 +292,6 @@ class CreateCor extends Component {
             )}
           </Grid>
         </Grid>
-      </div>
     );
   }
 }
