@@ -23,7 +23,7 @@ function SilderInput(props) {
     const updateRedux = (event) => {
         const { robot } = props
         console.log("event.x", event.x)
-        console.log("event.y", 255-(event.y))
+        console.log("event.y", 255 - (event.y))
 
         if (robot === "L") {
             props.setLeftHorValue(event.x)
