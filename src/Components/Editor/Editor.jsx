@@ -85,7 +85,7 @@ class Editor extends Component {
       "timeout": 10000,
       "transports": ["websocket"]
     };
-    var socketio_url = 'https://your-oda-back-end.herokuapp.com'
+    const socketio_url = 'https://your-oda-back-end.herokuapp.com'
     this.odaName = { name: "Corlu" }
     this.state.socket = socketIo.connect(socketio_url, connectionStrings);
     this.state.socket.emit("Odaya Katil", this.odaName);

@@ -16,20 +16,33 @@ import {
   Paper,
   CardActions,
 } from "@material-ui/core";
-// import Cloud from "@material-ui/icons/Cloud";
-// import CloudQueue from "@material-ui/icons/CloudQueue";
-// import Highlight from "@material-ui/icons/Highlight";
-// import HighlightOutlined from "@material-ui/icons/HighlightOutlined";
 import SaveIcon from "@material-ui/icons/Save";
 import SmokeStatus from "./SmokeStatus";
-// import SilderInput from "./SilderInput";
-// import Brightness from "./Brightness";
-// import Blinker from "./Blinker";
+import { withStyles } from '@material-ui/styles';
 import APIServices from "../Services/APIServices";
 import RobotOptions from "./RobotOptions";
 import CreateCorPopUp from "./CreateCorPopUp";
 import SelectedDevicePopUp from "./SelectedDevicePopUp"
-
+const useStyles = theme => ({
+  active: {
+    backgroundColor: "#e8eaf6"
+  },
+  nonActive: {
+    backgroundColor: "#ffffff"
+  },
+  listSecond: {
+    display: "grid",
+    width: "100%",
+    gridTemplateColumns: "auto auto"
+  },
+  secondValue: {
+    textAlign: "left"
+  },
+  scondStr: {
+    textAlign: "right",
+    paddingRight: "35%"
+  }
+});
 class CreateCor extends Component {
   constructor(props) {
     super(props);
@@ -38,12 +51,9 @@ class CreateCor extends Component {
       checkedMultiple: [],
       corData: [],
       saveCorData: [],
-      selectedSecond: [],
-      selectedColor: "#fff",
       checkSmoke: 0,
-      checkBlind: 1,
+      changeSecondsColor: false,
       clearSecondList: [],
-      userCorData: [],
       selectedDevicePopUp: false
     };
     this.apiService = new APIServices();
@@ -51,17 +61,16 @@ class CreateCor extends Component {
   componentDidMount() {
     if (this.props.durationStamps) {
       this.clearSeconds = Math.round(
-        this.milisToMinutesAndSeconds(this.props.durationStamps) / 3
+        this.milisToMinutesAndSeconds(this.props.durationStamps) / 2
       );
       this.getSeconds = Array.from(Array(this.clearSeconds).keys());
-      // console.log("componentDidMount", this.props.durationStamps, ",", this.getSeconds)
       this.setState({ clearSecondList: this.getSeconds });
     }
   }
   componentDidUpdate(prevProps) {
     if (this.props.durationStamps !== prevProps.durationStamps) {
       this.clearSeconds = Math.round(
-        this.milisToMinutesAndSeconds(this.props.durationStamps) / 3
+        this.milisToMinutesAndSeconds(this.props.durationStamps) / 2
       );
       this.getSeconds = Array.from(Array(this.clearSeconds).keys());
       this.setState({ clearSecondList: this.getSeconds });
@@ -163,9 +172,6 @@ class CreateCor extends Component {
     let secondsOfSum = Math.floor(Number(minutes) * 60 + Number(seconds));
     return secondsOfSum;
   };
-  handleToggle = (value) => {
-    this.setState({ selectedSecond: value });
-  };
   handleToggleMultiple = (value) => {
     const currentIndex = this.state.checkedMultiple.indexOf(value);
     const newChecked = [...this.state.checkedMultiple];
@@ -178,120 +184,120 @@ class CreateCor extends Component {
   };
 
   render() {
-    const { colour } = this.props;
-    const { checkBlind, checkSmoke, checkedMultiple, selectedDevicePopUp } = this.state;
+    const { classes } = this.props;
+    const { checkSmoke, checkedMultiple, selectedDevicePopUp } = this.state;
     return (
-        <Grid container spacing={3}>
+      <Grid container spacing={3}>
         {selectedDevicePopUp && <SelectedDevicePopUp send={(id) => this.goParty(id)} onClose={this.closeSelectDevicePopUp} />}
-          <Grid item lg={4} md={4} xl={4} xs={4}>
-            <Paper style={{ maxHeight: 700, overflow: "auto" }}>
-              {this.state.clearSecondList && (
-                <List>
-                  {this.state.clearSecondList.map((value) => {
-                    const labelId = `checkbox-list-label-${value}`;
-                    return (
-                      <React.Fragment>
-                        <ListItem
-                          key={value}
-                          role={undefined}
-                          dense
-                          button
-                          onClick={() => this.handleToggleMultiple(value)}
-                        >
-                          <ListItemIcon>
-                            <Checkbox
-                              edge="start"
-                              checked={checkedMultiple.indexOf(value) !== -1}
-                              tabIndex={-1}
-                              disableRipple
-                              inputProps={{ "aria-labelledby": labelId }}
-                            />
-                          </ListItemIcon>
-                          <ListItemText
+        <Grid item lg={2} md={2} xl={2} xs={2}>
+          <Paper style={{ maxHeight: 700, overflow: "auto" }}>
+            {this.state.clearSecondList && (
+              <List>
+                {this.state.clearSecondList.map((value) => {
+                  const labelId = `button-list-label-${value}`;
+                  return (
+                    <React.Fragment>
+                      <ListItem
+                        key={value}
+                        role={undefined}
+                        dense
+                        button
+                        onClick={() => this.handleToggleMultiple(value)}
+                        checked={checkedMultiple.indexOf(value) !== -1}
+                        className={checkedMultiple.indexOf(value) !== -1 ? classes.active : classes.nonActive}
+                      >
+                        <ListItemIcon>
+                        </ListItemIcon>
+                        <div className={classes.listSecond}>
+                          <div
                             id={labelId}
-                            primary={`${value * 3} - ${value * 3 + 3} second`}
-                          />
-                        </ListItem>
-                        <Divider />
-                      </React.Fragment>
-                    );
-                  })}
-                </List>
-              )}
-            </Paper>
-          </Grid>
-          <Grid item lg={8} md={8} xl={8} xs={8}>
-            {this.state.checkedMultiple && (
-              <React.Fragment>
-                <Card>
-                  <CardContent>
-                    <Grid container spacing={3}>
-                      <Grid item xs={6}>
-                        <RobotOptions robot={"L"} />
-                      </Grid>
-                      <Grid item xs={6}>
-                        <RobotOptions robot={"R"} />
-                      </Grid>
-                    </Grid>
-                    {this.props.createCorPopup &&
-                      <CreateCorPopUp />
-                    }
-                    <Grid container spacing={3}>
-                      <Grid item xs={11}>
-                        <SmokeStatus />
-                      </Grid>
-                      <Grid item xs={1}>
-                        <FormControlLabel
-                          control={
-                            <Checkbox
-                              checked={checkSmoke}
-                              onChange={this.handleChangeSmoke}
-                              name="checkSmoke"
-                              color="primary"
-                            />
-                          }
-                          label="Smoke"
-                        />
-                      </Grid>
-                    </Grid>
-                  </CardContent>
-                  <CardActions>
-                    <Button
-                      style={{ flex: 1 }}
-                      variant="contained"
-                      color="primary"
-                      size="small"
-                      startIcon={<SaveIcon />}
-                      onClick={this.saveCoreography}
-                    >
-                      Save For Party
-                    </Button>
-                    <Button
-                      style={{ flex: 1 }}
-                      variant="contained"
-                      color="primary"
-                      size="small"
-                      startIcon={<SaveIcon />}
-                      onClick={this.openSelectDevicePopUp}
-                    >
-                      Go Party
-                    </Button>
-                    <Button
-                      style={{ flex: 1 }}
-                      variant="contained"
-                      color="primary"
-                      size="small"
-                      startIcon={<SaveIcon />}
-                      onClick={this.saveUserCoreographyToDB}
-                    >
-                      Save For MyCHR
-                    </Button>
-                  </CardActions>
-                </Card>
-              </React.Fragment>
+                            className={classes.secondValue}
+                          >
+                            {`${value * 2} - ${value * 2 + 2}`}
+                          </div>
+                          <div className={classes.scondStr}>seconds</div>
+                        </div>
+                      </ListItem>
+                      <Divider />
+                    </React.Fragment>
+                  );
+                })}
+              </List>
             )}
-          </Grid>
+          </Paper>
         </Grid>
+        <Grid item lg={10} md={10} xl={10} xs={10}>
+          {this.state.checkedMultiple && (
+            <React.Fragment>
+              <Card>
+                <CardContent>
+                  <Grid container spacing={3}>
+                    <Grid item xs={6}>
+                      <RobotOptions robot={"L"} />
+                    </Grid>
+                    <Grid item xs={6}>
+                      <RobotOptions robot={"R"} />
+                    </Grid>
+                  </Grid>
+                  {this.props.createCorPopup &&
+                    <CreateCorPopUp />
+                  }
+                  <Grid container spacing={3}>
+                    <Grid item xs={11}>
+                      <SmokeStatus />
+                    </Grid>
+                    <Grid item xs={1}>
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={checkSmoke}
+                            onChange={this.handleChangeSmoke}
+                            name="checkSmoke"
+                            color="primary"
+                          />
+                        }
+                        label="Smoke"
+                      />
+                    </Grid>
+                  </Grid>
+                </CardContent>
+                <CardActions>
+                  <Button
+                    style={{ flex: 1 }}
+                    variant="contained"
+                    color="primary"
+                    size="small"
+                    startIcon={<SaveIcon />}
+                    onClick={this.saveCoreography}
+                  >
+                    Save For Party
+                    </Button>
+                  <Button
+                    style={{ flex: 1 }}
+                    variant="contained"
+                    color="primary"
+                    size="small"
+                    startIcon={<SaveIcon />}
+                    onClick={this.openSelectDevicePopUp}
+                  >
+                    Go Party
+                    </Button>
+                  <Button
+                    style={{ flex: 1 }}
+                    variant="contained"
+                    color="primary"
+                    size="small"
+                    startIcon={<SaveIcon />}
+                    onClick={this.saveUserCoreographyToDB}
+                  >
+                    Save For MyCHR
+                    </Button>
+                </CardActions>
+              </Card>
+            </React.Fragment>
+          )}
+        </Grid>
+      </Grid>
     );
   }
 }
@@ -325,4 +331,4 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({ type: actionTypes.IS_RETURN_MUSIC, isReturnMusic })
   };
 };
-export default connect(mapStateToProps, mapDispatchToProps)(CreateCor);
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(useStyles)(CreateCor));
