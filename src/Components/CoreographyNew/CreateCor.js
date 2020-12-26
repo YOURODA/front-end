@@ -190,7 +190,7 @@ class CreateCor extends Component {
                   {this.state.clearSecondList.map((value) => {
                     const labelId = `checkbox-list-label-${value}`;
                     return (
-                      <React.Fragment>
+                      <>
                         <ListItem
                           key={value}
                           role={undefined}
@@ -213,7 +213,7 @@ class CreateCor extends Component {
                           />
                         </ListItem>
                         <Divider />
-                      </React.Fragment>
+                      </>
                     );
                   })}
                 </List>

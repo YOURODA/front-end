@@ -9,7 +9,7 @@ import Brightness from "./Brightness";
 
 function RobotOptions(props) {
   const { robot } = props;
-  const silderLabel = robot === "L" ? "LeLiRo" : "RiLiRo";
+  const silderLabel = robot === "L" ? "Left Robot" : "Right Robot";
   const selectedColor = "#fff";
 
   const handleColorPWMValues = (event) => {
@@ -30,11 +30,12 @@ function RobotOptions(props) {
     <div>
       <Grid item xs={6}>
         <SilderInput label={silderLabel} robot={robot} />
-        <Typography variant="button">{`Select Color For ${silderLabel} Robot`}</Typography>
+        <Typography variant="button">{`Select Color For ${silderLabel}`}</Typography>
         <div style={{ float: "center" }}>
           <CirclePicker
             color={selectedColor}
             onChangeComplete={handleColorPWMValues}
+            colors={["#FF0000","#f44336", "#e91e63", "#9c27b0","#FF00FF" ,"#673ab7", "#3f51b5", "#2196f3","#0000FF" ,"#03a9f4", "#00FFFF", "#009688","#00FF00" ,"#4caf50", "#8bc34a", "#cddc39", "#FFFF00", "#ffc107", "#ff9800", "#ff5722", "#795548", "#000000","#607d8b","FFFFFF"]}
           />
         </div>
         <Brightness robot={robot} />

@@ -117,7 +117,7 @@ class MusicPlayer extends Component {
           this.props.setCurrentlyPlaying(current_track.name);
           this.props.setCurrentTrackId(this.state.playingInfo.track_window.current_track.id);
           this.apiService.isUserAvailable(this.props.user.email).then(response => {
-            this.setState({ getUserId: response.data.user[0]._id })
+            this.setState({ getUserId: response.data.user._id })
             this.props.setUserId(this.state.getUserId)
             if (response.data.message) {
               this.props.setIsUserAvailable(false)
