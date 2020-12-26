@@ -23,6 +23,9 @@ import makeParty from '../../images/createParty.png'
 // import PlayParty from "../MyPartyList/PlayCoreography";
 
 const useStyles = theme => ({
+  cardImage:{
+    height:'80%'
+  }
 
 });
 class PartySelection extends Component {
@@ -42,6 +45,7 @@ class PartySelection extends Component {
   }
 
   render() {
+    const { classes } = this.props;
     if (this.state.goPlayCoreography) {
       window.location = "/play-coreography"
     }
@@ -49,16 +53,16 @@ class PartySelection extends Component {
       window.location = "/make-coreography"
     }
     return (
-      <Grid container spacing="4">
+      <Grid container spacing="0">
         <Grid item lg={6} sm={6} xl={6} xs={6}>
-          <Card>
+          <Card className={classes.cardImage}>
             <CardActionArea>
               <img onClick={this.playCoreography} src={goParty} />
             </CardActionArea>
           </Card>
         </Grid>
         <Grid item lg={6} sm={6} xl={6} xs={6}>
-          <Card>
+          <Card className={classes.cardImage}>
             <CardActionArea>
               <img onClick={this.makePartyChecker} src={makeParty} />
             </CardActionArea>
