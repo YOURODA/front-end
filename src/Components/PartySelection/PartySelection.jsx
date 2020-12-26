@@ -19,7 +19,7 @@ import {
   CardActionArea,
 } from '@material-ui/core';
 import goParty from '../../images/goParty.png'
-import makeParty from '../../images/makeParty.png'
+import makeParty from '../../images/createParty.png'
 // import PlayParty from "../MyPartyList/PlayCoreography";
 
 const useStyles = theme => ({
