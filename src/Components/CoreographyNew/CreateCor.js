@@ -31,16 +31,7 @@ const useStyles = theme => ({
     backgroundColor: "#ffffff"
   },
   listSecond: {
-    display: "grid",
-    width: "100%",
-    gridTemplateColumns: "auto auto"
-  },
-  secondValue: {
-    textAlign: "left"
-  },
-  scondStr: {
-    textAlign: "right",
-    paddingRight: "35%"
+    height: '24pt'
   }
 });
 class CreateCor extends Component {
@@ -189,7 +180,7 @@ class CreateCor extends Component {
     return (
       <Grid container spacing={3}>
         {selectedDevicePopUp && <SelectedDevicePopUp send={(id) => this.goParty(id)} onClose={this.closeSelectDevicePopUp} />}
-        <Grid item lg={2} md={2} xl={2} xs={2}>
+        <Grid item lg={3} md={3} xl={3} xs={3}>
           <Paper style={{ maxHeight: 700, overflow: "auto" }}>
             {this.state.clearSecondList && (
               <List>
@@ -208,15 +199,17 @@ class CreateCor extends Component {
                       >
                         <ListItemIcon>
                         </ListItemIcon>
-                        <div className={classes.listSecond}>
-                          <div
+                        <Grid container className={classes.listSecond}>
+                          <Grid item xs={2} />
+                          <Grid
+                            item xs={3}
                             id={labelId}
-                            className={classes.secondValue}
                           >
                             {`${value * 2} - ${value * 2 + 2}`}
-                          </div>
-                          <div className={classes.scondStr}>seconds</div>
-                        </div>
+                          </Grid>
+                          <Grid item xs={3} >seconds</Grid>
+                          <Grid item xs={2} />
+                        </Grid>
                       </ListItem>
                       <Divider />
                     </React.Fragment>
@@ -226,18 +219,16 @@ class CreateCor extends Component {
             )}
           </Paper>
         </Grid>
-        <Grid item lg={10} md={10} xl={10} xs={10}>
+        <Grid item lg={9} md={9} xl={9} xs={9}>
           {this.state.checkedMultiple && (
             <React.Fragment>
               <Card>
                 <CardContent>
-                  <Grid container spacing={3}>
-                    <Grid item xs={6}>
-                      <RobotOptions robot={"L"} />
-                    </Grid>
-                    <Grid item xs={6}>
-                      <RobotOptions robot={"R"} />
-                    </Grid>
+                  <Grid container spacing={0}>
+                    <Grid item xs={2} />
+                    <RobotOptions robot={"L"} />
+                    <RobotOptions robot={"R"} />
+                    <Grid item xs={2} />
                   </Grid>
                   {this.props.createCorPopup &&
                     <CreateCorPopUp />
