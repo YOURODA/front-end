@@ -18,30 +18,30 @@ import {
 } from "@material-ui/core";
 import SaveIcon from "@material-ui/icons/Save";
 import SmokeStatus from "./SmokeStatus";
-import { withStyles } from '@material-ui/styles';
+import { withStyles } from "@material-ui/styles";
 import APIServices from "../Services/APIServices";
 import RobotOptions from "./RobotOptions";
 import CreateCorPopUp from "./CreateCorPopUp";
-import SelectedDevicePopUp from "./SelectedDevicePopUp"
-const useStyles = theme => ({
+import SelectedDevicePopUp from "./SelectedDevicePopUp";
+const useStyles = (theme) => ({
   active: {
-    backgroundColor: "#e8eaf6"
+    backgroundColor: "#e8eaf6",
   },
   nonActive: {
-    backgroundColor: "#ffffff"
+    backgroundColor: "#ffffff",
   },
   listSecond: {
     display: "grid",
     width: "100%",
-    gridTemplateColumns: "auto auto"
+    gridTemplateColumns: "auto auto",
   },
   secondValue: {
-    textAlign: "left"
+    textAlign: "left",
   },
   scondStr: {
     textAlign: "right",
-    paddingRight: "35%"
-  }
+    paddingRight: "35%",
+  },
 });
 class CreateCor extends Component {
   constructor(props) {
@@ -54,11 +54,69 @@ class CreateCor extends Component {
       checkSmoke: 0,
       changeSecondsColor: false,
       clearSecondList: [],
-      selectedDevicePopUp: false
+      selectedDevicePopUp: false,
     };
     this.apiService = new APIServices();
+    this.tryFunction = this.tryFunction.bind(this);
+  }
+
+  tryFunction(event) {
+    console.log("basıldı", event.keyCode);
+    if (event.keyCode === 84) {
+    const { colour } = this.props;
+    const { lColor1, lColor2, lColor3, rColor1, rColor2, rColor3 } = colour;
+      let trycor = [];
+      trycor[0] = {
+          startDate: 0,
+          robot: `${
+            this.props.leftHorValue ? this.props.leftHorValue : "0"
+          },0,${this.props.leftVerValue ? this.props.leftVerValue : "0"},0,0,${
+            this.props.brightnessValue.L ? this.props.brightnessValue.L : "0"
+          },${lColor1},${lColor2},${lColor3},"59",${
+            this.props.blinkerValue.L ? this.props.blinkerValue.L : "0"
+          },0,0,${
+            this.props.rightHorValue ? this.props.rightHorValue : "0"
+          },0,${
+            this.props.rightVerValue ? this.props.rightVerValue : "0"
+          },0,0,${
+            this.props.brightnessValue.R ? this.props.brightnessValue.R : "0"
+          },${rColor1},${rColor2},${rColor3},0,${
+            this.props.blinkerValue.R ? this.props.blinkerValue.R : "0"
+          },0,0`,
+          smoke: 0 //L
+        };
+        trycor[1] = {
+          startDate: 1,
+          robot: `${
+            this.props.leftHorValue ? this.props.leftHorValue : "0"
+          },0,${this.props.leftVerValue ? this.props.leftVerValue : "0"},0,0,${
+            this.props.brightnessValue.L ? this.props.brightnessValue.L : "0"
+          },${lColor1},${lColor2},${lColor3},"59",${
+            this.props.blinkerValue.L ? this.props.blinkerValue.L : "0"
+          },0,0,${
+            this.props.rightHorValue ? this.props.rightHorValue : "0"
+          },0,${
+            this.props.rightVerValue ? this.props.rightVerValue : "0"
+          },0,0,${
+            this.props.brightnessValue.R ? this.props.brightnessValue.R : "0"
+          },${rColor1},${rColor2},${rColor3},0,${
+            this.props.blinkerValue.R ? this.props.blinkerValue.R : "0"
+          },0,0`,
+          smoke: 0 //L
+        };
+        console.log("trycor", trycor);
+        let stringCSV = JSON.stringify({ corData:trycor });
+        const encodedString = {
+          base: new Buffer(stringCSV).toString("base64"),
+          time:2,
+        };
+        this.props.socket.emit("corData", encodedString);
+      
+      //Do whatever when esc is pressed
+    }
   }
   componentDidMount() {
+    document.addEventListener("keydown", this.tryFunction, false);
     if (this.props.durationStamps) {
       this.clearSeconds = Math.round(
         this.milisToMinutesAndSeconds(this.props.durationStamps) / 2
@@ -66,6 +124,9 @@ class CreateCor extends Component {
       this.getSeconds = Array.from(Array(this.clearSeconds).keys());
       this.setState({ clearSecondList: this.getSeconds });
     }
+  }
+  componentWillUnmount() {
+    document.removeEventListener("keydown", this.tryFunction, false);
   }
   componentDidUpdate(prevProps) {
     if (this.props.durationStamps !== prevProps.durationStamps) {
@@ -76,6 +137,7 @@ class CreateCor extends Component {
       this.setState({ clearSecondList: this.getSeconds });
     }
   }
+
   saveCoreography = () => {
     const { colour } = this.props;
     const { checkedMultiple, corData } = this.state;
@@ -87,19 +149,19 @@ class CreateCor extends Component {
           startDate: seconds,
           robot: `${
             this.props.leftHorValue ? this.props.leftHorValue : "0"
-            },0,${this.props.leftVerValue ? this.props.leftVerValue : "0"},0,0,${
+          },0,${this.props.leftVerValue ? this.props.leftVerValue : "0"},0,0,${
             this.props.brightnessValue.L ? this.props.brightnessValue.L : "0"
-            },${lColor1},${lColor2},${lColor3},"59",${
+          },${lColor1},${lColor2},${lColor3},"59",${
             this.props.blinkerValue.L ? this.props.blinkerValue.L : "0"
-            },0,0,${
+          },0,0,${
             this.props.rightHorValue ? this.props.rightHorValue : "0"
-            },0,${
+          },0,${
             this.props.rightVerValue ? this.props.rightVerValue : "0"
-            },0,0,${
+          },0,0,${
             this.props.brightnessValue.R ? this.props.brightnessValue.R : "0"
-            },${rColor1},${rColor2},${rColor3},0,${
+          },${rColor1},${rColor2},${rColor3},0,${
             this.props.blinkerValue.R ? this.props.blinkerValue.R : "0"
-            },0,0`,
+          },0,0`,
           smoke: this.state.checkSmoke === true ? "1" : "0", //L
           smoke: this.state.checkSmoke, //L
         };
@@ -109,19 +171,19 @@ class CreateCor extends Component {
           startDate: seconds,
           robot: `${
             this.props.leftHorValue ? this.props.leftHorValue : "0"
-            },0,${this.props.leftVerValue ? this.props.leftVerValue : "0"},0,0,${
+          },0,${this.props.leftVerValue ? this.props.leftVerValue : "0"},0,0,${
             this.props.brightnessValue.L ? this.props.brightnessValue.L : "0"
-            },${lColor1},${lColor2},${lColor3},"59",${
+          },${lColor1},${lColor2},${lColor3},"59",${
             this.props.blinkerValue.L ? this.props.blinkerValue.L : "0"
-            },0,0,${
+          },0,0,${
             this.props.rightHorValue ? this.props.rightHorValue : "0"
-            },0,${
+          },0,${
             this.props.rightVerValue ? this.props.rightVerValue : "0"
-            },0,0,${
+          },0,0,${
             this.props.brightnessValue.R ? this.props.brightnessValue.R : "0"
-            },${rColor1},${rColor2},${rColor3},0,${
+          },${rColor1},${rColor2},${rColor3},0,${
             this.props.blinkerValue.R ? this.props.blinkerValue.R : "0"
-            },0,0`,
+          },0,0`,
           smoke: this.state.checkSmoke === true ? "1" : "0", //L
           smoke: this.state.checkSmoke === true ? "1" : "0", //L
         };
@@ -131,13 +193,13 @@ class CreateCor extends Component {
     console.log("corData", corData);
   };
   openSelectDevicePopUp = () => {
-    this.setState({ selectedDevicePopUp: true })
-  }
+    this.setState({ selectedDevicePopUp: true });
+  };
   closeSelectDevicePopUp = () => {
-    this.setState({ selectedDevicePopUp: false })
-  }
+    this.setState({ selectedDevicePopUp: false });
+  };
   goParty = (id) => {
-    this.closeSelectDevicePopUp()
+    this.closeSelectDevicePopUp();
     const { corData } = this.state;
     console.log("cordata", corData);
     let stringCSV = JSON.stringify({ corData });
@@ -148,11 +210,10 @@ class CreateCor extends Component {
     this.props.socket.emit("corData", encodedString);
     this.props.setCorData(this.state.corData);
     this.props.setIsReturnMusic(id);
-    console.log("id go party", id)
-
+    console.log("id go party", id);
   };
   saveUserCoreographyToDB = () => {
-    this.props.setCreateCorPopup(true)
+    this.props.setCreateCorPopup(true);
     this.props.setCorData(this.state.corData);
     this.setState({ goCoreography: true });
   };
@@ -188,7 +249,12 @@ class CreateCor extends Component {
     const { checkSmoke, checkedMultiple, selectedDevicePopUp } = this.state;
     return (
       <Grid container spacing={3}>
-        {selectedDevicePopUp && <SelectedDevicePopUp send={(id) => this.goParty(id)} onClose={this.closeSelectDevicePopUp} />}
+        {selectedDevicePopUp && (
+          <SelectedDevicePopUp
+            send={(id) => this.goParty(id)}
+            onClose={this.closeSelectDevicePopUp}
+          />
+        )}
         <Grid item lg={2} md={2} xl={2} xs={2}>
           <Paper style={{ maxHeight: 700, overflow: "auto" }}>
             {this.state.clearSecondList && (
@@ -204,15 +270,15 @@ class CreateCor extends Component {
                         button
                         onClick={() => this.handleToggleMultiple(value)}
                         checked={checkedMultiple.indexOf(value) !== -1}
-                        className={checkedMultiple.indexOf(value) !== -1 ? classes.active : classes.nonActive}
+                        className={
+                          checkedMultiple.indexOf(value) !== -1
+                            ? classes.active
+                            : classes.nonActive
+                        }
                       >
-                        <ListItemIcon>
-                        </ListItemIcon>
+                        <ListItemIcon></ListItemIcon>
                         <div className={classes.listSecond}>
-                          <div
-                            id={labelId}
-                            className={classes.secondValue}
-                          >
+                          <div id={labelId} className={classes.secondValue}>
                             {`${value * 2} - ${value * 2 + 2}`}
                           </div>
                           <div className={classes.scondStr}>seconds</div>
@@ -229,6 +295,7 @@ class CreateCor extends Component {
         <Grid item lg={10} md={10} xl={10} xs={10}>
           {this.state.checkedMultiple && (
             <React.Fragment>
+              <div id="one" onKeyPress={this.handleKeyPress} />
               <Card>
                 <CardContent>
                   <Grid container spacing={3}>
@@ -239,9 +306,7 @@ class CreateCor extends Component {
                       <RobotOptions robot={"R"} />
                     </Grid>
                   </Grid>
-                  {this.props.createCorPopup &&
-                    <CreateCorPopUp />
-                  }
+                  {this.props.createCorPopup && <CreateCorPopUp />}
                   <Grid container spacing={3}>
                     <Grid item xs={11}>
                       <SmokeStatus />
@@ -271,7 +336,7 @@ class CreateCor extends Component {
                     onClick={this.saveCoreography}
                   >
                     Save For Party
-                    </Button>
+                  </Button>
                   <Button
                     style={{ flex: 1 }}
                     variant="contained"
@@ -281,7 +346,7 @@ class CreateCor extends Component {
                     onClick={this.openSelectDevicePopUp}
                   >
                     Go Party
-                    </Button>
+                  </Button>
                   <Button
                     style={{ flex: 1 }}
                     variant="contained"
@@ -291,7 +356,7 @@ class CreateCor extends Component {
                     onClick={this.saveUserCoreographyToDB}
                   >
                     Save For MyCHR
-                    </Button>
+                  </Button>
                 </CardActions>
               </Card>
             </React.Fragment>
@@ -315,20 +380,24 @@ const mapStateToProps = (state) => {
     user: state.current_user,
     colour: state.colour,
     colourNumber: state.colourNumber,
-    isReturnMusic: state.isReturnMusic
+    isReturnMusic: state.isReturnMusic,
   };
 };
 const mapDispatchToProps = (dispatch) => {
   return {
-    setCorData: corData => dispatch({ type: actionTypes.COR_DATA, corData }),
-    setCreateCorPopup: createCorPopup => dispatch({ type: actionTypes.CREATE_COR_POPUP, createCorPopup }),
+    setCorData: (corData) => dispatch({ type: actionTypes.COR_DATA, corData }),
+    setCreateCorPopup: (createCorPopup) =>
+      dispatch({ type: actionTypes.CREATE_COR_POPUP, createCorPopup }),
     setCorData: (corData) => dispatch({ type: actionTypes.COR_DATA, corData }),
     setColourNumber: (number) =>
       dispatch({ type: actionTypes.UPDATE_COLOUR_NUMBER, number }),
     setColour: (colour) =>
       dispatch({ type: actionTypes.UPDATE_COLOUR, colour }),
-    setIsReturnMusic: isReturnMusic =>
-      dispatch({ type: actionTypes.IS_RETURN_MUSIC, isReturnMusic })
+    setIsReturnMusic: (isReturnMusic) =>
+      dispatch({ type: actionTypes.IS_RETURN_MUSIC, isReturnMusic }),
   };
 };
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(useStyles)(CreateCor));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(useStyles)(CreateCor));
