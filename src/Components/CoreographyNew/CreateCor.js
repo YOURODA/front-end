@@ -31,22 +31,8 @@ const useStyles = (theme) => ({
     backgroundColor: "#ffffff",
   },
   listSecond: {
-<<<<<<< HEAD
     height: '24pt'
   }
-=======
-    display: "grid",
-    width: "100%",
-    gridTemplateColumns: "auto auto",
-  },
-  secondValue: {
-    textAlign: "left",
-  },
-  scondStr: {
-    textAlign: "right",
-    paddingRight: "35%",
-  },
->>>>>>> 147153895d6254591b7caf162d1391057ee72da2
 });
 class CreateCor extends Component {
   constructor(props) {
@@ -68,55 +54,55 @@ class CreateCor extends Component {
   tryFunction(event) {
     console.log("basıldı", event.keyCode);
     if (event.keyCode === 84) {
-    const { colour } = this.props;
-    const { lColor1, lColor2, lColor3, rColor1, rColor2, rColor3 } = colour;
+      const { colour } = this.props;
+      const { lColor1, lColor2, lColor3, rColor1, rColor2, rColor3 } = colour;
       let trycor = [];
       trycor[0] = {
-          startDate: 0,
-          robot: `${
-            this.props.leftHorValue ? this.props.leftHorValue : "0"
+        startDate: 0,
+        robot: `${
+          this.props.leftHorValue ? this.props.leftHorValue : "0"
           },0,${this.props.leftVerValue ? this.props.leftVerValue : "0"},0,0,${
-            this.props.brightnessValue.L ? this.props.brightnessValue.L : "0"
+          this.props.brightnessValue.L ? this.props.brightnessValue.L : "0"
           },${lColor1},${lColor2},${lColor3},"59",${
-            this.props.blinkerValue.L ? this.props.blinkerValue.L : "0"
+          this.props.blinkerValue.L ? this.props.blinkerValue.L : "0"
           },0,0,${
-            this.props.rightHorValue ? this.props.rightHorValue : "0"
+          this.props.rightHorValue ? this.props.rightHorValue : "0"
           },0,${
-            this.props.rightVerValue ? this.props.rightVerValue : "0"
+          this.props.rightVerValue ? this.props.rightVerValue : "0"
           },0,0,${
-            this.props.brightnessValue.R ? this.props.brightnessValue.R : "0"
+          this.props.brightnessValue.R ? this.props.brightnessValue.R : "0"
           },${rColor1},${rColor2},${rColor3},0,${
-            this.props.blinkerValue.R ? this.props.blinkerValue.R : "0"
+          this.props.blinkerValue.R ? this.props.blinkerValue.R : "0"
           },0,0`,
-          smoke: 0 //L
-        };
-        trycor[1] = {
-          startDate: 1,
-          robot: `${
-            this.props.leftHorValue ? this.props.leftHorValue : "0"
+        smoke: 0 //L
+      };
+      trycor[1] = {
+        startDate: 1,
+        robot: `${
+          this.props.leftHorValue ? this.props.leftHorValue : "0"
           },0,${this.props.leftVerValue ? this.props.leftVerValue : "0"},0,0,${
-            this.props.brightnessValue.L ? this.props.brightnessValue.L : "0"
+          this.props.brightnessValue.L ? this.props.brightnessValue.L : "0"
           },${lColor1},${lColor2},${lColor3},"59",${
-            this.props.blinkerValue.L ? this.props.blinkerValue.L : "0"
+          this.props.blinkerValue.L ? this.props.blinkerValue.L : "0"
           },0,0,${
-            this.props.rightHorValue ? this.props.rightHorValue : "0"
+          this.props.rightHorValue ? this.props.rightHorValue : "0"
           },0,${
-            this.props.rightVerValue ? this.props.rightVerValue : "0"
+          this.props.rightVerValue ? this.props.rightVerValue : "0"
           },0,0,${
-            this.props.brightnessValue.R ? this.props.brightnessValue.R : "0"
+          this.props.brightnessValue.R ? this.props.brightnessValue.R : "0"
           },${rColor1},${rColor2},${rColor3},0,${
-            this.props.blinkerValue.R ? this.props.blinkerValue.R : "0"
+          this.props.blinkerValue.R ? this.props.blinkerValue.R : "0"
           },0,0`,
-          smoke: 0 //L
-        };
-        console.log("trycor", trycor);
-        let stringCSV = JSON.stringify({ corData:trycor });
-        const encodedString = {
-          base: new Buffer(stringCSV).toString("base64"),
-          time:2,
-        };
-        this.props.socket.emit("corData", encodedString);
-      
+        smoke: 0 //L
+      };
+      console.log("trycor", trycor);
+      let stringCSV = JSON.stringify({ corData: trycor });
+      const encodedString = {
+        base: new Buffer(stringCSV).toString("base64"),
+        time: 2,
+      };
+      this.props.socket.emit("corData", encodedString);
+
       //Do whatever when esc is pressed
     }
   }
@@ -154,19 +140,19 @@ class CreateCor extends Component {
           startDate: seconds,
           robot: `${
             this.props.leftHorValue ? this.props.leftHorValue : "0"
-          },0,${this.props.leftVerValue ? this.props.leftVerValue : "0"},0,0,${
+            },0,${this.props.leftVerValue ? this.props.leftVerValue : "0"},0,0,${
             this.props.brightnessValue.L ? this.props.brightnessValue.L : "0"
-          },${lColor1},${lColor2},${lColor3},"59",${
+            },${lColor1},${lColor2},${lColor3},"59",${
             this.props.blinkerValue.L ? this.props.blinkerValue.L : "0"
-          },0,0,${
+            },0,0,${
             this.props.rightHorValue ? this.props.rightHorValue : "0"
-          },0,${
+            },0,${
             this.props.rightVerValue ? this.props.rightVerValue : "0"
-          },0,0,${
+            },0,0,${
             this.props.brightnessValue.R ? this.props.brightnessValue.R : "0"
-          },${rColor1},${rColor2},${rColor3},0,${
+            },${rColor1},${rColor2},${rColor3},0,${
             this.props.blinkerValue.R ? this.props.blinkerValue.R : "0"
-          },0,0`,
+            },0,0`,
           smoke: this.state.checkSmoke === true ? "1" : "0", //L
           smoke: this.state.checkSmoke, //L
         };
@@ -176,19 +162,19 @@ class CreateCor extends Component {
           startDate: seconds,
           robot: `${
             this.props.leftHorValue ? this.props.leftHorValue : "0"
-          },0,${this.props.leftVerValue ? this.props.leftVerValue : "0"},0,0,${
+            },0,${this.props.leftVerValue ? this.props.leftVerValue : "0"},0,0,${
             this.props.brightnessValue.L ? this.props.brightnessValue.L : "0"
-          },${lColor1},${lColor2},${lColor3},"59",${
+            },${lColor1},${lColor2},${lColor3},"59",${
             this.props.blinkerValue.L ? this.props.blinkerValue.L : "0"
-          },0,0,${
+            },0,0,${
             this.props.rightHorValue ? this.props.rightHorValue : "0"
-          },0,${
+            },0,${
             this.props.rightVerValue ? this.props.rightVerValue : "0"
-          },0,0,${
+            },0,0,${
             this.props.brightnessValue.R ? this.props.brightnessValue.R : "0"
-          },${rColor1},${rColor2},${rColor3},0,${
+            },${rColor1},${rColor2},${rColor3},0,${
             this.props.blinkerValue.R ? this.props.blinkerValue.R : "0"
-          },0,0`,
+            },0,0`,
           smoke: this.state.checkSmoke === true ? "1" : "0", //L
           smoke: this.state.checkSmoke === true ? "1" : "0", //L
         };
@@ -254,18 +240,8 @@ class CreateCor extends Component {
     const { checkSmoke, checkedMultiple, selectedDevicePopUp } = this.state;
     return (
       <Grid container spacing={3}>
-<<<<<<< HEAD
         {selectedDevicePopUp && <SelectedDevicePopUp send={(id) => this.goParty(id)} onClose={this.closeSelectDevicePopUp} />}
         <Grid item lg={3} md={3} xl={3} xs={3}>
-=======
-        {selectedDevicePopUp && (
-          <SelectedDevicePopUp
-            send={(id) => this.goParty(id)}
-            onClose={this.closeSelectDevicePopUp}
-          />
-        )}
-        <Grid item lg={2} md={2} xl={2} xs={2}>
->>>>>>> 147153895d6254591b7caf162d1391057ee72da2
           <Paper style={{ maxHeight: 700, overflow: "auto" }}>
             {this.state.clearSecondList && (
               <List>
@@ -286,7 +262,6 @@ class CreateCor extends Component {
                             : classes.nonActive
                         }
                       >
-<<<<<<< HEAD
                         <ListItemIcon>
                         </ListItemIcon>
                         <Grid container className={classes.listSecond}>
@@ -295,11 +270,6 @@ class CreateCor extends Component {
                             item xs={3}
                             id={labelId}
                           >
-=======
-                        <ListItemIcon></ListItemIcon>
-                        <div className={classes.listSecond}>
-                          <div id={labelId} className={classes.secondValue}>
->>>>>>> 147153895d6254591b7caf162d1391057ee72da2
                             {`${value * 2} - ${value * 2 + 2}`}
                           </Grid>
                           <Grid item xs={3} >seconds</Grid>
