@@ -18,10 +18,10 @@ const initialState = {
   backgroundImage: 'linear-gradient(rgb(58, 91, 95), rgb(6, 9, 10) 85%)',
   popUpAll: '',
   modalData: {},
-  leftHorValue: null,
-  leftVerValue: null,
-  rightHorValue: null,
-  rightVerValue: null,
+  leftHorValue: 0,
+  leftVerValue: 0,
+  rightHorValue: 0,
+  rightVerValue: 0,
   brightnessValue: {
     L: 0,
     R: 0
