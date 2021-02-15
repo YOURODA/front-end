@@ -1,5 +1,5 @@
 import React from "react";
-import SilderInput from "./SilderInput";
+import SliderInput from "./SliderInput";
 import { Typography, Grid } from "@material-ui/core";
 import { CirclePicker } from "react-color";
 import Blinker from "./Blinker";
@@ -9,7 +9,7 @@ import Brightness from "./Brightness";
 
 function RobotOptions(props) {
   const { robot } = props;
-  const silderLabel = robot === "L" ? "Left Robot" : "Right Robot";
+  const sliderLabel = robot === "L" ? "Left Robot" : "Right Robot";
   const selectedColor = "#fff";
 
   const handleColorPWMValues = (event) => {
@@ -27,18 +27,28 @@ function RobotOptions(props) {
   };
 
   return (
-    <Grid item xs={4}>
-      <SilderInput label={silderLabel} robot={robot} />
-      <Typography variant="button">{`Select Color For ${silderLabel}`}</Typography>
-      <div style={{ float: "center" }}>
-        <CirclePicker
-          color={selectedColor}
-          onChangeComplete={handleColorPWMValues}
-          colors={["#FF0000", "#f44336", "#e91e63", "#9c27b0", "#FF00FF", "#673ab7", "#3f51b5", "#2196f3", "#0000FF", "#03a9f4", "#00FFFF", "#009688", "#00FF00", "#4caf50", "#8bc34a", "#cddc39", "#FFFF00", "#ffc107", "#ff9800", "#ff5722", "#795548", "#000000", "#607d8b", "FFFFFF"]}
-        />
-      </div>
-      <Brightness robot={robot} />
-      <Blinker robot={robot} />
+    <Grid item tem lg={4} md={4} xl={4} xs={4}>
+      <Grid item lg={4} md={4} xl={4} xs={4}>
+        <SliderInput label={sliderLabel} robot={robot} />
+      </Grid>
+      <Grid item lg={4} md={4} xl={4} xs={4}>
+        <Typography variant="button">{`Select Color For ${sliderLabel}`}</Typography>
+      </Grid>
+      <Grid item lg={4} md={4} xl={4} xs={4}>
+        <div style={{ float: "center" }}>
+          <CirclePicker
+            color={selectedColor}
+            onChangeComplete={handleColorPWMValues}
+            colors={["#FF0000", "#f44336", "#e91e63", "#9c27b0", "#FF00FF", "#673ab7", "#3f51b5", "#2196f3", "#0000FF", "#03a9f4", "#00FFFF", "#009688", "#00FF00", "#4caf50", "#8bc34a", "#cddc39", "#FFFF00", "#ffc107", "#ff9800", "#ff5722", "#795548", "#000000", "#607d8b", "FFFFFF"]}
+          />
+        </div>
+      </Grid>
+      <Grid item lg={4} md={4} xl={4} xs={4}>
+        <Brightness robot={robot} />
+      </Grid>
+      <Grid item lg={4} md={4} xl={4} xs={4}>
+        <Blinker robot={robot} />
+      </Grid>
     </Grid>
   );
 }

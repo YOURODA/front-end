@@ -58,7 +58,7 @@ const marksY = [
   },
 ];
 
-function SilderInput(props) {
+function SliderInput(props) {
   const { rColor1, rColor2, rColor3, lColor1, lColor2, lColor3 } = props.colour;
   const classes = useStyles();
   const [valueY, setValueY] = useState(0);
@@ -100,12 +100,15 @@ function SilderInput(props) {
   const setValue = {};
   return (
     <div className={classes.root}>
-      <Typography id="continuous-slider" gutterBottom>
-        {props.label}
-      </Typography>
-      
-        
+      <Grid container spacing={2}>
+        <Grid item lg={12} md={12} xl={12} xs={12}>
+          <Typography id="continuous-slider" gutterBottom>
+            {props.label}
+          </Typography>
           <Slider
+            style={{
+              height: '15em'
+            }}
             min={0}
             max={255}
             track={true}
@@ -113,26 +116,32 @@ function SilderInput(props) {
             marks={marksY}
             step={1}
             scale={(x) => x}
-            // orientation="vertical"
+            orientation="vertical"
             onChange={(e, newValue) => {
               setValueY(newValue);
               debounceReduxY(newValue);
             }}
           />
-
-        <Slider
-          min={0}
-          max={255}
-          track={true}
-          defaultValue={valueX}
-          marks={marksX}
-          step={1}
-          scale={(x) => x}
-          onChange={(e, newValue) => {
-            setValueX(newValue);
-            debounceReduxX(newValue);
-          }}
-        />
+        </Grid>
+        <Grid item lg={12} md={12} xl={12} xs={12}>
+          <Slider
+            style={{
+              width: '20em'
+            }}
+            min={0}
+            max={255}
+            track={true}
+            defaultValue={valueX}
+            marks={marksX}
+            step={1}
+            scale={(x) => x}
+            onChange={(e, newValue) => {
+              setValueX(newValue);
+              debounceReduxX(newValue);
+            }}
+          />
+        </Grid>
+      </Grid>
     </div>
   );
 }
@@ -154,4 +163,4 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({ type: actionTypes.RIGHT_VER_VALUE, rightVerValue }),
   };
 };
-export default connect(mapStateToProps, mapDispatchToProps)(SilderInput);
+export default connect(mapStateToProps, mapDispatchToProps)(SliderInput);
