@@ -32,15 +32,15 @@ const marksX = [
   },
   {
     value: 168,
-    label: "front",
+    label: "r.front",
   },
   {
     value: 210,
-    label: "right",
+    label: "r.right",
   },
   {
     value: 255,
-    label: "back",
+    label: "r.back",
   },
 ];
 const marksY = [

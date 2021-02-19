@@ -15,7 +15,7 @@ import SkipNextIcon from '@material-ui/icons/SkipNext';
 import SkipPreviousIcon from '@material-ui/icons/SkipPrevious';
 import PauseIcon from '@material-ui/icons/Pause';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
-import Slider from '@material-ui/lab/Slider';
+import Slider from '@material-ui/core/Slider';
 import { TrackDetailsLink } from '../UI/TrackDetailsLink';
 import Editor from '../Editor/Editor';
 import PartySelection from '../PartySelection/PartySelection';
