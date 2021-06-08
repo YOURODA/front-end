@@ -19,7 +19,7 @@ function Brightness(props) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
   const debounceRedux = useCallback(
-    debounce((e) => updateRedux(e), 1000),
+    debounce((e) => updateRedux(e), 10),
     []
   );
 

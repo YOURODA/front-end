@@ -37,6 +37,8 @@ export const UPDATE_COLOUR = "UPDATE_COLOUR"
 export const UPDATE_COLOUR_NUMBER = "UPDATE_COLOUR_NUMBER"
 export const IS_RETURN_MUSIC ="IS_RETURN_MUSIC"
 export const IS_USER_AVALIABLE = "IS_USER_AVALIABLE"
+export const COR_LOOP = "COR_LOOP"
+
 
 
 export const playSong = (uris, deviceId) => {

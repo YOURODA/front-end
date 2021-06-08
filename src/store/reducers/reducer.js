@@ -45,7 +45,8 @@ const initialState = {
     rColor2: 0,
     rColor3: 0
   },
-  isReturnMusic:false
+  isReturnMusic:false,
+  corLoop:[]
 };
 
 const reducer = (state = initialState, action) => {
@@ -216,7 +217,11 @@ const reducer = (state = initialState, action) => {
         ...state,
         isUserAvailable: action.isUserAvailable,
       };
-
+    case actionTypes.COR_LOOP:
+      return {
+        ...state,
+        corLoop: action.corLoop,
+      };
 
     default:
       return state;

@@ -90,9 +90,10 @@ class Editor extends Component {
     this.state.socket = socketIo.connect(socketio_url, connectionStrings);
     this.state.socket.emit("Odaya Katil", this.odaName);
     this.props.setScoketIO(this.state.socket);
+    console.log("this.props.user",this.props.user)
     if (this.props.user) {
       this.apiService.isUserAvailable(this.props.user.email).then(response => {
-        console.log(response.data[0]._id)
+        console.log("apiService",response.data[0]._id)
         this.setState({ getUserId: response.data[0]._id })
       })
       this.props.setUserId(this.state.getUserId)
@@ -128,8 +129,8 @@ class Editor extends Component {
   }
 
   render() {
-    if (this.props.userId) {
-      this.state.goCoreography = true
+    if (this.props.userId, !this.state.goCoreography) {
+      this.setState({ goCoreography: true })
     }
     return (
       <Grid container>

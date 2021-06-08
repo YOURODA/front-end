@@ -64,11 +64,11 @@ function SliderInput(props) {
   const [valueY, setValueY] = useState(0);
   const [valueX, setValueX] = useState(0);
   const debounceReduxX = useCallback(
-    debounce((e) => updateReduxX(e), 1000),
+    debounce((e) => updateReduxX(e), 100),
     []
   );
   const debounceReduxY = useCallback(
-    debounce((e) => updateReduxY(e), 1000),
+    debounce((e) => updateReduxY(e), 100),
     []
   );
   const backgroundColor =

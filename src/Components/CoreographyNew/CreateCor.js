@@ -23,6 +23,7 @@ import APIServices from "../Services/APIServices";
 import RobotOptions from "./RobotOptions";
 import CreateCorPopUp from "./CreateCorPopUp";
 import SelectedDevicePopUp from "./SelectedDevicePopUp";
+import MiniCorGroup from "./miniCorGroup/MiniCorGroup";
 const useStyles = (theme) => ({
   active: {
     backgroundColor: "#e8eaf6",
@@ -50,7 +51,9 @@ class CreateCor extends Component {
     this.apiService = new APIServices();
     this.tryFunction = this.tryFunction.bind(this);
   }
-
+  
+  
+  
   tryFunction(event) {
     console.log("basıldı", event.keyCode);
     if (event.keyCode === 84) {
@@ -106,6 +109,9 @@ class CreateCor extends Component {
       //Do whatever when esc is pressed
     }
   }
+
+
+
   componentDidMount() {
     document.addEventListener("keydown", this.tryFunction, false);
     if (this.props.durationStamps) {
@@ -129,6 +135,7 @@ class CreateCor extends Component {
     }
   }
 
+  // tryFunction({keyCode:84})
   saveCoreography = () => {
     const { colour } = this.props;
     const { checkedMultiple, corData } = this.state;
@@ -238,6 +245,7 @@ class CreateCor extends Component {
   render() {
     const { classes } = this.props;
     const { checkSmoke, checkedMultiple, selectedDevicePopUp } = this.state;
+    this.tryFunction({keyCode:84})
     return (
       <Grid container spacing={3}>
         {selectedDevicePopUp && <SelectedDevicePopUp send={(id) => this.goParty(id)} onClose={this.closeSelectDevicePopUp} />}
@@ -288,6 +296,7 @@ class CreateCor extends Component {
           {this.state.checkedMultiple && (
             <React.Fragment>
               <div id="one" onKeyPress={this.handleKeyPress} />
+              <MiniCorGroup/>
               <Card>
                 <CardContent>
                   <Grid container spacing={0}>
