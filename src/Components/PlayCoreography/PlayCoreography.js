@@ -43,13 +43,11 @@ class PlayCoreography extends Component {
   askTemperature = () => {
     this.props.socket.emit("askTemperature", this.temperatureToCelsius);
     this.props.socket.on("temperature", (data) => {
-      console.log("sıcaklık sorgusu",data.temperatureToCelsius);
+      console.log("sıcaklık sorgusu", data.temperatureToCelsius);
       this.props.setSmokeTemperature(data.temperatureToCelsius);
     });
     console.log(this.state.smokeTemperature);
   };
-
-
 
   componentDidMount() {
     this.interval = setInterval(() => this.askTemperature(), 10000);
@@ -76,7 +74,7 @@ class PlayCoreography extends Component {
     const { userId } = this.props;
     return (
       <div>
-        {userId && (
+        {"userId" && (
           <Grid container spacing="10">
             <Grid item lg={12} sm={12} xl={12} xs={12} />
             <Grid item lg={12} sm={12} xl={12} xs={12} />
@@ -118,7 +116,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     setSmokeTemperature: (smokeTemperature) =>
-    dispatch({ type: actionTypes.SMOKE_TEMPERATURE, smokeTemperature }),
+      dispatch({ type: actionTypes.SMOKE_TEMPERATURE, smokeTemperature }),
     setScoketIO: (socket) => dispatch({ type: actionTypes.SOCKET, socket }),
     setOnCloseCsvData: (onCloseCsvData) =>
       dispatch({ type: actionTypes.ON_CLOSE_CSV_DATA, onCloseCsvData }),

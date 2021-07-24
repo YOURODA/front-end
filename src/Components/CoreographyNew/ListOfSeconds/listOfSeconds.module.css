@@ -1,0 +1,12 @@
+.colourCircle {
+  background: transparent;
+  height: 100%;
+  width: 100%;
+  cursor: pointer;
+  position: relative;
+  outline: none;
+  border-radius: 50%;
+  box-shadow: rgb(255 0 0) 0px 0px 0px 14px inset;
+  transition: box-shadow 100ms ease 0s;
+  height: 50px;
+}

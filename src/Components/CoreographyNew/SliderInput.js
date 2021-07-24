@@ -59,45 +59,42 @@ const marksY = [
 ];
 
 function SliderInput(props) {
-  const { rColor1, rColor2, rColor3, lColor1, lColor2, lColor3 } = props.colour;
+  const { songCor, selectedSecond, setSongCor, robot } = props;
   const classes = useStyles();
   const [valueY, setValueY] = useState(0);
   const [valueX, setValueX] = useState(0);
-  const debounceReduxX = useCallback(
-    debounce((e) => updateReduxX(e), 100),
+  const [selectTime, setSelectTime] = useState(0);
+  if (selectedSecond !== selectTime) {
+    setSelectTime(selectedSecond);
+    setValueX(songCor[selectedSecond].robot[`${robot}Hor`]);
+    setValueY(songCor[selectedSecond].robot[`${robot}Ver`]);
+  }
+  const debounceRedux = useCallback(
+    debounce(
+      (value, position, robot, cor, time) =>
+        updateRedux(value, position, robot, cor, time),
+      100
+    ),
     []
   );
-  const debounceReduxY = useCallback(
-    debounce((e) => updateReduxY(e), 100),
-    []
-  );
-  const backgroundColor =
-    props.robot === "L"
-      ? `rgb(${lColor1}, ${lColor2}, ${lColor3})`
-      : `rgb(${rColor1}, ${rColor2}, ${rColor3})`;
 
-  const updateReduxX = (event) => {
-    const { robot } = props;
-    console.log("updateReduxX", event);
-    if (robot === "L") {
-      props.setLeftHorValue(event);
-    }
-    if (robot === "R") {
-      props.setRightHorValue(event);
-    }
-  };
-  const updateReduxY = (event) => {
-    const { robot } = props;
-    console.log("updateReduxy", event);
-    if (robot === "L") {
-      props.setLeftVerValue(event);
-    }
-    if (robot === "R") {
-      props.setRightVerValue(event);
-    }
+  if (!songCor || !songCor[selectedSecond] || !songCor[selectedSecond].robot) {
+    return null;
+  }
+
+  const updateRedux = (value, position, robot, cor, time) => {
+    const newRobot = [...cor];
+    const setRobot = `${robot}${position}`;
+    newRobot[time].robot[setRobot] = value;
+
+    setSongCor(newRobot);
   };
 
-  const setValue = {};
+  const onChange = (value, positions, funcSetState) => {
+    funcSetState(value);
+
+    debounceRedux(value, positions, robot, songCor, selectTime);
+  };
   return (
     <div className={classes.root}>
       <Grid container spacing={2}>
@@ -107,7 +104,7 @@ function SliderInput(props) {
           </Typography>
           <Slider
             style={{
-              height: '15em'
+              height: "15em",
             }}
             min={0}
             max={255}
@@ -117,16 +114,18 @@ function SliderInput(props) {
             step={1}
             scale={(x) => x}
             orientation="vertical"
+            value={valueY}
             onChange={(e, newValue) => {
-              setValueY(newValue);
-              debounceReduxY(newValue);
+              onChange(newValue, "Ver", setValueY);
+              // setValueY(newValue);
+              // debounceReduxY(newValue);
             }}
           />
         </Grid>
         <Grid item lg={12} md={12} xl={12} xs={12}>
           <Slider
             style={{
-              width: '20em'
+              width: "20em",
             }}
             min={0}
             max={255}
@@ -134,10 +133,12 @@ function SliderInput(props) {
             defaultValue={valueX}
             marks={marksX}
             step={1}
+            value={valueX}
             scale={(x) => x}
             onChange={(e, newValue) => {
-              setValueX(newValue);
-              debounceReduxX(newValue);
+              onChange(newValue, "Hor", setValueX);
+              // setValueX(newValue);
+              // debounceReduxX(newValue);
             }}
           />
         </Grid>
@@ -148,6 +149,8 @@ function SliderInput(props) {
 const mapStateToProps = (state) => {
   return {
     colour: state.colour,
+    songCor: state.songCor,
+    selectedSecond: state.selectedSecond,
     //   colourNumber:state.colourNumber
   };
 };
@@ -161,6 +164,7 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({ type: actionTypes.RIGHT_HOR_VALUE, rightHorValue }),
     setRightVerValue: (rightVerValue) =>
       dispatch({ type: actionTypes.RIGHT_VER_VALUE, rightVerValue }),
+    setSongCor: (songCor) => dispatch({ type: actionTypes.SONG_COR, songCor }),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(SliderInput);

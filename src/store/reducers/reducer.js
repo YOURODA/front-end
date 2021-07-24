@@ -46,7 +46,10 @@ const initialState = {
     rColor3: 0
   },
   isReturnMusic:false,
-  corLoop:[]
+  corLoop:[],
+  selectedSeconds:[],
+  selectedSecond:0,
+  songCor:[]
 };
 
 const reducer = (state = initialState, action) => {
@@ -221,6 +224,22 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         corLoop: action.corLoop,
+      };
+    case actionTypes.SELECTED_SECONDS:
+      console.log("action.selectedSeconds",action.selectedSeconds)
+      return {
+        ...state,
+        selectedSeconds: action.selectedSeconds,
+      };
+    case actionTypes.SELECTED_SECOND:
+      return {
+        ...state,
+        selectedSecond: action.selectedSecond,
+      };
+    case actionTypes.SONG_COR:
+      return {
+        ...state,
+        songCor: action.songCor,
       };
 
     default:

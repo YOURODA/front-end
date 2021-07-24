@@ -7,7 +7,7 @@ import styles from "./miniCorGroup.module.css"
 export const MiniCorGroup = (props) => {
   
   const {corLoop}= props
-  
+  console.log("corLoop",corLoop)
   if(corLoop.length === 0 ){
     return(
     <div className={styles.CorGroup}>     
