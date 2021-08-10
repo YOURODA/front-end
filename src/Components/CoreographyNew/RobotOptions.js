@@ -1,53 +1,26 @@
 import React from "react";
 import SliderInput from "./SliderInput";
 import { Typography, Grid } from "@material-ui/core";
-import { CirclePicker } from "react-color";
-import Blinker from "./Blinker";
+import CircleColour from "./CircleColor";
 import * as actionTypes from "../../store/actions/actionTypes";
 import { connect } from "react-redux";
-import Brightness from "./Brightness";
+import OneLine from "./OneLine";
 
 function RobotOptions(props) {
   const { robot } = props;
   const sliderLabel = robot === "L" ? "Left Robot" : "Right Robot";
-  const selectedColor = "#fff";
-
-  const handleColorPWMValues = (event) => {
-    const { colour } = props;
-    if (robot === "L") {
-      colour.lColor1 = Math.ceil(event.rgb.r).toString();
-      colour.lColor2 = Math.ceil(event.rgb.g).toString();
-      colour.lColor3 = Math.ceil(event.rgb.b).toString();
-    } else {
-      colour.rColor1 = Math.ceil(event.rgb.r).toString();
-      colour.rColor2 = Math.ceil(event.rgb.g).toString();
-      colour.rColor3 = Math.ceil(event.rgb.b).toString();
-    }
-    props.setColour(colour);
-  };
 
   return (
     <Grid item tem lg={4} md={4} xl={4} xs={4}>
       <Grid item lg={4} md={4} xl={4} xs={4}>
         <SliderInput label={sliderLabel} robot={robot} />
       </Grid>
+      <CircleColour robot={robot} label={sliderLabel} />
       <Grid item lg={4} md={4} xl={4} xs={4}>
-        <Typography variant="button">{`Select Color For ${sliderLabel}`}</Typography>
+        <OneLine robot={robot} option="Brightness" />
       </Grid>
       <Grid item lg={4} md={4} xl={4} xs={4}>
-        <div style={{ float: "center" }}>
-          <CirclePicker
-            color={selectedColor}
-            onChangeComplete={handleColorPWMValues}
-            colors={["#FF0000", "#f44336", "#e91e63", "#9c27b0", "#FF00FF", "#673ab7", "#3f51b5", "#2196f3", "#0000FF", "#03a9f4", "#00FFFF", "#009688", "#00FF00", "#4caf50", "#8bc34a", "#cddc39", "#FFFF00", "#ffc107", "#ff9800", "#ff5722", "#795548", "#000000", "#607d8b", "FFFFFF"]}
-          />
-        </div>
-      </Grid>
-      <Grid item lg={4} md={4} xl={4} xs={4}>
-        <Brightness robot={robot} />
-      </Grid>
-      <Grid item lg={4} md={4} xl={4} xs={4}>
-        <Blinker robot={robot} />
+        <OneLine robot={robot} option="Blinker" />
       </Grid>
     </Grid>
   );
@@ -56,6 +29,8 @@ function RobotOptions(props) {
 const mapStateToProps = (state) => {
   return {
     colour: state.colour,
+    songCor: state.songCor,
+    selectedSecond: state.selectedSecond,
   };
 };
 const mapDispatchToProps = (dispatch) => {
@@ -63,6 +38,7 @@ const mapDispatchToProps = (dispatch) => {
     setCorData: (corData) => dispatch({ type: actionTypes.COR_DATA, corData }),
     setColour: (colour) =>
       dispatch({ type: actionTypes.UPDATE_COLOUR, colour }),
+    setSongCor: (songCor) => dispatch({ type: actionTypes.SONG_COR, songCor }),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(RobotOptions);

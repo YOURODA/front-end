@@ -23,16 +23,20 @@ import APIServices from "../Services/APIServices";
 import RobotOptions from "./RobotOptions";
 import CreateCorPopUp from "./CreateCorPopUp";
 import SelectedDevicePopUp from "./SelectedDevicePopUp";
+import MiniCorGroup from "./miniCorGroup/MiniCorGroup";
+import ListOfSeconds from "./ListOfSeconds/index";
 const useStyles = (theme) => ({
   active: {
     backgroundColor: "#e8eaf6",
+    height: "50px",
   },
   nonActive: {
     backgroundColor: "#ffffff",
+    height: "50px",
   },
   listSecond: {
-    height: '24pt'
-  }
+    height: "24pt",
+  },
 });
 class CreateCor extends Component {
   constructor(props) {
@@ -59,41 +63,37 @@ class CreateCor extends Component {
       let trycor = [];
       trycor[0] = {
         startDate: 0,
-        robot: `${
-          this.props.leftHorValue ? this.props.leftHorValue : "0"
-          },0,${this.props.leftVerValue ? this.props.leftVerValue : "0"},0,0,${
+        robot: `${this.props.leftHorValue ? this.props.leftHorValue : "0"},0,${
+          this.props.leftVerValue ? this.props.leftVerValue : "0"
+        },0,0,${
           this.props.brightnessValue.L ? this.props.brightnessValue.L : "0"
-          },${lColor1},${lColor2},${lColor3},"59",${
+        },${lColor1},${lColor2},${lColor3},"59",${
           this.props.blinkerValue.L ? this.props.blinkerValue.L : "0"
-          },0,0,${
-          this.props.rightHorValue ? this.props.rightHorValue : "0"
-          },0,${
+        },0,0,${this.props.rightHorValue ? this.props.rightHorValue : "0"},0,${
           this.props.rightVerValue ? this.props.rightVerValue : "0"
-          },0,0,${
+        },0,0,${
           this.props.brightnessValue.R ? this.props.brightnessValue.R : "0"
-          },${rColor1},${rColor2},${rColor3},0,${
+        },${rColor1},${rColor2},${rColor3},0,${
           this.props.blinkerValue.R ? this.props.blinkerValue.R : "0"
-          },0,0`,
-        smoke: 0 //L
+        },0,0`,
+        smoke: 0, //L
       };
       trycor[1] = {
         startDate: 1,
-        robot: `${
-          this.props.leftHorValue ? this.props.leftHorValue : "0"
-          },0,${this.props.leftVerValue ? this.props.leftVerValue : "0"},0,0,${
+        robot: `${this.props.leftHorValue ? this.props.leftHorValue : "0"},0,${
+          this.props.leftVerValue ? this.props.leftVerValue : "0"
+        },0,0,${
           this.props.brightnessValue.L ? this.props.brightnessValue.L : "0"
-          },${lColor1},${lColor2},${lColor3},"59",${
+        },${lColor1},${lColor2},${lColor3},"59",${
           this.props.blinkerValue.L ? this.props.blinkerValue.L : "0"
-          },0,0,${
-          this.props.rightHorValue ? this.props.rightHorValue : "0"
-          },0,${
+        },0,0,${this.props.rightHorValue ? this.props.rightHorValue : "0"},0,${
           this.props.rightVerValue ? this.props.rightVerValue : "0"
-          },0,0,${
+        },0,0,${
           this.props.brightnessValue.R ? this.props.brightnessValue.R : "0"
-          },${rColor1},${rColor2},${rColor3},0,${
+        },${rColor1},${rColor2},${rColor3},0,${
           this.props.blinkerValue.R ? this.props.blinkerValue.R : "0"
-          },0,0`,
-        smoke: 0 //L
+        },0,0`,
+        smoke: 0, //L
       };
       console.log("trycor", trycor);
       let stringCSV = JSON.stringify({ corData: trycor });
@@ -106,14 +106,46 @@ class CreateCor extends Component {
       //Do whatever when esc is pressed
     }
   }
+
   componentDidMount() {
     document.addEventListener("keydown", this.tryFunction, false);
-    if (this.props.durationStamps) {
+    const { durationStamps, songCor, setSongCor } = this.props;
+    if (durationStamps) {
       this.clearSeconds = Math.round(
-        this.milisToMinutesAndSeconds(this.props.durationStamps) / 2
+        this.milisToMinutesAndSeconds(durationStamps) / 2
       );
       this.getSeconds = Array.from(Array(this.clearSeconds).keys());
       this.setState({ clearSecondList: this.getSeconds });
+      if (songCor.length === 0) {
+        let newSongCor = new Array(this.clearSeconds).fill(0);
+        newSongCor = newSongCor.map((cor, index) => {
+          return {
+            startDate: index,
+            robot: {
+              LHor: 0,
+              LVer: 0,
+              LBrightness: 0,
+              LBlinker: 0,
+              RHor: 0,
+              RVer: 0,
+              RBrightness: 0,
+              RBlinker: 0,
+              colour: {
+                lColor1: 0,
+                lColor2: 0,
+                lColor3: 0,
+                rColor1: 0,
+                rColor2: 0,
+                rColor4: 0,
+                Lhex: "#000000",
+                Rhex: "#000000",
+              },
+            },
+            smoke: false,
+          };
+        });
+        setSongCor(newSongCor);
+      }
     }
   }
   componentWillUnmount() {
@@ -129,6 +161,7 @@ class CreateCor extends Component {
     }
   }
 
+  // tryFunction({keyCode:84})
   saveCoreography = () => {
     const { colour } = this.props;
     const { checkedMultiple, corData } = this.state;
@@ -140,19 +173,19 @@ class CreateCor extends Component {
           startDate: seconds,
           robot: `${
             this.props.leftHorValue ? this.props.leftHorValue : "0"
-            },0,${this.props.leftVerValue ? this.props.leftVerValue : "0"},0,0,${
+          },0,${this.props.leftVerValue ? this.props.leftVerValue : "0"},0,0,${
             this.props.brightnessValue.L ? this.props.brightnessValue.L : "0"
-            },${lColor1},${lColor2},${lColor3},"59",${
+          },${lColor1},${lColor2},${lColor3},"59",${
             this.props.blinkerValue.L ? this.props.blinkerValue.L : "0"
-            },0,0,${
+          },0,0,${
             this.props.rightHorValue ? this.props.rightHorValue : "0"
-            },0,${
+          },0,${
             this.props.rightVerValue ? this.props.rightVerValue : "0"
-            },0,0,${
+          },0,0,${
             this.props.brightnessValue.R ? this.props.brightnessValue.R : "0"
-            },${rColor1},${rColor2},${rColor3},0,${
+          },${rColor1},${rColor2},${rColor3},0,${
             this.props.blinkerValue.R ? this.props.blinkerValue.R : "0"
-            },0,0`,
+          },0,0`,
           smoke: this.state.checkSmoke === true ? "1" : "0", //L
           smoke: this.state.checkSmoke, //L
         };
@@ -162,19 +195,19 @@ class CreateCor extends Component {
           startDate: seconds,
           robot: `${
             this.props.leftHorValue ? this.props.leftHorValue : "0"
-            },0,${this.props.leftVerValue ? this.props.leftVerValue : "0"},0,0,${
+          },0,${this.props.leftVerValue ? this.props.leftVerValue : "0"},0,0,${
             this.props.brightnessValue.L ? this.props.brightnessValue.L : "0"
-            },${lColor1},${lColor2},${lColor3},"59",${
+          },${lColor1},${lColor2},${lColor3},"59",${
             this.props.blinkerValue.L ? this.props.blinkerValue.L : "0"
-            },0,0,${
+          },0,0,${
             this.props.rightHorValue ? this.props.rightHorValue : "0"
-            },0,${
+          },0,${
             this.props.rightVerValue ? this.props.rightVerValue : "0"
-            },0,0,${
+          },0,0,${
             this.props.brightnessValue.R ? this.props.brightnessValue.R : "0"
-            },${rColor1},${rColor2},${rColor3},0,${
+          },${rColor1},${rColor2},${rColor3},0,${
             this.props.blinkerValue.R ? this.props.blinkerValue.R : "0"
-            },0,0`,
+          },0,0`,
           smoke: this.state.checkSmoke === true ? "1" : "0", //L
           smoke: this.state.checkSmoke === true ? "1" : "0", //L
         };
@@ -237,120 +270,100 @@ class CreateCor extends Component {
 
   render() {
     const { classes } = this.props;
-    const { checkSmoke, checkedMultiple, selectedDevicePopUp } = this.state;
+    const {
+      checkSmoke,
+      checkedMultiple,
+      selectedDevicePopUp,
+      clearSecondList,
+    } = this.state;
+    this.tryFunction({ keyCode: 84 });
+    console.log(checkedMultiple, checkedMultiple);
     return (
       <Grid container spacing={3}>
-        {selectedDevicePopUp && <SelectedDevicePopUp send={(id) => this.goParty(id)} onClose={this.closeSelectDevicePopUp} />}
-        <Grid item lg={3} md={3} xl={3} xs={3}>
-          <Paper style={{ maxHeight: 700, overflow: "auto" }}>
-            {this.state.clearSecondList && (
-              <List>
-                {this.state.clearSecondList.map((value) => {
-                  const labelId = `button-list-label-${value}`;
-                  return (
-                    <React.Fragment>
-                      <ListItem
-                        key={value}
-                        role={undefined}
-                        dense
-                        button
-                        onClick={() => this.handleToggleMultiple(value)}
-                        checked={checkedMultiple.indexOf(value) !== -1}
-                        className={
-                          checkedMultiple.indexOf(value) !== -1
-                            ? classes.active
-                            : classes.nonActive
-                        }
-                      >
-                        <ListItemIcon>
-                        </ListItemIcon>
-                        <Grid container className={classes.listSecond}>
-                          <Grid item xs={2} />
-                          <Grid
-                            item xs={3}
-                            id={labelId}
-                          >
-                            {`${value * 2} - ${value * 2 + 2}`}
-                          </Grid>
-                          <Grid item xs={3} >seconds</Grid>
-                          <Grid item xs={2} />
-                        </Grid>
-                      </ListItem>
-                      <Divider />
-                    </React.Fragment>
-                  );
-                })}
-              </List>
-            )}
-          </Paper>
-        </Grid>
-        <Grid item lg={9} md={9} xl={9} xs={9}>
-          {this.state.checkedMultiple && (
-            <React.Fragment>
-              <div id="one" onKeyPress={this.handleKeyPress} />
-              <Card>
-                <CardContent>
-                  <Grid container spacing={0}>
-                    <Grid item xs={2} />
-                    <RobotOptions robot={"L"} />
-                    <RobotOptions robot={"R"} />
-                    <Grid item xs={2} />
-                  </Grid>
-                  {this.props.createCorPopup && <CreateCorPopUp />}
-                  <Grid container spacing={3}>
-                    <Grid item xs={11}>
-                      <SmokeStatus />
-                    </Grid>
-                    <Grid item xs={1}>
-                      <FormControlLabel
-                        control={
-                          <Checkbox
-                            checked={checkSmoke}
-                            onChange={this.handleChangeSmoke}
-                            name="checkSmoke"
-                            color="primary"
+        {selectedDevicePopUp && (
+          <SelectedDevicePopUp
+            send={(id) => this.goParty(id)}
+            onClose={this.closeSelectDevicePopUp}
+          />
+        )}
+        <Grid item lg={12} md={12} xl={12} xs={12}>
+          <>
+            {checkedMultiple && (
+              <React.Fragment>
+                <div id="one" onKeyPress={this.handleKeyPress} />
+                {/* <MiniCorGroup /> */}
+                <Card>
+                  <CardContent>
+                    {this.props.songCor.length !== 0 && (
+                      <Grid container spacing={0}>
+                        <Grid item xs={3}>
+                          <ListOfSeconds
+                            clearSecondList={clearSecondList}
+                            classes={classes}
                           />
-                        }
-                        label="Smoke"
-                      />
+                        </Grid>
+                        <Grid item xs={1} />
+                        <RobotOptions robot={"L"} />
+                        <RobotOptions robot={"R"} />
+                        {/* <Grid item xs={2} /> */}
+                      </Grid>
+                    )}
+                    {this.props.createCorPopup && <CreateCorPopUp />}
+                    <Grid container spacing={3}>
+                      <Grid item xs={11}>
+                        <SmokeStatus />
+                      </Grid>
+                      <Grid item xs={1}>
+                        <FormControlLabel
+                          control={
+                            <Checkbox
+                              checked={checkSmoke}
+                              onChange={this.handleChangeSmoke}
+                              name="checkSmoke"
+                              color="primary"
+                            />
+                          }
+                          label="Smoke"
+                        />
+                      </Grid>
                     </Grid>
-                  </Grid>
-                </CardContent>
-                <CardActions>
-                  <Button
-                    style={{ flex: 1 }}
-                    variant="contained"
-                    color="primary"
-                    size="small"
-                    startIcon={<SaveIcon />}
-                    onClick={this.saveCoreography}
-                  >
-                    Save For Party
-                  </Button>
-                  <Button
-                    style={{ flex: 1 }}
-                    variant="contained"
-                    color="primary"
-                    size="small"
-                    startIcon={<SaveIcon />}
-                    onClick={this.openSelectDevicePopUp}
-                  >
-                    Go Party
-                  </Button>
-                  <Button
-                    style={{ flex: 1 }}
-                    variant="contained"
-                    color="primary"
-                    size="small"
-                    startIcon={<SaveIcon />}
-                    onClick={this.saveUserCoreographyToDB}
-                  >
-                    Save For MyCHR
-                  </Button>
-                </CardActions>
-              </Card>
-            </React.Fragment>
-          )}
+                  </CardContent>
+                  {/* <CardActions>
+                    <Button
+                      style={{ flex: 1 }}
+                      variant="contained"
+                      color="primary"
+                      size="small"
+                      startIcon={<SaveIcon />}
+                      onClick={this.saveCoreography}
+                    >
+                      Save For Party
+                    </Button>
+                    <Button
+                      style={{ flex: 1 }}
+                      variant="contained"
+                      color="primary"
+                      size="small"
+                      startIcon={<SaveIcon />}
+                      onClick={this.openSelectDevicePopUp}
+                    >
+                      Go Party
+                    </Button>
+                    <Button
+                      style={{ flex: 1 }}
+                      variant="contained"
+                      color="primary"
+                      size="small"
+                      startIcon={<SaveIcon />}
+                      onClick={this.saveUserCoreographyToDB}
+                    >
+                      Save For MyCHR
+                    </Button>
+                  </CardActions> */}
+                </Card>
+              </React.Fragment>
+            )}
+          </>
         </Grid>
       </Grid>
     );
@@ -371,6 +384,7 @@ const mapStateToProps = (state) => {
     colour: state.colour,
     colourNumber: state.colourNumber,
     isReturnMusic: state.isReturnMusic,
+    songCor: state.songCor,
   };
 };
 const mapDispatchToProps = (dispatch) => {
@@ -385,6 +399,7 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({ type: actionTypes.UPDATE_COLOUR, colour }),
     setIsReturnMusic: (isReturnMusic) =>
       dispatch({ type: actionTypes.IS_RETURN_MUSIC, isReturnMusic }),
+    setSongCor: (songCor) => dispatch({ type: actionTypes.SONG_COR, songCor }),
   };
 };
 export default connect(

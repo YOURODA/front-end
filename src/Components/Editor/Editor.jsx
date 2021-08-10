@@ -90,13 +90,14 @@ class Editor extends Component {
     this.state.socket = socketIo.connect(socketio_url, connectionStrings);
     this.state.socket.emit("Odaya Katil", this.odaName);
     this.props.setScoketIO(this.state.socket);
-    // if (this.props.currentUser) {
-    //   this.apiService.isUserAvailable(this.props.currentUser.email).then(response => {
-    //     console.log('currentUser', response.data[0]._id)
-    //     this.setState({ x: response.data[0]._id })
-    //   })
-    //   this.props.setUserId(this.state.getUserId)
-    // }
+    console.log("this.props.user", this.props.user)
+    if (this.props.user) {
+      this.apiService.isUserAvailable(this.props.user.email).then(response => {
+        console.log("apiService", response.data[0]._id)
+        this.setState({ getUserId: response.data[0]._id })
+      })
+      this.props.setUserId(this.state.getUserId)
+    }
   }
   componentWillUnmount() {
     console.log('willUnMount ne zaman caalışıyüüüüü')
@@ -134,8 +135,8 @@ class Editor extends Component {
   }
 
   render() {
-    if (this.props.userId) {
-      this.state.goCoreography = true
+    if (this.props.userId, !this.state.goCoreography) {
+      this.setState({ goCoreography: true })
     }
     return (
       <Grid container>

@@ -49,8 +49,6 @@ class PlayCoreography extends Component {
     console.log(this.state.smokeTemperature);
   };
 
-
-
   componentDidMount() {
     this.interval = setInterval(() => this.askTemperature(), 10000);
 
@@ -76,7 +74,7 @@ class PlayCoreography extends Component {
     const { userId } = this.props;
     return (
       <div>
-        {userId && (
+        {"userId" && (
           <Grid container spacing="10">
             <Grid item lg={12} sm={12} xl={12} xs={12} />
             <Grid item lg={12} sm={12} xl={12} xs={12} />
