@@ -40,7 +40,7 @@ function SmokeStatus(props) {
     const classes = useStyles();
     return (
         <div className={classes.root}>
-            <LinearProgressWithLabel value={props.smokeTemperature/3} />
+            <LinearProgressWithLabel value={props.smokeTemperature / 4} />
         </div>
     );
 }

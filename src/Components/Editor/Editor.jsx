@@ -76,13 +76,13 @@ class Editor extends Component {
     console.log(this.props.createUserPopUp)
   }
   componentDidMount() {
-    this.interval = setInterval(() => this.askTemperature(), 10000);
+    this.interval = setInterval(() => this.askTemperature(), 8000);
     this.timeOfSum = this.milisToMinutesAndSeconds(this.props.durationStamps);
     console.log("time of sum:", this.timeOfSum)
-    var connectionStrings = {
+    let connectionStrings = {
       "force new connection": true,
       "reconnectionAttempts": "Infiniy",
-      "timeout": 10000,
+      // "timeout": 10000,
       "transports": ["websocket"]
     };
     const socketio_url = 'https://your-oda-back-end.herokuapp.com'
@@ -90,20 +90,26 @@ class Editor extends Component {
     this.state.socket = socketIo.connect(socketio_url, connectionStrings);
     this.state.socket.emit("Odaya Katil", this.odaName);
     this.props.setScoketIO(this.state.socket);
-    if (this.props.user) {
-      this.apiService.isUserAvailable(this.props.user.email).then(response => {
-        console.log(response.data[0]._id)
-        this.setState({ getUserId: response.data[0]._id })
-      })
-      this.props.setUserId(this.state.getUserId)
-    }
+    // if (this.props.currentUser) {
+    //   this.apiService.isUserAvailable(this.props.currentUser.email).then(response => {
+    //     console.log('currentUser', response.data[0]._id)
+    //     this.setState({ x: response.data[0]._id })
+    //   })
+    //   this.props.setUserId(this.state.getUserId)
+    // }
   }
   componentWillUnmount() {
+    console.log('willUnMount ne zaman caalışıyüüüüü')
     clearInterval(this.interval);
+    this.state.socket.emit("Odaya Katil", this.odaName);
+    this.props.setScoketIO(this.state.socket);
   }
 
   isAvailableOdaNickRes = () => {
     this.apiService.isAvailableOdaNick(this.state.odaNick).then(response => {
+      console.log('response.data.odaNick', response.data.odaNick)
+      console.log('this.state.odaNick', this.state.odaNick)
+      this.setState({ goCoreography: true })
       if (response.data.odaNick === this.state.odaNick)
         this.setState({ goCoreography: true })
     })
@@ -154,7 +160,7 @@ class Editor extends Component {
                 </CardContent>
                 <CardActions style={{ justifyContent: 'flex-end' }}>
                   <Button onClick={this.isAvailableOdaNickRes} variant="contained" color="primary">
-                    Go Coroegraphy
+                    Go Choroegraphy
                 </Button>
                   <Button onClick={this.createUser} variant="contained" color="primary">
                     Create User
@@ -167,7 +173,7 @@ class Editor extends Component {
             }
           </Box>
         }
-        {this.state.goCoreography === true && this.props.durationStamps > 0 &&
+        {this.props.userId && this.props.durationStamps > 0 &&
           <Grid item lg={12} md={12} xl={12} xs={12}>
             <CreateCor />
           </Grid>
@@ -193,7 +199,7 @@ const mapStateToProps = state => {
     durationStamps: state.durationStamps,
     currently_playing: state.currently_playing,
     playNow: state.play_now,
-    user: state.current_user,
+    currentUser: state.current_user,
     onCloseCsvData: state.onCloseCsvData,
     corData: state.corData,
     socket: state.socket,

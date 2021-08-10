@@ -43,7 +43,7 @@ class PlayCoreography extends Component {
   askTemperature = () => {
     this.props.socket.emit("askTemperature", this.temperatureToCelsius);
     this.props.socket.on("temperature", (data) => {
-      console.log("sıcaklık sorgusu",data.temperatureToCelsius);
+      console.log("sıcaklık sorgusu", data.temperatureToCelsius);
       this.props.setSmokeTemperature(data.temperatureToCelsius);
     });
     console.log(this.state.smokeTemperature);
@@ -54,13 +54,13 @@ class PlayCoreography extends Component {
   componentDidMount() {
     this.interval = setInterval(() => this.askTemperature(), 10000);
 
-    var connectionStrings = {
+    const connectionStrings = {
       "force new connection": true,
       reconnectionAttempts: "Infiniy",
       timeout: 10000,
       transports: ["websocket"],
     };
-    var socketio_url = "https://your-oda-back-end.herokuapp.com";
+    let socketio_url = "https://your-oda-back-end.herokuapp.com";
     this.odaName = { name: "Corlu" };
     this.state.socket = socketIo.connect(socketio_url, connectionStrings);
     this.state.socket.emit("Odaya Katil", this.odaName);
@@ -118,7 +118,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     setSmokeTemperature: (smokeTemperature) =>
-    dispatch({ type: actionTypes.SMOKE_TEMPERATURE, smokeTemperature }),
+      dispatch({ type: actionTypes.SMOKE_TEMPERATURE, smokeTemperature }),
     setScoketIO: (socket) => dispatch({ type: actionTypes.SOCKET, socket }),
     setOnCloseCsvData: (onCloseCsvData) =>
       dispatch({ type: actionTypes.ON_CLOSE_CSV_DATA, onCloseCsvData }),
