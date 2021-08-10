@@ -56,7 +56,6 @@ class CreateCor extends Component {
   }
 
   tryFunction(event) {
-    console.log("basıldı", event.keyCode);
     if (event.keyCode === 84) {
       const { colour } = this.props;
       const { lColor1, lColor2, lColor3, rColor1, rColor2, rColor3 } = colour;
@@ -95,7 +94,6 @@ class CreateCor extends Component {
         },0,0`,
         smoke: 0, //L
       };
-      console.log("trycor", trycor);
       let stringCSV = JSON.stringify({ corData: trycor });
       const encodedString = {
         base: new Buffer(stringCSV).toString("base64"),
@@ -214,7 +212,6 @@ class CreateCor extends Component {
       }
     });
     this.setState({ corData: saveCorData });
-    console.log("corData", corData);
   };
   openSelectDevicePopUp = () => {
     this.setState({ selectedDevicePopUp: true });
@@ -225,7 +222,6 @@ class CreateCor extends Component {
   goParty = (id) => {
     this.closeSelectDevicePopUp();
     const { corData } = this.state;
-    console.log("cordata", corData);
     let stringCSV = JSON.stringify({ corData });
     const encodedString = {
       base: new Buffer(stringCSV).toString("base64"),
@@ -234,7 +230,6 @@ class CreateCor extends Component {
     this.props.socket.emit("corData", encodedString);
     this.props.setCorData(this.state.corData);
     this.props.setIsReturnMusic(id);
-    console.log("id go party", id);
   };
   saveUserCoreographyToDB = () => {
     this.props.setCreateCorPopup(true);
@@ -277,7 +272,6 @@ class CreateCor extends Component {
       clearSecondList,
     } = this.state;
     this.tryFunction({ keyCode: 84 });
-    console.log(checkedMultiple, checkedMultiple);
     return (
       <Grid container spacing={3}>
         {selectedDevicePopUp && (
@@ -291,7 +285,7 @@ class CreateCor extends Component {
             {checkedMultiple && (
               <React.Fragment>
                 <div id="one" onKeyPress={this.handleKeyPress} />
-                {/* <MiniCorGroup /> */}
+                <MiniCorGroup />
                 <Card>
                   <CardContent>
                     {this.props.songCor.length !== 0 && (
