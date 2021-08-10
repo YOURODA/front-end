@@ -1,60 +1,35 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import { makeStyles } from "@material-ui/core/styles";
-import * as actionTypes from "../../../store/actions/actionTypes";
-import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
-import Checkbox from "@material-ui/core/Checkbox";
-import { green } from "@material-ui/core/colors";
-import { withStyles } from "@material-ui/core/styles";
-import ListItemAvatar from "@material-ui/core/ListItemAvatar";
-import Avatar from "@material-ui/core/Avatar";
+import Button from "@material-ui/core/Button";
+import ButtonGroup from "@material-ui/core/ButtonGroup";
 import {
   List,
-  ListItem,
-  ListItemIcon,
-  Divider,
   Grid,
   Paper,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  TextField,
 } from "@material-ui/core";
-import IconButton from "@material-ui/core/IconButton";
-import ListItemText from "@material-ui/core/ListItemText";
-import styles from "./listOfSeconds.module.css";
+import * as actionTypes from "../../../store/actions/actionTypes";
 
-const GreenCheckbox = withStyles({
-  root: {
-    color: green[400],
-    "&$checked": {
-      color: green[600],
-    },
-  },
-})((props) => <Checkbox color="default" {...props} />);
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-    maxWidth: 752,
-  },
-  demo: {
-    backgroundColor: theme.palette.background.paper,
-  },
-  title: {
-    margin: theme.spacing(4, 0, 2),
-  },
-}));
+import SecondItem from "./SecondItem";
 
 const ListOfSeconds = ({
   clearSecondList,
   classes,
-  setSelectedSeconds,
   selectedSeconds,
-  setSelectedSecond,
-  selectedSecond,
   songCor,
+  setAddSongCor,
 }) => {
   const [windowSize, setWindowSize] = useState({
     width: 1000,
     height: 1000,
   });
+  const [isOpenSavePopUp, setIsOpenSavePopUp] = useState(false);
+  const [miniCorName, setMiniCorName] = useState("");
   useEffect(() => {
     function handleResize() {
       setWindowSize({
@@ -70,106 +45,107 @@ const ListOfSeconds = ({
     return null;
   }
 
-  const handleToggleMultiple = (value) => {
-    const valueIndex = selectedSeconds.indexOf(value);
-    const newSelectedSeconds = [...selectedSeconds];
-    if (valueIndex < 0) {
-      newSelectedSeconds.push(value);
-      setSelectedSeconds(newSelectedSeconds);
-    } else {
-      newSelectedSeconds.splice(valueIndex, 1);
-      setSelectedSeconds(newSelectedSeconds);
-    }
+  const onClickTyr = () => {
+    console.log("try", selectedSeconds);
   };
-  const handleSelectedSecond = (value) => {
-    setSelectedSecond(value);
+  const onClickSave = () => {
+    const miniCorAdd = {
+      name: miniCorName,
+      miniCor: selectedSeconds.map((sec) => songCor[sec]),
+    };
+    setAddSongCor({ ...miniCorAdd });
+    setMiniCorName("");
+    setIsOpenSavePopUp(false);
   };
   return (
-    <Grid item lg={12} md={12} xl={12} xs={12}>
-      <Paper style={{ maxHeight: windowSize.height - 240, overflow: "auto" }}>
+    <Grid item lg={12} md={12} xl={12} xs={12} spacing={3}>
+      <Paper style={{ maxHeight: windowSize.height - 340, overflow: "auto" }}>
         <List>
-          {clearSecondList.map((value, index) => {
-            const labelId = `button-list-label-${value}`;
-            return (
-              <div className={classes.demo}>
-                <ListItem
-                  key={value}
-                  role={undefined}
-                  dense
-                  button
-                  onClick={() => handleSelectedSecond(value)}
-                  checked={selectedSecond === value}
-                  className={
-                    selectedSecond === value
-                      ? classes.active
-                      : classes.nonActive
-                  }
-                >
-                  <Grid container className={classes.listSecond}>
-                    <ListItemText primary={`${value * 2} - ${value * 2 + 2}`} />
-                    {windowSize.width > 1140 && (
-                      <ListItemText primary={`seconds`} />
-                    )}
-
-                    {/*
-                    <Grid item xs={4}>
-                      seconds
-                    </Grid> */}
-                    <ListItemAvatar>
-                      <Avatar
-                        style={{
-                          backgroundColor: songCor[index].robot.colour.Lhex,
-                        }}
-                      >
-                        {" "}
-                      </Avatar>
-                    </ListItemAvatar>
-                    <ListItemAvatar>
-                      <Avatar
-                        style={{
-                          backgroundColor: songCor[index].robot.colour.Rhex,
-                        }}
-                      >
-                        {" "}
-                      </Avatar>
-                    </ListItemAvatar>
-                  </Grid>
-                  <ListItemSecondaryAction>
-                    <IconButton edge="end" aria-label="delete">
-                      <GreenCheckbox
-                        edge="end"
-                        onChange={() => handleToggleMultiple(value)}
-                        checked={selectedSeconds.includes(value)}
-                        inputProps={{ "aria-labelledby": labelId }}
-                      />
-                    </IconButton>
-                  </ListItemSecondaryAction>
-                </ListItem>
-                <Divider />
-              </div>
-            );
-          })}
+          {clearSecondList &&
+            Array.isArray(clearSecondList) &&
+            clearSecondList.map((value, index) => {
+              return (
+                <SecondItem value={value} index={index} classes={classes} />
+              );
+            })}
         </List>
       </Paper>
+      <Grid
+        container
+        direction="row"
+        justify="space-evenly"
+        alignItems="flex-start"
+      >
+        <ButtonGroup
+          variant="contained"
+          color="primary"
+          aria-label="Full-width contained primary button group"
+        >
+          {selectedSeconds &&
+            Array.isArray(selectedSeconds) &&
+            selectedSeconds.length > 0 && (
+              <div>
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  onClick={() => setIsOpenSavePopUp(true)}
+                >
+                  Seçilenleri kaydet
+                </Button>
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  onClick={() => onClickTyr()}
+                >
+                  Seçilenleri Dene
+                </Button>
+              </div>
+            )}
+        </ButtonGroup>
+        <Dialog
+          open={isOpenSavePopUp}
+          onClose={() => setIsOpenSavePopUp(false)}
+          aria-labelledby="form-dialog-title"
+        >
+          <DialogTitle id="form-dialog-title">Seçilenleri Kaydet</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Seçilen saniyelerdeki corları daha sonra başka yere eklemek için
+              isim verip kaydet
+            </DialogContentText>
+            <TextField
+              autoFocus
+              margin="dense"
+              id="name"
+              label="Mini Cor Name"
+              type="email"
+              fullWidth
+              onChange={(e) => setMiniCorName(e.target.value)}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setIsOpenSavePopUp(false)} color="primary">
+              Cancel
+            </Button>
+            <Button onClick={(e) => onClickSave(e)} color="primary">
+              Subscribe
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </Grid>
     </Grid>
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    selectedSeconds: state.selectedSeconds,
-    selectedSecond: state.selectedSecond,
-    songCor: state.songCor,
-  };
-};
+const mapStateToProps = (state) => ({
+  selectedSeconds: state.selectedSeconds,
+  selectedSecond: state.selectedSecond,
+  songCor: state.songCor,
+});
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    setSelectedSeconds: (selectedSeconds) =>
-      dispatch({ type: actionTypes.SELECTED_SECONDS, selectedSeconds }),
-    setSelectedSecond: (selectedSecond) =>
-      dispatch({ type: actionTypes.SELECTED_SECOND, selectedSecond }),
-  };
-};
+const mapDispatchToProps = (dispatch) => ({
+  setAddSongCor: (miniCor) =>
+    dispatch({ type: actionTypes.COR_LOOP_ADD, miniCor }),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(ListOfSeconds);

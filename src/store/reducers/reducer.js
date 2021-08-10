@@ -1,4 +1,4 @@
-import * as actionTypes from '../actions/actionTypes';
+import * as actionTypes from "../actions/actionTypes";
 
 const initialState = {
   current_user: null,
@@ -10,13 +10,13 @@ const initialState = {
   currently_playing: null,
   isPlaying: false,
   position_stamp: null,
-  durationStamps: '00:00',
+  durationStamps: "00:00",
   csvData: [],
   corData: [],
   socket: null,
   onCloseCsvData: [],
-  backgroundImage: 'linear-gradient(rgb(58, 91, 95), rgb(6, 9, 10) 85%)',
-  popUpAll: '',
+  backgroundImage: "linear-gradient(rgb(58, 91, 95), rgb(6, 9, 10) 85%)",
+  popUpAll: "",
   modalData: {},
   leftHorValue: 0,
   leftVerValue: 0,
@@ -24,11 +24,11 @@ const initialState = {
   rightVerValue: 0,
   brightnessValue: {
     L: 0,
-    R: 0
+    R: 0,
   },
   blinkerValue: {
     L: 0,
-    R: 0
+    R: 0,
   },
   smokeTemperature: null,
   createUserPopup: false,
@@ -43,13 +43,13 @@ const initialState = {
     lColor3: 0,
     rColor1: 0,
     rColor2: 0,
-    rColor3: 0
+    rColor3: 0,
   },
-  isReturnMusic:false,
-  corLoop:[],
-  selectedSeconds:[],
-  selectedSecond:0,
-  songCor:[]
+  isReturnMusic: false,
+  corLoop: [],
+  selectedSeconds: [],
+  selectedSecond: 0,
+  songCor: [],
 };
 
 const reducer = (state = initialState, action) => {
@@ -161,7 +161,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         brightnessValue: {
           ...state.brightnessValue,
-          ...action.brightnessValue
+          ...action.brightnessValue,
         },
       };
     case actionTypes.BLINKER_VALUE:
@@ -169,7 +169,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         blinkerValue: {
           ...state.blinkerValue,
-          ...action.blinkerValue
+          ...action.blinkerValue,
         },
       };
     case actionTypes.SMOKE_TEMPERATURE:
@@ -182,7 +182,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         colour: {
           ...state.colour,
-          ...action.colour
+          ...action.colour,
         },
       };
     case actionTypes.UPDATE_COLOUR_NUMBER:
@@ -211,10 +211,10 @@ const reducer = (state = initialState, action) => {
         userId: action.userId,
       };
     case actionTypes.IS_RETURN_MUSIC:
-      return{
+      return {
         ...state,
-        isReturnMusic: action.isReturnMusic
-      }
+        isReturnMusic: action.isReturnMusic,
+      };
     case actionTypes.IS_USER_AVALIABLE:
       return {
         ...state,
@@ -225,8 +225,14 @@ const reducer = (state = initialState, action) => {
         ...state,
         corLoop: action.corLoop,
       };
+    case actionTypes.COR_LOOP_ADD:
+      const newCorLoop = [...state.corLoop];
+      newCorLoop.push(action.miniCor);
+      return {
+        ...state,
+        corLoop: newCorLoop,
+      };
     case actionTypes.SELECTED_SECONDS:
-      console.log("action.selectedSeconds",action.selectedSeconds)
       return {
         ...state,
         selectedSeconds: action.selectedSeconds,
