@@ -1,22 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import * as actionTypes from "../../../store/actions/actionTypes";
 import { withStyles } from '@material-ui/styles';
-import Editor from '../../Editor/Editor'
-import { Link as RouterLink } from 'react-router-dom'
+
 import {
-    Typography,
-    Button,
-    ButtonBase,
-    Card,
-    CardContent,
-    CardMedia,
-    CardActionArea,
-    CardHeader,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogTitle,
     Grid,
 } from '@material-ui/core';
 import last100 from '../../../images/last100.png'

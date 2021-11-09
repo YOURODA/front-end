@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from "axios";
 import { connect } from 'react-redux';
 import * as actionTypes from '../../store/actions/actionTypes';
 import CssBaseline from '@material-ui/core/CssBaseline/CssBaseline';
@@ -14,11 +15,9 @@ import SkipNextIcon from '@material-ui/icons/SkipNext';
 import SkipPreviousIcon from '@material-ui/icons/SkipPrevious';
 import PauseIcon from '@material-ui/icons/Pause';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
-import Slider from '@material-ui/lab/Slider';
+import Slider from '@material-ui/core/Slider';
 import { TrackDetailsLink } from '../UI/TrackDetailsLink';
-import Editor from '../Editor/Editor';
-import PartySelection from '../PartySelection/PartySelection';
-import HeaterOnButton from '../HeaterOnButton/HeaterOnButton';
+import APIServices from '../Services/APIServices';
 class MusicPlayer extends Component {
   constructor(props) {
     super(props);
@@ -37,22 +36,17 @@ class MusicPlayer extends Component {
     this.player = null;
     this.playerCheckInterval = null;
     this.positionCheckInterval = null;
+    this.apiService = new APIServices();
   }
 
   componentDidMount() {
     this.playerCheckInterval = setInterval(() => this.checkForPlayer(), 1000);
-    // let options = {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/x-www-form-urlencoded"
-    //   },
-    //   url: " http://127.0.0.1:5000/auth",
-    //   data: this.props.access_token
-    // };
-    // Axios(options).then(response => {
-    //   console.log(response.data);
-    // });
+    if (this.state.playingInfo) {
+      this.props.setCurrentTrackId(this.state.playingInfo.track_window.current_track.id);
+    }
+
   }
+
 
   checkForPlayer = () => {
     const token = this.props.user.access_token;
@@ -107,6 +101,14 @@ class MusicPlayer extends Component {
         ) {
           let { current_track } = state.track_window;
           this.props.setCurrentlyPlaying(current_track.name);
+          this.props.setCurrentTrackId(this.state.playingInfo.track_window.current_track.id);
+          this.apiService.isUserAvailable(this.props.user.email).then(response => {
+            this.setState({ getUserId: response.data.user[0]._id })
+            this.props.setUserId(response.data.user[0]._id)
+            if (response.data.message) {
+              this.props.setIsUserAvailable(false)
+            }
+          })
         }
       }
     });
@@ -140,7 +142,9 @@ class MusicPlayer extends Component {
 
         let positionStamp = this.milisToMinutesAndSeconds(state.position);
         let durationStamp = this.milisToMinutesAndSeconds(state.duration);
-
+        if(state.duration < state.position+3000){
+          this.onSeekSliderChange("",0)
+        }
         this.setState({ positionStamp, durationStamp });
         this.props.setPositionStamp(state.position);
         this.props.setDurationStamps(state.duration);
@@ -149,9 +153,6 @@ class MusicPlayer extends Component {
   };
 
   transferPlaybackHere = () => {
-    // ONLY FOR PREMIUM USERS - transfer the playback automatically to the web app.
-    // for normal users they have to go in the spotify app/website and change the device manually
-    // user type is stored in redux state => this.props.user.type
     if (this.props.user.product === 'premium') {
       const { deviceId } = this.state;
       fetch('https://api.spotify.com/v1/me/player', {
@@ -186,18 +187,41 @@ class MusicPlayer extends Component {
     this.player.nextTrack();
   };
 
-  onSeekSliderChange = (e, val) => {
+
+  onSeekSliderChange = async (e, val) => {
     // duration = 100%
-    // ? = val%
+    //  = val%
+    const { user, isReturnMusic, setIsReturnMusic, currentTrackId } = this.props
+    setIsReturnMusic(false)
     let dur = this.state.playingInfo.duration;
     let seek = Math.floor((val * dur) / 100); // round number
     this.setState({ positionSliderValue: val });
-    console.log('valu değeri  ' + val);
-    console.log('e değeri:  ' + e);
-    this.player.seek(seek).then(() => {
+    console.log("isReturnMusic", isReturnMusic)
+    await this.player.seek(seek).then(() => {
       console.log(`Seek song to ${seek} ms`);
     });
+    if (isReturnMusic) {
+      const url = `https://api.spotify.com/v1/me/player/play?device_id=${isReturnMusic}`;
+      axios({
+        url,
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${user.access_token}`,
+        },
+        data: { "uris": [`spotify:track:${currentTrackId}`] }
+      })
+        .then((data) => {
+          this.props.setIsReturnMusic(false)
+          console.log(data);
+        })
+        .catch((error) => {
+          this.props.setIsReturnMusic(false)
+          console.log(error);
+        });
+    }
+    // this.props.setIsReturnMusic(false)
   };
+
 
   onVolumeSliderChange = (e, val) => {
     let volume = val / 100; // val is between 0-100 and the volume accepted needs to be between 0-1
@@ -212,6 +236,10 @@ class MusicPlayer extends Component {
   };
 
   render() {
+    if (!!this.props.isReturnMusic) {
+      console.log("başa alma çalıştı", !!this.props.isReturnMusic, this.props.isReturnMusic)
+      this.onSeekSliderChange("", 0)
+    }
     let mainContent = (
       <Card
         style={{
@@ -226,8 +254,7 @@ class MusicPlayer extends Component {
           align="center"
           style={{ marginTop: 20 }}
         >
-          Oynatıcıyı etkinleştirmek için Spotify uygulamasına gidin, cihazlara
-          tıklayın ve Oda WEB uygulamasını seçin
+          Please select connection device of ODA in Spotify.
         </Typography>
       </Card>
     );
@@ -368,12 +395,7 @@ class MusicPlayer extends Component {
       );
     }
     return (
-      // <Grid container style={containerStyle}>
-
       <div>
-        {/* <div>
-          <Editor selectGoTime={this.onSeekSliderChange} />
-        </div> */}
         <CssBaseline>{mainContent}</CssBaseline>
       </div>
     );
@@ -388,6 +410,8 @@ const mapStateToProps = (state) => {
     isPlaying: state.isPlaying,
     position_stamp: state.position_stamp,
     durationStamps: state.durationStamps,
+    isReturnMusic: state.isReturnMusic,
+    currentTrackId: state.currentTrackId
   };
 };
 
@@ -402,6 +426,14 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({ type: actionTypes.NOW_POSITION_STAMP, position_stamp }),
     setDurationStamps: (durationStamps) =>
       dispatch({ type: actionTypes.DURATION_STAMP, durationStamps }),
+    setCurrentTrackId: (currentTrackId) =>
+      dispatch({ type: actionTypes.CURRENT_TRACK_ID, currentTrackId }),
+    setUserId: userId =>
+      dispatch({ type: actionTypes.USER_ID, userId }),
+    setIsReturnMusic: music =>
+      dispatch({ type: actionTypes.IS_RETURN_MUSIC, music }),
+    setIsUserAvailable: isUserAvailable =>
+      dispatch({ type: actionTypes.IS_USER_AVALIABLE, isUserAvailable })
   };
 };
 

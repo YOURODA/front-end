@@ -1,97 +1,54 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import * as actionTypes from "../../../store/actions/actionTypes";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import * as actionTypes from '../../../store/actions/actionTypes';
 import { withStyles } from '@material-ui/styles';
-import Editor from '../../Editor/Editor'
-import { Link as RouterLink } from 'react-router-dom'
+import PlayCoreographiesPopUp from '../PlayCoreographiesPopUp';
 import {
-    Typography,
     Button,
-    ButtonBase,
-    Card,
-    CardContent,
-    CardMedia,
-    CardActionArea,
-    CardHeader,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogTitle,
     Grid,
 } from '@material-ui/core';
-import hit from '../../../images/hit.png'
+import hit from '../../../images/hit.png';
 
-const useStyles = theme => ({
+const useStyles = (theme) => ({
     button: {
         // margin: theme.spacing(1)
-    }
+    },
 });
-class HitCoreographiesSelect extends Component {
+class HitCoreographies extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            allCorPopUpCheck: false,
         };
     }
     handleOpen = () => {
-        this.props.setAllCorPopUp(true)
+        this.setState({ allCorPopUpCheck: true });
+        this.props.setPopUpAll('Hit');
     };
-    handleChangeMenu = (event) => {
-        this.setState({
-            selectedMenuIds: event.target.value.menuId,
-            selectedMenuName: event.target.value,
-            selectedMenu: event.target,
-        });
-    };
-    addUser(e) {
-        this.setState({
-            [e.target.id]: e.target.value,
-        });
-    }
 
     render() {
-        const { classes } = this.props
+        const { classes } = this.props;
         return (
             <Grid container spacing={4}>
-                <Grid item lg={6} md={6} xl={6} xs={6}>
-                    {/* <Card
-                        className={classes.root}
-                    >
-                        <ButtonBase
-                            className={classes.cardAction}
-                            onClick={this.handleOpen}
-                        >
-                            <CardActionArea>
-                                <CardMedia
-                                    image={allCor}
-                                    title="Click Me For O'da"
-                                />
-                            </CardActionArea>
-                        </ButtonBase>
-                    </Card> */}
-                    <img src={hit} />
+                <Grid item lg={12} md={12} xl={12} xs={12}>
+                    <Button onClick={this.handleOpen}>
+                        <img src={hit} />
+                    </Button>
+                    <PlayCoreographiesPopUp />
                 </Grid>
             </Grid>
         );
     }
 }
 
-
-
-const mapStateToProps = state => {
+const mapDispatchToProps = (dispatch) => {
     return {
-
+        setPopUpAll: (popUpAll) =>
+            dispatch({ type: actionTypes.POPUP_ALL, popUpAll }),
     };
-};
-const mapDispatchToProps = dispatch => {
-    // return {
-    //     setAllCorPopUp: allCorPopUp =>
-    //         dispatch({ type: actionTypes.ALL_COR_POPUP, allCorPopUp }),
-    //     setOnCloseCsvData: onCloseCsvData =>
-    //         dispatch({ type: actionTypes.ON_CLOSE_CSV_DATA, onCloseCsvData }),
-    // };
 };
 
 export default connect(
     null,
-    null
-)(withStyles(useStyles)(HitCoreographiesSelect));
+    mapDispatchToProps
+)(withStyles(useStyles)(HitCoreographies));

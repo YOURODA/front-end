@@ -1,22 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import * as actionTypes from "../../../store/actions/actionTypes";
 import { withStyles } from '@material-ui/styles';
-import Editor from '../../Editor/Editor'
-import { Link as RouterLink } from 'react-router-dom'
 import {
-    Typography,
-    Button,
-    ButtonBase,
-    Card,
-    CardContent,
-    CardMedia,
-    CardActionArea,
-    CardHeader,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogTitle,
     Grid,
 } from '@material-ui/core';
 import myStars from '../../../images/myStars.png'
@@ -49,25 +34,9 @@ class MyStarsSelect extends Component {
     }
 
     render() {
-        const { classes } = this.props
         return (
             <Grid container spacing={4}>
                 <Grid item lg={6} md={6} xl={6} xs={6}>
-                    {/* <Card
-                        className={classes.root}
-                    >
-                        <ButtonBase
-                            className={classes.cardAction}
-                            onClick={this.handleOpen}
-                        >
-                            <CardActionArea>
-                                <CardMedia
-                                    image={allCor}
-                                    title="Click Me For O'da"
-                                />
-                            </CardActionArea>
-                        </ButtonBase>
-                    </Card> */}
                     <img src={myStars} />
                 </Grid>
             </Grid>

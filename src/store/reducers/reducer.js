@@ -1,4 +1,4 @@
-import * as actionTypes from '../actions/actionTypes';
+import * as actionTypes from "../actions/actionTypes";
 
 const initialState = {
   current_user: null,
@@ -10,20 +10,48 @@ const initialState = {
   currently_playing: null,
   isPlaying: false,
   position_stamp: null,
-  durationStamps: '00:00',
+  durationStamps: "00:00",
   csvData: [],
   corData: [],
   socket: null,
   onCloseCsvData: [],
-  backgroundImage: 'linear-gradient(rgb(58, 91, 95), rgb(6, 9, 10) 85%)',
-  popUpAll: '',
+  backgroundImage: "linear-gradient(rgb(58, 91, 95), rgb(6, 9, 10) 85%)",
+  popUpAll: "",
   modalData: {},
-  leftHorValue: null,
-  leftVerValue: null,
-  rightHorValue: null,
-  rightVerValue: null,
-  brightnessValue: null,
-  blinkerValue: null
+  leftHorValue: 0,
+  leftVerValue: 0,
+  rightHorValue: 0,
+  rightVerValue: 0,
+  brightnessValue: {
+    L: 0,
+    R: 0,
+  },
+  blinkerValue: {
+    L: 0,
+    R: 0,
+  },
+  smokeTemperature: null,
+  createUserPopup: false,
+  currentTrackId: null,
+  createCorPopup: false,
+  userId: null,
+  colourNumber: 0,
+  isUserAvailable: true,
+  colour: {
+    lColor1: 0,
+    lColor2: 0,
+    lColor3: 0,
+    rColor1: 0,
+    rColor2: 0,
+    rColor3: 0,
+  },
+  isReturnMusic: false,
+  corLoop: [],
+  selectedSeconds: [],
+  selectedSecond: 0,
+  songCor: [],
+  isSmokeActive:false,
+  isLiveTry:{status: false, localConnectStatus: false, localOdaIp:"" },
 };
 
 const reducer = (state = initialState, action) => {
@@ -133,14 +161,104 @@ const reducer = (state = initialState, action) => {
     case actionTypes.BRIGHTNESS_VALUE:
       return {
         ...state,
-        brightnessValue: action.brightnessValue,
+        brightnessValue: {
+          ...state.brightnessValue,
+          ...action.brightnessValue,
+        },
       };
     case actionTypes.BLINKER_VALUE:
       return {
         ...state,
-        blinkerValue: action.blinkerValue,
+        blinkerValue: {
+          ...state.blinkerValue,
+          ...action.blinkerValue,
+        },
       };
-
+    case actionTypes.SMOKE_TEMPERATURE:
+      return {
+        ...state,
+        smokeTemperature: action.smokeTemperature,
+      };
+    case actionTypes.UPDATE_COLOUR:
+      return {
+        ...state,
+        colour: {
+          ...state.colour,
+          ...action.colour,
+        },
+      };
+    case actionTypes.UPDATE_COLOUR_NUMBER:
+      return {
+        ...state,
+        colourNumber: action.colourNumber,
+      };
+    case actionTypes.CURRENT_TRACK_ID:
+      return {
+        ...state,
+        currentTrackId: action.currentTrackId,
+      };
+    case actionTypes.CREATE_USER_POPUP:
+      return {
+        ...state,
+        createUserPopup: action.createUserPopup,
+      };
+    case actionTypes.CREATE_COR_POPUP:
+      return {
+        ...state,
+        createCorPopup: action.createCorPopup,
+      };
+    case actionTypes.USER_ID:
+      return {
+        ...state,
+        userId: action.userId,
+      };
+    case actionTypes.IS_RETURN_MUSIC:
+      return {
+        ...state,
+        isReturnMusic: action.isReturnMusic,
+      };
+    case actionTypes.IS_USER_AVALIABLE:
+      return {
+        ...state,
+        isUserAvailable: action.isUserAvailable,
+      };
+    case actionTypes.COR_LOOP:
+      return {
+        ...state,
+        corLoop: action.corLoop,
+      };
+    case actionTypes.COR_LOOP_ADD:
+      const newCorLoop = [...state.corLoop];
+      newCorLoop.push(action.miniCor);
+      return {
+        ...state,
+        corLoop: newCorLoop,
+      };
+    case actionTypes.SELECTED_SECONDS:
+      return {
+        ...state,
+        selectedSeconds: action.selectedSeconds,
+      };
+    case actionTypes.SELECTED_SECOND:
+      return {
+        ...state,
+        selectedSecond: action.selectedSecond,
+      };
+    case actionTypes.SONG_COR:
+      return {
+        ...state,
+        songCor: action.songCor,
+      };
+    case actionTypes.IS_SMOKE_ACTIVE:
+      return{
+        ...state,
+        isSmokeActive:action.isSmokeActive
+      }
+    case actionTypes.IS_LIVE_TRY:
+      return{
+        ...state,
+        isLiveTry:action.isLiveTry
+      }
     default:
       return state;
   }

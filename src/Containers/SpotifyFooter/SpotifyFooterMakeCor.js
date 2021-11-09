@@ -4,10 +4,8 @@ import { connect } from 'react-redux';
 import { SpotifyApiContext } from 'react-spotify-api';
 import axios from 'axios';
 import * as actionTypes from '../../store/actions/actionTypes';
-import Routes from '../../Routes'
 import MusicPlayer from '../../Components/MusicPlayer/MusicPlayer';
 import Login from '../../Components/Login/Login';
-import withTracker from '../../withTracker'
 import { withWidth } from '@material-ui/core';
 
 class SpotifyFooterMakeCor extends Component {
@@ -59,7 +57,7 @@ class SpotifyFooterMakeCor extends Component {
                 // return <Link to={'https://accounts.spotify.com/authorize?client_id=' + '8c8d6401e5c24c5585d2e89e93804cd1' + '&redirect_uri=' + 'http://localhost:3000/party-selection' + '&scope=' +
                 //   'streaming user-read-email' + '&response_type=token'} />
                 window.location.replace('https://accounts.spotify.com/authorize?client_id=' + '8c8d6401e5c24c5585d2e89e93804cd1' + '&redirect_uri=' + 'http://localhost:3000/make-coreography' + '&scope=' +
-                    'streaming user-read-email' + '&response_type=token')
+                    'streaming user-read-email user-read-playback-state' + '&response_type=token')
             }
         }
     }
@@ -93,8 +91,6 @@ class SpotifyFooterMakeCor extends Component {
         ) : (
                 <Switch>
                     <Route path="/login" component={Login} />
-                    {/* <Route path="/login" component={Login} />
-          <Route path="/login" component={Login} /> */}
                 </Switch>
 
             );

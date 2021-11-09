@@ -73,7 +73,6 @@ class SecondList extends Component {
 const mapStateToProps = state => {
     return {
         durationStamps: state.durationStamps,
-        socket: state.socket,
         leftHorValue: state.leftHorValue,
         leftVerValue: state.leftVerValue,
         rightHorValue: state.rightHorValue,
