@@ -77,7 +77,7 @@ class Editor extends Component {
     this.props.setCreateUserPopup(true);
   };
   componentDidMount() {
-    this.interval = setInterval(() => this.askTemperature(), 10000);
+    this.interval = setInterval(() => this.askTemperature(), 8000);
     this.timeOfSum = this.milisToMinutesAndSeconds(this.props.durationStamps);
     var connectionStrings = {
       "force new connection": true,
@@ -94,7 +94,10 @@ class Editor extends Component {
     this.props.setScoketIO(_socket);
   }
   componentWillUnmount() {
+    console.log('willUnMount ne zaman caalışıyüüüüü')
     clearInterval(this.interval);
+    this.state.socket.emit("Odaya Katil", this.odaName);
+    this.props.setScoketIO(this.state.socket);
   }
 
   isAvailableOdaNickRes = () => {
@@ -198,7 +201,7 @@ const mapStateToProps = (state) => {
     durationStamps: state.durationStamps,
     currently_playing: state.currently_playing,
     playNow: state.play_now,
-    user: state.current_user,
+    currentUser: state.current_user,
     onCloseCsvData: state.onCloseCsvData,
     corData: state.corData,
     socket: state.socket,

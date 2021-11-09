@@ -67,7 +67,7 @@ class PlayCoreography extends Component {
   componentDidMount() {
     this.interval = setInterval(() => this.askTemperature(), 10000);
 
-    var connectionStrings = {
+    const connectionStrings = {
       "force new connection": true,
       reconnectionAttempts: "Infiniy",
       timeout: 10000,
