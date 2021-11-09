@@ -13,36 +13,24 @@ const odaName = "test2"
 function CreateUserPopUp(props) {
     const [open, setOpen] = React.useState(false);
     const [corName, setCorName] = React.useState();
-    const [odaNick, setOdaNick] = React.useState();
-    const [giveNameOfCh, setGiveNameOfCh] = React.useState();
     const apiServices = new APIService()
 
-    // const handleClickOpen = () => {
-    //     setOpen(true);
-    //     props.setCreateCorPopup(open)
-    // };
 
     const handleClose = () => {
         setOpen(false);
         props.setCreateCorPopup(open)
     };
     const getCoreographyName = (e) => {
-        console.log(e.target.value)
         setCorName(e.target.value)
     };
 
     const createSaveCor = () => {
-        console.log(corName, props.currently_playing, props.corData, props.currentTrackId, props.userId)
         apiServices.createCoreography(corName, props.currently_playing, props.corData, props.currentTrackId, props.userId).then(response => {
-            console.log(response.data)
             if (response.status === 200) {
                 setOpen(false)
                 props.setCreateCorPopup(open)
             }
         })
-    }
-    const giveNameOfCoroegraphy = (e) => {
-        setGiveNameOfCh(e.target.value)
     }
 
     return (

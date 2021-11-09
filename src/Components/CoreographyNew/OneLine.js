@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState,useEffect } from "react";
 import * as actionTypes from "../../store/actions/actionTypes";
 import { connect } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
@@ -20,7 +20,7 @@ const OneLine = (props) => {
   const [value, setValue] = React.useState(0);
   const [selectTime, setSelectTime] = useState(0);
   const debounceRedux = useCallback(
-    debounce((e, time) => updateRedux(e, time), 100),
+    debounce((e, time,songCor) => updateRedux(e, time,songCor), 10),
     []
   );
 
@@ -33,7 +33,7 @@ const OneLine = (props) => {
     setValue(songCor[selectedSecond].robot[`${robot}${option}`]);
   }
 
-  const updateRedux = (newValue, time) => {
+  const updateRedux = (newValue, time,songCor) => {
     const newRobot = [...songCor];
     newRobot[time].robot[`${robot}${option}`] = newValue;
     setSongCor(newRobot);
@@ -41,7 +41,7 @@ const OneLine = (props) => {
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
-    debounceRedux(newValue, selectTime);
+    debounceRedux(newValue, selectTime, songCor);
   };
 
   return (

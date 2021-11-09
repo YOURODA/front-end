@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { Local_API, Prod_API } from '../Config/Env';
 
-const userApiService = Prod_API
+// const userApiService = Prod_API
+const userApiService = Local_API
 
 class APIServices {
   async newUser(email, odaName, odaNick) {
@@ -89,21 +90,50 @@ class APIServices {
     return await axios(serviceData);
   }
   async createCoreography(name, trackName, file, trackId, ownerId) {
-    console.log("createCoreography", name, trackName, file, trackId, ownerId)
     const createCorData = {
       "name": name,
       "trackName": trackName,
       "file": file,
       "trackId": trackId,
       "ownerId": ownerId,
+      "version":"v.1.0"
     }
-
     const serviceData = {
       method: 'POST',
       url: userApiService + '/choreography/create',
       data: createCorData,
     };
-    return await axios(serviceData);
+    return await axios(serviceData);  
+  }
+  async myOdaOnlyEmail({email}) {
+    console.log("createCoreography", email)
+
+    const serviceData = {
+      method: 'POST',
+      url: userApiService + '/user/myOdaOnlyEmail',
+      data: {email},
+    };
+    return await axios(serviceData);  
+  }
+  async liveTry({odaIP, cor}) {
+    console.log("liveTry", odaIP, cor)
+
+    var form = new FormData();
+    form.append("u", "59");
+    form.append("d", cor);
+
+    const data ={
+      u:59,
+      d:cor
+    }
+    const serviceData = {
+      method: 'POST',
+      url: `http://${odaIP}:9090/set_dmx`,
+      data: form,
+      headers: { "Content-Type": "multipart/form-data" },
+    };
+    
+    return await axios(serviceData);  
   }
 }
 

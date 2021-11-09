@@ -85,7 +85,7 @@ class PlayCoreographiesPopUp extends Component {
             {popUpAll}
           </DialogTitle>
           <DialogContent>
-            <AllCoreographiesTable />
+            <AllCoreographiesTable popUpAll={"All"} />
           </DialogContent>
           <DialogActions>
             <Button style={{ color: 'red' }} onClick={this.handleClose}>

@@ -2,19 +2,10 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import * as actionTypes from "../../store/actions/actionTypes";
 import { withStyles } from '@material-ui/styles';
-import Editor from '../../Components/Editor/Editor'
-import { Link as RouterLink } from 'react-router-dom'
-import CssBaseline from "@material-ui/core/CssBaseline/CssBaseline";
-import CreateCor from '../CoreographyNew/CreateCor'
+
 // import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import {
-  Typography,
-  Button,
   Card,
-  CardContent,
-  CardMedia,
-  CardHeader,
-  CardActions,
   Grid,
   CardActionArea,
 } from '@material-ui/core';

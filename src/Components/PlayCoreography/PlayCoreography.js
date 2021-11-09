@@ -9,7 +9,6 @@ import SpotifyFooter from "../../Containers/SpotifyFooter/SpotifyFooter";
 import CssBaseline from "@material-ui/core/CssBaseline/CssBaseline";
 
 import socketIo from "socket.io-client";
-// import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import { Grid } from "@material-ui/core";
 import AllCoreographiesSelect from "./AllCoreographies/AllCoreographiesSelect";
 import MyCoreographiesSelect from "./MyCoreographies/MyCoreographiesSelect";
@@ -40,13 +39,29 @@ class PlayCoreography extends Component {
     this.state = {};
   }
 
+  // askTemperature = () => {
+  //   this.props.socket.emit("askTemperature", this.temperatureToCelsius);
+  //   this.props.socket.on("temperature", (data) => {
+  //     console.log("sıcaklık sorgusu", data.temperatureToCelsius);
+  //     this.props.setSmokeTemperature(data.temperatureToCelsius);
+  //   });
+  //   console.log(this.state.smokeTemperature);
+  // };
+
   askTemperature = () => {
-    this.props.socket.emit("askTemperature", this.temperatureToCelsius);
-    this.props.socket.on("temperature", (data) => {
-      console.log("sıcaklık sorgusu", data.temperatureToCelsius);
-      this.props.setSmokeTemperature(data.temperatureToCelsius);
-    });
-    console.log(this.state.smokeTemperature);
+    console.log("test");
+    const {
+      // isSmokeActive,
+      socket,
+      setSmokeTemperature,
+    } = this.props;
+    // if (isSmokeActive) {
+      socket.emit("askTemperature", { isSmokeActive:false  });
+      socket.on("temperature", (data) => {
+        console.log("temperature in the oda", data.temperatureToCelsius);
+        setSmokeTemperature(data.temperatureToCelsius);
+      });
+    // }
   };
 
   componentDidMount() {
@@ -58,11 +73,13 @@ class PlayCoreography extends Component {
       timeout: 10000,
       transports: ["websocket"],
     };
-    var socketio_url = "https://your-oda-back-end.herokuapp.com";
-    this.odaName = { name: "Corlu" };
-    this.state.socket = socketIo.connect(socketio_url, connectionStrings);
-    this.state.socket.emit("Odaya Katil", this.odaName);
-    this.props.setScoketIO(this.state.socket);
+    // var socketio_url = "https://your-oda-back-end.herokuapp.com";
+    // this.odaName = { name: "Corlu" };
+    const socketio_url = "http://localhost:5000/";;
+    this.odaName = { email: "eray.eroglu59@gmail.com" };
+    let  _socket = socketIo.connect(socketio_url, connectionStrings);
+    _socket.emit("Odaya Katil", this.odaName);
+    this.props.setScoketIO(_socket);
     console.log("odaname", this.odaName);
   }
 

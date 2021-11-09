@@ -42,6 +42,9 @@ export const COR_LOOP_ADD = "COR_LOOP_ADD";
 export const SELECTED_SECONDS = "SELECTED_SECONDS";
 export const SELECTED_SECOND = "SELECTED_SECOND";
 export const SONG_COR = "SONG_COR";
+export const IS_SMOKE_ACTIVE = "IS_SMOKE_ACTIVE";
+export const IS_LIVE_TRY = "IS_LIVE_TRY";
+
 
 export const playSong = (uris, deviceId) => {
   return (dispatch, getState) => {

@@ -4,10 +4,8 @@ import { connect } from 'react-redux';
 import { SpotifyApiContext } from 'react-spotify-api';
 import axios from 'axios';
 import * as actionTypes from '../../store/actions/actionTypes';
-import Routes from '../../Routes'
 import MusicPlayer from '../../Components/MusicPlayer/MusicPlayer';
 import Login from '../../Components/Login/Login';
-import withTracker from '../../withTracker'
 import { withWidth } from '@material-ui/core';
 
 class SpotifyFooterMakeCor extends Component {
@@ -93,8 +91,6 @@ class SpotifyFooterMakeCor extends Component {
         ) : (
                 <Switch>
                     <Route path="/login" component={Login} />
-                    {/* <Route path="/login" component={Login} />
-          <Route path="/login" component={Login} /> */}
                 </Switch>
 
             );

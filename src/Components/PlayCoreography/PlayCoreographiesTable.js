@@ -23,6 +23,7 @@ import Remove from "@material-ui/icons/Remove";
 import SaveAlt from "@material-ui/icons/SaveAlt";
 import Search from "@material-ui/icons/Search";
 import ViewColumn from "@material-ui/icons/ViewColumn";
+import {regulatorCorLoop} from "../../utils"
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -86,6 +87,7 @@ class AllCoreographiesTable extends Component {
       selectTrackId: "",
       coreograph: null,
       socket: null,
+      version:""
     };
     this.apiService = new APIServices();
   }
@@ -96,14 +98,14 @@ class AllCoreographiesTable extends Component {
     return secondsOfSum;
   };
 
-  askTemperature = () => {
-    this.props.socket.emit("askTemperature", this.temperatureToCelsius);
-    this.props.socket.on("temperature", (data) => {
-      console.log(data.temperatureToCelsius);
-      this.props.setSmokeTemperature(data.temperatureToCelsius);
-    });
-    console.log(this.state.smokeTemperature);
-  };
+  // askTemperature = () => {
+  //   this.props.socket.emit("askTemperature", this.temperatureToCelsius);
+  //   this.props.socket.on("temperature", (data) => {
+  //     console.log(data.temperatureToCelsius);
+  //     this.props.setSmokeTemperature(data.temperatureToCelsius);
+  //   });
+  //   console.log(this.state.smokeTemperature);
+  // };
 
   openSelectDevicePopUp = () => {
     this.setState({ selectedDevicePopUp: true });
@@ -119,9 +121,12 @@ class AllCoreographiesTable extends Component {
   };
   componentDidMount() {
     const { popUpAll } = this.props;
+    console.log("componentDidMount",popUpAll)
     switch (popUpAll) {
       case "All":
+        console.log("get all api")
         this.apiService.getAllCoreographies().then((response) => {
+          console.log("response",response)
           this.setState({ getAllCorData: this.getCore(response.data.cor) });
         });
         break;
@@ -145,9 +150,23 @@ class AllCoreographiesTable extends Component {
 
   goParty = (id) => {
     const { selectTrackId, coreograph } = this.state;
+    console.log("coreograph",coreograph)
+    let tryCor;
+    if(this.state.version === "v.1.0"){
+      tryCor = regulatorCorLoop({ songCorLoop:coreograph, smoke: false });
+    }else{
+      tryCor = coreograph;
+    }
+    // let stringCSV = JSON.stringify({ corData: tryLoop });
+    // const encodedString = {
+    //   base: new Buffer(stringCSV).toString("base64"),
+    //   time: 2,
+    // };
+    // socket.emit("corData", encodedString)
+
     this.closeSelectDevicePopUp();
     this.props.setCurrentTrackId(selectTrackId);
-    let stringCSV = JSON.stringify({ corData: coreograph });
+    let stringCSV = JSON.stringify({ corData: tryCor });
     const encodedString = {
       base: new Buffer(stringCSV).toString("base64"),
       time: this.milisToMinutesAndSeconds(this.props.durationStamps),
@@ -193,6 +212,7 @@ class AllCoreographiesTable extends Component {
                     this.setState({ selectTrackId: rowData.trackId });
                     this.setState({ selectedDevicePopUp: true });
                     this.setState({ coreograph: rowData.file });
+                    this.setState({ version: rowData.version });
                     console.log("row", rowData);
                   },
                 },
@@ -231,7 +251,7 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({ type: actionTypes.IS_RETURN_MUSIC, isReturnMusic }),
     setCurrentTrackId: (currentTrackId) =>
       dispatch({ type: actionTypes.CURRENT_TRACK_ID, currentTrackId }),
-    setScoketIO: (socket) => dispatch({ type: actionTypes.SOCKET, socket }),
+    // setScoketIO: (socket) => dispatch({ type: actionTypes.SOCKET, socket }),
   };
 };
 export default connect(

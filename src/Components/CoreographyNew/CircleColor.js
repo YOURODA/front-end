@@ -26,7 +26,6 @@ const CircleColour = (props) => {
   const handleColorPWMValues = (event) => {
     const newRobotColour = [...songCor];
     const colour = newRobotColour[selectedSecond].robot.colour;
-    console.log("event", event);
     if (robot === "L") {
       colour.lColor1 = Math.ceil(event.rgb.r);
       colour.lColor2 = Math.ceil(event.rgb.g);

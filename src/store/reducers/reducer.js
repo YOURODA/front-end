@@ -50,6 +50,8 @@ const initialState = {
   selectedSeconds: [],
   selectedSecond: 0,
   songCor: [],
+  isSmokeActive:false,
+  isLiveTry:{status: false, localConnectStatus: false, localOdaIp:"" },
 };
 
 const reducer = (state = initialState, action) => {
@@ -247,7 +249,16 @@ const reducer = (state = initialState, action) => {
         ...state,
         songCor: action.songCor,
       };
-
+    case actionTypes.IS_SMOKE_ACTIVE:
+      return{
+        ...state,
+        isSmokeActive:action.isSmokeActive
+      }
+    case actionTypes.IS_LIVE_TRY:
+      return{
+        ...state,
+        isLiveTry:action.isLiveTry
+      }
     default:
       return state;
   }

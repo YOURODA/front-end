@@ -23,10 +23,6 @@ function LinearProgressWithLabel(props) {
 }
 
 LinearProgressWithLabel.propTypes = {
-    /**
-     * The value of the progress indicator for the determinate and buffer variants.
-     * Value between 0 and 100.
-     */
     value: PropTypes.number.isRequired,
 };
 
@@ -40,7 +36,7 @@ function SmokeStatus(props) {
     const classes = useStyles();
     return (
         <div className={classes.root}>
-            <LinearProgressWithLabel value={props.smokeTemperature/3} />
+            <LinearProgressWithLabel value={props.smokeTemperature/4.5} />
         </div>
     );
 }

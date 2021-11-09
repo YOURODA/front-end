@@ -18,6 +18,7 @@ import {
 } from "@material-ui/core";
 import SaveIcon from "@material-ui/icons/Save";
 import SmokeStatus from "./SmokeStatus";
+import Smoke from "./Smoke";
 import { withStyles } from "@material-ui/styles";
 import APIServices from "../Services/APIServices";
 import RobotOptions from "./RobotOptions";
@@ -25,6 +26,7 @@ import CreateCorPopUp from "./CreateCorPopUp";
 import SelectedDevicePopUp from "./SelectedDevicePopUp";
 import MiniCorGroup from "./miniCorGroup/MiniCorGroup";
 import ListOfSeconds from "./ListOfSeconds/index";
+import { regulatorCorTry } from "../../utils";
 const useStyles = (theme) => ({
   active: {
     backgroundColor: "#e8eaf6",
@@ -46,67 +48,14 @@ class CreateCor extends Component {
       checkedMultiple: [],
       corData: [],
       saveCorData: [],
-      checkSmoke: 0,
       changeSecondsColor: false,
       clearSecondList: [],
       selectedDevicePopUp: false,
     };
     this.apiService = new APIServices();
-    this.tryFunction = this.tryFunction.bind(this);
   }
-
-  tryFunction(event) {
-    if (event.keyCode === 84) {
-      const { colour } = this.props;
-      const { lColor1, lColor2, lColor3, rColor1, rColor2, rColor3 } = colour;
-      let trycor = [];
-      trycor[0] = {
-        startDate: 0,
-        robot: `${this.props.leftHorValue ? this.props.leftHorValue : "0"},0,${
-          this.props.leftVerValue ? this.props.leftVerValue : "0"
-        },0,0,${
-          this.props.brightnessValue.L ? this.props.brightnessValue.L : "0"
-        },${lColor1},${lColor2},${lColor3},"59",${
-          this.props.blinkerValue.L ? this.props.blinkerValue.L : "0"
-        },0,0,${this.props.rightHorValue ? this.props.rightHorValue : "0"},0,${
-          this.props.rightVerValue ? this.props.rightVerValue : "0"
-        },0,0,${
-          this.props.brightnessValue.R ? this.props.brightnessValue.R : "0"
-        },${rColor1},${rColor2},${rColor3},0,${
-          this.props.blinkerValue.R ? this.props.blinkerValue.R : "0"
-        },0,0`,
-        smoke: 0, //L
-      };
-      trycor[1] = {
-        startDate: 1,
-        robot: `${this.props.leftHorValue ? this.props.leftHorValue : "0"},0,${
-          this.props.leftVerValue ? this.props.leftVerValue : "0"
-        },0,0,${
-          this.props.brightnessValue.L ? this.props.brightnessValue.L : "0"
-        },${lColor1},${lColor2},${lColor3},"59",${
-          this.props.blinkerValue.L ? this.props.blinkerValue.L : "0"
-        },0,0,${this.props.rightHorValue ? this.props.rightHorValue : "0"},0,${
-          this.props.rightVerValue ? this.props.rightVerValue : "0"
-        },0,0,${
-          this.props.brightnessValue.R ? this.props.brightnessValue.R : "0"
-        },${rColor1},${rColor2},${rColor3},0,${
-          this.props.blinkerValue.R ? this.props.blinkerValue.R : "0"
-        },0,0`,
-        smoke: 0, //L
-      };
-      let stringCSV = JSON.stringify({ corData: trycor });
-      const encodedString = {
-        base: new Buffer(stringCSV).toString("base64"),
-        time: 2,
-      };
-      this.props.socket.emit("corData", encodedString);
-
-      //Do whatever when esc is pressed
-    }
-  }
-
   componentDidMount() {
-    document.addEventListener("keydown", this.tryFunction, false);
+    // document.addEventListener("keydown", this.tryFunction, false);
     const { durationStamps, songCor, setSongCor } = this.props;
     if (durationStamps) {
       this.clearSeconds = Math.round(
@@ -124,10 +73,13 @@ class CreateCor extends Component {
               LVer: 0,
               LBrightness: 0,
               LBlinker: 0,
+              LSpeed: 0,
               RHor: 0,
               RVer: 0,
               RBrightness: 0,
               RBlinker: 0,
+              RSpeed: 0,
+
               colour: {
                 lColor1: 0,
                 lColor2: 0,
@@ -146,9 +98,9 @@ class CreateCor extends Component {
       }
     }
   }
-  componentWillUnmount() {
-    document.removeEventListener("keydown", this.tryFunction, false);
-  }
+  // componentWillUnmount() {
+  //   document.removeEventListener("keydown", this.tryFunction, false);
+  // }
   componentDidUpdate(prevProps) {
     if (this.props.durationStamps !== prevProps.durationStamps) {
       this.clearSeconds = Math.round(
@@ -239,13 +191,6 @@ class CreateCor extends Component {
   handleChange = (event) => {
     this.setState({ [event.target.name]: event.target.value });
   };
-  handleChangeSmoke = (event) => {
-    if (event.target.checked) {
-      this.setState({ checkSmoke: 1 });
-    } else {
-      this.setState({ checkSmoke: 0 });
-    }
-  };
   milisToMinutesAndSeconds = (mil) => {
     let minutes = Math.floor(mil / 60000);
     let seconds = ((mil % 60000) / 1000).toFixed(0);
@@ -271,7 +216,7 @@ class CreateCor extends Component {
       selectedDevicePopUp,
       clearSecondList,
     } = this.state;
-    this.tryFunction({ keyCode: 84 });
+    // this.tryFunction({ keyCode: 84 });
     return (
       <Grid container spacing={3}>
         {selectedDevicePopUp && (
@@ -304,56 +249,9 @@ class CreateCor extends Component {
                     )}
                     {this.props.createCorPopup && <CreateCorPopUp />}
                     <Grid container spacing={3}>
-                      <Grid item xs={11}>
-                        <SmokeStatus />
-                      </Grid>
-                      <Grid item xs={1}>
-                        <FormControlLabel
-                          control={
-                            <Checkbox
-                              checked={checkSmoke}
-                              onChange={this.handleChangeSmoke}
-                              name="checkSmoke"
-                              color="primary"
-                            />
-                          }
-                          label="Smoke"
-                        />
-                      </Grid>
+                      <Smoke />
                     </Grid>
                   </CardContent>
-                  {/* <CardActions>
-                    <Button
-                      style={{ flex: 1 }}
-                      variant="contained"
-                      color="primary"
-                      size="small"
-                      startIcon={<SaveIcon />}
-                      onClick={this.saveCoreography}
-                    >
-                      Save For Party
-                    </Button>
-                    <Button
-                      style={{ flex: 1 }}
-                      variant="contained"
-                      color="primary"
-                      size="small"
-                      startIcon={<SaveIcon />}
-                      onClick={this.openSelectDevicePopUp}
-                    >
-                      Go Party
-                    </Button>
-                    <Button
-                      style={{ flex: 1 }}
-                      variant="contained"
-                      color="primary"
-                      size="small"
-                      startIcon={<SaveIcon />}
-                      onClick={this.saveUserCoreographyToDB}
-                    >
-                      Save For MyCHR
-                    </Button>
-                  </CardActions> */}
                 </Card>
               </React.Fragment>
             )}
@@ -379,6 +277,8 @@ const mapStateToProps = (state) => {
     colourNumber: state.colourNumber,
     isReturnMusic: state.isReturnMusic,
     songCor: state.songCor,
+    songCor: state.songCor,
+    selectedSecond: state.selectedSecond,
   };
 };
 const mapDispatchToProps = (dispatch) => {

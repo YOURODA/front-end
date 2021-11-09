@@ -34,8 +34,6 @@ const SelectedDevicePopUp = (props) => {
   };
 
   const handleListItemClick = (id,name) => {
-    console.log("handleListItemClick name",name);
-    console.log("handleListItemClick id",id);
     setOpen(false)
     onClose();
     send(id)
@@ -56,9 +54,7 @@ const SelectedDevicePopUp = (props) => {
         console.log(error);
       });
   }, []);
-  console.log("deviceList", deviceList);
   if (!deviceList) return null
-  console.log("deviceList.data", deviceList.data.devices);
   return (
     <Dialog
       onClose={handleClose}

@@ -39,6 +39,7 @@ const SecondItem = ({
   setSelectedSecond,
   setSelectedSeconds,
   classes,
+  setSongCor,
 }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [windowSize, setWindowSize] = useState({
@@ -97,6 +98,21 @@ const SecondItem = ({
   const labelId = `button-list-label-${value}`;
   const open = Boolean(anchorEl);
   const id = open ? "simple-popper" : undefined;
+
+  const iterableCor=()=>{
+    if(index!==0){
+      const newRobot = JSON.parse(JSON.stringify(songCor));
+      newRobot[index] = JSON.parse(JSON.stringify(newRobot[index-1]))  ;
+      setSongCor(newRobot);
+    }
+  }
+  const reverseIterableCor =()=>{
+    if(index+1 !== songCor.length){
+      const newRobot =JSON.parse(JSON.stringify(songCor));
+      newRobot[index] = JSON.parse(JSON.stringify(newRobot[index+1]));
+      setSongCor(newRobot);
+    }
+  }
   if (
     songCor &&
     Array.isArray(songCor) &&
@@ -123,6 +139,7 @@ const SecondItem = ({
             {windowSize.width > 1140 && <ListItemText primary="seconds" />}
             <ListItemAvatar>
               <Avatar
+                onClick={()=> iterableCor()}
                 style={{
                   backgroundColor: songCor[index].robot.colour.Lhex,
                 }}
@@ -132,6 +149,7 @@ const SecondItem = ({
             </ListItemAvatar>
             <ListItemAvatar>
               <Avatar
+              onClick={()=> reverseIterableCor()}
                 style={{
                   backgroundColor: songCor[index].robot.colour.Rhex,
                 }}
@@ -174,6 +192,7 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch({ type: actionTypes.SELECTED_SECONDS, selectedSeconds }),
   setSelectedSecond: (selectedSecond) =>
     dispatch({ type: actionTypes.SELECTED_SECOND, selectedSecond }),
+    setSongCor: (songCor) => dispatch({ type: actionTypes.SONG_COR, songCor }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SecondItem);

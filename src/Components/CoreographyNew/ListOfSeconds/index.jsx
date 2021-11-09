@@ -14,8 +14,8 @@ import {
   TextField,
 } from "@material-ui/core";
 import * as actionTypes from "../../../store/actions/actionTypes";
-
 import SecondItem from "./SecondItem";
+import { tryRegulatorCorLoop } from "../../../utils";
 
 const ListOfSeconds = ({
   clearSecondList,
@@ -23,6 +23,7 @@ const ListOfSeconds = ({
   selectedSeconds,
   songCor,
   setAddSongCor,
+  socket
 }) => {
   const [windowSize, setWindowSize] = useState({
     width: 1000,
@@ -41,22 +42,35 @@ const ListOfSeconds = ({
     handleResize();
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
   if (!clearSecondList) {
     return null;
   }
 
   const onClickTyr = () => {
-    console.log("try", selectedSeconds);
+    const tryLoop = tryRegulatorCorLoop({ selectedSeconds, songCor, smoke: false });
+    let stringCSV = JSON.stringify({ corData: tryLoop });
+    const encodedString = {
+      base: new Buffer(stringCSV).toString("base64"),
+      time: 2,
+    };
+    socket.emit("corData", encodedString)
   };
   const onClickSave = () => {
-    const miniCorAdd = {
+    const miniCor = selectedSeconds.map((sec) => {
+     return {...songCor[sec]}
+    })
+
+    const miniCorAdd = Object.assign({
       name: miniCorName,
-      miniCor: selectedSeconds.map((sec) => songCor[sec]),
-    };
+      miniCor
+    });
     setAddSongCor({ ...miniCorAdd });
     setMiniCorName("");
     setIsOpenSavePopUp(false);
   };
+  
+
   return (
     <Grid item lg={12} md={12} xl={12} xs={12} spacing={3}>
       <Paper style={{ maxHeight: windowSize.height - 340, overflow: "auto" }}>
@@ -141,6 +155,7 @@ const mapStateToProps = (state) => ({
   selectedSeconds: state.selectedSeconds,
   selectedSecond: state.selectedSecond,
   songCor: state.songCor,
+  socket: state.socket
 });
 
 const mapDispatchToProps = (dispatch) => ({
