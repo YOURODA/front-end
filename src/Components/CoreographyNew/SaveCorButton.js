@@ -38,7 +38,7 @@ const createSaveCor = () => {
   return (
     <div>
       <Button onClick={() =>setOpen(true) }>
-        Save Cor
+        Save Chr
         </Button>
         {open && <div>
           <Dialog
@@ -46,14 +46,14 @@ const createSaveCor = () => {
           onClose={() => handleClose(false)}
           aria-labelledby="form-dialog-title"
         >
-          <DialogTitle id="form-dialog-title">CREATE COREOGRAPHYS</DialogTitle>
+          <DialogTitle id="form-dialog-title">CREATE CHOREOGRAPHY</DialogTitle>
             <DialogContent>
                 <DialogContentText>
-                    Please give a name for your coreography.
+                    Please give a name for your choreography.
                 </DialogContentText>
                 <TextField onChange={e => setCorName(e.target.value)}
                     id="standard-search"
-                    label="Coroegraphy Name"
+                    label="Choroegraphy Name"
                     type="search" />
             </DialogContent>
             <DialogActions>

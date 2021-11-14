@@ -9,16 +9,22 @@ import Box from '@material-ui/core/Box';
 
 function LinearProgressWithLabel(props) {
     return (
-        <Box display="flex" alignItems="center">
-            <Box width="100%" mr={1}>
-                <LinearProgress variant="determinate" {...props} />
+        <div >
+            <Box width="100%" height="100%" >
+                <LinearProgress variant="determinate" valueBuffer="59" style={{
+                     webkitTransform: "rotate(270deg)",
+                     mozTransform: "rotate(270deg)",
+                     oTransform:" rotate(270deg)",
+                     msTransform:" rotate(270deg)",
+                     transform: "rotate(270deg)",
+                     marginTop:"60%",
+                     height: "8px"
+                }}  {...props} />
             </Box>
-            <Box minWidth={35}>
-                <Typography variant="body2" color="textSecondary">{`${Math.round(
+                <Typography variant="body1" color="textSecondary">{`${Math.round(
                     props.value,
                 )}%`}</Typography>
-            </Box>
-        </Box>
+        </div>
     );
 }
 

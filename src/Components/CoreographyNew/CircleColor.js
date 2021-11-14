@@ -46,7 +46,6 @@ const CircleColour = (props) => {
   return (
     <div>
       <Grid item lg={4} md={4} xl={4} xs={4}>
-        <Typography variant="button">{`Select Color For ${label}`}</Typography>
       </Grid>
       <Grid item lg={4} md={4} xl={4} xs={4}>
         <div style={{ float: "center" }}>

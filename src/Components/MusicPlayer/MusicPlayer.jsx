@@ -383,7 +383,7 @@ class MusicPlayer extends Component {
               </Grid>
             </Grid>
             <Grid item xs={3}>
-              <div style={{ marginTop: 53 }}>
+              <div style={{paddingRight:"3%",marginTop: 53 }}>
                 <Slider
                   value={this.state.volumeSliderValue}
                   onChange={this.onVolumeSliderChange}

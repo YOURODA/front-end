@@ -72,7 +72,7 @@ const ListOfSeconds = ({
   
 
   return (
-    <Grid item lg={12} md={12} xl={12} xs={12} spacing={3}>
+    <Grid item lg={12} md={12} xl={12} xs={12}>
       <Paper style={{ maxHeight: windowSize.height - 340, overflow: "auto" }}>
         <List>
           {clearSecondList &&
@@ -104,14 +104,14 @@ const ListOfSeconds = ({
                   color="primary"
                   onClick={() => setIsOpenSavePopUp(true)}
                 >
-                  Seçilenleri kaydet
+                  Save Selected
                 </Button>
                 <Button
                   variant="outlined"
                   color="primary"
                   onClick={() => onClickTyr()}
                 >
-                  Seçilenleri Dene
+                  Try Selected
                 </Button>
               </div>
             )}
@@ -121,17 +121,16 @@ const ListOfSeconds = ({
           onClose={() => setIsOpenSavePopUp(false)}
           aria-labelledby="form-dialog-title"
         >
-          <DialogTitle id="form-dialog-title">Seçilenleri Kaydet</DialogTitle>
+          <DialogTitle id="form-dialog-title">Save Selected</DialogTitle>
           <DialogContent>
             <DialogContentText>
-              Seçilen saniyelerdeki corları daha sonra başka yere eklemek için
-              isim verip kaydet
+              Name to add moves from selected seconds to other seconds.
             </DialogContentText>
             <TextField
               autoFocus
               margin="dense"
               id="name"
-              label="Mini Cor Name"
+              label="Mini Chr. Name"
               type="email"
               fullWidth
               onChange={(e) => setMiniCorName(e.target.value)}
@@ -142,7 +141,7 @@ const ListOfSeconds = ({
               Cancel
             </Button>
             <Button onClick={(e) => onClickSave(e)} color="primary">
-              Subscribe
+              Save
             </Button>
           </DialogActions>
         </Dialog>
