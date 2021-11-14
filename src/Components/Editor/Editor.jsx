@@ -19,7 +19,6 @@ import CssBaseline from "@material-ui/core/CssBaseline/CssBaseline";
 import SpotifyFooterMakeCor from "../../Containers/SpotifyFooter/SpotifyFooterMakeCor";
 import APIServices from "../Services/APIServices";
 import CreateUserPopUp from "../CoreographyNew/CreateUserPopUp";
-const odaName = "test3";
 const useStyles = makeStyles((theme) => ({
   button: {
     margin: theme.spacing(1),
@@ -133,7 +132,7 @@ class Editor extends Component {
       this.setState({ goCoreography: true });
     }
     return (
-      <Grid container>
+      <Grid>
         {this.state.goCoreography === false && (
           <Box
             display="flex"
@@ -145,8 +144,7 @@ class Editor extends Component {
               <Card>
                 <CardHeader>
                   <Typography variant="h5">
-                    {" "}
-                    Cihazınıza isim veriniz.
+                    Name to your ODABOX.
                   </Typography>
                 </CardHeader>
                 <CardContent>

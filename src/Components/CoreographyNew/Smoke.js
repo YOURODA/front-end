@@ -16,11 +16,9 @@ const Smoke = ({ songCor, selectedSecond, setSongCor }) => {
 
   return (
     <>
-      <Grid item xs={11}>
-        <SmokeStatus />
-      </Grid>
-      <Grid item xs={1}>
-        <FormControlLabel
+      <Grid item xs={2}>
+      <FormControlLabel
+      style={{marginLeft:"35%",marginTop:"60%"}}
           control={
             <Checkbox
               checked={songCor[selectedSecond].smoke}
@@ -31,6 +29,7 @@ const Smoke = ({ songCor, selectedSecond, setSongCor }) => {
           }
           label="Smoke"
         />
+        <SmokeStatus />
       </Grid>
     </>
   );
