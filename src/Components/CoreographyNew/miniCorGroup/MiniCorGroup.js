@@ -26,7 +26,8 @@ import { withStyles } from "@material-ui/core/styles";
 import { purple } from "@material-ui/core/colors";
 import APIService from "../../Services/APIServices";
 import { regulatorCorTry } from "../../../utils";
-import SaveCorButton from "../SaveCorButton"
+import SaveCorButton from "../SaveCorButton";
+import Controller from "./Controller"
 
 const PurpleSwitch = withStyles({
   switchBase: {
@@ -104,6 +105,7 @@ export const MiniCorGroup = ({
 }) => {
   const classes = useStyles();
   const [isOpenDialog, setIsOpenDialog] = useState(false);
+  const [isConsoleActive, setConsoleActive] = useState(false);
   const [selectCorMini, setSelectCorMini] = useState(null);
   const [textTime, setTextTime] = useState(0);
   const apiServices = new APIService();
@@ -159,6 +161,16 @@ export const MiniCorGroup = ({
         />
         <FormControlLabel
           control={
+            <PurpleSwitch
+              checked={isConsoleActive}
+              onChange={() => setConsoleActive(!isConsoleActive)}
+              color="primary"
+            />
+          }
+          label="Console"
+        />
+        <FormControlLabel
+          control={
             <Switch
               checked={isLiveTry.status}
               onChange={() => {
@@ -192,14 +204,6 @@ export const MiniCorGroup = ({
       </FormGroup>
     );
   };
-
-  // if (corLoop.length === 0) {
-  //   return (
-  //     <div className={classes.root}>
-  //       <SwitchGroup />
-  //     </div>
-  //   );
-  // }
 
   const onDeleteMiniCor = () => {
     console.log("delete", selectCorMini);
@@ -327,6 +331,7 @@ export const MiniCorGroup = ({
           </Button>
         </DialogActions>
       </Dialog>
+      {isConsoleActive && <Controller/>}
     </div>
   );
 };
@@ -350,7 +355,7 @@ const mapDispatchToProps = (dispatch) => {
     setIsLiveTry: (isLiveTry) =>
       dispatch({ type: actionTypes.IS_LIVE_TRY, isLiveTry }),
     setIsSmokeActive: (isSmokeActive) =>
-      dispatch({ type: actionTypes.IS_SMOKE_ACTIVE, isSmokeActive }),
+      dispatch({ type: actionTypes.IS_SMOKE_ACTIVE, isSmokeActive })
   };
 };
 

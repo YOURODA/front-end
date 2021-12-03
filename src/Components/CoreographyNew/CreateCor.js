@@ -86,7 +86,7 @@ class CreateCor extends Component {
                 lColor3: 0,
                 rColor1: 0,
                 rColor2: 0,
-                rColor4: 0,
+                rColor3: 0,
                 Lhex: "#000000",
                 Rhex: "#000000",
               },
