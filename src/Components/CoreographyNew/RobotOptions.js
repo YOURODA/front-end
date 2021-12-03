@@ -11,7 +11,7 @@ function RobotOptions(props) {
   const sliderLabel = robot === "L" ? "Left Robot" : "Right Robot";
 
   return (
-    <Grid item tem lg={4} md={4} xl={4} xs={4}>
+    <Grid item tem lg={3} md={3} xl={3} xs={3}>
       <Grid item lg={4} md={4} xl={4} xs={4}>
         <SliderInput label={sliderLabel} robot={robot} />
       </Grid>

@@ -136,7 +136,7 @@ const SecondItem = ({
         >
           <Grid container className={classes.listSecond}>
             <ListItemText primary={`${value * 2} - ${value * 2 + 2}`} />
-            {windowSize.width > 1140 && <ListItemText primary="seconds" />}
+            {windowSize.width > 1140 && <ListItemText  />}
             <ListItemAvatar>
               <Avatar
                 onClick={()=> iterableCor()}
@@ -144,7 +144,6 @@ const SecondItem = ({
                   backgroundColor: songCor[index].robot.colour.Lhex,
                 }}
               >
-                {" "}
               </Avatar>
             </ListItemAvatar>
             <ListItemAvatar>
@@ -154,7 +153,6 @@ const SecondItem = ({
                   backgroundColor: songCor[index].robot.colour.Rhex,
                 }}
               >
-                {" "}
               </Avatar>
             </ListItemAvatar>
           </Grid>

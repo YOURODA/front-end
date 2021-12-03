@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { connect } from "react-redux";
 // import "./miniCorGroup"
 import * as actionTypes from "../../../store/actions/actionTypes";
@@ -6,7 +6,7 @@ import styles from "./miniCorGroup.module.css";
 import NumberFormat from "react-number-format";
 import {
   Button,
-  ButtonGroup,
+  Paper,
   Dialog,
   DialogActions,
   DialogContent,
@@ -107,6 +107,10 @@ export const MiniCorGroup = ({
   const [isOpenDialog, setIsOpenDialog] = useState(false);
   const [isConsoleActive, setConsoleActive] = useState(false);
   const [selectCorMini, setSelectCorMini] = useState(null);
+  const [windowSize, setWindowSize] = useState({
+    width: 1000,
+    height: 1000,
+  });
   const [textTime, setTextTime] = useState(0);
   const apiServices = new APIService();
 
@@ -117,7 +121,13 @@ export const MiniCorGroup = ({
     startTime,
     startTime + minicorLength * 2,
   ]);
-
+ useEffect(() => {
+    function handleResize() {
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    }});
   if (
     songCor &&
     songCor.length > 0 &&
@@ -257,44 +267,33 @@ export const MiniCorGroup = ({
   return (
     <div className={classes.root}>
       <Grid container spacing={3}>
+      <Paper style={{ paddingLeft:"12%",maxHeight: windowSize.height - 480,maxWidth: windowSize.width-700, overflow: "auto" }}>
         <Grid item xs={6}>
-          <ButtonGroup
-            variant="text"
-            color="primary"
-            aria-label="text primary button group"
-          >
             {corLoop.map((loop, index) => {
               return (
-                <div>
-                  <Button
+                <Button
                     onClick={() => {
                       setSelectCorMini({ loop, index });
                       setIsOpenDialog(true);
                     }}
+                    variant="outlined"
                   >
                     {loop.name}
                   </Button>
-                </div>
               );
             })}
-          </ButtonGroup>
         </Grid>
-        {/* test */}
-        <Grid item xs={6}>
-        
-          <SwitchGroup />
-        </Grid>
+        </Paper>
       </Grid>
       <Dialog
         open={isOpenDialog}
         onClose={() => setIsOpenDialog(false)}
         aria-labelledby="form-dialog-title"
       >
-        <DialogTitle id="form-dialog-title">Süreye Ata</DialogTitle>
+        <DialogTitle id="form-dialog-title">Assign Seconds</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Seçilen mini coru şarkı üzerindeki saniyeye atamak için saniye seçip
-            değiştire tıklayın
+            Assign selected mini choreography to another second.
           </DialogContentText>
           <DialogContentText>
             {textTime}-{textTime + minicorLength * 2}

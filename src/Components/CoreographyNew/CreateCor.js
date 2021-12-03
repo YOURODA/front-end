@@ -25,6 +25,7 @@ import RobotOptions from "./RobotOptions";
 import CreateCorPopUp from "./CreateCorPopUp";
 import SelectedDevicePopUp from "./SelectedDevicePopUp";
 import MiniCorGroup from "./miniCorGroup/MiniCorGroup";
+import AppBarSettings from "./miniCorGroup/AppBarSettings";
 import ListOfSeconds from "./ListOfSeconds/index";
 import { regulatorCorTry } from "../../utils";
 const useStyles = (theme) => ({
@@ -218,7 +219,7 @@ class CreateCor extends Component {
     } = this.state;
     // this.tryFunction({ keyCode: 84 });
     return (
-      <Grid container spacing={3}>
+      <Grid container >
         {selectedDevicePopUp && (
           <SelectedDevicePopUp
             send={(id) => this.goParty(id)}
@@ -230,8 +231,8 @@ class CreateCor extends Component {
             {checkedMultiple && (
               <React.Fragment>
                 <div id="one" onKeyPress={this.handleKeyPress} />
-                <MiniCorGroup />
-                <Card>
+                <AppBarSettings />
+                <Card style={{height: "100%"}}>
                   <CardContent>
                     {this.props.songCor.length !== 0 && (
                       <Grid container spacing={0}>
@@ -241,16 +242,15 @@ class CreateCor extends Component {
                             classes={classes}
                           />
                         </Grid>
-                        <Grid item xs={1} />
+                        <Grid item xs={1} >
+                          <MiniCorGroup/>
+                          </Grid>
                         <RobotOptions robot={"L"} />
                         <RobotOptions robot={"R"} />
-                        {/* <Grid item xs={2} /> */}
+                        <Smoke />
                       </Grid>
                     )}
-                    {this.props.createCorPopup && <CreateCorPopUp />}
-                    <Grid container spacing={3}>
-                      <Smoke />
-                    </Grid>
+                    
                   </CardContent>
                 </Card>
               </React.Fragment>
