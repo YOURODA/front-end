@@ -103,8 +103,9 @@ class MusicPlayer extends Component {
           this.props.setCurrentlyPlaying(current_track.name);
           this.props.setCurrentTrackId(this.state.playingInfo.track_window.current_track.id);
           this.apiService.isUserAvailable(this.props.user.email).then(response => {
-            this.setState({ getUserId: response.data.user[0]._id })
-            this.props.setUserId(response.data.user[0]._id)
+            console.log(response.data)
+            this.setState({ getUserId: response.data.user._id })
+            this.props.setUserId(response.data.user._id)
             if (response.data.message) {
               this.props.setIsUserAvailable(false)
             }
@@ -142,8 +143,8 @@ class MusicPlayer extends Component {
 
         let positionStamp = this.milisToMinutesAndSeconds(state.position);
         let durationStamp = this.milisToMinutesAndSeconds(state.duration);
-        if(state.duration < state.position+3000){
-          this.onSeekSliderChange("",0)
+        if (state.duration < state.position + 3000) {
+          this.onSeekSliderChange("", 0)
         }
         this.setState({ positionStamp, durationStamp });
         this.props.setPositionStamp(state.position);
@@ -383,7 +384,7 @@ class MusicPlayer extends Component {
               </Grid>
             </Grid>
             <Grid item xs={3}>
-              <div style={{paddingRight:"3%",marginTop: 53 }}>
+              <div style={{ paddingRight: "3%", marginTop: 53 }}>
                 <Slider
                   value={this.state.volumeSliderValue}
                   onChange={this.onVolumeSliderChange}

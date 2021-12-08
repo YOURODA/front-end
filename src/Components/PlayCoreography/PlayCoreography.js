@@ -56,11 +56,11 @@ class PlayCoreography extends Component {
       setSmokeTemperature,
     } = this.props;
     // if (isSmokeActive) {
-      socket.emit("askTemperature", { isSmokeActive:false  });
-      socket.on("temperature", (data) => {
-        console.log("temperature in the oda", data.temperatureToCelsius);
-        setSmokeTemperature(data.temperatureToCelsius);
-      });
+    socket.emit("askTemperature", { isSmokeActive: false });
+    socket.on("temperature", (data) => {
+      console.log("temperature in the oda", data.temperatureToCelsius);
+      setSmokeTemperature(data.temperatureToCelsius);
+    });
     // }
   };
 
@@ -75,9 +75,9 @@ class PlayCoreography extends Component {
     };
     // var socketio_url = "https://your-oda-back-end.herokuapp.com";
     // this.odaName = { name: "Corlu" };
-    const socketio_url = "http://localhost:5000/";;
+    const socketio_url = "http://localhost:5000/";
     this.odaName = { email: "eray.eroglu59@gmail.com" };
-    let  _socket = socketIo.connect(socketio_url, connectionStrings);
+    let _socket = socketIo.connect(socketio_url, connectionStrings);
     _socket.emit("Odaya Katil", this.odaName);
     this.props.setScoketIO(_socket);
     console.log("odaname", this.odaName);

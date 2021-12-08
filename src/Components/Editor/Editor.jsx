@@ -87,7 +87,7 @@ class Editor extends Component {
     // const socketio_url = "https://your-oda-back-end.herokuapp.com";
     const socketio_url = "http://localhost:5000/";
     this.odaName = { email: "eray.eroglu59@gmail.com" };
-    
+
     let _socket = socketIo.connect(socketio_url, connectionStrings);
     _socket.emit("Odaya Katil", this.odaName);
     this.props.setScoketIO(_socket);
@@ -119,17 +119,20 @@ class Editor extends Component {
       setSmokeTemperature,
     } = this.props;
     // if (isSmokeActive) {
-      socket.emit("askTemperature", { isSmokeActive  });
-      socket.on("temperature", (data) => {
-        console.log("temperature in the oda", data.temperatureToCelsius);
-        setSmokeTemperature(data.temperatureToCelsius);
-      });
+    socket.emit("askTemperature", { isSmokeActive });
+    socket.on("temperature", (data) => {
+      console.log("temperature in the oda", data.temperatureToCelsius);
+      setSmokeTemperature(data.temperatureToCelsius);
+    });
     // }
   };
 
   render() {
     if ((this.props.userId, !this.state.goCoreography)) {
       this.setState({ goCoreography: true });
+    }
+    if (this.props.currentUser) {
+      // this.setState({ currentUserState: this.props.currentUser });
     }
     return (
       <Grid>
