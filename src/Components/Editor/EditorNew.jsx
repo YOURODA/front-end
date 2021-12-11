@@ -1,305 +1,179 @@
-export const EditorNew() => {
-
-}
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-// import "./miniCorGroup"
-import * as actionTypes from "../../../store/actions/actionTypes";
-import styles from "./miniCorGroup.module.css";
-import NumberFormat from "react-number-format";
+import * as actionTypes from "../../store/actions/actionTypes";
+import { makeStyles } from "@material-ui/styles";
+import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
+import socketIo from "socket.io-client";
+import CreateCor from "../CoreographyNew/CreateCor";
+import Box from "@material-ui/core/Box";
+import APIServices from "../Services/APIServices";
 import {
-    Button,
-    Paper,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogContentText,
-    DialogTitle,
-    TextField,
-    Slider,
-    Tooltip,
-    FormGroup,
-    FormControlLabel,
-    Switch,
-    Grid,
+  Typography,
+  CardHeader,
+  Card,
+  CardContent,
+  CardActions,
+  Grid,
 } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import { regulatorCorLoop } from "../../../utils";
-import { withStyles } from "@material-ui/core/styles";
-import { purple } from "@material-ui/core/colors";
-import APIService from "../../Services/APIServices";
-import { regulatorCorTry } from "../../../utils";
-import SaveCorButton from "../SaveCorButton"
-
-const PurpleSwitch = withStyles({
-    switchBase: {
-        color: purple[300],
-        "&$checked": {
-            color: purple[500],
-        },
-        "&$checked + $track": {
-            backgroundColor: purple[500],
-        },
-    },
-    checked: {},
-    track: {},
-})(Switch);
-
-const NumberFormatCustom = (props) => {
-    const { inputRef, onChange, ...other } = props;
-
-    return (
-        <NumberFormat
-            {...other}
-            getInputRef={inputRef}
-            onValueChange={(values) => {
-                onChange({
-                    target: {
-                        name: props.name,
-                        value: values.value,
-                    },
-                });
-            }}
-            thousandSeparator
-            isNumericString
-        />
-    );
-};
-function ValueLabelComponent(props) {
-    const { children, open, value } = props;
-
-    return (
-        <Tooltip open={open} enterTouchDelay={0} placement="top" title={value}>
-            {children}
-        </Tooltip>
-    );
-}
+import CssBaseline from "@material-ui/core/CssBaseline/CssBaseline";
+import SpotifyFooterMakeCor from "../../Containers/SpotifyFooter/SpotifyFooterMakeCor";
+import CreateUserPopUp from "../CoreographyNew/CreateUserPopUp";
 
 const useStyles = makeStyles((theme) => ({
-    root: {
-        flexGrow: 1,
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        "& > *": {
-            margin: theme.spacing(1),
-        },
-        // width: 300 + theme.spacing(3) * 2,
+    button: {
+      margin: theme.spacing(1),
     },
-    switchStyle: {
-        display: "flex",
-        justifyContent: "flex-end"
-    }
-}));
-
-export const MiniCorGroup = ({
-    corLoop,
-    corData,
-    songCor,
-    setSongCor,
-    socket,
-    isSmokeActive,
-    isLiveTry,
-    setIsLiveTry,
-    setIsSmokeActive,
-    user,
-    selectedSecond,
-}) => {
+  }));
+//   userId,socket,isSmokeActive,setSmokeTemperature,durationStamps,setScoketIO,createUserPopUp,isUserAvailable
+export const EditorNew = ({userId,socket,isSmokeActive,setSmokeTemperature,durationStamps,setScoketIO,isUserAvailable,createUserPopUp,currentUser}) => {
     const classes = useStyles();
-    const [isOpenDialog, setIsOpenDialog] = useState(false);
-    const [selectCorMini, setSelectCorMini] = useState(null);
-    const [windowSize, setWindowSize] = useState({
-        width: 1000,
-        height: 1000,
-    });
-    const [textTime, setTextTime] = useState(0);
-    const apiServices = new APIService();
+    const [goCoreography, setGoCoreography] = useState(false);
+    const [seconds, setSeconds] = useState([]);
+    // const [smokeTemperature, setSmokeTemperature] = useState(null);
+    const [odaNick, setOdaNick] = useState(null);
 
-    const startTime = 15;
-    const minicorLength = selectCorMini ?.loop ?.miniCor ?.length;
-    const songcorlength = 350;
-    const [pushCor, setPushCor] = useState([
-        startTime,
-        startTime + minicorLength * 2,
-    ]);
+    const apiService=new APIServices();
+    if ((userId, !goCoreography)) {
+        setGoCoreography(true);
+      }
+      const milisToMinutesAndSeconds = (mil) => {
+        let minutes = Math.floor(mil / 60000);
+        let seconds = ((mil % 60000) / 1000).toFixed(0);
+        let secondsOfSum = Math.floor(Number(minutes) * 60 + Number(seconds));
+        return secondsOfSum;
+      };
+    const askTemperature = () => {
+        console.log("durationStamps",durationStamps)
+        if (!currentUser==null){
+            console.log("socket",socket)
+            socket.emit("askTemperature",  isSmokeActive );
+            socket.on("temperature", (data) => {
+                console.log("temperature in the oda", data.temperatureToCelsius);
+                setSmokeTemperature(data.temperatureToCelsius);
+            });
+        }
+      };
+    const isAvailableOdaNickRes = () => {
+        apiService.isAvailableOdaNick(odaNick).then((response) => {
+          if (response.data.odaNick === odaNick)
+            setGoCoreography(true);
+        });
+      };
+      let interval;
+      let timeOfSum;
+      let odaName;
     useEffect(() => {
-        function handleResize() {
-            setWindowSize({
-                width: window.innerWidth,
-                height: window.innerHeight,
-            });
-        }
-    });
-    if (
-        songCor &&
-        songCor.length > 0 &&
-        isLiveTry.status &&
-        isLiveTry.localOdaIp
-    ) {
-        const regularCor = regulatorCorTry({ cor: songCor[selectedSecond], robotModel: "14chw" });
-        apiServices
-            .liveTry({ odaIP: isLiveTry.localOdaIp, cor: regularCor })
-            .then((response) => {
-                if (response.status === 200) {
-                }
-            });
-    }
-
-    const handleChange = (event, newValue) => {
-        const newPushCor = [...pushCor];
-        if (newValue[0] === pushCor[0]) {
-            newPushCor[1] = newValue[1];
-            newPushCor[0] = newValue[1] - minicorLength * 2;
-        } else {
-            newPushCor[0] = newValue[0];
-            newPushCor[1] = newValue[0] + minicorLength * 2;
-        }
-        setTextTime(newPushCor[0]);
-        setPushCor(newPushCor);
-    };
-
-
-    const onDeleteMiniCor = () => {
-        console.log("delete", selectCorMini);
-    };
-    const onChangeChoreography = () => {
-        const newSongCorFirst = [...songCor];
-        const startTime = [
-            pushCor[0] / 2,
-            pushCor[0] / 2 + (pushCor[1] - pushCor[0]),
-        ];
-        const newSongCor = newSongCorFirst.map((second, index) => {
-            if (index >= startTime[0] && index <= startTime[1]) {
-                const distanceSec = index - startTime[0];
-                const secondOptions = JSON.parse(
-                    JSON.stringify(selectCorMini.loop.miniCor[distanceSec])
-                );
-                return { ...secondOptions, startDate: index };
-            }
-            return second;
-        });
-        setSongCor([...newSongCor]);
-    };
-
-    const TextInputSecond = (event) => {
-        const newPushCor = [...pushCor];
-        let newStart = parseInt(event.target.value);
-        if (newStart % 2 !== 0) {
-            newStart = newStart - 1;
-        }
-        if (0 < newStart < songcorlength - minicorLength) {
-            newPushCor[0] = newStart;
-            newPushCor[1] = newStart + minicorLength - 1;
-        }
-        setTextTime(newStart);
-        setPushCor(newPushCor);
-    };
-
-    const tryCorLoop = () => {
-        const tryLoop = regulatorCorLoop({
-            songCorLoop: selectCorMini.loop.miniCor,
-            smoke: false,
-            robotModel: "14chw"
-        });
-        let stringCSV = JSON.stringify({ corData: tryLoop });
-        const encodedString = {
-            base: new Buffer(stringCSV).toString("base64"),
-            time: 2,
+         setInterval(() => askTemperature(), 8000);
+        // this.timeOfSum = milisToMinutesAndSeconds(durationStamps);
+        var connectionStrings = {
+          "force new connection": true,
+          reconnectionAttempts: "Infiniy",
+          timeout: 10000,
+          transports: ["websocket"],
         };
-        socket.emit("corData", encodedString);
-    };
+        const socketio_url = "https://your-oda-back-end.herokuapp.com/";
+        // const socketio_url = "http://localhost:5000/";
+        odaName = { email: "eray.eroglu59@gmail.com" };
+    
+        let _socket = socketIo.connect(socketio_url, connectionStrings);
+        _socket.emit("Odaya Katil", odaName);
+        setScoketIO(_socket);
+    }, ()=>{
+        console.log('willUnMount ne zaman caalışıyüüüüü')
+        clearInterval(interval);
+        socket.emit("Odaya Katil", odaName);
+        setScoketIO(socket);
+    });
+  
+  const addOdaName=(e)=> {
+    setOdaNick(e.target.value)
+  };
+  const createUser = () => {
+    this.setCreateUserPopup(true);
+  };
 
+ 
     return (
-        <div className={classes.root}>
-            <Grid container spacing={3}>
-                <Paper style={{ paddingLeft: "12%", maxHeight: windowSize.height - 480, maxWidth: windowSize.width - 700, overflow: "auto" }}>
-                    <Grid item xs={6}>
-                        {corLoop.map((loop, index) => {
-                            return (
-                                <Button
-                                    onClick={() => {
-                                        setSelectCorMini({ loop, index });
-                                        setIsOpenDialog(true);
-                                    }}
-                                    variant="outlined"
-                                >
-                                    {loop.name}
-                                </Button>
-                            );
-                        })}
-                    </Grid>
-                </Paper>
-            </Grid>
-            <Dialog
-                open={isOpenDialog}
-                onClose={() => setIsOpenDialog(false)}
-                aria-labelledby="form-dialog-title"
-            >
-                <DialogTitle id="form-dialog-title">Assign Seconds</DialogTitle>
-                <DialogContent>
-                    <DialogContentText>
-                        Assign selected mini choreography to another second.
-          </DialogContentText>
-                    <DialogContentText>
-                        {textTime}-{textTime + minicorLength * 2}
-                    </DialogContentText>
-                    <TextField
-                        autoFocus
-                        margin="dense"
-                        label="Mini Cor Name"
-                        type="email"
-                        name="startTime"
-                        fullWidth
-                        onChange={TextInputSecond}
-                        id="formatted-numberformat-input"
-                        InputProps={{
-                            inputComponent: NumberFormatCustom,
-                        }}
-                        value={textTime}
-                    />
-
-                    <Button onClick={() => onChangeChoreography()} color="primary">
-                        Apply
-          </Button>
-
-                    <Button onClick={() => tryCorLoop()} color="primary">
-                        Try Live
-          </Button>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={() => setIsOpenDialog(false)} color="primary">
-                        Cancel
-          </Button>
-                    <Button onClick={() => onDeleteMiniCor()} color="primary">
-                        Delete
-          </Button>
-                </DialogActions>
-            </Dialog>
-        </div>
+        <Grid>
+        {goCoreography === false && (
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            minHeight="100vh"
+          >
+            { !isUserAvailable && (
+              <Card>
+                <CardHeader>
+                  <Typography variant="h5">
+                    Name to your ODABOX.
+                  </Typography>
+                </CardHeader>
+                <CardContent>
+                  <TextField
+                    onChange={(e) => addOdaName(e)}
+                    id="standard-search"
+                    label="Cihazınıza isim veriniz."
+                    type="search"
+                  />
+                </CardContent>
+                <CardActions style={{ justifyContent: "flex-end" }}>
+                  <Button
+                    onClick={isAvailableOdaNickRes}
+                    variant="contained"
+                    color="primary"
+                  >
+                    Go Choreography
+                  </Button>
+                  <Button
+                    onClick={createUser}
+                    variant="contained"
+                    color="primary"
+                  >
+                    Create User
+                  </Button>
+                </CardActions>
+              </Card>
+            )}
+            {createUserPopUp && <CreateUserPopUp />}
+          </Box>
+        )}
+        {goCoreography === true && durationStamps > 0 && (
+          <Grid item lg={12} md={12} xl={12} xs={12}>
+            <CreateCor />
+          </Grid>
+        )}
+        <Grid item lg={12} md={12} xl={12} xs={12}>
+          <SpotifyFooterMakeCor
+            style={{
+              fontFamily:
+                "spotify-circular,Helvetica Neue,Helvetica,Arial,Hiragino Kaku Gothic Pro,Meiryo,MS Gothic,sans-serif",
+            }}
+          ></SpotifyFooterMakeCor>
+        </Grid>
+      </Grid>
     );
 };
 
-const mapStateToProps = (state) => ({
-    corLoop: state.corLoop,
-    corData: state.corData,
-    songCor: state.songCor,
-    selectedSeconds: state.selectedSeconds,
-    socket: state.socket,
-    isSmokeActive: state.isSmokeActive,
-    isLiveTry: state.isLiveTry,
-    user: state.current_user,
-    selectedSecond: state.selectedSecond,
-});
-
-const mapDispatchToProps = (dispatch) => {
+const mapStateToProps = (state) => {
     return {
-        setCorLoop: (corLoop) => dispatch({ type: actionTypes.COR_LOOP, corLoop }),
-        setSongCor: (songCor) => dispatch({ type: actionTypes.SONG_COR, songCor }),
-        setIsLiveTry: (isLiveTry) =>
-            dispatch({ type: actionTypes.IS_LIVE_TRY, isLiveTry }),
-        setIsSmokeActive: (isSmokeActive) =>
-            dispatch({ type: actionTypes.IS_SMOKE_ACTIVE, isSmokeActive }),
+      durationStamps: state.durationStamps,
+      currentUser: state.current_user,
+      socket: state.socket,
+      createUserPopUp: state.createUserPopup,
+      userId: state.userId,
+      isUserAvailable: state.isUserAvailable,
+      isSmokeActive: state.isSmokeActive,
     };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(MiniCorGroup);
+  };
+  const mapDispatchToProps = (dispatch) => {
+    return {
+      setScoketIO: (socket) => dispatch({ type: actionTypes.SOCKET, socket }),
+      setSmokeTemperature: (smokeTemperature) =>
+        dispatch({ type: actionTypes.SMOKE_TEMPERATURE, smokeTemperature }),
+      setCreateUserPopup: (createUserPopup) =>
+        dispatch({ type: actionTypes.CREATE_USER_POPUP, createUserPopup })
+    };
+  };
+export default connect(mapStateToProps, mapDispatchToProps)(EditorNew);

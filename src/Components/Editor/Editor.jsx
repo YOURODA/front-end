@@ -112,13 +112,13 @@ class Editor extends Component {
     return secondsOfSum;
   };
   askTemperature = () => {
-    console.log("test");
     const {
       isSmokeActive,
       socket,
       setSmokeTemperature,
     } = this.props;
     // if (isSmokeActive) {
+      console.log("socket",socket);
     socket.emit("askTemperature", { isSmokeActive });
     socket.on("temperature", (data) => {
       console.log("temperature in the oda", data.temperatureToCelsius);
