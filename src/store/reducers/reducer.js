@@ -53,6 +53,7 @@ const initialState = {
   isSmokeActive:false,
   isLiveTry:{status: false, localConnectStatus: false, localOdaIp:"" },
   consolePress:[],
+  goToSecond:{second:0, isGo:false},
 
 };
 
@@ -260,6 +261,11 @@ const reducer = (state = initialState, action) => {
       return{
         ...state,
         consolePress:action.consolePress
+      }
+    case actionTypes.GO_TO_SECONDS:
+      return{
+        ...state,
+        goToSecond:action.goToSecond
       }
     default:
       return state;

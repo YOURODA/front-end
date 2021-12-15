@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect} from "react";
 import * as actionTypes from "../../store/actions/actionTypes";
 import { connect } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
@@ -11,17 +11,23 @@ const CircleColour = (props) => {
   const [value, setValue] = React.useState("#000000");
   const [selectTime, setSelectTime] = useState(0);
 
+  useEffect(() => {
+    if (songCor && songCor[selectedSecond] && songCor[selectedSecond].robot) {
+      setValue(songCor[selectedSecond].robot.colour[`${robot}hex`]);
+    }
+  }, [selectedSecond,selectTime,songCor])
+
   if (!songCor || !songCor[selectedSecond] || !songCor[selectedSecond].robot) {
     return null;
   }
 
-  if (
-    selectedSecond !== selectTime &&
-    songCor[selectedSecond].robot.colour[`${robot}hex`]
-  ) {
-    setSelectTime(selectedSecond);
-    setValue(songCor[selectedSecond].robot.colour[`${robot}hex`]);
-  }
+  // if (
+  //   selectedSecond !== selectTime &&
+  //   songCor[selectedSecond].robot.colour[`${robot}hex`]
+  // ) {
+  //   setSelectTime(selectedSecond);
+  //   setValue(songCor[selectedSecond].robot.colour[`${robot}hex`]);
+  // }
 
   const handleColorPWMValues = (event) => {
     const newRobotColour = [...songCor];

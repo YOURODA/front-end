@@ -8,7 +8,6 @@ let oldPressButton = [];
 export const PressActions = (props) => {
   const { pressGamePad } = props;
   if (oldPressButton.length === 0) {
-    console.log("tek tuşa basıldı", pressGamePad);
 
     if (pressGamePad.length === 1) {
       if (pressGamePad[0].index === 12) {
@@ -20,21 +19,32 @@ export const PressActions = (props) => {
       if (pressGamePad[0].index === 15) {
         controller.selectedSeconds(props);
       }
+      if (pressGamePad[0].index === 14) {
+        controller.goToSelectedSecond(props);
+      }
     }
   }
-  if (
-    oldPressButton.length === 1 &&
-    pressGamePad.length === 2 &&
-    (oldPressButton[0].index === 4 || oldPressButton[0].index === 5) &&
-    (pressGamePad[0].index === 0 ||
-      pressGamePad[0].index === 1 ||
-      pressGamePad[0].index === 2)
-  ) {
-    controller.setColour(props, {
-      colorPress: pressGamePad,
-      robot: oldPressButton[0].index === 4 ? "L" : "R",
-    });
-    console.log("yeşili aç", pressGamePad);
+
+  if (oldPressButton.length === 1 && pressGamePad.length === 2) {
+    if (oldPressButton[0].index === 4 || oldPressButton[0].index === 5) {
+      if (
+        pressGamePad[0].index === 0 ||
+        pressGamePad[0].index === 1 ||
+        pressGamePad[0].index === 2
+      ) {
+        controller.setColour(props, {
+          colorPress: pressGamePad,
+          robot: oldPressButton[0].index === 4 ? "L" : "R",
+        });
+      } else if (pressGamePad.find((e) => e.index === 13)) {
+        controller.setPreviousSecondFeature(props);
+      } else if (pressGamePad.find((e) => e.index === 12)) {
+        controller.setNextSecondFeature(props);
+      }
+    }
+  }
+
+  {
   }
 
   oldPressButton = pressGamePad;
@@ -53,6 +63,8 @@ const mapDispatchToProps = (dispatch) => ({
   setSelectedSecond: (selectedSecond) =>
     dispatch({ type: actionTypes.SELECTED_SECOND, selectedSecond }),
   setSongCor: (songCor) => dispatch({ type: actionTypes.SONG_COR, songCor }),
+  setGoToSecond: (goToSecond) =>
+    dispatch({ type: actionTypes.GO_TO_SECONDS, goToSecond }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PressActions);

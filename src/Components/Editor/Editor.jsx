@@ -85,7 +85,7 @@ class Editor extends Component {
       transports: ["websocket"],
     };
     // const socketio_url = "https://your-oda-back-end.herokuapp.com";
-    const socketio_url = "http://localhost:5000/";
+    const socketio_url = "http://192.168.1.26:5000/";
     this.odaName = { email: "eray.eroglu59@gmail.com" };
     
     let _socket = socketIo.connect(socketio_url, connectionStrings);

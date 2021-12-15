@@ -23,10 +23,18 @@ const OneLine = (props) => {
     debounce((e, time,songCor) => updateRedux(e, time,songCor), 10),
     []
   );
+  useEffect(() => {
+    if (songCor && songCor[selectedSecond] && songCor[selectedSecond].robot) {
+      setValue(songCor[selectedSecond].robot[`${robot}${option}`]);
+    }
+  }, [selectedSecond,selectTime,songCor])
+
+
 
   if (!songCor || !songCor[selectedSecond] || !songCor[selectedSecond].robot) {
     return null;
-  }
+  }  
+
 
   if (selectedSecond !== selectTime) {
     setSelectTime(selectedSecond);

@@ -35,7 +35,6 @@ export const setColour = (redux, { colorPress, robot }) => {
       if (colorPress.find((button) => button.index === 2)) {
         colour.rColor3 = colour?.rColor3 === 0 ? 255 : 0;
       }
-      console.log("colour",colour)
       colour[`${robot}hex`] = rgbToHex(
         colour.rColor1,
         colour.rColor2,

@@ -23,39 +23,43 @@ const gamepadIsActivity = (gamepad) => {
   }
 };
 
-let firstStartInterval = false;
-function ReadController({ redux }) {
+function ReadController() {
   const requestRef = useRef();
   const [press, setPress] = useState({});
-  const [connectedController, setConnectedController] = useState(false);
-  const [axes, setAxes] = useState([]);
   const [isAxesComponentOpen, setIsAxesComponentOpen] = useState(false);
   var haveEvents = "ongamepadconnected" in window;
 
-  const intervalAxes = () => {
-    setInterval(() => {
-      const indexAxes = oldAxes.findIndex((e) => {
-        if (e > 0.1 || e < -0.1) {
-          return true;
-        }
-      });
+  // const intervalAxes = () => {
+  //   setInterval(() => {
+  //     const indexAxes = oldAxes.findIndex((e) => {
+  //       if (e > 0.1 || e < -0.1) {
+  //         return true;
+  //       }
+  //     });
 
-      if (indexAxes !== -1) {
-        setAxes(oldAxes);
-        setIsAxesComponentOpen(true);
-      } else {
-        setIsAxesComponentOpen(false);
-      }
-    }, 10);
-  };
+  //     if (indexAxes !== -1) {
+  //       setAxes(oldAxes);
+  //       setIsAxesComponentOpen(true);
+  //     } else {
+  //       setIsAxesComponentOpen(false);
+  //     }
+  //   }, 10);
+  // };
 
   const addGamepad = (gamepad) => {
-    if (!connectedController && !firstStartInterval && oldAxes.length === 0) {
-      firstStartInterval = true;
-      setConnectedController(true);
-      intervalAxes();
-    }
     oldAxes = gamepad.axes;
+    const indexAxes = oldAxes.findIndex((e) => {
+      if (e > 0.1 || e < -0.1) {
+        return true;
+      }
+    });
+
+    if (indexAxes !== -1) {
+      setIsAxesComponentOpen(true);
+    } else {
+      setIsAxesComponentOpen(false);
+    }
+
     const fixGamePad = gamepad.buttons.map((e, index) => {
       return {
         pressed: e.pressed,
@@ -74,7 +78,6 @@ function ReadController({ redux }) {
 
   const connectGamepadHandler = (e) => {
     addGamepad(e.gamepad);
-    // addGamepadAxes(e.gamepad);
   };
 
   const scanGamepads = () => {
@@ -87,7 +90,6 @@ function ReadController({ redux }) {
     for (var i = 0; i < detectedGamepads.length; i++) {
       if (detectedGamepads[i]) {
         addGamepad(detectedGamepads[i]);
-        // addGamepadAxes(detectedGamepads[i]);
       }
     }
   };
@@ -118,11 +120,13 @@ function ReadController({ redux }) {
   return (
     <div>
       <PressActions pressGamePad={press} />
-      {isAxesComponentOpen && <AxesActions axes={axes} />}
+      {isAxesComponentOpen && (
+        <AxesActions getAxes={(e) => {
+          return {oldAxes,press}
+        }} />
+      )}
     </div>
   );
 }
-
-
 
 export default ReadController;
