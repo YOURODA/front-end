@@ -1,7 +1,7 @@
 import React from "react";
 import { Redirect, Switch } from "react-router-dom";
 import RouteWithLayout from "./Components/RouteWithLayout/RouteWithLayout";
-import Editor from "./Components/Editor/Editor";
+import Editor from "./Components/Editor/EditorNew";
 import PartySelection from "./Components/PartySelection/PartySelection";
 import PlayCoreography from "./Components/PlayCoreography/PlayCoreography";
 

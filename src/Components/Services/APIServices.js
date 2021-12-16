@@ -96,35 +96,35 @@ class APIServices {
       "file": file,
       "trackId": trackId,
       "ownerId": ownerId,
-      "version":"v.1.0"
+      "version": "v.1.0"
     }
     const serviceData = {
       method: 'POST',
       url: userApiService + '/choreography/create',
       data: createCorData,
     };
-    return await axios(serviceData);  
+    return await axios(serviceData);
   }
-  async myOdaOnlyEmail({email}) {
+  async myOdaOnlyEmail({ email }) {
     console.log("myOdaOnlyEmail", email)
 
     const serviceData = {
       method: 'POST',
       url: userApiService + '/user/myOdaOnlyEmail',
-      data: {email},
+      data: { email },
     };
-    return await axios(serviceData);  
+    return await axios(serviceData);
   }
-  async liveTry({odaIP, cor}) {
+  async liveTry({ odaIP, cor }) {
     console.log("liveTry", odaIP, cor)
 
     var form = new FormData();
     form.append("u", "59");
     form.append("d", cor);
 
-    const data ={
-      u:59,
-      d:cor
+    const data = {
+      u: 59,
+      d: cor
     }
     const serviceData = {
       method: 'POST',
@@ -132,8 +132,8 @@ class APIServices {
       data: form,
       headers: { "Content-Type": "multipart/form-data" },
     };
-    
-    return await axios(serviceData);  
+
+    return await axios(serviceData);
   }
 }
 

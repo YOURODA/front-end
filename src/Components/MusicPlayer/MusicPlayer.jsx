@@ -142,8 +142,8 @@ class MusicPlayer extends Component {
 
         let positionStamp = this.milisToMinutesAndSeconds(state.position);
         let durationStamp = this.milisToMinutesAndSeconds(state.duration);
-        if(state.duration < state.position+3000){
-          this.onSeekSliderChange("",0)
+        if (state.duration < state.position + 3000) {
+          this.onSeekSliderChange("", 0)
         }
 
         this.setState({ positionStamp, durationStamp });
@@ -189,17 +189,17 @@ class MusicPlayer extends Component {
   };
 
 
-  onSeekSliderChange = async (e, val,percent=false) => {
+  onSeekSliderChange = async (e, val, percent = false) => {
     // duration = 100%
     //  = val%
     const { user, isReturnMusic, setIsReturnMusic, currentTrackId, setGoToSecond } = this.props
     setIsReturnMusic(false)
-    setGoToSecond({isGo:false, second:0})
+    setGoToSecond({ isGo: false, second: 0 })
     let dur;
     let seek;
-    if(percent){
+    if (percent) {
       seek = val
-    }else{
+    } else {
 
       dur = this.state.playingInfo.duration;
       seek = Math.floor((val * dur) / 100); // round number
@@ -247,11 +247,11 @@ class MusicPlayer extends Component {
   render() {
     if (!!this.props.isReturnMusic) {
       console.log("başa alma çalıştı", !!this.props.isReturnMusic, this.props.isReturnMusic)
-      this.onSeekSliderChange ("", 0)
+      this.onSeekSliderChange("", 0)
     }
-    if(this.props.goToSecond.isGo){
+    if (this.props.goToSecond.isGo) {
       console.log("go to second", this.props.goToSecond.second)
-      this.onSeekSliderChange ("", this.props.goToSecond.second,true)
+      this.onSeekSliderChange("", this.props.goToSecond.second, true)
     }
     let mainContent = (
       <Card
@@ -396,7 +396,7 @@ class MusicPlayer extends Component {
               </Grid>
             </Grid>
             <Grid item xs={3}>
-              <div style={{paddingRight:"3%",marginTop: 53 }}>
+              <div style={{ paddingRight: "3%", marginTop: 53 }}>
                 <Slider
                   value={this.state.volumeSliderValue}
                   onChange={this.onVolumeSliderChange}

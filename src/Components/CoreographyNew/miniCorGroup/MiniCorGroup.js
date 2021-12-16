@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 // import "./miniCorGroup"
 import * as actionTypes from "../../../store/actions/actionTypes";
@@ -84,7 +84,7 @@ const useStyles = makeStyles((theme) => ({
     },
     // width: 300 + theme.spacing(3) * 2,
   },
-  switchStyle:{
+  switchStyle: {
     display: "flex",
     justifyContent: "flex-end"
   }
@@ -115,26 +115,27 @@ export const MiniCorGroup = ({
   const apiServices = new APIService();
 
   const startTime = 15;
-  const minicorLength = selectCorMini?.loop?.miniCor?.length;
+  const minicorLength = selectCorMini ?.loop ?.miniCor ?.length;
   const songcorlength = 350;
   const [pushCor, setPushCor] = useState([
     startTime,
     startTime + minicorLength * 2,
   ]);
- useEffect(() => {
+  useEffect(() => {
     function handleResize() {
       setWindowSize({
         width: window.innerWidth,
         height: window.innerHeight,
       });
-    }});
+    }
+  });
   if (
     songCor &&
     songCor.length > 0 &&
     isLiveTry.status &&
     isLiveTry.localOdaIp
   ) {
-    const regularCor = regulatorCorTry({ cor: songCor[selectedSecond] });
+    const regularCor = regulatorCorTry({ cor: songCor[selectedSecond], robotModel: "14chw" });
     apiServices
       .liveTry({ odaIP: isLiveTry.localOdaIp, cor: regularCor })
       .then((response) => {
@@ -158,7 +159,7 @@ export const MiniCorGroup = ({
 
   const SwitchGroup = () => {
     return (
-      <FormGroup row   className={classes.switchStyle} >
+      <FormGroup row className={classes.switchStyle} >
         <FormControlLabel
           control={
             <PurpleSwitch
@@ -210,7 +211,7 @@ export const MiniCorGroup = ({
           }
           label="Live Try"
         />
-        <SaveCorButton/>
+        <SaveCorButton />
       </FormGroup>
     );
   };
@@ -255,6 +256,7 @@ export const MiniCorGroup = ({
     const tryLoop = regulatorCorLoop({
       songCorLoop: selectCorMini.loop.miniCor,
       smoke: false,
+      robotModel: "14chw"
     });
     let stringCSV = JSON.stringify({ corData: tryLoop });
     const encodedString = {
@@ -267,22 +269,22 @@ export const MiniCorGroup = ({
   return (
     <div className={classes.root}>
       <Grid container spacing={3}>
-      <Paper style={{ paddingLeft:"12%",maxHeight: windowSize.height - 480,maxWidth: windowSize.width-700, overflow: "auto" }}>
-        <Grid item xs={6}>
+        <Paper style={{ paddingLeft: "12%", maxHeight: windowSize.height - 480, maxWidth: windowSize.width - 700, overflow: "auto" }}>
+          <Grid item xs={6}>
             {corLoop.map((loop, index) => {
               return (
                 <Button
-                    onClick={() => {
-                      setSelectCorMini({ loop, index });
-                      setIsOpenDialog(true);
-                    }}
-                    variant="outlined"
-                  >
-                    {loop.name}
-                  </Button>
+                  onClick={() => {
+                    setSelectCorMini({ loop, index });
+                    setIsOpenDialog(true);
+                  }}
+                  variant="outlined"
+                >
+                  {loop.name}
+                </Button>
               );
             })}
-        </Grid>
+          </Grid>
         </Paper>
       </Grid>
       <Dialog
@@ -330,7 +332,7 @@ export const MiniCorGroup = ({
           </Button>
         </DialogActions>
       </Dialog>
-      {isConsoleActive && <Controller/>}
+      {isConsoleActive && <Controller />}
     </div>
   );
 };

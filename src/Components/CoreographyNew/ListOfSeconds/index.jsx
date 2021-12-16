@@ -48,7 +48,7 @@ const ListOfSeconds = ({
   }
 
   const onClickTyr = () => {
-    const tryLoop = tryRegulatorCorLoop({ selectedSeconds, songCor, smoke: false });
+    const tryLoop = tryRegulatorCorLoop({ selectedSeconds, songCor, smoke: false, robotModel: "14chw" });
     let stringCSV = JSON.stringify({ corData: tryLoop });
     const encodedString = {
       base: new Buffer(stringCSV).toString("base64"),
@@ -58,7 +58,7 @@ const ListOfSeconds = ({
   };
   const onClickSave = () => {
     const miniCor = selectedSeconds.map((sec) => {
-     return {...songCor[sec]}
+      return { ...songCor[sec] }
     })
 
     const miniCorAdd = Object.assign({
@@ -69,7 +69,7 @@ const ListOfSeconds = ({
     setMiniCorName("");
     setIsOpenSavePopUp(false);
   };
-  
+
 
   return (
     <Grid item lg={12} md={12} xl={12} xs={12}>
