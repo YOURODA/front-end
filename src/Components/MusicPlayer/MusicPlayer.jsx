@@ -103,7 +103,6 @@ class MusicPlayer extends Component {
           this.props.setCurrentlyPlaying(current_track.name);
           this.props.setCurrentTrackId(this.state.playingInfo.track_window.current_track.id);
           this.apiService.isUserAvailable(this.props.user.email).then(response => {
-            console.log(response.data)
             this.setState({ getUserId: response.data.user._id })
             this.props.setUserId(response.data.user._id)
             if (response.data.message) {
@@ -146,6 +145,7 @@ class MusicPlayer extends Component {
         if (state.duration < state.position + 3000) {
           this.onSeekSliderChange("", 0)
         }
+
         this.setState({ positionStamp, durationStamp });
         this.props.setPositionStamp(state.position);
         this.props.setDurationStamps(state.duration);
@@ -189,13 +189,21 @@ class MusicPlayer extends Component {
   };
 
 
-  onSeekSliderChange = async (e, val) => {
+  onSeekSliderChange = async (e, val, percent = false) => {
     // duration = 100%
     //  = val%
-    const { user, isReturnMusic, setIsReturnMusic, currentTrackId } = this.props
+    const { user, isReturnMusic, setIsReturnMusic, currentTrackId, setGoToSecond } = this.props
     setIsReturnMusic(false)
-    let dur = this.state.playingInfo.duration;
-    let seek = Math.floor((val * dur) / 100); // round number
+    setGoToSecond({ isGo: false, second: 0 })
+    let dur;
+    let seek;
+    if (percent) {
+      seek = val
+    } else {
+
+      dur = this.state.playingInfo.duration;
+      seek = Math.floor((val * dur) / 100); // round number
+    }
     this.setState({ positionSliderValue: val });
     console.log("isReturnMusic", isReturnMusic)
     await this.player.seek(seek).then(() => {
@@ -240,6 +248,10 @@ class MusicPlayer extends Component {
     if (!!this.props.isReturnMusic) {
       console.log("başa alma çalıştı", !!this.props.isReturnMusic, this.props.isReturnMusic)
       this.onSeekSliderChange("", 0)
+    }
+    if (this.props.goToSecond.isGo) {
+      console.log("go to second", this.props.goToSecond.second)
+      this.onSeekSliderChange("", this.props.goToSecond.second, true)
     }
     let mainContent = (
       <Card
@@ -412,7 +424,8 @@ const mapStateToProps = (state) => {
     position_stamp: state.position_stamp,
     durationStamps: state.durationStamps,
     isReturnMusic: state.isReturnMusic,
-    currentTrackId: state.currentTrackId
+    currentTrackId: state.currentTrackId,
+    goToSecond: state.goToSecond,
   };
 };
 
@@ -434,7 +447,10 @@ const mapDispatchToProps = (dispatch) => {
     setIsReturnMusic: music =>
       dispatch({ type: actionTypes.IS_RETURN_MUSIC, music }),
     setIsUserAvailable: isUserAvailable =>
-      dispatch({ type: actionTypes.IS_USER_AVALIABLE, isUserAvailable })
+      dispatch({ type: actionTypes.IS_USER_AVALIABLE, isUserAvailable }),
+    setGoToSecond: goToSecond =>
+      dispatch({ type: actionTypes.GO_TO_SECONDS, goToSecond }),
+
   };
 };
 

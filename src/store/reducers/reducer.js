@@ -52,6 +52,9 @@ const initialState = {
   songCor: [],
   isSmokeActive:false,
   isLiveTry:{status: false, localConnectStatus: false, localOdaIp:"" },
+  consolePress:[],
+  goToSecond:{second:0, isGo:false},
+
 };
 
 const reducer = (state = initialState, action) => {
@@ -254,10 +257,15 @@ const reducer = (state = initialState, action) => {
         ...state,
         isSmokeActive:action.isSmokeActive
       }
-    case actionTypes.IS_LIVE_TRY:
+    case actionTypes.CONSOLE_PRESS:
       return{
         ...state,
-        isLiveTry:action.isLiveTry
+        consolePress:action.consolePress
+      }
+    case actionTypes.GO_TO_SECONDS:
+      return{
+        ...state,
+        goToSecond:action.goToSecond
       }
     default:
       return state;

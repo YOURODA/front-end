@@ -190,7 +190,7 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch({ type: actionTypes.SELECTED_SECONDS, selectedSeconds }),
   setSelectedSecond: (selectedSecond) =>
     dispatch({ type: actionTypes.SELECTED_SECOND, selectedSecond }),
-    setSongCor: (songCor) => dispatch({ type: actionTypes.SONG_COR, songCor }),
+  setSongCor: (songCor) => dispatch({ type: actionTypes.SONG_COR, songCor }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SecondItem);

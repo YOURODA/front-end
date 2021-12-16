@@ -26,7 +26,8 @@ import { withStyles } from "@material-ui/core/styles";
 import { purple } from "@material-ui/core/colors";
 import APIService from "../../Services/APIServices";
 import { regulatorCorTry } from "../../../utils";
-import SaveCorButton from "../SaveCorButton"
+import SaveCorButton from "../SaveCorButton";
+import Controller from "./Controller"
 
 const PurpleSwitch = withStyles({
   switchBase: {
@@ -104,6 +105,7 @@ export const MiniCorGroup = ({
 }) => {
   const classes = useStyles();
   const [isOpenDialog, setIsOpenDialog] = useState(false);
+  const [isConsoleActive, setConsoleActive] = useState(false);
   const [selectCorMini, setSelectCorMini] = useState(null);
   const [windowSize, setWindowSize] = useState({
     width: 1000,
@@ -155,6 +157,64 @@ export const MiniCorGroup = ({
     setPushCor(newPushCor);
   };
 
+  const SwitchGroup = () => {
+    return (
+      <FormGroup row className={classes.switchStyle} >
+        <FormControlLabel
+          control={
+            <PurpleSwitch
+              checked={isSmokeActive}
+              onChange={() => setIsSmokeActive(!isSmokeActive)}
+              color="primary"
+            />
+          }
+          label="Smoke"
+        />
+        <FormControlLabel
+          control={
+            <PurpleSwitch
+              checked={isConsoleActive}
+              onChange={() => setConsoleActive(!isConsoleActive)}
+              color="primary"
+            />
+          }
+          label="Console"
+        />
+        <FormControlLabel
+          control={
+            <Switch
+              checked={isLiveTry.status}
+              onChange={() => {
+                if (!isLiveTry.status) {
+                  let localOdaIp = "";
+                  apiServices
+                    .myOdaOnlyEmail({ email: user.email })
+                    .then((response) => {
+                      if (
+                        response.status === 200 &&
+                        response.data.odas[0].localIp
+                      ) {
+                        localOdaIp = response.data.odas[0].localIp;
+                      }
+                      setIsLiveTry({
+                        ...isLiveTry,
+                        status: !isLiveTry.status,
+                        localOdaIp,
+                      });
+                    });
+                } else {
+                  setIsLiveTry({ ...isLiveTry, status: !isLiveTry.status });
+                }
+              }}
+              color="primary"
+            />
+          }
+          label="Live Try"
+        />
+        <SaveCorButton />
+      </FormGroup>
+    );
+  };
 
   const onDeleteMiniCor = () => {
     console.log("delete", selectCorMini);
@@ -272,6 +332,7 @@ export const MiniCorGroup = ({
           </Button>
         </DialogActions>
       </Dialog>
+      {isConsoleActive && <Controller />}
     </div>
   );
 };
@@ -295,7 +356,7 @@ const mapDispatchToProps = (dispatch) => {
     setIsLiveTry: (isLiveTry) =>
       dispatch({ type: actionTypes.IS_LIVE_TRY, isLiveTry }),
     setIsSmokeActive: (isSmokeActive) =>
-      dispatch({ type: actionTypes.IS_SMOKE_ACTIVE, isSmokeActive }),
+      dispatch({ type: actionTypes.IS_SMOKE_ACTIVE, isSmokeActive })
   };
 };
 

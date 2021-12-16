@@ -44,6 +44,9 @@ export const SELECTED_SECOND = "SELECTED_SECOND";
 export const SONG_COR = "SONG_COR";
 export const IS_SMOKE_ACTIVE = "IS_SMOKE_ACTIVE";
 export const IS_LIVE_TRY = "IS_LIVE_TRY";
+export const CONSOLE_PRESS = "CONSOLE_PRESS";
+export const GO_TO_SECONDS = "GO_TO_SECONDS";
+
 
 
 export const playSong = (uris, deviceId) => {

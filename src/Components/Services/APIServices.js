@@ -106,7 +106,7 @@ class APIServices {
     return await axios(serviceData);
   }
   async myOdaOnlyEmail({ email }) {
-    console.log("createCoreography", email)
+    console.log("myOdaOnlyEmail", email)
 
     const serviceData = {
       method: 'POST',

@@ -14,6 +14,8 @@ import APIService from "../../Services/APIServices";
 import SaveCorButton from "../SaveCorButton"
 import Logo from '../../../images/odaLogo.png';
 import './LogoSizing.css'
+import Controller from "./Controller"
+
 
 const PurpleSwitch = withStyles({
   switchBase: {
@@ -52,6 +54,7 @@ export const AppBarSettings = ({
   setIsSmokeActive,
   user,
 }) => {
+  const [isConsoleActive, setConsoleActive] = useState(false);
   const classes = useStyles();
   const apiServices = new APIService();
 
@@ -59,6 +62,16 @@ export const AppBarSettings = ({
   const SwitchGroup = () => {
     return (
       <FormGroup row   className={classes.switchStyle} >
+                <FormControlLabel
+          control={
+            <PurpleSwitch
+              checked={isConsoleActive}
+              onChange={() => setConsoleActive(!isConsoleActive)}
+              color="primary"
+            />
+          }
+          label="Console"
+        />
         <FormControlLabel
           control={
             <PurpleSwitch
@@ -100,6 +113,7 @@ export const AppBarSettings = ({
           }
           label="Live Try"
         />
+        {isConsoleActive && <Controller/>}
         <SaveCorButton/>
       </FormGroup>
     );

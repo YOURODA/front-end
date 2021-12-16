@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback,useEffect } from "react";
 import * as actionTypes from "../../store/actions/actionTypes";
 import { connect } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
@@ -64,11 +64,14 @@ function SliderInput(props) {
   const [valueY, setValueY] = useState(0);
   const [valueX, setValueX] = useState(0);
   const [selectTime, setSelectTime] = useState(0);
-  if (selectedSecond !== selectTime) {
-    setSelectTime(selectedSecond);
-    setValueX(songCor[selectedSecond].robot[`${robot}Hor`]);
-    setValueY(songCor[selectedSecond].robot[`${robot}Ver`]);
-  }
+  useEffect(() => {
+    if (songCor && songCor[selectedSecond] && songCor[selectedSecond].robot) {
+      setSelectTime(selectedSecond);
+      setValueX(songCor[selectedSecond].robot[`${robot}Hor`]);
+      setValueY(songCor[selectedSecond].robot[`${robot}Ver`]);
+    }
+  }, [selectedSecond,selectTime,songCor])
+
   const debounceRedux = useCallback(
     debounce(
       (value, position, robot, cor, time) =>
