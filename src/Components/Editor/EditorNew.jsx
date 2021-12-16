@@ -79,14 +79,17 @@ export const EditorNew = (props) => {
             odaName = { email: "eray.eroglu59@gmail.com" };
 
             let _socket = socketIo.connect(socketio_url, connectionStrings);
-            _socket.emit("Odaya Katil", currentUser.email);
+            console.log("kimim ben ", currentUser.email);
+            _socket.emit("Odaya Katil", {email:currentUser.email});
             setSocketIO(_socket);
         }
         return () => {
-            clearInterval(interval);
-            let _socket = socketIo.connect(socketio_url, connectionStrings);
-            _socket.emit("Odaya Katil", currentUser.email);
-            setSocketIO(_socket);
+            if(currentUser && currentUser.email){
+                clearInterval(interval);
+                let _socket = socketIo.connect(socketio_url, connectionStrings);
+                _socket.emit("Odaya Katil", currentUser.email);
+                setSocketIO(_socket);
+            }
         };
     }, [currentUser]);
 

@@ -223,8 +223,6 @@ const mapDispatchToProps = (dispatch) => {
     setCreateUserPopup: (createUserPopup) =>
       dispatch({ type: actionTypes.CREATE_USER_POPUP, createUserPopup }),
     setUserId: (userId) => dispatch({ type: actionTypes.USER_ID, userId }),
-    setIsLiveTry: (isLiveTry) =>
-      dispatch({ type: actionTypes.IS_LIVE_TRY, isLiveTry }),
   };
 };
 

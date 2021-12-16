@@ -267,6 +267,11 @@ const reducer = (state = initialState, action) => {
         ...state,
         goToSecond:action.goToSecond
       }
+    case actionTypes.IS_LIVE_TRY:
+      return{
+        ...state,
+        isLiveTry:action.isLiveTry
+      }
     default:
       return state;
   }

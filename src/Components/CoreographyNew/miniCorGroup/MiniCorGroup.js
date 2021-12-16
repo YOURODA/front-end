@@ -160,7 +160,7 @@ export const MiniCorGroup = ({
   const SwitchGroup = () => {
     return (
       <FormGroup row className={classes.switchStyle} >
-        <FormControlLabel
+        {/* <FormControlLabel
           control={
             <PurpleSwitch
               checked={isSmokeActive}
@@ -169,8 +169,8 @@ export const MiniCorGroup = ({
             />
           }
           label="Smoke"
-        />
-        <FormControlLabel
+        /> */}
+        {/* <FormControlLabel
           control={
             <PurpleSwitch
               checked={isConsoleActive}
@@ -179,8 +179,8 @@ export const MiniCorGroup = ({
             />
           }
           label="Console"
-        />
-        <FormControlLabel
+        /> */}
+        {/* <FormControlLabel
           control={
             <Switch
               checked={isLiveTry.status}
@@ -196,22 +196,22 @@ export const MiniCorGroup = ({
                       ) {
                         localOdaIp = response.data.odas[0].localIp;
                       }
-                      setIsLiveTry({
-                        ...isLiveTry,
-                        status: !isLiveTry.status,
-                        localOdaIp,
-                      });
+                      // setIsLiveTry({
+                      //   ...isLiveTry,
+                      //   status: !isLiveTry.status,
+                      //   localOdaIp,
+                      // });
                     });
                 } else {
-                  setIsLiveTry({ ...isLiveTry, status: !isLiveTry.status });
+                  // setIsLiveTry({ ...isLiveTry, status: !isLiveTry.status });
                 }
               }}
               color="primary"
             />
           }
           label="Live Try"
-        />
-        <SaveCorButton />
+        /> */}
+        {/* <SaveCorButton /> */}
       </FormGroup>
     );
   };
