@@ -23,7 +23,8 @@ const ListOfSeconds = ({
   selectedSeconds,
   songCor,
   setAddSongCor,
-  socket
+  socket,
+  isLiveTry
 }) => {
   const [windowSize, setWindowSize] = useState({
     width: 1000,
@@ -48,7 +49,7 @@ const ListOfSeconds = ({
   }
 
   const onClickTyr = () => {
-    const tryLoop = tryRegulatorCorLoop({ selectedSeconds, songCor, smoke: false, robotModel: "14chw" });
+    const tryLoop = tryRegulatorCorLoop({ selectedSeconds, songCor, smoke: false, robotModel: isLiveTry.robotModel });
     let stringCSV = JSON.stringify({ corData: tryLoop });
     const encodedString = {
       base: new Buffer(stringCSV).toString("base64"),
@@ -154,7 +155,8 @@ const mapStateToProps = (state) => ({
   selectedSeconds: state.selectedSeconds,
   selectedSecond: state.selectedSecond,
   songCor: state.songCor,
-  socket: state.socket
+  socket: state.socket,
+  isLiveTry: state.isLiveTry,
 });
 
 const mapDispatchToProps = (dispatch) => ({

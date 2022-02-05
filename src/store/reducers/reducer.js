@@ -51,7 +51,7 @@ const initialState = {
   selectedSecond: 0,
   songCor: [],
   isSmokeActive:false,
-  isLiveTry:{status: false, localConnectStatus: false, localOdaIp:"" },
+  isLiveTry:{status: false, localConnectStatus: false, localOdaIp:"" ,robotModel:""},
   consolePress:[],
   goToSecond:{second:0, isGo:false},
 

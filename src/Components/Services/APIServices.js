@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { Local_API, Prod_API } from '../Config/Env';
 
-// const userApiService = Prod_API
-const userApiService = Local_API
+const userApiService = Prod_API
+// const userApiService = Local_API
 
 class APIServices {
   async newUser(email, odaName, odaNick) {

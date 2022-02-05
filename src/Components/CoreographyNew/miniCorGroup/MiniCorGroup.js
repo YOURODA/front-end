@@ -135,7 +135,7 @@ export const MiniCorGroup = ({
     isLiveTry.status &&
     isLiveTry.localOdaIp
   ) {
-    const regularCor = regulatorCorTry({ cor: songCor[selectedSecond], robotModel: "14chw" });
+    const regularCor = regulatorCorTry({ cor: songCor[selectedSecond], robotModel: isLiveTry.robotModel });
     apiServices
       .liveTry({ odaIP: isLiveTry.localOdaIp, cor: regularCor })
       .then((response) => {
@@ -256,7 +256,7 @@ export const MiniCorGroup = ({
     const tryLoop = regulatorCorLoop({
       songCorLoop: selectCorMini.loop.miniCor,
       smoke: false,
-      robotModel: "14chw"
+      robotModel: isLiveTry.robotModel
     });
     let stringCSV = JSON.stringify({ corData: tryLoop });
     const encodedString = {

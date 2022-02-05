@@ -89,6 +89,7 @@ export const AppBarSettings = ({
               onChange={() => {
                 if (!isLiveTry.status) {
                   let localOdaIp = "";
+                  let robotModel ="";
                   apiServices
                     .myOdaOnlyEmail({ email: user.email })
                     .then((response) => {
@@ -97,11 +98,13 @@ export const AppBarSettings = ({
                         response.data.odas[0].localIp
                       ) {
                         localOdaIp = response.data.odas[0].localIp;
+                        robotModel = response.data.odas[0].robotModel;
                       }
                       setIsLiveTry({
                         ...isLiveTry,
                         status: !isLiveTry.status,
                         localOdaIp,
+                        robotModel
                       });
                     });
                 } else {
