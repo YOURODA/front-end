@@ -75,7 +75,7 @@ class PlayCoreography extends Component {
     };
     // var socketio_url = "https://your-oda-back-end.herokuapp.com";
     // this.odaName = { name: "Corlu" };
-    const socketio_url = "http://localhost:5000/";
+    const socketio_url = "http://localhost:5001/";
     this.odaName = { email: "eray.eroglu59@gmail.com" };
     let _socket = socketIo.connect(socketio_url, connectionStrings);
     _socket.emit("Odaya Katil", this.odaName);

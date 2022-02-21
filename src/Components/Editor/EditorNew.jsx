@@ -16,7 +16,7 @@ import {
     CardActions,
     Grid,
 } from "@material-ui/core";
-import CssBaseline from "@material-ui/core/CssBaseline/CssBaseline";
+import { Local_API, Prod_API } from '../Config/Env'
 import SpotifyFooterMakeCor from "../../Containers/SpotifyFooter/SpotifyFooterMakeCor";
 import CreateUserPopUp from "../CoreographyNew/CreateUserPopUp";
 
@@ -62,14 +62,10 @@ export const EditorNew = (props) => {
         });
     };
     let interval;
-    let timeOfSum;
     let odaName;
-    const socketio_url = "http://localhost:5000/";
-    // const socketio_url = "https://your-oda-back-end.herokuapp.com/";
     useEffect(() => {
         if (currentUser && currentUser.email) {
             setInterval(() => askTemperature(), 8000);
-            // this.timeOfSum = milisToMinutesAndSeconds(durationStamps);
             var connectionStrings = {
                 "force new connection": true,
                 reconnectionAttempts: "Infiniy",
@@ -78,15 +74,15 @@ export const EditorNew = (props) => {
             };
             odaName = { email: "eray.eroglu59@gmail.com" };
 
-            let _socket = socketIo.connect(socketio_url, connectionStrings);
+            let _socket = socketIo.connect(Local_API, connectionStrings);
             console.log("kimim ben ", currentUser.email);
-            _socket.emit("Odaya Katil", {email:currentUser.email});
+            _socket.emit("Odaya Katil", { email: currentUser.email });
             setSocketIO(_socket);
         }
         return () => {
-            if(currentUser && currentUser.email){
+            if (currentUser && currentUser.email) {
                 clearInterval(interval);
-                let _socket = socketIo.connect(socketio_url, connectionStrings);
+                let _socket = socketIo.connect(Local_API, connectionStrings);
                 _socket.emit("Odaya Katil", currentUser.email);
                 setSocketIO(_socket);
             }
@@ -132,7 +128,7 @@ export const EditorNew = (props) => {
                                     color="primary"
                                 >
                                     Go Choreography
-                  </Button>
+                                </Button>
                                 <Button
                                     onClick={createUser}
                                     variant="contained"
