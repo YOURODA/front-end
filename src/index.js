@@ -7,12 +7,13 @@ import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import reducer from "./store/reducers/reducer";
 import thunk from "redux-thunk";
+import axios from 'axios';
 import Layout from './Containers/SpotifyFooter/SpotifyFooter'
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const store = createStore(reducer, composeEnhancers(applyMiddleware(thunk)));
-
+// axios.defaults.withCredentials = true;
 const app = (
     <Provider store={store}>
         <BrowserRouter>
@@ -20,6 +21,7 @@ const app = (
         </BrowserRouter>
     </Provider>
 );
+
 
 ReactDOM.render(app, document.getElementById('root'));
 registerServiceWorker();
