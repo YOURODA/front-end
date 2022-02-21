@@ -54,6 +54,7 @@ const initialState = {
   isLiveTry:{status: false, localConnectStatus: false, localOdaIp:"" ,robotModel:""},
   consolePress:[],
   goToSecond:{second:0, isGo:false},
+  corSaveInfo:{corID:""},
 
 };
 
@@ -271,6 +272,12 @@ const reducer = (state = initialState, action) => {
       return{
         ...state,
         isLiveTry:action.isLiveTry
+      }
+    case actionTypes.SET_COR_INFO:
+      console.log("set cor info reducer çalıştı",action.corSaveInfo)
+      return{
+        ...state,
+        corSaveInfo:action.corSaveInfo
       }
     default:
       return state;

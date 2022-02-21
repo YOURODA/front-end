@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { Local_API, Prod_API } from '../Config/Env';
 
-const userApiService = Prod_API
-// const userApiService = Local_API
+// const userApiService = Prod_API
+const userApiService = Local_API
 
 class APIServices {
   async newUser(email, odaName, odaNick) {
@@ -89,13 +89,14 @@ class APIServices {
     };
     return await axios(serviceData);
   }
-  async createCoreography(name, trackName, file, trackId, ownerId) {
+  async createCoreography(name, trackName, file, trackId, ownerId,isShared) {
     const createCorData = {
-      "name": name,
-      "trackName": trackName,
-      "file": file,
-      "trackId": trackId,
-      "ownerId": ownerId,
+      name,
+      trackName,
+      file,
+      trackId,
+      ownerId,
+      isShared,
       "version": "v.1.0"
     }
     const serviceData = {
@@ -133,6 +134,30 @@ class APIServices {
       headers: { "Content-Type": "multipart/form-data" },
     };
 
+    return await axios(serviceData);
+  }
+  async getMyEditingCor(corId) {
+    let userIdData = {
+    corId
+    }
+    const serviceData = {
+      method: 'POST',
+      url: userApiService + '/choreography/getEditCor',
+      data: userIdData,
+    };
+    return await axios(serviceData);
+  }
+  async overwriteCor({corId,file,name}) {
+    let userIdData = {
+    corId,
+    file,
+    name
+    }
+    const serviceData = {
+      method: 'POST',
+      url: userApiService + '/choreography/overwrite',
+      data: userIdData,
+    };
     return await axios(serviceData);
   }
 }

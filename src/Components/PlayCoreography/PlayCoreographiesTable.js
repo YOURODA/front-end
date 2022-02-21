@@ -1,4 +1,4 @@
-import React, { Component, forwardRef } from "react";
+import React, { Component, forwardRef ,useState} from "react";
 import * as actionTypes from "../../store/actions/actionTypes";
 import { withStyles } from "@material-ui/styles";
 import MaterialTable from "material-table";
@@ -7,6 +7,8 @@ import { Grid, Card } from "@material-ui/core";
 import APIServices from "../Services/APIServices";
 import SelectedDevicePopUp from "../CoreographyNew/SelectedDevicePopUp";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
+// import EditIcon from '@mui/icons-material/Edit';
+import IconButton from "@mui/material/IconButton";
 
 import AddBox from "@material-ui/icons/AddBox";
 import ArrowDownward from "@material-ui/icons/ArrowDownward";
@@ -23,7 +25,8 @@ import Remove from "@material-ui/icons/Remove";
 import SaveAlt from "@material-ui/icons/SaveAlt";
 import Search from "@material-ui/icons/Search";
 import ViewColumn from "@material-ui/icons/ViewColumn";
-import {regulatorCorLoop} from "../../utils"
+import { regulatorCorLoop } from "../../utils";
+// import useLocalStorage from "../hooks/useLocalStorage";
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -77,6 +80,8 @@ const useStyles = (theme) => ({
     marginTop: theme.spacing(1),
   },
 });
+
+
 class AllCoreographiesTable extends Component {
   constructor(props) {
     super(props);
@@ -87,25 +92,18 @@ class AllCoreographiesTable extends Component {
       selectTrackId: "",
       coreograph: null,
       socket: null,
-      version:""
+      version: "",
     };
     this.apiService = new APIServices();
   }
+
+  
   milisToMinutesAndSeconds = (mil) => {
     let minutes = Math.floor(mil / 60000);
     let seconds = ((mil % 60000) / 1000).toFixed(0);
     let secondsOfSum = Math.floor(Number(minutes) * 60 + Number(seconds));
     return secondsOfSum;
   };
-
-  // askTemperature = () => {
-  //   this.props.socket.emit("askTemperature", this.temperatureToCelsius);
-  //   this.props.socket.on("temperature", (data) => {
-  //     console.log(data.temperatureToCelsius);
-  //     this.props.setSmokeTemperature(data.temperatureToCelsius);
-  //   });
-  //   console.log(this.state.smokeTemperature);
-  // };
 
   openSelectDevicePopUp = () => {
     this.setState({ selectedDevicePopUp: true });
@@ -121,12 +119,12 @@ class AllCoreographiesTable extends Component {
   };
   componentDidMount() {
     const { popUpAll } = this.props;
-    console.log("componentDidMount",popUpAll)
+    console.log("componentDidMount", popUpAll);
     switch (popUpAll) {
       case "All":
-        console.log("get all api")
+        console.log("get all api");
         this.apiService.getAllCoreographies().then((response) => {
-          console.log("response",response)
+          console.log("response", response);
           this.setState({ getAllCorData: this.getCore(response.data.cor) });
         });
         break;
@@ -135,6 +133,7 @@ class AllCoreographiesTable extends Component {
         this.apiService
           .getMyCoreographies(this.props.userId)
           .then((response) => {
+            console.log("response", response);
             this.setState({ getAllCorData: this.getCore(response.data.cor) });
           });
         break;
@@ -150,19 +149,13 @@ class AllCoreographiesTable extends Component {
 
   goParty = (id) => {
     const { selectTrackId, coreograph } = this.state;
-    console.log("coreograph",coreograph)
+    console.log("coreograph", coreograph);
     let tryCor;
-    if(this.state.version === "v.1.0"){
-      tryCor = regulatorCorLoop({ songCorLoop:coreograph, smoke: false });
-    }else{
+    if (this.state.version === "v.1.0") {
+      tryCor = regulatorCorLoop({ songCorLoop: coreograph, smoke: false });
+    } else {
       tryCor = coreograph;
     }
-    // let stringCSV = JSON.stringify({ corData: tryLoop });
-    // const encodedString = {
-    //   base: new Buffer(stringCSV).toString("base64"),
-    //   time: 2,
-    // };
-    // socket.emit("corData", encodedString)
 
     this.closeSelectDevicePopUp();
     this.props.setCurrentTrackId(selectTrackId);
@@ -172,7 +165,6 @@ class AllCoreographiesTable extends Component {
       time: this.milisToMinutesAndSeconds(this.props.durationStamps),
     };
     this.props.socket.emit("corData", encodedString);
-    // this.props.setCorData(this.state.corData);
     this.props.setIsReturnMusic(id);
     console.log("id go party", id);
   };
@@ -201,6 +193,29 @@ class AllCoreographiesTable extends Component {
                 {
                   title: "Coreography Date",
                   field: "date",
+                },
+                {
+                  title: "Share",
+                  field: "isShared",
+                  render: (rowData) => {
+                    console.log(rowData);
+                    if (rowData.isShared && rowData._id) {
+                      return (
+                        <IconButton
+                          color="primary"
+                          aria-label="upload picture"
+                          component="span"
+                        >
+                          <Edit
+                            onClick={(e) =>
+                              console.log("edit go to id", rowData._id)
+                            }
+                          />
+                        </IconButton>
+                      );
+                    }
+                    return <Check />;
+                  },
                 },
               ]}
               data={this.state.getAllCorData}
