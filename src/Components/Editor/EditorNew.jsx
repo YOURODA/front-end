@@ -147,7 +147,9 @@ export const EditorNew = (props) => {
       )}
       {goCoreography === true && durationStamps > 0 && (
         <Grid item lg={12} md={12} xl={12} xs={12}>
-          {!continueCor && currentUser && currentUser.email && (
+          {!continueCor && 
+          // currentUser && currentUser.email &&
+           (
             <EditCorLocalStorage setContinueCor={(e) => setContinueCor(e)} />
           )}
           <CreateCor />

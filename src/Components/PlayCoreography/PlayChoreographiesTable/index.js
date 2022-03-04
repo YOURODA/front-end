@@ -110,7 +110,7 @@ const AllChoreographiesTable = ({
                 field: "isShared",
                 render: (rowData) => {
                   console.log(rowData);
-                  if (rowData.isShared && rowData._id) {
+                  if (!rowData.isShared && rowData._id) {
                     return (
                       <IconButton
                         color="primary"

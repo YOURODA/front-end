@@ -199,11 +199,11 @@ class AllCoreographiesTable extends Component {
                   field: "isShared",
                   render: (rowData) => {
                     console.log(rowData);
-                    if (rowData.isShared && rowData._id) {
+                    if (!rowData.isShared && rowData._id) {
                       return (
                         <IconButton
                           color="primary"
-                          aria-label="upload picture"
+                          // aria-label="upload picture"
                           component="span"
                         >
                           <Edit
@@ -213,8 +213,9 @@ class AllCoreographiesTable extends Component {
                           />
                         </IconButton>
                       );
+                    }else{
+                      return <Check />;
                     }
-                    return <Check />;
                   },
                 },
               ]}

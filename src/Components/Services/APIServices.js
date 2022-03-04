@@ -236,6 +236,16 @@ class APIServices {
     };
     return await axios(serviceData);
   }
+
+  async getMyEditableCors(corId) {
+    const serviceData = {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}` },
+      url: userApiService + '/choreography/getEditableCors',
+    };
+    return await axios(serviceData);
+  }
+
   async overwriteCor({corId,file,name}) {
     let userIdData = {
     corId,

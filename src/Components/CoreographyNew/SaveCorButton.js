@@ -12,6 +12,7 @@ import {
 } from "@material-ui/core";
 import { connect } from "react-redux";
 import APIService from "../Services/APIServices";
+import useLocalStorage from "../../hooks/useLocalStorage";
 // import Dialog from '@material-ui/core/Dialog';
 // import * as actionTypes from "../../store/actions/actionTypes";
 
@@ -24,6 +25,10 @@ const SaveCorButton = ({
 }) => {
   const [open, setOpen] = useState(false);
   const [isShared, setIsShared] = useState(false);
+  const [getLocalDbEditCor, setLocalDbEditCor] = useLocalStorage(
+    "editCorId",
+    ""
+  );
 
   const [corName, setCorName] = useState("");
   const apiServices = new APIService();
@@ -53,7 +58,8 @@ const SaveCorButton = ({
       )
       .then((response) => {
         if (response.status === 200) {
-          console.log("cor save");
+          setLocalDbEditCor(response.data.cor._id)
+          // TODO Kayıt edildiğine dair uyarı
           setOpen(false);
         }
       });
