@@ -259,6 +259,32 @@ class APIServices {
     };
     return await axios(serviceData);
   }
+
+
+  async sendReviews({review, rating, corId}) {
+    let ratings = {
+      review, rating, corId
+    }
+    const serviceData = {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}` },
+      url: userApiService + '/choreography/addReview',
+      data: ratings,
+    };
+    return await axios(serviceData);
+  }
+  async readCorReviews({corId}) {
+    let ratings = {
+      corId
+    }
+    const serviceData = {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}` },
+      url: userApiService + '/choreography/readCorReviews',
+      data: ratings,
+    };
+    return await axios(serviceData);
+  }
 }
 
 export default APIServices;

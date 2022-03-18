@@ -1,6 +1,6 @@
-import React, { useState, useEffect,useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { connect } from "react-redux";
-import {useHistory} from 'react-router-dom';
+import { useHistory } from "react-router-dom";
 import { withStyles } from "@material-ui/styles";
 import MaterialTable from "material-table";
 import { useStyles } from "./useStyles";
@@ -16,6 +16,8 @@ import Edit from "@material-ui/icons/Edit";
 import Check from "@material-ui/icons/Check";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import useLocalStorage from "../../../hooks/useLocalStorage";
+import RatingCor from "../../RatingCor"
+import Skeleton from '@mui/material/Skeleton';
 
 const AllChoreographiesTable = ({
   setIsReturnMusic,
@@ -25,6 +27,7 @@ const AllChoreographiesTable = ({
   durationStamps,
   socket,
 }) => {
+  const [loading, setLoading] = useState(false);
   const [getAllCorData, setAllCorData] = useState([]);
   const [selectedDevicePopUp, setSelectedDevicePopUp] = useState(false);
   const [selectTrackId, setSelectTrackId] = useState("");
@@ -33,16 +36,19 @@ const AllChoreographiesTable = ({
   const [getLocalDbEditCor, setLocalDbEditCor] = useLocalStorage(
     "editCorId",
     ""
-  );
+    );
   const apiService = new APIServices();
   const history = useHistory();
 
   useEffect(() => {
+    console.log("popUpAll",popUpAll)
+    setLoading(true)
     switch (popUpAll) {
       case "All":
         console.log("get all api");
         apiService.getAllCoreographies().then((response) => {
           console.log("response", response);
+          setLoading(false)
           setAllCorData(getCore(response.data.cor));
         });
         break;
@@ -62,7 +68,10 @@ const AllChoreographiesTable = ({
   const closeSelectDevicePopUp = () => {
     setSelectedDevicePopUp(false);
   };
-  const goToEditPage = useCallback(() => history.push('/make-coreography'), [history]);
+  const goToEditPage = useCallback(
+    () => history.push("/make-coreography"),
+    [history]
+  );
 
   const goParty = (id) => {
     let tryCor;
@@ -105,30 +114,39 @@ const AllChoreographiesTable = ({
                 title: "Coreography Date",
                 field: "date",
               },
-              {
-                title: "Share",
-                field: "isShared",
-                render: (rowData) => {
-                  console.log(rowData);
-                  if (!rowData.isShared && rowData._id) {
-                    return (
-                      <IconButton
-                        color="primary"
-                        aria-label="upload picture"
-                        component="span"
-                      >
-                        <Edit
-                          onClick={(e) => {
-                            setLocalDbEditCor(rowData._id)
-                            goToEditPage()
-                          }}
-                        />
-                      </IconButton>
-                    );
+              popUpAll === "My"
+                ? {
+                    title: "Share",
+                    field: "isShared",
+                    render: (rowData) => {
+                      console.log(rowData);
+                      if (!rowData.isShared && rowData._id) {
+                        return (
+                          <IconButton
+                            color="primary"
+                            aria-label="upload picture"
+                            component="span"
+                          >
+                            <Edit
+                              onClick={(e) => {
+                                setLocalDbEditCor(rowData._id);
+                                goToEditPage();
+                              }}
+                            />
+                          </IconButton>
+                        );
+                      }
+                      return <Check />;
+                    },
                   }
-                  return <Check />;
-                },
-              },
+                : {
+                    title: "Rating",
+                    field: "rating",
+                    render: (rowData) => {
+                      console.log(rowData);
+                      return <RatingCor rowData={rowData} />;
+                    },
+                  },
             ]}
             data={getAllCorData}
             actions={[
@@ -151,6 +169,14 @@ const AllChoreographiesTable = ({
               exportFileName: "Rapor",
               headerStyle: { backgroundColor: "#EAEDED" },
             }}
+            isLoading={loading}
+            components={{
+              OverlayLoading: () =>(<div style={{paddingTop:"50%"}}>
+              <Skeleton animation="wave" />
+              <Skeleton animation="wave" />
+              <Skeleton animation="wave" />
+              </div> )
+            }}
           />
         </Card>
       </Grid>
@@ -160,7 +186,7 @@ const AllChoreographiesTable = ({
 
 const mapStateToProps = (state) => {
   return {
-    popUpAll: state.popUpAll,
+    // popUpAll: state.popUpAll,
     userId: state.userId,
     durationStamps: state.durationStamps,
     socket: state.socket,

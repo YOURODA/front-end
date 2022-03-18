@@ -43,7 +43,7 @@ export function SignIn(props) {
     const auth = async (e) => {
         e.preventDefault();
         returnValue = await apiService.login(email, password);
-        console.log("returnValue", returnValue.data.message)
+        console.log("returnValue", returnValue)
         if (returnValue.status == 200) {
             window.location = "/party-selection"
         }
