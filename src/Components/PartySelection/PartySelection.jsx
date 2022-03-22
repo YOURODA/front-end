@@ -9,6 +9,9 @@ import {
 } from '@material-ui/core';
 import goParty from '../../images/goParty.png'
 import makeParty from '../../images/createParty.png'
+import APIServices from "../Services/APIServices";
+import CssBaseline from '@mui/material/CssBaseline';
+
 const useStyles = theme => ({
 });
 class PartySelection extends Component {
@@ -17,10 +20,15 @@ class PartySelection extends Component {
     this.state = {
       goPlayCoreography: false,
       makeParty: false,
-      dimensions: null
+      dimensions: null,
+      ipList: []
     };
+    this.apiService = new APIServices();
+
   }
   componentDidMount() {
+    this.apiService.loginRaspi(this.setState, this.state.ipList);
+    console.log()
     this.setState({
       dimensions: {
         width: this.container.offsetWidth,
@@ -37,6 +45,7 @@ class PartySelection extends Component {
   }
   renderContent() {
     const { dimensions } = this.state;
+    console.log("this.state.ipList", this.state.ipList)
     return (
       <Grid container spacing="0">
         <Grid item lg={6} sm={6} xl={6} xs={6} style={{ height: dimensions.height, width: dimensions.width }}>

@@ -2,7 +2,7 @@ import React, { useState, useEffect, Component } from 'react'
 import { Redirect, Switch } from "react-router-dom";
 import RouteWithLayout from "./Components/RouteWithLayout/RouteWithLayout";
 import Editor from "./Components/Editor/EditorNew";
-import PartySelection from "./Components/PartySelection/PartySelection";
+import PartySelectionNew from "./Components/PartySelection/PartySelectionNew";
 import PlayCoreography from "./Components/PlayCoreography/PlayCoreography";
 import SignIn from "./Pages/Login/SignIn"
 import Register from "./Pages/Register/SignUp"
@@ -66,15 +66,15 @@ export const Routes = (props) => {
       <RouteWithLayout exact layout={SignIn} path="/login" />
       <RouteWithLayout exact layout={Register} path="/register" />
       {localStorage.getItem("refreshToken") &&
-      <>
-        <RouteWithLayout exact layout={PartySelection} path="/party-selection" />
-        <RouteWithLayout
-          exact
-          layout={PlayCoreography}
-          path="/play-coreography"
-        />
-        <RouteWithLayout exact layout={Editor} path="/make-coreography" />
-      </>
+        <>
+          <RouteWithLayout exact layout={PartySelectionNew} path="/party-selection" />
+          <RouteWithLayout
+            exact
+            layout={PlayCoreography}
+            path="/play-coreography"
+          />
+          <RouteWithLayout exact layout={Editor} path="/make-coreography" />
+        </>
       }
     </Switch>
   );

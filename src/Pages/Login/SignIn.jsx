@@ -17,7 +17,8 @@ import { useHistory } from 'react-router-dom';
 import APIServices from "../../Components/Services/APIServices";
 import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
-
+import PopupIoT from "./PopupIoT"
+import * as actionTypes from "../../store/actions/actionTypes";
 function Copyright(props) {
     return (
         <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -32,20 +33,22 @@ function Copyright(props) {
 const theme = createTheme();
 
 export function SignIn(props) {
-    const { accessToken, setRefreshToken } = props;
+    const { accessToken, setRefreshToken, setCreateUserPopup, createUserPopup, setUser } = props;
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [alertMessage, setAlertMessage] = useState('');
     const history = useHistory();
     const apiService = new APIServices();
     let returnValue;
-    let message;
     const auth = async (e) => {
+        setCreateUserPopup(false);
         e.preventDefault();
         returnValue = await apiService.login(email, password);
-        console.log("returnValue", returnValue.data.message)
         if (returnValue.status == 200) {
-            window.location = "/party-selection"
+            setUser(email);
+            setCreateUserPopup(true);
+
+            // window.location = "/party-selection"
         }
         else {
             setAlertMessage(returnValue.data.message);
@@ -62,17 +65,18 @@ export function SignIn(props) {
             history.push("/login");
         }
     }
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        // eslint-disable-next-line no-console
-        console.log({
-            email: data.get('email'),
-            password: data.get('password'),
-        });
-    };
+    // const handleSubmit = (event) => {
+    //     event.preventDefault();
+    //     const data = new FormData(event.currentTarget);
+    //     // eslint-disable-next-line no-console
+    //     console.log({
+    //         email: data.get('email'),
+    //         password: data.get('password'),
+    //     });
+    // };
 
     return (
+
         <ThemeProvider theme={theme}>
             <Grid container component="main" sx={{ height: '100vh' }}>
                 <CssBaseline />
@@ -146,6 +150,7 @@ export function SignIn(props) {
                                 variant="contained"
                                 sx={{ mt: 3, mb: 2 }}
                                 onClick={auth}
+
                             >
                                 Sign In
                             </Button>
@@ -166,8 +171,21 @@ export function SignIn(props) {
                     </Box>
                 </Grid>
             </Grid>
+            {createUserPopup && <PopupIoT />}
         </ThemeProvider>
+
     );
 }
-
-export default (SignIn);
+const mapStateToProps = state => {
+    return {
+        createUserPopup: state.createUserPopup,
+        user: state.current_user,
+    };
+};
+const mapDispatchToProps = dispatch => {
+    return {
+        setCreateUserPopup: createUserPopup => dispatch({ type: actionTypes.CREATE_USER_POPUP, createUserPopup }),
+        setUser: current_user => dispatch({ type: actionTypes.SET_USER, current_user })
+    };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(SignIn);

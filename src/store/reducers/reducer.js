@@ -62,7 +62,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         isLoggedIn: true,
-        current_user: action.user,
+        current_user: action.current_user,
       };
     case actionTypes.SET_RECENTLY_PLAYED:
       return {

@@ -54,7 +54,7 @@ export default function SignUp() {
             console.log('successfull')
             const returnValue = await apiService.register(firstName, secondName, email, password, confPassword);
             if (returnValue.status == 200) {
-                window.location("/login");
+                window.location = "/login";
             } else {
                 setAlertMessage(returnValue.data.message)
             }

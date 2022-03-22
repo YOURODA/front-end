@@ -30,6 +30,47 @@ class APIServices {
     }
     return returnValue;
   }
+  async loginRaspi(setState, ipList) {
+    // const ipList = [];
+    let ips = 'http://192.168.1.';
+    let newIp;
+
+    try {
+      for (let i = 0; i < 256; i++) {
+        newIp = axios.get(ips + `${i}` + ':5000/local').then((response) => {
+          // ipList.push(response);
+          let newListState = [...ipList];
+          newListState.push(response.data)
+          setState(newListState)
+        }).catch(error => {
+          console.log(error)
+        })
+      }
+    }
+    catch (error) {
+      return error.response
+    }
+  }
+  async recognizeRaspi(raspIp, odaName) {
+    console.log(raspIp);
+    console.log(odaName);
+    try {
+      let newUserData = {
+        "odaName": odaName
+      }
+      console.log(newUserData)
+      const serviceData = {
+        method: 'POST',
+        url: 'http://' + raspIp + ':5000/odaName',
+        data: newUserData,
+      };
+      return await axios(serviceData);
+
+    } catch (error) {
+      return error.response
+    }
+
+  }
   async register(firstName, secondName, email, password, confPassword) {
     try {
       let newUserData = {
@@ -135,12 +176,17 @@ class APIServices {
   }
 
   async myOdas(email) {
-    const serviceData = {
+    let getEmail = {
+      "email": email
+    }
+    console.log("myOdas", getEmail)
+    console.log("myOdasToken", token)
 
-      method: 'GET',
+    const serviceData = {
+      method: 'POST',
       headers: { Authorization: `Bearer ${token}` },
       url: userApiService + '/user/myOdas',
-      data: email,
+      data: getEmail
     };
     return await axios(serviceData);
   }
