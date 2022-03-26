@@ -107,6 +107,8 @@ export const MiniCorGroup = ({
   const [isOpenDialog, setIsOpenDialog] = useState(false);
   const [isConsoleActive, setConsoleActive] = useState(false);
   const [selectCorMini, setSelectCorMini] = useState(null);
+  const [textInput, setTextInput] = useState("");
+  const [isApply, setIsApply] = useState(true);
   const [windowSize, setWindowSize] = useState({
     width: 1000,
     height: 1000,
@@ -157,64 +159,6 @@ export const MiniCorGroup = ({
     setPushCor(newPushCor);
   };
 
-  const SwitchGroup = () => {
-    return (
-      <FormGroup row className={classes.switchStyle} >
-        {/* <FormControlLabel
-          control={
-            <PurpleSwitch
-              checked={isSmokeActive}
-              onChange={() => setIsSmokeActive(!isSmokeActive)}
-              color="primary"
-            />
-          }
-          label="Smoke"
-        /> */}
-        {/* <FormControlLabel
-          control={
-            <PurpleSwitch
-              checked={isConsoleActive}
-              onChange={() => setConsoleActive(!isConsoleActive)}
-              color="primary"
-            />
-          }
-          label="Console"
-        /> */}
-        {/* <FormControlLabel
-          control={
-            <Switch
-              checked={isLiveTry.status}
-              onChange={() => {
-                if (!isLiveTry.status) {
-                  let localOdaIp = "";
-                  apiServices
-                    .myOdaOnlyEmail({ email: user.email })
-                    .then((response) => {
-                      if (
-                        response.status === 200 &&
-                        response.data.odas[0].localIp
-                      ) {
-                        localOdaIp = response.data.odas[0].localIp;
-                      }
-                      // setIsLiveTry({
-                      //   ...isLiveTry,
-                      //   status: !isLiveTry.status,
-                      //   localOdaIp,
-                      // });
-                    });
-                } else {
-                  // setIsLiveTry({ ...isLiveTry, status: !isLiveTry.status });
-                }
-              }}
-              color="primary"
-            />
-          }
-          label="Live Try"
-        /> */}
-        {/* <SaveCorButton /> */}
-      </FormGroup>
-    );
-  };
 
   const onDeleteMiniCor = () => {
     console.log("delete", selectCorMini);
@@ -237,6 +181,29 @@ export const MiniCorGroup = ({
     });
     setSongCor([...newSongCor]);
   };
+  
+  useEffect(() => {
+    const newPushCor = [...pushCor];
+  
+    let newStart = parseInt(textInput);
+    console.log(newStart);
+    console.log("2",(typeof newStart === "number" && newStart % 2 === 0));
+    if( typeof newStart === "number" && newStart % 2 === 0  && 0 < newStart < songcorlength - minicorLength ){
+      console.log("ife girdi");
+      if(newStart % 2 !== 0 ){
+        newStart = newStart - 1;
+      }
+      if (0 < newStart < songcorlength - minicorLength) {
+        newPushCor[0] = newStart;
+        newPushCor[1] = newStart + minicorLength - 1;
+      }
+      console.log("değiştiriyor");
+      setIsApply(false);
+      setTextTime(newStart);
+      setPushCor(newPushCor);
+    }
+  }, [textInput]);
+  
 
   const TextInputSecond = (event) => {
     const newPushCor = [...pushCor];
@@ -307,15 +274,15 @@ export const MiniCorGroup = ({
             type="email"
             name="startTime"
             fullWidth
-            onChange={TextInputSecond}
+            onChange={(event)=>setTextInput(event.target.value)}
             id="formatted-numberformat-input"
             InputProps={{
               inputComponent: NumberFormatCustom,
             }}
-            value={textTime}
+            value={textInput}
           />
 
-          <Button onClick={() => onChangeChoreography()} color="primary">
+          <Button onClick={() => onChangeChoreography()} color="primary" disabled={isApply}>
             Apply
           </Button>
 

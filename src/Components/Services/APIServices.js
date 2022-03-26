@@ -230,13 +230,14 @@ class APIServices {
     };
     return await axios(serviceData);
   }
-  async createCoreography(name, trackName, file, trackId, ownerId) {
+  async createCoreography(name, trackName, file, trackId, ownerId,isShared) {
     const createCorData = {
-      "name": name,
-      "trackName": trackName,
-      "file": file,
-      "trackId": trackId,
-      "ownerId": ownerId,
+      name,
+      trackName,
+      file,
+      trackId,
+      ownerId,
+      isShared,
       "version": "v.1.0"
     }
     const serviceData = {
@@ -268,6 +269,66 @@ class APIServices {
       headers: { "Content-Type": "multipart/form-data" },
     };
 
+    return await axios(serviceData);
+  }
+  async getMyEditingCor(corId) {
+    let userIdData = {
+    corId
+    }
+    const serviceData = {
+      method: 'POST',
+      url: userApiService + '/choreography/getEditCor',
+      data: userIdData,
+    };
+    return await axios(serviceData);
+  }
+
+  async getMyEditableCors(corId) {
+    const serviceData = {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}` },
+      url: userApiService + '/choreography/getEditableCors',
+    };
+    return await axios(serviceData);
+  }
+
+  async overwriteCor({corId,file,name}) {
+    let userIdData = {
+    corId,
+    file,
+    name
+    }
+    const serviceData = {
+      method: 'POST',
+      url: userApiService + '/choreography/overwrite',
+      data: userIdData,
+    };
+    return await axios(serviceData);
+  }
+
+
+  async sendReviews({review, rating, corId}) {
+    let ratings = {
+      review, rating, corId
+    }
+    const serviceData = {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}` },
+      url: userApiService + '/choreography/addReview',
+      data: ratings,
+    };
+    return await axios(serviceData);
+  }
+  async readCorReviews({corId}) {
+    let ratings = {
+      corId
+    }
+    const serviceData = {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}` },
+      url: userApiService + '/choreography/readCorReviews',
+      data: ratings,
+    };
     return await axios(serviceData);
   }
 }

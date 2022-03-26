@@ -1,0 +1,33 @@
+.ReadReview-main {
+  min-width: 0;
+  flex: 1;
+  flex-basis: 1e-9px;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+.ReadReview-header{
+  margin-bottom: 2px;
+  display: flex;
+  flex-direction: row;
+}
+.ReadReview-header-author{
+  margin-right: 4px;
+  color:#030303;
+  margin-bottom: 2px;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 1.3rem;
+  font-weight: 500;
+  line-height: 1.8rem;
+}
+.ReadReview-comment{
+  color: #030303;
+  font-family: "Roboto","Arial",sans-serif;
+  font-size: 1.4rem;
+  line-height: 2rem;
+  font-weight: 400;
+}

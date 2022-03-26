@@ -115,6 +115,7 @@ class MusicPlayer extends Component {
 
     this.player.on('ready', (data) => {
       let { device_id } = data;
+      console.log("device_id",device_id)
       // await this.setState({ deviceId: device_id });
       this.setState({ deviceId: device_id }, () => {
         this.transferPlaybackHere();
