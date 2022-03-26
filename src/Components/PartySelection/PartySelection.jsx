@@ -2,8 +2,6 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import * as actionTypes from "../../store/actions/actionTypes";
 import { withStyles } from '@material-ui/styles';
-
-// import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import {
   Card,
   Grid,
@@ -11,15 +9,7 @@ import {
 } from '@material-ui/core';
 import goParty from '../../images/goParty.png'
 import makeParty from '../../images/createParty.png'
-// import PlayParty from "../MyPartyList/PlayCoreography";
-
-
-
 const useStyles = theme => ({
-  cardImage: {
-
-  }
-
 });
 class PartySelection extends Component {
   constructor(props) {
@@ -38,6 +28,7 @@ class PartySelection extends Component {
       },
     });
   }
+
   playCoreography = () => {
     this.setState({ goPlayCoreography: true })
   }
@@ -79,22 +70,6 @@ class PartySelection extends Component {
       window.location = "/make-coreography"
     }
     return (
-      // <Grid container spacing="0">
-      //   <Grid item lg={6} sm={6} xl={6} xs={6}>
-      //     <Card className={classes.cardImage}>
-      //       <CardActionArea>
-      //         <img onClick={this.playCoreography} src={goParty} />
-      //       </CardActionArea>
-      //     </Card>
-      //   </Grid>
-      //   <Grid item lg={6} sm={6} xl={6} xs={6}>
-      //     <Card className={classes.cardImage}>
-      //       <CardActionArea>
-      //         <img onClick={this.makePartyChecker} src={makeParty} />
-      //       </CardActionArea>
-      //     </Card>
-      //   </Grid>
-      // </Grid>
       <div ref={el => (this.container = el)}>
         {dimensions && this.renderContent()}
       </div>

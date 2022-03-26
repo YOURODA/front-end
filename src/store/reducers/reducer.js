@@ -54,6 +54,7 @@ const initialState = {
   isLiveTry:{status: false, localConnectStatus: false, localOdaIp:"" ,robotModel:""},
   consolePress:[],
   goToSecond:{second:0, isGo:false},
+  corSaveInfo:{corID:""},
 
 };
 
@@ -253,24 +254,30 @@ const reducer = (state = initialState, action) => {
         songCor: action.songCor,
       };
     case actionTypes.IS_SMOKE_ACTIVE:
-      return{
+      return {
         ...state,
-        isSmokeActive:action.isSmokeActive
+        isSmokeActive: action.isSmokeActive
       }
     case actionTypes.CONSOLE_PRESS:
-      return{
+      return {
         ...state,
-        consolePress:action.consolePress
+        consolePress: action.consolePress
       }
     case actionTypes.GO_TO_SECONDS:
-      return{
+      return {
         ...state,
-        goToSecond:action.goToSecond
+        goToSecond: action.goToSecond
       }
     case actionTypes.IS_LIVE_TRY:
+      return {
+        ...state,
+        isLiveTry: action.isLiveTry
+      }
+    case actionTypes.SET_COR_INFO:
+      console.log("set cor info reducer çalıştı",action.corSaveInfo)
       return{
         ...state,
-        isLiveTry:action.isLiveTry
+        corSaveInfo:action.corSaveInfo
       }
     default:
       return state;

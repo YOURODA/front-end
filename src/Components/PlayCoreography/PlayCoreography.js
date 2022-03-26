@@ -13,6 +13,9 @@ import { Grid } from "@material-ui/core";
 import AllCoreographiesSelect from "./AllCoreographies/AllCoreographiesSelect";
 import MyCoreographiesSelect from "./MyCoreographies/MyCoreographiesSelect";
 import HitCoreographiesSelect from "./HitCoreographies/HitCoreographiesSelect";
+import { styled } from "@mui/material/styles";
+import Paper from "@mui/material/Paper";
+import AllChoreographiesTable from "./PlayChoreographiesTable"
 
 const theme = createMuiTheme({
   palette: {
@@ -33,20 +36,20 @@ const theme = createMuiTheme({
     useNextVariants: true,
   },
 });
+
+const Item = styled(Paper)(({ theme }) => ({
+  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
+  ...theme.typography.body2,
+  padding: theme.spacing(1),
+  textAlign: "center",
+  color: theme.palette.text.secondary,
+}));
+
 class PlayCoreography extends Component {
   constructor(props) {
     super(props);
     this.state = {};
   }
-
-  // askTemperature = () => {
-  //   this.props.socket.emit("askTemperature", this.temperatureToCelsius);
-  //   this.props.socket.on("temperature", (data) => {
-  //     console.log("sıcaklık sorgusu", data.temperatureToCelsius);
-  //     this.props.setSmokeTemperature(data.temperatureToCelsius);
-  //   });
-  //   console.log(this.state.smokeTemperature);
-  // };
 
   askTemperature = () => {
     console.log("test");
@@ -75,7 +78,7 @@ class PlayCoreography extends Component {
     };
     // var socketio_url = "https://your-oda-back-end.herokuapp.com";
     // this.odaName = { name: "Corlu" };
-    const socketio_url = "http://localhost:5000/";
+    const socketio_url = "http://localhost:5001/";
     this.odaName = { email: "eray.eroglu59@gmail.com" };
     let _socket = socketIo.connect(socketio_url, connectionStrings);
     _socket.emit("Odaya Katil", this.odaName);
@@ -91,34 +94,30 @@ class PlayCoreography extends Component {
     const { userId } = this.props;
     return (
       <div>
-        {"userId" && (
-          <Grid container spacing="10">
+        <Grid container >
+          {/* <Grid item lg={12} sm={12} xl={12} xs={12} />
             <Grid item lg={12} sm={12} xl={12} xs={12} />
             <Grid item lg={12} sm={12} xl={12} xs={12} />
-            <Grid item lg={12} sm={12} xl={12} xs={12} />
-            <Grid item lg={2} sm={2} xl={2} xs={2} />
-            <Grid item lg={3} sm={3} xl={3} xs={3}>
-              <AllCoreographiesSelect />
-            </Grid>
-            <Grid item lg={3} sm={3} xl={3} xs={3}>
-              <MyCoreographiesSelect />
-            </Grid>
-            <Grid item lg={3} sm={3} xl={3} xs={3}>
-              <HitCoreographiesSelect />
-            </Grid>
-            <Grid item lg={2} sm={2} xl={2} xs={2} />
+            <Grid item lg={2} sm={2} xl={2} xs={2} /> */}
+          <Grid item lg={3} sm={3} xl={3} xs={3}>
+            <AllCoreographiesSelect />
           </Grid>
-        )}
-        <ThemeProvider theme={theme}>
-          <CssBaseline>
-            <SpotifyFooter
-              style={{
-                fontFamily:
-                  "spotify-circular,Helvetica Neue,Helvetica,Arial,Hiragino Kaku Gothic Pro,Meiryo,MS Gothic,sans-serif",
-              }}
-            ></SpotifyFooter>
-          </CssBaseline>
-        </ThemeProvider>
+          <Grid item lg={3} sm={3} xl={3} xs={3}>
+            <MyCoreographiesSelect />
+          </Grid>
+          <Grid item lg={3} sm={3} xl={3} xs={3}>
+            <HitCoreographiesSelect />
+          </Grid>
+          {/* <Grid item lg={3} sm={3} xl={3} xs={3} /> */}
+          <Grid item xs={6} md={8}>
+            <AllChoreographiesTable popUpAll={"All"} />
+
+            {/* <Item>xs=6 md=8</Item> */}
+          </Grid>
+          <Grid item xs={6} md={4}>
+            <Item>My list</Item>
+          </Grid>
+        </Grid>
       </div>
     );
   }
