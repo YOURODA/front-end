@@ -18,6 +18,9 @@ import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import useLocalStorage from "../../../hooks/useLocalStorage";
 import RatingCor from "../../RatingCor"
 import Skeleton from '@mui/material/Skeleton';
+import MenuIcon from '@mui/icons-material/Menu';
+import CorSettingsMenu from "../CorSettingsMenu/CorSettingsMenu";
+// import {Button,IconButton } from "@mui/material";
 
 const AllChoreographiesTable = ({
   setIsReturnMusic,
@@ -143,10 +146,14 @@ const AllChoreographiesTable = ({
                     title: "Rating",
                     field: "rating",
                     render: (rowData) => {
-                      console.log(rowData);
                       return <RatingCor rowData={rowData} />;
                     },
                   },
+                  { title: "Settings",
+                  field: "rating",
+                  render: (rowData) => {
+                    return  <CorSettingsMenu rowData={rowData}/>;     
+                  },}
             ]}
             data={getAllCorData}
             actions={[

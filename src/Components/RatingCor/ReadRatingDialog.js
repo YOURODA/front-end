@@ -23,7 +23,8 @@ import {
   DialogTitle,
   TextField,
   Grid,
-  Skeleton 
+  Skeleton ,
+  Divider
 } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import APIService from "../Services/APIServices";
@@ -75,28 +76,8 @@ const ReadRatingDialog = ({ open, setOpen, corId }) => {
           <div className="ReadReview-comment">
               {review.review}
           </div>
+          <Divider />
         </div>
-
-        // <>
-        //   <Box sx={{ flexGrow: 1 }}>
-        //     <Grid container columns={16}>
-        //       <Grid item xs="auto">
-        //       <Rating
-        //       name="read-only"
-        //       value={review.rating}
-        //       readOnly
-        //       />
-        //       </Grid>
-        //       <Grid item xs={8}>
-        //       {review.ownerId.name}
-        //       </Grid>
-        //       <Grid item xs={16}>
-        //       {review.review}
-        //       </Grid>
-        //     </Grid>
-        //   </Box>
-
-        // </>
       );
     });
   };
@@ -111,19 +92,14 @@ const ReadRatingDialog = ({ open, setOpen, corId }) => {
       >
         <DialogTitle>Reviews</DialogTitle>
         <DialogContent>
-          <DialogContentText>Read Reviews</DialogContentText>
           <Box
             noValidate
             component="form"
             sx={{
               display: "flex",
               flexDirection: "column",
-              // m: "auto",
-              // width: 'fit-content',
-              // width: 500,
               maxWidth: "100%",
               justifyContent: "space-between",
-              // backgroundColor: "red",
             }}
           >
             {loading && <Skeleton animation="wave" />}
