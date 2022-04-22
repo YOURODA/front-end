@@ -55,7 +55,7 @@ const initialState = {
   consolePress:[],
   goToSecond:{second:0, isGo:false},
   corSaveInfo:{corID:""},
-  list:{cor:[],status:"not questioned"}
+  list:[]
 };
 
 const reducer = (state = initialState, action) => {
@@ -274,13 +274,12 @@ const reducer = (state = initialState, action) => {
         isLiveTry: action.isLiveTry
       }
     case actionTypes.SET_COR_INFO:
-      console.log("set cor info reducer çalıştı",action.corSaveInfo)
       return{
         ...state,
         corSaveInfo:action.corSaveInfo
       }
     case actionTypes.SET_LIST:
-      console.log("set cor info reducer çalıştı",action.corSaveInfo)
+      console.log("set cor info reducer çalıştı",action.list)
       return{
         ...state,
         list:action.list

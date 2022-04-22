@@ -1,4 +1,5 @@
 import React, { useState,useEffect } from "react";
+import { connect } from "react-redux";
 import {
   Box,
   Rating,
@@ -14,30 +15,14 @@ import {
 import SendIcon from "@mui/icons-material/Send";
 import APIService from "../../Services/APIServices";
 
-const AddList = ({ open, setOpen, corId }) => {
+const AddList = ({ open, setOpen, corId,list }) => {
   const [listName, setListName] = useState("");
-  const [listingCorList, setListingCorList] = useState([]);
   const apiServices = new APIService();
 
   // const handleClickOpen = () => {
   //   setOpen(true);
   // };
-
-  useEffect(() => {
-    apiServices
-    .getUserCorListAll({})
-    .then((response) => {
-      if (response.status === 200) {
-        console.log("Create New List", response.data);
-        setListingCorList(response.data)
-      }
-    })
-    .catch((err) => {
-      console.log("sentReviews Err", err);
-    });    
-  }, [])
-
-
+  
   const addToTheList = ({corListId}) => {
     apiServices
       .addNewSongToList({newSong:corId, corListId})
@@ -59,8 +44,8 @@ const AddList = ({ open, setOpen, corId }) => {
 
 
   const showListingCorList=({})=>{
-    console.log("setListingCorList",listingCorList)
-    return listingCorList.map((corList)=>{
+    console.log("setListingCorList",list)
+    return list.map((corList)=>{
       return (
         <div style={{marginBottom:"15px"}}>
 
@@ -110,4 +95,11 @@ const AddList = ({ open, setOpen, corId }) => {
   );
 };
 
-export default AddList;
+const mapStateToProps = (state) => {
+  return {
+    list: state.list,
+  };
+};
+
+export default connect(mapStateToProps)(AddList);
+// export default AddList;

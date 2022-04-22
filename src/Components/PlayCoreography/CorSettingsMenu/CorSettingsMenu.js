@@ -66,6 +66,7 @@ const CorSettingsMenu = ({rowData})=> {
         <AddList
         open={openAddList}
         setOpen={setOpenAddList}
+        corId={rowData._id}
         />
       )}
 

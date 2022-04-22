@@ -350,7 +350,6 @@ class APIServices {
       method: 'POST',
       headers: { Authorization: `Bearer ${token}` },
       url: userApiService + '/choreographyList/all',
-      // data,
     };
     return await axios(serviceData);
   }
@@ -358,6 +357,7 @@ class APIServices {
     const serviceData ={
       headers: { Authorization: `Bearer ${token}` },method:'POST',
       url: userApiService + '/choreographyList/addNewSong',
+      data:{newSong, corListId}
     }
     return await axios(serviceData);
   }
