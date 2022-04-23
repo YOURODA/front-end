@@ -12,18 +12,18 @@ function LinearProgressWithLabel(props) {
         <div >
             <Box width="100%" height="100%" >
                 <LinearProgress variant="determinate" valueBuffer="59" style={{
-                     webkitTransform: "rotate(270deg)",
-                     mozTransform: "rotate(270deg)",
-                     oTransform:" rotate(270deg)",
-                     msTransform:" rotate(270deg)",
-                     transform: "rotate(270deg)",
-                     marginTop:"60%",
-                     height: "8px"
+                    //  webkitTransform: "rotate(270deg)",
+                    //  mozTransform: "rotate(270deg)",
+                    //  oTransform:" rotate(270deg)",
+                    //  msTransform:" rotate(270deg)",
+                    //  transform: "rotate(270deg)",
+                    marginTop: "6%",
+                    height: "8px"
                 }}  {...props} />
             </Box>
-                <Typography variant="body1" color="textSecondary">{`${Math.round(
-                    props.value,
-                )}%`}</Typography>
+            <Typography variant="body1" color="textSecondary">{`${Math.round(
+                props.value,
+            )}%`}</Typography>
         </div>
     );
 }
@@ -42,7 +42,7 @@ function SmokeStatus(props) {
     const classes = useStyles();
     return (
         <div className={classes.root}>
-            <LinearProgressWithLabel value={props.smokeTemperature/4.5} />
+            <LinearProgressWithLabel value={props.smokeTemperature / 4.5} />
         </div>
     );
 }

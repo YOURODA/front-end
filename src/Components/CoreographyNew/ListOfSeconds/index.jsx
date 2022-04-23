@@ -125,7 +125,7 @@ const ListOfSeconds = ({
           <DialogTitle id="form-dialog-title">Save Selected</DialogTitle>
           <DialogContent>
             <DialogContentText>
-              Name to add moves from selected seconds to other seconds.
+             Give a name to moves from selected seconds to other seconds.
             </DialogContentText>
             <TextField
               autoFocus

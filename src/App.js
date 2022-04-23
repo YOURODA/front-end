@@ -1,25 +1,26 @@
 import React from 'react'
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
-import { createMuiTheme } from "@material-ui/core/styles";
-import { ThemeProvider } from '@material-ui/styles';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+// import { ThemeProvider } from '@material-ui/styles';
 import Routes from './Routes'
 import { createBrowserHistory } from 'history';
 
 const browserHistory = createBrowserHistory();
-const theme = createMuiTheme({
+const theme = createTheme({
   palette: {
-    primary: {
-      light: "#757ce8",
-      main: "#1db954",
-      dark: "#191414",
-      contrastText: "#fff"
-    },
-    secondary: {
-      light: "#ff7961",
-      main: "#ffffff",
-      dark: "#191414",
-      contrastText: "#000"
-    }
+    // primary: {
+    //   light: "#757ce8",
+    //   main: "#1db954",
+    //   dark: "#191414",
+    //   contrastText: "#fff"
+    // },
+    // secondary: {
+    //   light: "#ff7961",
+    //   main: "#ffffff",
+    //   dark: "#191414",
+    //   contrastText: "#000"
+    // }
+    mode: 'dark'
   },
   typography: {
     useNextVariants: true

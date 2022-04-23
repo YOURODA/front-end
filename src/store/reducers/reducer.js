@@ -50,11 +50,11 @@ const initialState = {
   selectedSeconds: [],
   selectedSecond: 0,
   songCor: [],
-  isSmokeActive:false,
-  isLiveTry:{status: false, localConnectStatus: false, localOdaIp:"" ,robotModel:""},
-  consolePress:[],
-  goToSecond:{second:0, isGo:false},
-  corSaveInfo:{corID:""},
+  isSmokeActive: false,
+  isLiveTry: { status: false, localConnectStatus: false, localOdaIp: "", robotModel: "" },
+  consolePress: [],
+  goToSecond: { second: 0, isGo: false },
+  corSaveInfo: { corID: "" },
 
 };
 
@@ -64,7 +64,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         isLoggedIn: true,
-        current_user: action.current_user,
+        current_user: action.user,
       };
     case actionTypes.SET_RECENTLY_PLAYED:
       return {
@@ -274,10 +274,10 @@ const reducer = (state = initialState, action) => {
         isLiveTry: action.isLiveTry
       }
     case actionTypes.SET_COR_INFO:
-      console.log("set cor info reducer çalıştı",action.corSaveInfo)
-      return{
+      console.log("set cor info reducer çalıştı", action.corSaveInfo)
+      return {
         ...state,
-        corSaveInfo:action.corSaveInfo
+        corSaveInfo: action.corSaveInfo
       }
     default:
       return state;

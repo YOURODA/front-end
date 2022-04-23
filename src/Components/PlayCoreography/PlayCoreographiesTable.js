@@ -1,4 +1,4 @@
-import React, { Component, forwardRef ,useState} from "react";
+import React, { Component, forwardRef, useState } from "react";
 import * as actionTypes from "../../store/actions/actionTypes";
 import { withStyles } from "@material-ui/styles";
 import MaterialTable from "material-table";
@@ -97,7 +97,7 @@ class AllCoreographiesTable extends Component {
     this.apiService = new APIServices();
   }
 
-  
+
   milisToMinutesAndSeconds = (mil) => {
     let minutes = Math.floor(mil / 60000);
     let seconds = ((mil % 60000) / 1000).toFixed(0);
@@ -213,7 +213,7 @@ class AllCoreographiesTable extends Component {
                           />
                         </IconButton>
                       );
-                    }else{
+                    } else {
                       return <Check />;
                     }
                   },
@@ -223,7 +223,7 @@ class AllCoreographiesTable extends Component {
               actions={[
                 {
                   icon: () => <PlayArrowIcon />,
-                  tooltip: "Play Careografy",
+                  tooltip: "Play Choreography",
                   onClick: (event, rowData) => {
                     this.setState({ selectTrackId: rowData.trackId });
                     this.setState({ selectedDevicePopUp: true });

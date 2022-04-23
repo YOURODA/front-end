@@ -2,32 +2,19 @@ import React, { Component } from "react";
 import * as actionTypes from "../../store/actions/actionTypes";
 import { connect } from "react-redux";
 import {
-  FormControlLabel,
   Card,
   CardContent,
-  List,
-  ListItem,
-  ListItemText,
-  ListItemIcon,
-  Checkbox,
-  Button,
-  Divider,
   Grid,
-  Paper,
-  CardActions,
 } from "@material-ui/core";
-import SaveIcon from "@material-ui/icons/Save";
 import SmokeStatus from "./SmokeStatus";
 import Smoke from "./Smoke";
 import { withStyles } from "@material-ui/styles";
 import APIServices from "../Services/APIServices";
 import RobotOptions from "./RobotOptions";
-import CreateCorPopUp from "./CreateCorPopUp";
 import SelectedDevicePopUp from "./SelectedDevicePopUp";
 import MiniCorGroup from "./miniCorGroup/MiniCorGroup";
 import AppBarSettings from "./miniCorGroup/AppBarSettings";
 import ListOfSeconds from "./ListOfSeconds/index";
-import { regulatorCorTry } from "../../utils";
 const useStyles = (theme) => ({
   active: {
     backgroundColor: "#e8eaf6",
@@ -124,19 +111,19 @@ class CreateCor extends Component {
           startDate: seconds,
           robot: `${
             this.props.leftHorValue ? this.props.leftHorValue : "0"
-          },0,${this.props.leftVerValue ? this.props.leftVerValue : "0"},0,0,${
+            },0,${this.props.leftVerValue ? this.props.leftVerValue : "0"},0,0,${
             this.props.brightnessValue.L ? this.props.brightnessValue.L : "0"
-          },${lColor1},${lColor2},${lColor3},"59",${
+            },${lColor1},${lColor2},${lColor3},"59",${
             this.props.blinkerValue.L ? this.props.blinkerValue.L : "0"
-          },0,0,${
+            },0,0,${
             this.props.rightHorValue ? this.props.rightHorValue : "0"
-          },0,${
+            },0,${
             this.props.rightVerValue ? this.props.rightVerValue : "0"
-          },0,0,${
+            },0,0,${
             this.props.brightnessValue.R ? this.props.brightnessValue.R : "0"
-          },${rColor1},${rColor2},${rColor3},0,${
+            },${rColor1},${rColor2},${rColor3},0,${
             this.props.blinkerValue.R ? this.props.blinkerValue.R : "0"
-          },0,0`,
+            },0,0`,
           smoke: this.state.checkSmoke === true ? "1" : "0", //L
           smoke: this.state.checkSmoke, //L
         };
@@ -146,19 +133,19 @@ class CreateCor extends Component {
           startDate: seconds,
           robot: `${
             this.props.leftHorValue ? this.props.leftHorValue : "0"
-          },0,${this.props.leftVerValue ? this.props.leftVerValue : "0"},0,0,${
+            },0,${this.props.leftVerValue ? this.props.leftVerValue : "0"},0,0,${
             this.props.brightnessValue.L ? this.props.brightnessValue.L : "0"
-          },${lColor1},${lColor2},${lColor3},"59",${
+            },${lColor1},${lColor2},${lColor3},"59",${
             this.props.blinkerValue.L ? this.props.blinkerValue.L : "0"
-          },0,0,${
+            },0,0,${
             this.props.rightHorValue ? this.props.rightHorValue : "0"
-          },0,${
+            },0,${
             this.props.rightVerValue ? this.props.rightVerValue : "0"
-          },0,0,${
+            },0,0,${
             this.props.brightnessValue.R ? this.props.brightnessValue.R : "0"
-          },${rColor1},${rColor2},${rColor3},0,${
+            },${rColor1},${rColor2},${rColor3},0,${
             this.props.blinkerValue.R ? this.props.blinkerValue.R : "0"
-          },0,0`,
+            },0,0`,
           smoke: this.state.checkSmoke === true ? "1" : "0", //L
           smoke: this.state.checkSmoke === true ? "1" : "0", //L
         };
@@ -232,7 +219,7 @@ class CreateCor extends Component {
               <React.Fragment>
                 <div id="one" onKeyPress={this.handleKeyPress} />
                 <AppBarSettings />
-                <Card style={{height: "100%"}}>
+                <Card style={{ height: "100%" }}>
                   <CardContent>
                     {this.props.songCor.length !== 0 && (
                       <Grid container spacing={0}>
@@ -242,15 +229,23 @@ class CreateCor extends Component {
                             classes={classes}
                           />
                         </Grid>
-                        <Grid item xs={1} >
-                          <MiniCorGroup/>
-                          </Grid>
+                        <Grid item xs={2} >
+                          <MiniCorGroup />
+                        </Grid>
                         <RobotOptions robot={"L"} />
                         <RobotOptions robot={"R"} />
-                        <Smoke />
+                        <Grid item xs={1} />
+                        <Grid item xs={5} />
+                        <Grid item xs={4}>
+                          <SmokeStatus />
+                        </Grid>
+                        <Grid item xs={1}>
+                          <Smoke />
+                        </Grid>
+                        <Grid item xs={2} />
+
                       </Grid>
                     )}
-                    
                   </CardContent>
                 </Card>
               </React.Fragment>

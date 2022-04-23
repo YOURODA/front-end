@@ -35,10 +35,10 @@ function CreateUserPopUp(props) {
 
     return (
         <div>
-            <DialogTitle id="form-dialog-title">CREATE COREOGRAPHY</DialogTitle>
+            <DialogTitle id="form-dialog-title">CREATE CHOREOGRAPHY</DialogTitle>
             <DialogContent>
                 <DialogContentText>
-                    Please give a name for your coreography.
+                    Please give a name for your choreography.
                 </DialogContentText>
                 <TextField onChange={e => getCoreographyName(e)}
                     id="standard-search"

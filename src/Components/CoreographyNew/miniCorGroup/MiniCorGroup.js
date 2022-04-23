@@ -19,6 +19,7 @@ import {
   FormControlLabel,
   Switch,
   Grid,
+  ListItem,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { regulatorCorLoop } from "../../../utils";
@@ -181,16 +182,16 @@ export const MiniCorGroup = ({
     });
     setSongCor([...newSongCor]);
   };
-  
+
   useEffect(() => {
     const newPushCor = [...pushCor];
-  
+
     let newStart = parseInt(textInput);
     console.log(newStart);
-    console.log("2",(typeof newStart === "number" && newStart % 2 === 0));
-    if( typeof newStart === "number" && newStart % 2 === 0  && 0 < newStart < songcorlength - minicorLength ){
+    console.log("2", (typeof newStart === "number" && newStart % 2 === 0));
+    if (typeof newStart === "number" && newStart % 2 === 0 && 0 < newStart < songcorlength - minicorLength) {
       console.log("ife girdi");
-      if(newStart % 2 !== 0 ){
+      if (newStart % 2 !== 0) {
         newStart = newStart - 1;
       }
       if (0 < newStart < songcorlength - minicorLength) {
@@ -203,7 +204,7 @@ export const MiniCorGroup = ({
       setPushCor(newPushCor);
     }
   }, [textInput]);
-  
+
 
   const TextInputSecond = (event) => {
     const newPushCor = [...pushCor];
@@ -235,12 +236,12 @@ export const MiniCorGroup = ({
 
   return (
     <div className={classes.root}>
-      <Grid container spacing={3}>
+      <Grid>
         <Paper style={{ paddingLeft: "12%", maxHeight: windowSize.height - 480, maxWidth: windowSize.width - 700, overflow: "auto" }}>
           <Grid item xs={6}>
             {corLoop.map((loop, index) => {
               return (
-                <Button
+                <ListItem
                   onClick={() => {
                     setSelectCorMini({ loop, index });
                     setIsOpenDialog(true);
@@ -248,7 +249,7 @@ export const MiniCorGroup = ({
                   variant="outlined"
                 >
                   {loop.name}
-                </Button>
+                </ListItem>
               );
             })}
           </Grid>
@@ -274,7 +275,7 @@ export const MiniCorGroup = ({
             type="email"
             name="startTime"
             fullWidth
-            onChange={(event)=>setTextInput(event.target.value)}
+            onChange={(event) => setTextInput(event.target.value)}
             id="formatted-numberformat-input"
             InputProps={{
               inputComponent: NumberFormatCustom,

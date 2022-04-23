@@ -36,12 +36,12 @@ const AllChoreographiesTable = ({
   const [getLocalDbEditCor, setLocalDbEditCor] = useLocalStorage(
     "editCorId",
     ""
-    );
+  );
   const apiService = new APIServices();
   const history = useHistory();
 
   useEffect(() => {
-    console.log("popUpAll",popUpAll)
+    console.log("popUpAll", popUpAll)
     setLoading(true)
     switch (popUpAll) {
       case "All":
@@ -116,43 +116,43 @@ const AllChoreographiesTable = ({
               },
               popUpAll === "My"
                 ? {
-                    title: "Share",
-                    field: "isShared",
-                    render: (rowData) => {
-                      console.log(rowData);
-                      if (!rowData.isShared && rowData._id) {
-                        return (
-                          <IconButton
-                            color="primary"
-                            aria-label="upload picture"
-                            component="span"
-                          >
-                            <Edit
-                              onClick={(e) => {
-                                setLocalDbEditCor(rowData._id);
-                                goToEditPage();
-                              }}
-                            />
-                          </IconButton>
-                        );
-                      }
-                      return <Check />;
-                    },
-                  }
-                : {
-                    title: "Rating",
-                    field: "rating",
-                    render: (rowData) => {
-                      console.log(rowData);
-                      return <RatingCor rowData={rowData} />;
-                    },
+                  title: "Share",
+                  field: "isShared",
+                  render: (rowData) => {
+                    console.log(rowData);
+                    if (!rowData.isShared && rowData._id) {
+                      return (
+                        <IconButton
+                          color="primary"
+                          aria-label="upload picture"
+                          component="span"
+                        >
+                          <Edit
+                            onClick={(e) => {
+                              setLocalDbEditCor(rowData._id);
+                              goToEditPage();
+                            }}
+                          />
+                        </IconButton>
+                      );
+                    }
+                    return <Check />;
                   },
+                }
+                : {
+                  title: "Rating",
+                  field: "rating",
+                  render: (rowData) => {
+                    console.log(rowData);
+                    return <RatingCor rowData={rowData} />;
+                  },
+                },
             ]}
             data={getAllCorData}
             actions={[
               {
                 icon: () => <PlayArrowIcon />,
-                tooltip: "Play Careografy",
+                // tooltip: "Play Choreography",
                 onClick: (event, rowData) => {
                   setSelectTrackId(rowData.trackId);
                   setSelectedDevicePopUp(true);
@@ -171,11 +171,11 @@ const AllChoreographiesTable = ({
             }}
             isLoading={loading}
             components={{
-              OverlayLoading: () =>(<div style={{paddingTop:"50%"}}>
-              <Skeleton animation="wave" />
-              <Skeleton animation="wave" />
-              <Skeleton animation="wave" />
-              </div> )
+              OverlayLoading: () => (<div style={{ paddingTop: "50%" }}>
+                <Skeleton animation="wave" />
+                <Skeleton animation="wave" />
+                <Skeleton animation="wave" />
+              </div>)
             }}
           />
         </Card>

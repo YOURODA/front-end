@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import * as actionTypes from "../../store/actions/actionTypes";
-import { makeStyles } from "@material-ui/styles";
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import socketIo from "socket.io-client";
@@ -21,7 +21,7 @@ import SpotifyFooterMakeCor from "../../Containers/SpotifyFooter/SpotifyFooterMa
 import CreateUserPopUp from "../CoreographyNew/CreateUserPopUp";
 import EditCorLocalStorage from "../Control/EditCorLocalStorage";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = createTheme((theme) => ({
   button: {
     margin: theme.spacing(1),
   },
@@ -39,7 +39,6 @@ export const EditorNew = (props) => {
     createUserPopUp,
     currentUser,
   } = props;
-  const classes = useStyles();
   const [goCoreography, setGoCoreography] = useState(false);
   const [odaNick, setOdaNick] = useState(null);
   const [continueCor, setContinueCor] = useState(false);
@@ -67,7 +66,7 @@ export const EditorNew = (props) => {
   let interval;
   let timeOfSum;
   let odaName;
-  const socketio_url = "http://localhost:5000/";
+  const socketio_url = "http://localhost:5001/";
   // const socketio_url = "https://your-oda-back-end.herokuapp.com/";
   useEffect(() => {
     if (currentUser && currentUser.email) {
@@ -147,11 +146,11 @@ export const EditorNew = (props) => {
       )}
       {goCoreography === true && durationStamps > 0 && (
         <Grid item lg={12} md={12} xl={12} xs={12}>
-          {!continueCor && 
-          // currentUser && currentUser.email &&
-           (
-            <EditCorLocalStorage setContinueCor={(e) => setContinueCor(e)} />
-          )}
+          {!continueCor &&
+            // currentUser && currentUser.email &&
+            (
+              <EditCorLocalStorage setContinueCor={(e) => setContinueCor(e)} />
+            )}
           <CreateCor />
         </Grid>
       )}
