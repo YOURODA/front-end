@@ -331,6 +331,37 @@ class APIServices {
     };
     return await axios(serviceData);
   }
+  async createNewList({name,corId}) {
+    let data = {
+      name,
+      corId
+    }
+    console.log('token', token)
+    const serviceData = {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}` },
+      url: userApiService + '/choreographyList/create',
+      data,
+    };
+    return await axios(serviceData);
+  }
+  async getUserCorListAll({name,corId}) {
+    const serviceData = {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}` },
+      url: userApiService + '/choreographyList/all',
+    };
+    return await axios(serviceData);
+  }
+  async addNewSongToList({newSong, corListId}){
+    const serviceData ={
+      headers: { Authorization: `Bearer ${token}` },method:'POST',
+      url: userApiService + '/choreographyList/addNewSong',
+      data:{newSong, corListId}
+    }
+    return await axios(serviceData);
+  }
+
 }
 
 export default APIServices;

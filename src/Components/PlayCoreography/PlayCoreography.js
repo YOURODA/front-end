@@ -16,6 +16,8 @@ import HitCoreographiesSelect from "./HitCoreographies/HitCoreographiesSelect";
 import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 import AllChoreographiesTable from "./PlayChoreographiesTable"
+import APIService from "../Services/APIServices";
+import ListTab from "./ListTab/ListTab"
 
 const theme = createMuiTheme({
   palette: {
@@ -84,6 +86,19 @@ class PlayCoreography extends Component {
     _socket.emit("Odaya Katil", this.odaName);
     this.props.setScoketIO(_socket);
     console.log("odaname", this.odaName);
+    const apiServices = new APIService();
+
+    apiServices
+    .getUserCorListAll({})
+    .then((response) => {
+      if (response.status === 200) {
+        console.log("Create New List", response.data);
+        this.props.setList(response.data)
+      }
+    })
+    .catch((err) => {
+      console.log("sentReviews Err", err);
+    });  
   }
 
   componentWillUnmount() {
@@ -91,28 +106,12 @@ class PlayCoreography extends Component {
   }
 
   render() {
-    const { userId } = this.props;
+    // const { userId } = this.props;
     return (
       <div>
         <Grid container >
-          {/* <Grid item lg={12} sm={12} xl={12} xs={12} />
-            <Grid item lg={12} sm={12} xl={12} xs={12} />
-            <Grid item lg={12} sm={12} xl={12} xs={12} />
-            <Grid item lg={2} sm={2} xl={2} xs={2} /> */}
-          <Grid item lg={3} sm={3} xl={3} xs={3}>
-            <AllCoreographiesSelect />
-          </Grid>
-          <Grid item lg={3} sm={3} xl={3} xs={3}>
-            <MyCoreographiesSelect />
-          </Grid>
-          <Grid item lg={3} sm={3} xl={3} xs={3}>
-            <HitCoreographiesSelect />
-          </Grid>
-          {/* <Grid item lg={3} sm={3} xl={3} xs={3} /> */}
           <Grid item xs={6} md={8}>
-            <AllChoreographiesTable popUpAll={"All"} />
-
-            {/* <Item>xs=6 md=8</Item> */}
+            <ListTab/>
           </Grid>
           <Grid item xs={6} md={4}>
             <Item>My list</Item>
@@ -135,7 +134,8 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({ type: actionTypes.SMOKE_TEMPERATURE, smokeTemperature }),
     setScoketIO: (socket) => dispatch({ type: actionTypes.SOCKET, socket }),
     setOnCloseCsvData: (onCloseCsvData) =>
-      dispatch({ type: actionTypes.ON_CLOSE_CSV_DATA, onCloseCsvData }),
+    dispatch({ type: actionTypes.ON_CLOSE_CSV_DATA, onCloseCsvData }),
+    setList: (list) => dispatch({ type: actionTypes.SET_LIST, list }),
   };
 };
 

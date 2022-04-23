@@ -18,6 +18,10 @@ import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import useLocalStorage from "../../../hooks/useLocalStorage";
 import RatingCor from "../../RatingCor"
 import Skeleton from '@mui/material/Skeleton';
+import MenuIcon from '@mui/icons-material/Menu';
+import CorSettingsMenu from "../CorSettingsMenu/CorSettingsMenu";
+import LinearProgress from '@mui/material/LinearProgress';
+// import {Button,IconButton } from "@mui/material";
 
 const AllChoreographiesTable = ({
   setIsReturnMusic,
@@ -54,11 +58,13 @@ const AllChoreographiesTable = ({
         break;
       case "My":
         apiService.getMyCoreographies(userId).then((response) => {
+          setLoading(false)
           setAllCorData(getCore(response.data.cor));
         });
         break;
       case "Hit":
         apiService.getHitsCoreographies().then((response) => {
+          setLoading(false)
           setAllCorData(getCore(response.data.cor));
         });
         break;
@@ -93,14 +99,19 @@ const AllChoreographiesTable = ({
     setIsReturnMusic(id);
   };
 
+  if (loading) {
+    return (
+      <div style={{ height: "100%", width: "100%", paddingTop: "50%", paddingBottom: "50%" }}>
+        <LinearProgress color="success" />
+        <LinearProgress color="success" />
+        <LinearProgress color="success" />
+      </div>
+    )
+  }
+
   return (
     <div>
-      {selectedDevicePopUp && (
-        <SelectedDevicePopUp
-          send={(id) => goParty(id)}
-          onClose={closeSelectDevicePopUp}
-        />
-      )}
+
 
       <Grid item lg={12} md={12} xl={12} xs={12}>
         <Card>
@@ -143,10 +154,16 @@ const AllChoreographiesTable = ({
                   title: "Rating",
                   field: "rating",
                   render: (rowData) => {
-                    console.log(rowData);
                     return <RatingCor rowData={rowData} />;
                   },
                 },
+              {
+                title: "Settings",
+                field: "rating",
+                render: (rowData) => {
+                  return <CorSettingsMenu rowData={rowData} />;
+                },
+              }
             ]}
             data={getAllCorData}
             actions={[
@@ -168,14 +185,6 @@ const AllChoreographiesTable = ({
               exportButton: false,
               exportFileName: "Rapor",
               headerStyle: { backgroundColor: "#EAEDED" },
-            }}
-            isLoading={loading}
-            components={{
-              OverlayLoading: () => (<div style={{ paddingTop: "50%" }}>
-                <Skeleton animation="wave" />
-                <Skeleton animation="wave" />
-                <Skeleton animation="wave" />
-              </div>)
             }}
           />
         </Card>
