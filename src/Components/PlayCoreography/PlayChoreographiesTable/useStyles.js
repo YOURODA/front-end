@@ -19,10 +19,10 @@ export const useStyles = (theme) => ({
     color: "#FF935C",
   },
   formControl: {
-    marginTop: theme.spacing(2),
+    // marginTop: theme.spacing(2),
     minWidth: 550,
   },
   formControlLabel: {
-    marginTop: theme.spacing(1),
+    // marginTop: theme.spacing(1),
   },
 });
