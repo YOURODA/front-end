@@ -6,7 +6,6 @@ export const TrackDetailsLink = styled(Link)`
     transition: color 0.2s linear;
     text-decoration: none;
     &:hover {
-        border-bottom: 1px solid #fff;
-        color: #fff;
+        border-bottom: 1px solid #001e3c;
     }
 `;

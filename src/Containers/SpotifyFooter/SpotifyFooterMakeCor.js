@@ -32,34 +32,34 @@ class SpotifyFooterMakeCor extends Component {
 
     componentDidMount() {
         let params = this.getHashParams();
-        if (!this.props.user) {
-            if ('access_token' in params) {
-                axios
-                    .get('https://api.spotify.com/v1/me', {
-                        headers: {
-                            Authorization: `Bearer ${params.access_token}`
-                        }
-                    })
-                    .then(res => {
-                        let newUser = {
-                            access_token: params.access_token,
-                            displayName: res.data.display_name,
-                            email: res.data.email,
-                            id: res.data.id,
-                            type: res.type,
-                            country: res.country
-                        };
-                        this.logInUserAndGetInfo(newUser);
-                        this.props.fetchRecentlyPlayed({ limit: 12 });
-                    })
-                    .catch(err => console.log(err));
-            } else {
-                // return <Link to={'https://accounts.spotify.com/authorize?client_id=' + '8c8d6401e5c24c5585d2e89e93804cd1' + '&redirect_uri=' + 'http://localhost:3000/party-selection' + '&scope=' +
-                //   'streaming user-read-email' + '&response_type=token'} />
-                window.location.replace('https://accounts.spotify.com/authorize?client_id=' + '8c8d6401e5c24c5585d2e89e93804cd1' + '&redirect_uri=' + 'http://localhost:3000/make-coreography' + '&scope=' +
-                    'streaming user-read-email user-read-playback-state' + '&response_type=token')
-            }
+        // if (!this.props.user) {
+        if ('access_token' in params) {
+            axios
+                .get('https://api.spotify.com/v1/me', {
+                    headers: {
+                        Authorization: `Bearer ${params.access_token}`
+                    }
+                })
+                .then(res => {
+                    let newUser = {
+                        access_token: params.access_token,
+                        displayName: res.data.display_name,
+                        email: res.data.email,
+                        id: res.data.id,
+                        type: res.type,
+                        country: res.country
+                    };
+                    this.logInUserAndGetInfo(newUser);
+                    this.props.fetchRecentlyPlayed({ limit: 12 });
+                })
+                .catch(err => console.log(err));
+        } else {
+            // return <Link to={'https://accounts.spotify.com/authorize?client_id=' + '8c8d6401e5c24c5585d2e89e93804cd1' + '&redirect_uri=' + 'http://localhost:3000/party-selection' + '&scope=' +
+            //   'streaming user-read-email' + '&response_type=token'} />
+            window.location.replace('https://accounts.spotify.com/authorize?client_id=' + '8c8d6401e5c24c5585d2e89e93804cd1' + '&redirect_uri=' + 'http://localhost:3000/make-coreography' + '&scope=' +
+                'streaming user-read-email user-read-playback-state' + '&response_type=token')
         }
+        // }
     }
 
     logInUserAndGetInfo = newUser => {

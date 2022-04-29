@@ -206,7 +206,7 @@ class CreateCor extends Component {
     } = this.state;
     // this.tryFunction({ keyCode: 84 });
     return (
-      <Grid container >
+      <Grid container style={{ backgroundColor: '#001e3c' }} >
         {selectedDevicePopUp && (
           <SelectedDevicePopUp
             send={(id) => this.goParty(id)}
@@ -217,37 +217,36 @@ class CreateCor extends Component {
           <>
             {checkedMultiple && (
               <React.Fragment>
-                <div id="one" onKeyPress={this.handleKeyPress} />
                 <AppBarSettings />
-                <Card style={{ height: "100%" }}>
-                  <CardContent>
-                    {this.props.songCor.length !== 0 && (
-                      <Grid container spacing={0}>
-                        <Grid item xs={3}>
-                          <ListOfSeconds
-                            clearSecondList={clearSecondList}
-                            classes={classes}
-                          />
-                        </Grid>
-                        <Grid item xs={2} >
-                          <MiniCorGroup />
-                        </Grid>
-                        <RobotOptions robot={"L"} />
-                        <RobotOptions robot={"R"} />
-                        <Grid item xs={1} />
-                        <Grid item xs={5} />
-                        <Grid item xs={4}>
-                          <SmokeStatus />
-                        </Grid>
-                        <Grid item xs={1}>
-                          <Smoke />
-                        </Grid>
-                        <Grid item xs={2} />
+                {/* <Card style={{ height: "100%", backgroundColor: '#001e3c' }}>
+                  <CardContent> */}
+                {this.props.songCor.length !== 0 && (
+                  <Grid container spacing={0}>
+                    <Grid item xs={3}>
+                      <ListOfSeconds
+                        clearSecondList={clearSecondList}
+                        classes={classes}
+                      />
+                    </Grid>
+                    <Grid item xs={2} >
+                      <MiniCorGroup />
+                    </Grid>
+                    <RobotOptions robot={"L"} />
+                    <RobotOptions robot={"R"} />
+                    <Grid item xs={1} />
+                    <Grid item xs={5} />
+                    <Grid item xs={4}>
+                      <SmokeStatus />
+                    </Grid>
+                    <Grid item xs={1}>
+                      <Smoke />
+                    </Grid>
+                    <Grid item xs={2} />
 
-                      </Grid>
-                    )}
-                  </CardContent>
-                </Card>
+                  </Grid>
+                )}
+                {/* </CardContent>
+                </Card> */}
               </React.Fragment>
             )}
           </>

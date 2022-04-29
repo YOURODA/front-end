@@ -6,7 +6,6 @@ import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import socketIo from "socket.io-client";
 import CreateCor from "../CoreographyNew/CreateCor";
-import Box from "@material-ui/core/Box";
 import APIServices from "../Services/APIServices";
 import {
   Typography,
@@ -18,7 +17,6 @@ import {
 } from "@material-ui/core";
 import { Local_API, Prod_API } from '../Config/Env'
 import SpotifyFooterMakeCor from "../../Containers/SpotifyFooter/SpotifyFooterMakeCor";
-import CreateUserPopUp from "../CoreographyNew/CreateUserPopUp";
 import EditCorLocalStorage from "../Control/EditCorLocalStorage";
 
 const useStyles = createTheme((theme) => ({
@@ -104,12 +102,7 @@ export const EditorNew = (props) => {
   return (
     <Grid>
       {goCoreography === false && (
-        <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          minHeight="100vh"
-        >
+        <>
           {!isUserAvailable && (
             <Card>
               <CardHeader>
@@ -141,11 +134,10 @@ export const EditorNew = (props) => {
               </CardActions>
             </Card>
           )}
-          {createUserPopUp && <CreateUserPopUp />}
-        </Box>
+        </>
       )}
       {goCoreography === true && durationStamps > 0 && (
-        <Grid item lg={12} md={12} xl={12} xs={12}>
+        <Grid item lg={12} md={12} xl={12} xs={12} style={{ backgroundColor: '#001e3c', height: '100vh' }}>
           {!continueCor &&
             // currentUser && currentUser.email &&
             (
@@ -154,14 +146,12 @@ export const EditorNew = (props) => {
           <CreateCor />
         </Grid>
       )}
-      <Grid item lg={12} md={12} xl={12} xs={12}>
-        <SpotifyFooterMakeCor
-          style={{
-            fontFamily:
-              "spotify-circular,Helvetica Neue,Helvetica,Arial,Hiragino Kaku Gothic Pro,Meiryo,MS Gothic,sans-serif",
-          }}
-        ></SpotifyFooterMakeCor>
-      </Grid>
+      <SpotifyFooterMakeCor
+        style={{
+          fontFamily:
+            "spotify-circular,Helvetica Neue,Helvetica,Arial,Hiragino Kaku Gothic Pro,Meiryo,MS Gothic,sans-serif",
+        }}
+      ></SpotifyFooterMakeCor>
     </Grid>
   );
 };

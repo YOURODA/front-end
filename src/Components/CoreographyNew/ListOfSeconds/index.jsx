@@ -74,7 +74,7 @@ const ListOfSeconds = ({
 
   return (
     <Grid item lg={12} md={12} xl={12} xs={12}>
-      <Paper style={{ maxHeight: windowSize.height - 340, overflow: "auto" }}>
+      <Paper style={{ maxHeight: windowSize.height - 340, overflow: "auto", backgroundColor: '#001e3c' }}>
         <List>
           {clearSecondList &&
             Array.isArray(clearSecondList) &&
@@ -125,7 +125,7 @@ const ListOfSeconds = ({
           <DialogTitle id="form-dialog-title">Save Selected</DialogTitle>
           <DialogContent>
             <DialogContentText>
-             Give a name to moves from selected seconds to other seconds.
+              Give a name to moves from selected seconds to other seconds.
             </DialogContentText>
             <TextField
               autoFocus

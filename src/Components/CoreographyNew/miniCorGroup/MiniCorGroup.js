@@ -237,11 +237,12 @@ export const MiniCorGroup = ({
   return (
     <div className={classes.root}>
       <Grid>
-        <Paper style={{ paddingLeft: "12%", maxHeight: windowSize.height - 480, maxWidth: windowSize.width - 700, overflow: "auto" }}>
-          <Grid item xs={6}>
+        <Paper style={{ paddingLeft: "12%", maxHeight: windowSize.height - 480, maxWidth: windowSize.width - 700, overflow: "auto", backgroundColor: '#001e3c' }}>
+          <Grid item xs={6} >
             {corLoop.map((loop, index) => {
               return (
-                <ListItem
+                <ListItem style={{ backgroundColor: '#001e3c' }
+                }
                   onClick={() => {
                     setSelectCorMini({ loop, index });
                     setIsOpenDialog(true);
@@ -301,7 +302,7 @@ export const MiniCorGroup = ({
         </DialogActions>
       </Dialog>
       {isConsoleActive && <Controller />}
-    </div>
+    </div >
   );
 };
 

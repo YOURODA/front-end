@@ -115,7 +115,7 @@ class MusicPlayer extends Component {
 
     this.player.on('ready', (data) => {
       let { device_id } = data;
-      console.log("device_id",device_id)
+      console.log("device_id", device_id)
       // await this.setState({ deviceId: device_id });
       this.setState({ deviceId: device_id }, () => {
         this.transferPlaybackHere();
@@ -261,6 +261,7 @@ class MusicPlayer extends Component {
           bottom: 0,
           width: '100%',
           height: 100,
+          backgroundColor: '#001e3c'
         }}
       >
         <Typography
@@ -284,7 +285,7 @@ class MusicPlayer extends Component {
 
     if (this.player && this.state.playingInfo) {
       mainContent = (
-        <Card style={{ position: 'fixed', bottom: 0, width: '100%' }}>
+        <Card style={{ position: 'fixed', bottom: 0, width: '100%', backgroundColor: '#001e3c' }}>
           <Grid
             container
             justify="space-between"
@@ -297,6 +298,7 @@ class MusicPlayer extends Component {
                   display: 'flex',
                   height: '100%',
                   boxShadow: 'none',
+                  backgroundColor: '#001e3c'
                 }}
               >
                 <CardMedia
@@ -409,9 +411,7 @@ class MusicPlayer extends Component {
       );
     }
     return (
-      <div>
-        <CssBaseline>{mainContent}</CssBaseline>
-      </div>
+      <CssBaseline>{mainContent}</CssBaseline>
     );
   }
 }

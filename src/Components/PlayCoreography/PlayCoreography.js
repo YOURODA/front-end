@@ -25,7 +25,7 @@ const theme = createMuiTheme({
       light: "#757ce8",
       main: "#1db954",
       dark: "#191414",
-      contrastText: "#fff",
+      // contrastText: "#fff",
     },
     secondary: {
       light: "#ff7961",
@@ -40,7 +40,7 @@ const theme = createMuiTheme({
 });
 
 const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
+  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#001e3c",
   ...theme.typography.body2,
   padding: theme.spacing(1),
   textAlign: "center",
@@ -89,16 +89,16 @@ class PlayCoreography extends Component {
     const apiServices = new APIService();
 
     apiServices
-    .getUserCorListAll({})
-    .then((response) => {
-      if (response.status === 200) {
-        console.log("Create New List", response.data);
-        this.props.setList(response.data)
-      }
-    })
-    .catch((err) => {
-      console.log("sentReviews Err", err);
-    });  
+      .getUserCorListAll({})
+      .then((response) => {
+        if (response.status === 200) {
+          console.log("Create New List", response.data);
+          this.props.setList(response.data)
+        }
+      })
+      .catch((err) => {
+        console.log("sentReviews Err", err);
+      });
   }
 
   componentWillUnmount() {
@@ -111,7 +111,7 @@ class PlayCoreography extends Component {
       <div>
         <Grid container >
           <Grid item xs={6} md={8}>
-            <ListTab/>
+            <ListTab />
           </Grid>
           <Grid item xs={6} md={4}>
             <Item>My list</Item>
@@ -134,7 +134,7 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({ type: actionTypes.SMOKE_TEMPERATURE, smokeTemperature }),
     setScoketIO: (socket) => dispatch({ type: actionTypes.SOCKET, socket }),
     setOnCloseCsvData: (onCloseCsvData) =>
-    dispatch({ type: actionTypes.ON_CLOSE_CSV_DATA, onCloseCsvData }),
+      dispatch({ type: actionTypes.ON_CLOSE_CSV_DATA, onCloseCsvData }),
     setList: (list) => dispatch({ type: actionTypes.SET_LIST, list }),
   };
 };
