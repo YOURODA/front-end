@@ -48,6 +48,7 @@ export const CONSOLE_PRESS = "CONSOLE_PRESS";
 export const GO_TO_SECONDS = "GO_TO_SECONDS";
 export const SET_COR_INFO = "SET_COR_INFO";
 export const SET_LIST = "SET_LIST";
+export const PLAY_CHOREOGRAPH_SCREEN = "PLAY_CHOREOGRAPH_SCREEN";
 
 
 

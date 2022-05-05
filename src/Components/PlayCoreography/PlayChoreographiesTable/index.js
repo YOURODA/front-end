@@ -30,6 +30,8 @@ const AllChoreographiesTable = ({
   userId,
   durationStamps,
   socket,
+  playChoreographyScreen,
+  list
 }) => {
   const [loading, setLoading] = useState(false);
   const [getAllCorData, setAllCorData] = useState([]);
@@ -43,37 +45,47 @@ const AllChoreographiesTable = ({
     );
   const apiService = new APIServices();
   const history = useHistory();
-
+  //isYourList:false,selected:"All"
+  const {isYourList, selected}= playChoreographyScreen
   useEffect(() => {
-    console.log("popUpAll",popUpAll)
+    console.log("selected",selected)
     setLoading(true)
-    switch (popUpAll) {
-      case "All":
-        console.log("get all api");
-        apiService.getAllCoreographies().then((response) => {
-          console.log("response", response);
-          setLoading(false)
-          setAllCorData(getCore(response.data.cor));
-        });
-        break;
-      case "My":
-        apiService.getMyCoreographies(userId).then((response) => {
-          setLoading(false)
-          setAllCorData(getCore(response.data.cor));
-        });
-        break;
-      case "Hit":
-        apiService.getHitsCoreographies().then((response) => {
-          setLoading(false)
-          setAllCorData(getCore(response.data.cor));
-        });
-        break;
-      default:
+    if(!isYourList){
+      switch (selected) {
+        case "All":
+          console.log("get all api");
+          apiService.getAllCoreographies().then((response) => {
+            console.log("response", response);
+            setLoading(false)
+            setAllCorData(getCore(response.data.cor));
+          });
+          break;
+        case "My":
+          apiService.getMyCoreographies(userId).then((response) => {
+            setLoading(false)
+            setAllCorData(getCore(response.data.cor));
+          });
+          break;
+        case "Hit":
+          apiService.getHitsCoreographies().then((response) => {
+            setLoading(false)
+            setAllCorData(getCore(response.data.cor));
+          });
+          break;
+        default:
+      }
+    }else{
+      const findList= list.find(item => item.name===selected).list.map(item=>item.ChoreographyId)
+      console.log("findList",findList)
+      setLoading(false)
+      setAllCorData(getCore(findList));
     }
-  }, []);
+    
+  }, [selected]);
   const closeSelectDevicePopUp = () => {
     setSelectedDevicePopUp(false);
   };
+  console.log("getAllCorData",getAllCorData)
   const goToEditPage = useCallback(
     () => history.push("/make-coreography"),
     [history]
@@ -101,7 +113,7 @@ const AllChoreographiesTable = ({
 
   if(loading){
     return(
-      <div style={{height:"100%",width:"100%",paddingTop:"50%", paddingBottom:"50%"}}>
+      <div style={{height:"100%",width:"100%", display:"flex", flexDirection:"column"}}>
               <LinearProgress color="success" />
               <LinearProgress color="success" />
               <LinearProgress color="success" />
@@ -111,9 +123,7 @@ const AllChoreographiesTable = ({
 
   return (
     <div>
-
-
-      <Grid item lg={12} md={12} xl={12} xs={12}>
+      {/* <Grid item lg={12} md={12} xl={12} xs={12}> */}
         <Card>
           <MaterialTable
             icons={tableIcons}
@@ -125,7 +135,7 @@ const AllChoreographiesTable = ({
                 title: "Coreography Date",
                 field: "date",
               },
-              popUpAll === "My"
+              selected === "My"
                 ? {
                     title: "Share",
                     field: "isShared",
@@ -177,16 +187,16 @@ const AllChoreographiesTable = ({
               },
             ]}
             options={{
-              pageSize: 10,
-              search: false,
-              exportDelimiter: ",\t",
-              exportButton: false,
-              exportFileName: "Rapor",
-              headerStyle: { backgroundColor: "#EAEDED" },
+              // pageSize: 10,
+              // search: false
+              // exportDelimiter: ",\t",
+              // exportButton: false,
+              // exportFileName: "Rapor",
+              // headerStyle: { backgroundColor: "#EAEDED" },
             }}
           />
         </Card>
-      </Grid>
+      {/* </Grid> */}
     </div>
   );
 };
@@ -198,6 +208,8 @@ const mapStateToProps = (state) => {
     durationStamps: state.durationStamps,
     socket: state.socket,
     isReturnMusic: state.isReturnMusic,
+    playChoreographyScreen:state.playChoreographyScreen,
+    list:state.list
   };
 };
 const mapDispatchToProps = (dispatch) => {

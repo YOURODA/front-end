@@ -6,7 +6,7 @@ import * as actionTypes from "../../store/actions/actionTypes";
 
 import SpotifyFooter from "../../Containers/SpotifyFooter/SpotifyFooter";
 
-import CssBaseline from "@material-ui/core/CssBaseline/CssBaseline";
+// import CssBaseline from "@material-ui/core/CssBaseline/CssBaseline";
 
 import socketIo from "socket.io-client";
 import { Grid } from "@material-ui/core";
@@ -15,9 +15,45 @@ import MyCoreographiesSelect from "./MyCoreographies/MyCoreographiesSelect";
 import HitCoreographiesSelect from "./HitCoreographies/HitCoreographiesSelect";
 import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
-import AllChoreographiesTable from "./PlayChoreographiesTable"
+import AllChoreographiesTable from "./PlayChoreographiesTable";
 import APIService from "../Services/APIServices";
-import ListTab from "./ListTab/ListTab"
+import ListTab from "./ListTab/ListTab";
+import MyList from "./MyList";
+import CorListDrawer from "./Drawer";
+
+import Toolbar from "@mui/material/Toolbar";
+import Drawer from '@mui/material/Drawer';
+import CssBaseline from '@mui/material/CssBaseline';
+import MuiAppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+const drawerWidth = 200;
+const Main = styled("main")(({ theme }) => ({
+  flexGrow: 1,
+  padding: theme.spacing(3),
+  transition: theme.transitions.create("margin", {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+  marginLeft: 0,
+}));
+const DrawerHeader = styled("div")(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  padding: theme.spacing(0, 1),
+  // necessary for content to be below app bar
+  ...theme.mixins.toolbar,
+  justifyContent: "flex-end",
+}));
+
+const AppBar = styled(MuiAppBar)(({ theme, open }) => ({
+  width: `calc(100% - ${drawerWidth}px)`,
+  marginLeft: `${drawerWidth}px`,
+  transition: theme.transitions.create(["margin", "width"], {
+    easing: theme.transitions.easing.easeOut,
+    duration: theme.transitions.duration.enteringScreen,
+  }),
+}));
 
 const theme = createMuiTheme({
   palette: {
@@ -89,16 +125,16 @@ class PlayCoreography extends Component {
     const apiServices = new APIService();
 
     apiServices
-    .getUserCorListAll({})
-    .then((response) => {
-      if (response.status === 200) {
-        console.log("Create New List", response.data);
-        this.props.setList(response.data)
-      }
-    })
-    .catch((err) => {
-      console.log("sentReviews Err", err);
-    });  
+      .getUserCorListAll({})
+      .then((response) => {
+        if (response.status === 200) {
+          console.log("Create New List", response.data);
+          this.props.setList(response.data);
+        }
+      })
+      .catch((err) => {
+        console.log("sentReviews Err", err);
+      });
   }
 
   componentWillUnmount() {
@@ -107,17 +143,31 @@ class PlayCoreography extends Component {
 
   render() {
     // const { userId } = this.props;
+
     return (
-      <div>
-        <Grid container >
-          <Grid item xs={6} md={8}>
-            <ListTab/>
-          </Grid>
-          <Grid item xs={6} md={4}>
-            <Item>My list</Item>
-          </Grid>
-        </Grid>
-      </div>
+      <Box sx={{ display: "flex" }}>
+        <CssBaseline />
+        <AppBar position="fixed" open={true}>
+          <Toolbar>
+            <Typography variant="h6" noWrap component="div">
+              {this.props.playChoreographyScreen.selected}
+            </Typography>
+          </Toolbar>
+        </AppBar>
+        <CorListDrawer />
+        <Main>
+          <DrawerHeader />
+           <ListTab />
+          {/* <Grid container> */}
+            {/* <Grid item xs={12} md={18}> */}
+            {/* </Grid> */}
+            {/* <Grid item xs={6} md={4}> */}
+              {/* <MyList /> */}
+              {/* <Item>My list</Item> */}
+            {/* </Grid> */}
+          {/* </Grid> */}
+        </Main>
+      </Box>
     );
   }
 }
@@ -126,6 +176,7 @@ const mapStateToProps = (state) => {
   return {
     userId: state.userId,
     socket: state.socket,
+    playChoreographyScreen:state.playChoreographyScreen
   };
 };
 const mapDispatchToProps = (dispatch) => {
@@ -134,7 +185,7 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({ type: actionTypes.SMOKE_TEMPERATURE, smokeTemperature }),
     setScoketIO: (socket) => dispatch({ type: actionTypes.SOCKET, socket }),
     setOnCloseCsvData: (onCloseCsvData) =>
-    dispatch({ type: actionTypes.ON_CLOSE_CSV_DATA, onCloseCsvData }),
+      dispatch({ type: actionTypes.ON_CLOSE_CSV_DATA, onCloseCsvData }),
     setList: (list) => dispatch({ type: actionTypes.SET_LIST, list }),
   };
 };
