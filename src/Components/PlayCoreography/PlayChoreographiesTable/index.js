@@ -75,7 +75,7 @@ const AllChoreographiesTable = ({
     setSelectedDevicePopUp(false);
   };
   const goToEditPage = useCallback(
-    () => history.push("/make-coreography"),
+    () => history.push("/create-party"),
     [history]
   );
 

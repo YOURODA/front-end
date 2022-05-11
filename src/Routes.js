@@ -71,9 +71,9 @@ export const Routes = (props) => {
           <RouteWithLayout
             exact
             layout={PlayCoreography}
-            path="/play-coreography"
+            path="/go-party"
           />
-          <RouteWithLayout exact layout={Editor} path="/make-coreography" />
+          <RouteWithLayout exact layout={Editor} path="/create-party" />
         </>
       }
     </Switch>

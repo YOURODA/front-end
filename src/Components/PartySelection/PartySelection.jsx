@@ -73,10 +73,10 @@ class PartySelection extends Component {
     const { dimensions } = this.state;
     const { classes } = this.props;
     if (this.state.goPlayCoreography) {
-      window.location = "/play-coreography"
+      window.location = "/go-party"
     }
     if (this.state.makeParty) {
-      window.location = "/make-coreography"
+      window.location = "/create-party"
     }
     return (
       <div ref={el => (this.container = el)}>

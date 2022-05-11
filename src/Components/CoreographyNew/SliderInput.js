@@ -1,16 +1,26 @@
-import React, { useState, useCallback,useEffect } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import * as actionTypes from "../../store/actions/actionTypes";
 import { connect } from "react-redux";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Slider from "@material-ui/core/Slider";
 import debounce from "lodash.debounce";
 
+
+const WhiteTextTypography = withStyles({
+  root: {
+    color: "#FFFFFF"
+  }
+})(Typography);
+
 const useStyles = makeStyles(() => ({
   root: {
     width: 200,
   },
+  mark: {
+    color: "white"
+  }
 }));
 
 const marksX = [
@@ -70,7 +80,7 @@ function SliderInput(props) {
       setValueX(songCor[selectedSecond].robot[`${robot}Hor`]);
       setValueY(songCor[selectedSecond].robot[`${robot}Ver`]);
     }
-  }, [selectedSecond,selectTime,songCor])
+  }, [selectedSecond, selectTime, songCor])
 
   const debounceRedux = useCallback(
     debounce(
@@ -102,9 +112,9 @@ function SliderInput(props) {
     <div className={classes.root}>
       <Grid container spacing={2}>
         <Grid item lg={12} md={12} xl={12} xs={12}>
-          <Typography id="continuous-slider" gutterBottom>
+          <WhiteTextTypography id="continuous-slider" gutterBottom>
             {props.label}
-          </Typography>
+          </WhiteTextTypography>
           <Slider
             style={{
               height: "15em",
@@ -118,6 +128,7 @@ function SliderInput(props) {
             scale={(x) => x}
             orientation="vertical"
             value={valueY}
+            classes={{ markLabel: classes.mark }}
             onChange={(e, newValue) => {
               onChange(newValue, "Ver", setValueY);
               // setValueY(newValue);
@@ -128,7 +139,7 @@ function SliderInput(props) {
         <Grid item lg={12} md={12} xl={12} xs={12}>
           <Slider
             style={{
-              width: "20em",
+              width: "20em"
             }}
             min={0}
             max={255}
@@ -137,6 +148,7 @@ function SliderInput(props) {
             marks={marksX}
             step={1}
             value={valueX}
+            classes={{ markLabel: classes.mark }}
             scale={(x) => x}
             onChange={(e, newValue) => {
               onChange(newValue, "Hor", setValueX);

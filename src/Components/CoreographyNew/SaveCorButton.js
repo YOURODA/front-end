@@ -13,9 +13,18 @@ import {
 import { connect } from "react-redux";
 import APIService from "../Services/APIServices";
 import useLocalStorage from "../../hooks/useLocalStorage";
-// import Dialog from '@material-ui/core/Dialog';
-// import * as actionTypes from "../../store/actions/actionTypes";
+import { withStyles } from "@material-ui/core/styles";
 
+const SaveButton = withStyles({
+  root: {
+    backgroundColor: "#DE675F",
+    color: "white",
+    "&:hover": {
+      backgroundColor: "#66B2FF",
+      color: "white"
+    },
+  }
+})((props) => <Button color="default" {...props} />);
 const SaveCorButton = ({
   songCor,
   currently_playing,
@@ -65,35 +74,35 @@ const SaveCorButton = ({
       });
   };
 
-  const overwriteCor=()=>{
-    console.log("overwriteCor",songCor)
-    apiServices.overwriteCor({file:songCor,name:corSaveInfo.name,corId:corSaveInfo._id}).then((response)=>{
+  const overwriteCor = () => {
+    console.log("overwriteCor", songCor)
+    apiServices.overwriteCor({ file: songCor, name: corSaveInfo.name, corId: corSaveInfo._id }).then((response) => {
       if (response.status === 200) {
-        console.log("cor save",response);
+        console.log("cor save", response);
         setOpen(false);
       }
-    }).catch((err)=>{
-      console.log("overWriteErr",err)
+    }).catch((err) => {
+      console.log("overWriteErr", err)
     })
   }
 
   const saveDisabled = typeof corName === "string" && corName.length < 5;
   const UpdateCor = () => {
-    return(
-    <>
-      <DialogContentText>
-        Do you want to update the previously written Cor?
+    return (
+      <>
+        <DialogContentText>
+          Do you want to update the previously written Cor?
       </DialogContentText>
-      <Button onClick={overwriteCor} color="primary">
-        update
+        <Button onClick={overwriteCor} color="primary">
+          update
       </Button>
-    </>
+      </>
     )
   }
 
   return (
     <div>
-      <Button onClick={() => setOpen(true)}>Save Chr</Button>
+      <SaveButton onClick={() => setOpen(true)}>Save Chr</SaveButton>
       {open && (
         <div>
           <Dialog
@@ -126,7 +135,7 @@ const SaveCorButton = ({
                     checked={isShared}
                     color="success"
                   />
-                  Is Share
+                  Share
                 </Grid>
               </Grid>
             </DialogContent>

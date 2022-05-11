@@ -17,12 +17,18 @@ import AppBarSettings from "./miniCorGroup/AppBarSettings";
 import ListOfSeconds from "./ListOfSeconds/index";
 const useStyles = (theme) => ({
   active: {
-    backgroundColor: "#e8eaf6",
+    backgroundColor: "#66B2FF",
     height: "50px",
+    "&:hover": {
+      backgroundColor: "#66B2FF",
+    }
   },
   nonActive: {
-    backgroundColor: "#ffffff",
+    backgroundColor: "#001e3c",
     height: "50px",
+    "&:hover": {
+      backgroundColor: "#66B2FF",
+    }
   },
   listSecond: {
     height: "24pt",
@@ -204,7 +210,6 @@ class CreateCor extends Component {
       selectedDevicePopUp,
       clearSecondList,
     } = this.state;
-    // this.tryFunction({ keyCode: 84 });
     return (
       <Grid container style={{ backgroundColor: '#001e3c' }} >
         {selectedDevicePopUp && (
@@ -218,8 +223,6 @@ class CreateCor extends Component {
             {checkedMultiple && (
               <React.Fragment>
                 <AppBarSettings />
-                {/* <Card style={{ height: "100%", backgroundColor: '#001e3c' }}>
-                  <CardContent> */}
                 {this.props.songCor.length !== 0 && (
                   <Grid container spacing={0}>
                     <Grid item xs={3}>
@@ -245,8 +248,6 @@ class CreateCor extends Component {
 
                   </Grid>
                 )}
-                {/* </CardContent>
-                </Card> */}
               </React.Fragment>
             )}
           </>

@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import Button from "@material-ui/core/Button";
-import ButtonGroup from "@material-ui/core/ButtonGroup";
 import {
   List,
   Grid,
@@ -12,11 +10,40 @@ import {
   DialogContentText,
   DialogTitle,
   TextField,
+  Button
 } from "@material-ui/core";
 import * as actionTypes from "../../../store/actions/actionTypes";
 import SecondItem from "./SecondItem";
+import { withStyles } from "@material-ui/styles";
 import { tryRegulatorCorLoop } from "../../../utils";
+import Stack from '@mui/material/Stack';
 
+const useStyles = theme => ({
+  '@global': {
+    '*::-webkit-scrollbar': {
+      width: '0.4em'
+    },
+    '*::-webkit-scrollbar-track': {
+      '-webkit-box-shadow': 'inset 0 0 6px rgba(0,0,0,0.00)'
+    },
+    '*::-webkit-scrollbar-thumb': {
+      backgroundColor: '#DE675F',
+      // outline: '1px solid slategrey'
+    }
+  },
+  button: {
+    backgroundColor: "#66B2FF",
+    "&$selected": {
+      backgroundColor: "#4994DE",
+    },
+    "&:hover": {
+      backgroundColor: "#4994DE",
+    },
+    "&$selected:hover": {
+      backgroundColor: "#4994DE",
+    }
+  }
+});
 const ListOfSeconds = ({
   clearSecondList,
   classes,
@@ -91,32 +118,30 @@ const ListOfSeconds = ({
         justify="space-evenly"
         alignItems="flex-start"
       >
-        <ButtonGroup
-          variant="contained"
-          color="primary"
-          aria-label="Full-width contained primary button group"
-        >
-          {selectedSeconds &&
-            Array.isArray(selectedSeconds) &&
-            selectedSeconds.length > 0 && (
-              <div>
+        {selectedSeconds &&
+          Array.isArray(selectedSeconds) &&
+          selectedSeconds.length > 0 && (
+            <>
+              <Stack spacing={5} direction="row" style={{paddingTop:'5vh'}}>
                 <Button
-                  variant="outlined"
-                  color="primary"
-                  onClick={() => setIsOpenSavePopUp(true)}
-                >
-                  Save Selected
-                </Button>
-                <Button
-                  variant="outlined"
-                  color="primary"
+                  variant="contained"
+                  className={classes.button}
+                  // color="primary"
                   onClick={() => onClickTyr()}
                 >
                   Try Selected
                 </Button>
-              </div>
-            )}
-        </ButtonGroup>
+                <Button
+                  variant="contained"
+                  // color="primary"
+                  className={classes.button}
+                  onClick={() => setIsOpenSavePopUp(true)}
+                >
+                  Save Selected
+                </Button>
+              </Stack>
+            </>
+          )}
         <Dialog
           open={isOpenSavePopUp}
           onClose={() => setIsOpenSavePopUp(false)}
@@ -164,4 +189,4 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch({ type: actionTypes.COR_LOOP_ADD, miniCor }),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(ListOfSeconds);
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(useStyles)(ListOfSeconds));

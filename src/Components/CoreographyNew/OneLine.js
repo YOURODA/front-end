@@ -1,12 +1,18 @@
-import React, { useCallback, useState,useEffect } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import * as actionTypes from "../../store/actions/actionTypes";
 import { connect } from "react-redux";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Slider from "@material-ui/core/Slider";
 import Flare from "@material-ui/icons/Flare";
 import debounce from "lodash.debounce";
+
+const WhiteTextTypography = withStyles({
+  root: {
+    color: "#FFFFFF"
+  }
+})(Typography);
 
 const useStyles = makeStyles({
   root: {
@@ -20,20 +26,20 @@ const OneLine = (props) => {
   const [value, setValue] = React.useState(0);
   const [selectTime, setSelectTime] = useState(0);
   const debounceRedux = useCallback(
-    debounce((e, time,songCor) => updateRedux(e, time,songCor), 10),
+    debounce((e, time, songCor) => updateRedux(e, time, songCor), 10),
     []
   );
   useEffect(() => {
     if (songCor && songCor[selectedSecond] && songCor[selectedSecond].robot) {
       setValue(songCor[selectedSecond].robot[`${robot}${option}`]);
     }
-  }, [selectedSecond,selectTime,songCor])
+  }, [selectedSecond, selectTime, songCor])
 
 
 
   if (!songCor || !songCor[selectedSecond] || !songCor[selectedSecond].robot) {
     return null;
-  }  
+  }
 
 
   if (selectedSecond !== selectTime) {
@@ -41,7 +47,7 @@ const OneLine = (props) => {
     setValue(songCor[selectedSecond].robot[`${robot}${option}`]);
   }
 
-  const updateRedux = (newValue, time,songCor) => {
+  const updateRedux = (newValue, time, songCor) => {
     const newRobot = [...songCor];
     newRobot[time].robot[`${robot}${option}`] = newValue;
     setSongCor(newRobot);
@@ -54,9 +60,9 @@ const OneLine = (props) => {
 
   return (
     <div className={classes.root}>
-      <Typography id="continuous-slider" gutterBottom>
+      <WhiteTextTypography color="secondary" id="continuous-slider" gutterBottom>
         {option}
-      </Typography>
+      </WhiteTextTypography>
       <Grid container spacing={2}>
         <Grid item>
           <Flare />

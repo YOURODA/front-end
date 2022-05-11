@@ -11,7 +11,7 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import Logo from '../../images/odaLogo.png';
+import Logo from '../../images/odaLogoBlack.png';
 import OdaBox from '../../images/togetherParty.jpg';
 import { useHistory } from 'react-router-dom';
 import APIServices from "../../Components/Services/APIServices";
@@ -47,7 +47,6 @@ export function SignIn(props) {
         if (returnValue.status == 200) {
             setUser(email);
             setCreateUserPopup(true);
-
             // window.location = "/party-selection"
         }
         else {

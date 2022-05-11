@@ -13,13 +13,11 @@ import {
   DialogContentText,
   DialogTitle,
   TextField,
-  Slider,
   Tooltip,
-  FormGroup,
-  FormControlLabel,
   Switch,
   Grid,
-  ListItem,
+  Divider,
+  ListItem
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { regulatorCorLoop } from "../../../utils";
@@ -30,20 +28,20 @@ import { regulatorCorTry } from "../../../utils";
 import SaveCorButton from "../SaveCorButton";
 import Controller from "./Controller"
 
-const PurpleSwitch = withStyles({
-  switchBase: {
-    color: purple[300],
-    "&$checked": {
-      color: purple[500],
+const ListItemColor = withStyles({
+  root: {
+    backgroundColor: "#66B2FF",
+    "&$selected": {
+      backgroundColor: "#4994DE",
     },
-    "&$checked + $track": {
-      backgroundColor: purple[500],
+    "&:hover": {
+      backgroundColor: "#4994DE",
     },
-  },
-  checked: {},
-  track: {},
-})(Switch);
-
+    "&$selected:hover": {
+      backgroundColor: "#4994DE",
+    }
+  }
+})((props) => <ListItem color="default" {...props} />);
 const NumberFormatCustom = (props) => {
   const { inputRef, onChange, ...other } = props;
 
@@ -187,8 +185,6 @@ export const MiniCorGroup = ({
     const newPushCor = [...pushCor];
 
     let newStart = parseInt(textInput);
-    console.log(newStart);
-    console.log("2", (typeof newStart === "number" && newStart % 2 === 0));
     if (typeof newStart === "number" && newStart % 2 === 0 && 0 < newStart < songcorlength - minicorLength) {
       console.log("ife girdi");
       if (newStart % 2 !== 0) {
@@ -198,7 +194,6 @@ export const MiniCorGroup = ({
         newPushCor[0] = newStart;
         newPushCor[1] = newStart + minicorLength - 1;
       }
-      console.log("değiştiriyor");
       setIsApply(false);
       setTextTime(newStart);
       setPushCor(newPushCor);
@@ -235,27 +230,25 @@ export const MiniCorGroup = ({
   };
 
   return (
-    <div className={classes.root}>
-      <Grid>
-        <Paper style={{ paddingLeft: "12%", maxHeight: windowSize.height - 480, maxWidth: windowSize.width - 700, overflow: "auto", backgroundColor: '#001e3c' }}>
-          <Grid item xs={6} >
-            {corLoop.map((loop, index) => {
-              return (
-                <ListItem style={{ backgroundColor: '#001e3c' }
-                }
-                  onClick={() => {
-                    setSelectCorMini({ loop, index });
-                    setIsOpenDialog(true);
-                  }}
-                  variant="outlined"
-                >
-                  {loop.name}
-                </ListItem>
-              );
-            })}
-          </Grid>
-        </Paper>
-      </Grid>
+    <>
+      <Paper style={{ marginLeft: "8%", marginRight: "25%", marginTop: "6%", maxHeight: windowSize.height - 480, maxWidth: windowSize.width - 700, overflow: "auto", backgroundColor: '#66B2FF' }}>
+        {corLoop.map((loop, index) => {
+          return (
+            <>
+              <ListItemColor
+                onClick={() => {
+                  setSelectCorMini({ loop, index });
+                  setIsOpenDialog(true);
+                }}
+                variant="outlined"
+              >
+                {loop.name}
+              </ListItemColor>
+              <Divider />
+            </>
+          );
+        })}
+      </Paper>
       <Dialog
         open={isOpenDialog}
         onClose={() => setIsOpenDialog(false)}
@@ -302,7 +295,7 @@ export const MiniCorGroup = ({
         </DialogActions>
       </Dialog>
       {isConsoleActive && <Controller />}
-    </div >
+    </>
   );
 };
 

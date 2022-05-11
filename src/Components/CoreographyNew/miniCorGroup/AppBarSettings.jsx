@@ -9,7 +9,7 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { withStyles } from "@material-ui/core/styles";
-import { purple } from "@material-ui/core/colors";
+import { purple, red, blue } from "@material-ui/core/colors";
 import APIService from "../../Services/APIServices";
 import SaveCorButton from "../SaveCorButton"
 import Logo from '../../../images/odaLogo.png';
@@ -17,14 +17,40 @@ import './LogoSizing.css'
 import Controller from "./Controller"
 
 
-const PurpleSwitch = withStyles({
+const RedSwitch = withStyles({
   switchBase: {
-    color: purple[300],
+    color: red[300],
     "&$checked": {
-      color: purple[500],
+      color: red[500],
     },
     "&$checked + $track": {
-      backgroundColor: purple[500],
+      backgroundColor: red[500],
+    },
+  },
+  checked: {},
+  track: {},
+})(Switch);
+const LiveSwitch = withStyles({
+  switchBase: {
+    color: red[500],
+    "&$checked": {
+      color: red[300],
+    },
+    "&$checked + $track": {
+      backgroundColor: red[500],
+    },
+  },
+  checked: {},
+  track: {},
+})(Switch);
+const BlueSwitch = withStyles({
+  switchBase: {
+    color: blue[300],
+    "&$checked": {
+      color: blue[500],
+    },
+    "&$checked + $track": {
+      backgroundColor: blue[500],
     },
   },
   checked: {},
@@ -41,9 +67,10 @@ const useStyles = makeStyles((theme) => ({
       margin: theme.spacing(1),
     },
   },
-  switchStyle:{
+  switchStyle: {
     display: "flex",
-    justifyContent: "flex-end"
+    justifyContent: "flex-end",
+    color: "white"
   }
 }));
 
@@ -61,10 +88,10 @@ export const AppBarSettings = ({
 
   const SwitchGroup = () => {
     return (
-      <FormGroup row   className={classes.switchStyle} >
-                <FormControlLabel
+      <FormGroup row className={classes.switchStyle} >
+        <FormControlLabel
           control={
-            <PurpleSwitch
+            <BlueSwitch
               checked={isConsoleActive}
               onChange={() => setConsoleActive(!isConsoleActive)}
               color="primary"
@@ -74,7 +101,7 @@ export const AppBarSettings = ({
         />
         <FormControlLabel
           control={
-            <PurpleSwitch
+            <RedSwitch
               checked={isSmokeActive}
               onChange={() => setIsSmokeActive(!isSmokeActive)}
               color="secondary"
@@ -84,12 +111,12 @@ export const AppBarSettings = ({
         />
         <FormControlLabel
           control={
-            <Switch
+            <LiveSwitch
               checked={isLiveTry.status}
               onChange={() => {
                 if (!isLiveTry.status) {
                   let localOdaIp = "";
-                  let robotModel ="";
+                  let robotModel = "";
                   apiServices
                     .myOdaOnlyEmail({ email: user.email })
                     .then((response) => {
@@ -116,8 +143,8 @@ export const AppBarSettings = ({
           }
           label="Live Try"
         />
-        {isConsoleActive && <Controller/>}
-        <SaveCorButton/>
+        {isConsoleActive && <Controller />}
+        <SaveCorButton />
       </FormGroup>
     );
   };
@@ -125,11 +152,13 @@ export const AppBarSettings = ({
   return (
     <div className={classes.root}>
       <Grid container >
-      <Grid item xs={4}>
-      <img style={{height: "30px",
-    width: "auto", paddingLeft:"5%"}} src={Logo} />
-      </Grid>
-      <Grid item xs={4}/>
+        <Grid item xs={4}>
+          <img style={{
+            height: "30px",
+            width: "auto", paddingLeft: "5%"
+          }} src={Logo} onClick={() => window.location = "/party-selection"} />
+        </Grid>
+        <Grid item xs={4} />
         <Grid item xs={4}>
           <SwitchGroup />
         </Grid>

@@ -3,6 +3,7 @@ import axios from "axios";
 import { connect } from 'react-redux';
 import * as actionTypes from '../../store/actions/actionTypes';
 import CssBaseline from '@material-ui/core/CssBaseline/CssBaseline';
+import { withStyles } from "@material-ui/core/styles";
 import {
   Grid,
   Typography,
@@ -18,6 +19,25 @@ import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import Slider from '@material-ui/core/Slider';
 import { TrackDetailsLink } from '../UI/TrackDetailsLink';
 import APIServices from '../Services/APIServices';
+
+const WhiteTextTypography = withStyles({
+  root: {
+    color: "#FFFFFF"
+  }
+})(Typography);
+
+const SecondsTextTypography = withStyles({
+  root: {
+    color: "#6F7E8C"
+  }
+})(Typography);
+
+const PlayerButton = withStyles({
+  root: {
+    color: "#6F7E8C"
+  }
+})(IconButton);
+
 class MusicPlayer extends Component {
   constructor(props) {
     super(props);
@@ -54,7 +74,7 @@ class MusicPlayer extends Component {
     if (window.Spotify) {
       clearInterval(this.playerCheckInterval);
       this.player = new window.Spotify.Player({
-        name: "O'da",
+        name: "ODA",
         getOAuthToken: (cb) => {
           cb(token);
         },
@@ -264,13 +284,13 @@ class MusicPlayer extends Component {
           backgroundColor: '#001e3c'
         }}
       >
-        <Typography
+        <WhiteTextTypography
           variant="subtitle1"
           align="center"
           style={{ marginTop: 20 }}
         >
           Please select connection device of ODA in Spotify.
-        </Typography>
+        </WhiteTextTypography>
       </Card>
     );
 
@@ -322,9 +342,9 @@ class MusicPlayer extends Component {
                   }}
                 >
                   <CardContent style={{ flex: '1 0 auto' }}>
-                    <Typography variant="h5">
+                    <WhiteTextTypography variant="h5">
                       {this.state.playingInfo.track_window.current_track.name}
-                    </Typography>
+                    </WhiteTextTypography>
                     <Typography variant="subtitle1">
                       <TrackDetailsLink
                         to={
@@ -346,7 +366,7 @@ class MusicPlayer extends Component {
             </Grid>
             <Grid item xs={4}>
               <div style={{ textAlign: 'center' }}>
-                <IconButton
+                <PlayerButton
                   disabled={
                     this.state.playingInfo.track_window.previous_tracks
                       .length === 0
@@ -355,19 +375,20 @@ class MusicPlayer extends Component {
                   onClick={this.onPrevClick}
                 >
                   <SkipPreviousIcon />
-                </IconButton>
-                <IconButton aria-label="Play/Pause" onClick={this.onPlayClick}>
+                </PlayerButton>
+                <PlayerButton aria-label="Play/Pause" onClick={this.onPlayClick}>
                   {this.state.playing ? <PauseIcon /> : <PlayArrowIcon />}
-                </IconButton>
-                <IconButton
+                </PlayerButton>
+                <PlayerButton
                   disabled={
                     this.state.playingInfo.track_window.next_tracks.length === 0
                   }
                   aria-label="Next"
                   onClick={this.onNextClick}
+
                 >
                   <SkipNextIcon />
-                </IconButton>
+                </PlayerButton>
               </div>
               <Grid container>
                 <Grid
@@ -378,7 +399,7 @@ class MusicPlayer extends Component {
                     marginTop: 5,
                   }}
                 >
-                  <Typography>{this.state.positionStamp}</Typography>
+                  <SecondsTextTypography >{this.state.positionStamp}</SecondsTextTypography>
                 </Grid>
                 <Grid item xs={8}>
                   <Slider
@@ -394,7 +415,7 @@ class MusicPlayer extends Component {
                     marginTop: 5,
                   }}
                 >
-                  <Typography>{this.state.durationStamp}</Typography>
+                  <SecondsTextTypography>{this.state.durationStamp}</SecondsTextTypography>
                 </Grid>
               </Grid>
             </Grid>

@@ -23,13 +23,28 @@ import Typography from "@material-ui/core/Typography";
 
 const GreenCheckbox = withStyles({
   root: {
-    color: green[400],
+    color: "#DE675F",
     "&$checked": {
-      color: green[600],
-    },
-  },
+      color: "#DE675F",
+    }
+
+  }
 })((props) => <Checkbox color="default" {...props} />);
 
+const ListItemTextColor = withStyles({
+  root: {
+    color: "#6F7E8C",
+    "&$selected": {
+      color: "#F5F4F4",
+    },
+    "&:hover": {
+      color: "white",
+    },
+    "&$selected:hover": {
+      color: "#001e3c",
+    }
+  }
+})((props) => <ListItemText color="default" {...props} />);
 const SecondItem = ({
   value,
   index,
@@ -46,6 +61,7 @@ const SecondItem = ({
     width: 1000,
     height: 1000,
   });
+
   useEffect(() => {
     function handleResize() {
       setWindowSize({
@@ -99,17 +115,17 @@ const SecondItem = ({
   const open = Boolean(anchorEl);
   const id = open ? "simple-popper" : undefined;
 
-  const iterableCor=()=>{
-    if(index!==0){
+  const iterableCor = () => {
+    if (index !== 0) {
       const newRobot = JSON.parse(JSON.stringify(songCor));
-      newRobot[index] = JSON.parse(JSON.stringify(newRobot[index-1]))  ;
+      newRobot[index] = JSON.parse(JSON.stringify(newRobot[index - 1]));
       setSongCor(newRobot);
     }
   }
-  const reverseIterableCor =()=>{
-    if(index+1 !== songCor.length){
-      const newRobot =JSON.parse(JSON.stringify(songCor));
-      newRobot[index] = JSON.parse(JSON.stringify(newRobot[index+1]));
+  const reverseIterableCor = () => {
+    if (index + 1 !== songCor.length) {
+      const newRobot = JSON.parse(JSON.stringify(songCor));
+      newRobot[index] = JSON.parse(JSON.stringify(newRobot[index + 1]));
       setSongCor(newRobot);
     }
   }
@@ -122,7 +138,7 @@ const SecondItem = ({
     songCor[index].robot.colour.Lhex
   )
     return (
-      <div className={classes.demo}>
+      <div>
         <ListItem
           key={value}
           role={undefined}
@@ -134,12 +150,12 @@ const SecondItem = ({
             selectedSecond === value ? classes.active : classes.nonActive
           }
         >
-          <Grid container className={classes.listSecond}>
-            <ListItemText primary={`${value * 2} - ${value * 2 + 2}`} />
-            {windowSize.width > 1140 && <ListItemText  />}
+          <Grid container>
+            <ListItemTextColor primary={`${value * 2} - ${value * 2 + 2}`} />
+            {windowSize.width > 1140 && <ListItemTextColor />}
             <ListItemAvatar>
               <Avatar
-                onClick={()=> iterableCor()}
+                onClick={() => iterableCor()}
                 style={{
                   backgroundColor: songCor[index].robot.colour.Lhex,
                 }}
@@ -148,7 +164,7 @@ const SecondItem = ({
             </ListItemAvatar>
             <ListItemAvatar>
               <Avatar
-              onClick={()=> reverseIterableCor()}
+                onClick={() => reverseIterableCor()}
                 style={{
                   backgroundColor: songCor[index].robot.colour.Rhex,
                 }}

@@ -8,22 +8,23 @@ import { createBrowserHistory } from 'history';
 const browserHistory = createBrowserHistory();
 const theme = createTheme({
   palette: {
-    // primary: {
-    //   light: "#757ce8",
-    //   main: "#1db954",
-    //   dark: "#191414",
-    //   contrastText: "#fff"
-    // },
-    // secondary: {
-    //   light: "#ff7961",
-    //   main: "#ffffff",
-    //   dark: "#191414",
-    //   contrastText: "#000"
-    // }
-    mode: 'dark'
+    primary: {
+      light: "#757ce8",
+      main: "#1db954",
+      dark: "#191414",
+      contrastText: "#fff"
+    },
+    secondary: {
+      light: "#ff7961",
+      main: "#ffffff",
+      dark: "#191414",
+      contrastText: "#000"
+    }
   },
   typography: {
-    useNextVariants: true
+    useNextVariants: true,
+    backgroundColor: "#ffffff",
+    textColor: "#ffffff"
   }
 });
 export const App = () => {

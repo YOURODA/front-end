@@ -2,6 +2,16 @@ import React from "react";
 import { connect } from "react-redux";
 import * as actionTypes from "../../store/actions/actionTypes";
 import { FormControlLabel, Checkbox, Grid } from "@material-ui/core";
+import color from "@material-ui/core/colors/amber";
+import { withStyles } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
+
+const WhiteTextTypography = withStyles({
+  root: {
+    color: "#FFFFFF"
+  }
+})(Typography);
+
 
 const Smoke = ({ songCor, selectedSecond, setSongCor }) => {
   if (!songCor || !songCor[selectedSecond]) {
@@ -25,7 +35,7 @@ const Smoke = ({ songCor, selectedSecond, setSongCor }) => {
             color="primary"
           />
         }
-        label="Smoke"
+        label={<WhiteTextTypography >Smoke</WhiteTextTypography>}
       />
     </>
   );

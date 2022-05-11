@@ -35,7 +35,7 @@ export const PartySelectionNew = () => {
                         backgroundSize: 'cover',
                         backgroundPosition: 'center',
                     }}
-                    onClick={() => window.location = "/play-coreography"}
+                    onClick={() => window.location = "/go-party"}
                 >
                 </Grid>
 
@@ -52,7 +52,7 @@ export const PartySelectionNew = () => {
                         backgroundSize: 'cover',
                         backgroundPosition: 'center',
                     }}
-                    onClick={() => window.location = "/make-coreography"}
+                    onClick={() => window.location = "/create-party"}
                 >
                 </Grid>
             </Grid>
