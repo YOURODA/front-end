@@ -75,8 +75,8 @@ const ListTab = () => {
 
   return (
     <Box sx={{ width: "100%", height: "100%" }}>
-      <Box sx={{ bgcolor: "#2e1534" }}>
-        <StyledTabs
+      {/* <Box sx={{ bgcolor: "#2e1534" }}> */}
+        {/* <StyledTabs
           value={value}
           onChange={handleChange}
           indicatorColor="secondary"
@@ -87,17 +87,17 @@ const ListTab = () => {
           <StyledTab label="All" />
           <StyledTab label="My" />
           <StyledTab label="Hit" />
-        </StyledTabs>
-        <TabPanel value={value} index={0} dir={theme.direction}>
-          <AllChoreographiesTable popUpAll={"All"} />
-        </TabPanel>
-        <TabPanel value={value} index={1} dir={theme.direction}>
-          <AllChoreographiesTable popUpAll={"My"} />
-        </TabPanel>
-        <TabPanel value={value} index={2} dir={theme.direction}>
-          <AllChoreographiesTable popUpAll={"Hit"} />
-        </TabPanel>
-      </Box>
+        </StyledTabs> */}
+        {/* <TabPanel value={value} index={0} dir={theme.direction}> */}
+          <AllChoreographiesTable />
+        {/* </TabPanel> */}
+        {/* <TabPanel value={value} index={1} dir={theme.direction}> */}
+          {/* <AllChoreographiesTable popUpAll={"My"} /> */}
+        {/* </TabPanel> */}
+        {/* <TabPanel value={value} index={2} dir={theme.direction}> */}
+          {/* <AllChoreographiesTable popUpAll={"Hit"} /> */}
+        {/* </TabPanel> */}
+      {/* </Box> */}
     </Box>
   );
 };

@@ -55,7 +55,8 @@ const initialState = {
   consolePress: [],
   goToSecond: { second: 0, isGo: false },
   corSaveInfo: { corID: "" },
-  list: []
+  list: [],
+  playChoreographyScreen: { isYourList: false, selected: "All" }
 };
 
 const reducer = (state = initialState, action) => {
@@ -283,6 +284,11 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         list: action.list
+      }
+    case actionTypes.PLAY_CHOREOGRAPH_SCREEN:
+      return {
+        ...state,
+        playChoreographyScreen: action.playChoreographyScreen
       }
     default:
       return state;

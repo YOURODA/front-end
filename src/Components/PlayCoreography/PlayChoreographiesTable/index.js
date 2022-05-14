@@ -30,6 +30,8 @@ const AllChoreographiesTable = ({
   userId,
   durationStamps,
   socket,
+  playChoreographyScreen,
+  list
 }) => {
   const [loading, setLoading] = useState(false);
   const [getAllCorData, setAllCorData] = useState([]);
@@ -43,37 +45,47 @@ const AllChoreographiesTable = ({
   );
   const apiService = new APIServices();
   const history = useHistory();
-
+  //isYourList:false,selected:"All"
+  const { isYourList, selected } = playChoreographyScreen
   useEffect(() => {
-    console.log("popUpAll", popUpAll)
+    console.log("selected", selected)
     setLoading(true)
-    switch (popUpAll) {
-      case "All":
-        console.log("get all api");
-        apiService.getAllCoreographies().then((response) => {
-          console.log("response", response);
-          setLoading(false)
-          setAllCorData(getCore(response.data.cor));
-        });
-        break;
-      case "My":
-        apiService.getMyCoreographies(userId).then((response) => {
-          setLoading(false)
-          setAllCorData(getCore(response.data.cor));
-        });
-        break;
-      case "Hit":
-        apiService.getHitsCoreographies().then((response) => {
-          setLoading(false)
-          setAllCorData(getCore(response.data.cor));
-        });
-        break;
-      default:
+    if (!isYourList) {
+      switch (selected) {
+        case "All":
+          console.log("get all api");
+          apiService.getAllCoreographies().then((response) => {
+            console.log("response", response);
+            setLoading(false)
+            setAllCorData(getCore(response.data.cor));
+          });
+          break;
+        case "My":
+          apiService.getMyCoreographies(userId).then((response) => {
+            setLoading(false)
+            setAllCorData(getCore(response.data.cor));
+          });
+          break;
+        case "Hit":
+          apiService.getHitsCoreographies().then((response) => {
+            setLoading(false)
+            setAllCorData(getCore(response.data.cor));
+          });
+          break;
+        default:
+      }
+    } else {
+      const findList = list.find(item => item.name === selected).list.map(item => item.ChoreographyId)
+      console.log("findList", findList)
+      setLoading(false)
+      setAllCorData(getCore(findList));
     }
-  }, []);
+
+  }, [selected]);
   const closeSelectDevicePopUp = () => {
     setSelectedDevicePopUp(false);
   };
+  console.log("getAllCorData", getAllCorData)
   const goToEditPage = useCallback(
     () => history.push("/create-party"),
     [history]
@@ -111,84 +123,82 @@ const AllChoreographiesTable = ({
 
   return (
     <div>
-
-
-      <Grid item lg={12} md={12} xl={12} xs={12}>
-        <Card>
-          <MaterialTable
-            icons={tableIcons}
-            title=" "
-            columns={[
-              { title: "Track Name", field: "trackName" },
-              { title: "Coreography Name", field: "name" },
-              {
-                title: "Coreography Date",
-                field: "date",
-              },
-              popUpAll === "My"
-                ? {
-                  title: "Share",
-                  field: "isShared",
-                  render: (rowData) => {
-                    console.log(rowData);
-                    if (!rowData.isShared && rowData._id) {
-                      return (
-                        <IconButton
-                          color="primary"
-                          aria-label="upload picture"
-                          component="span"
-                        >
-                          <Edit
-                            onClick={(e) => {
-                              setLocalDbEditCor(rowData._id);
-                              goToEditPage();
-                            }}
-                          />
-                        </IconButton>
-                      );
-                    }
-                    return <Check />;
-                  },
-                }
-                : {
-                  title: "Rating",
-                  field: "rating",
-                  render: (rowData) => {
-                    return <RatingCor rowData={rowData} />;
-                  },
-                },
-              {
-                title: "Settings",
-                field: "rating",
+      {/* <Grid item lg={12} md={12} xl={12} xs={12}> */}
+      <Card>
+        <MaterialTable
+          icons={tableIcons}
+          title=" "
+          columns={[
+            { title: "Track Name", field: "trackName" },
+            { title: "Coreography Name", field: "name" },
+            {
+              title: "Coreography Date",
+              field: "date",
+            },
+            selected === "My"
+              ? {
+                title: "Share",
+                field: "isShared",
                 render: (rowData) => {
-                  return <CorSettingsMenu rowData={rowData} />;
+                  console.log(rowData);
+                  if (!rowData.isShared && rowData._id) {
+                    return (
+                      <IconButton
+                        color="primary"
+                        aria-label="upload picture"
+                        component="span"
+                      >
+                        <Edit
+                          onClick={(e) => {
+                            setLocalDbEditCor(rowData._id);
+                            goToEditPage();
+                          }}
+                        />
+                      </IconButton>
+                    );
+                  }
+                  return <Check />;
                 },
               }
-            ]}
-            data={getAllCorData}
-            actions={[
-              {
-                icon: () => <PlayArrowIcon />,
-                // tooltip: "Play Choreography",
-                onClick: (event, rowData) => {
-                  setSelectTrackId(rowData.trackId);
-                  setSelectedDevicePopUp(true);
-                  setChoreograph(rowData.file);
-                  setVersion(rowData.version);
+              : {
+                title: "Rating",
+                field: "rating",
+                render: (rowData) => {
+                  return <RatingCor rowData={rowData} />;
                 },
               },
-            ]}
-            options={{
-              pageSize: 10,
-              search: false,
-              exportDelimiter: ",\t",
-              exportButton: false,
-              exportFileName: "Rapor",
-              headerStyle: { backgroundColor: "#EAEDED" },
-            }}
-          />
-        </Card>
-      </Grid>
+            {
+              title: "Settings",
+              field: "rating",
+              render: (rowData) => {
+                return <CorSettingsMenu rowData={rowData} />;
+              },
+            }
+          ]}
+          data={getAllCorData}
+          actions={[
+            {
+              icon: () => <PlayArrowIcon />,
+              // tooltip: "Play Choreography",
+              onClick: (event, rowData) => {
+                setSelectTrackId(rowData.trackId);
+                setSelectedDevicePopUp(true);
+                setChoreograph(rowData.file);
+                setVersion(rowData.version);
+              },
+            },
+          ]}
+          options={{
+            // pageSize: 10,
+            // search: false
+            // exportDelimiter: ",\t",
+            // exportButton: false,
+            // exportFileName: "Rapor",
+            // headerStyle: { backgroundColor: "#EAEDED" },
+          }}
+        />
+      </Card>
+      {/* </Grid> */}
     </div>
   );
 };
@@ -200,6 +210,8 @@ const mapStateToProps = (state) => {
     durationStamps: state.durationStamps,
     socket: state.socket,
     isReturnMusic: state.isReturnMusic,
+    playChoreographyScreen: state.playChoreographyScreen,
+    list: state.list
   };
 };
 const mapDispatchToProps = (dispatch) => {
