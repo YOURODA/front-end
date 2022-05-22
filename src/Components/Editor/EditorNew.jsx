@@ -100,6 +100,7 @@ export const EditorNew = (props) => {
     setCreateUserPopup(true);
   };
 
+  console.log("durationStamps: ", durationStamps)
   return (
     <Grid>
       {goCoreography === false && (
@@ -147,7 +148,9 @@ export const EditorNew = (props) => {
           <CreateCor />
         </Grid>
       )}
-      <GoSpotifySelection />
+      {durationStamps === '00:00' &&
+        <GoSpotifySelection />
+      }
       <SpotifyFooterMakeCor
         style={{
           fontFamily:
