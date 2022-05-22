@@ -80,6 +80,7 @@ export const AppBarSettings = ({
   setIsLiveTry,
   setIsSmokeActive,
   user,
+  isOpen
 }) => {
   const [isConsoleActive, setConsoleActive] = useState(false);
   const classes = useStyles();
@@ -159,9 +160,10 @@ export const AppBarSettings = ({
           }} src={Logo} onClick={() => window.location = "/party-selection"} />
         </Grid>
         <Grid item xs={4} />
-        <Grid item xs={4}>
-          <SwitchGroup />
-        </Grid>
+        {isOpen &&
+          <Grid item xs={4}>
+            <SwitchGroup />
+          </Grid>}
       </Grid>
     </div>
   );

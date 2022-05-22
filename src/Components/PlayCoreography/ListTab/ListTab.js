@@ -5,8 +5,10 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import AllChoreographiesTable from "../PlayChoreographiesTable";
-
+import PlayChoreographiesTable from "../PlayChoreographiesTable";
+import {
+  Grid
+} from "@material-ui/core";
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -74,9 +76,9 @@ const ListTab = () => {
   };
 
   return (
-    <Box sx={{ width: "100%", height: "100%" }}>
+    < >
       {/* <Box sx={{ bgcolor: "#2e1534" }}> */}
-        {/* <StyledTabs
+      {/* <StyledTabs
           value={value}
           onChange={handleChange}
           indicatorColor="secondary"
@@ -88,17 +90,17 @@ const ListTab = () => {
           <StyledTab label="My" />
           <StyledTab label="Hit" />
         </StyledTabs> */}
-        {/* <TabPanel value={value} index={0} dir={theme.direction}> */}
-          <AllChoreographiesTable />
-        {/* </TabPanel> */}
-        {/* <TabPanel value={value} index={1} dir={theme.direction}> */}
-          {/* <AllChoreographiesTable popUpAll={"My"} /> */}
-        {/* </TabPanel> */}
-        {/* <TabPanel value={value} index={2} dir={theme.direction}> */}
-          {/* <AllChoreographiesTable popUpAll={"Hit"} /> */}
-        {/* </TabPanel> */}
+      {/* <TabPanel value={value} index={0} dir={theme.direction}> */}
+      <PlayChoreographiesTable />
+      {/* </TabPanel> */}
+      {/* <TabPanel value={value} index={1} dir={theme.direction}> */}
+      {/* <PlayChoreographiesTable popUpAll={"My"} /> */}
+      {/* </TabPanel> */}
+      {/* <TabPanel value={value} index={2} dir={theme.direction}> */}
+      {/* <PlayChoreographiesTable popUpAll={"Hit"} /> */}
+      {/* </TabPanel> */}
       {/* </Box> */}
-    </Box>
+    </>
   );
 };
 

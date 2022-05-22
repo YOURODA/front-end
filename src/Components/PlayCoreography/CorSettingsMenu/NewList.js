@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
+import { connect } from "react-redux";
+import { withStyles } from "@material-ui/styles";
+import { useStyles } from "../PlayChoreographiesTable/useStyles";
+import * as actionTypes from "../../../store/actions/actionTypes";
 import {
   Box,
-  Rating,
-  Typography,
-  Button,
   Dialog,
   DialogActions,
   DialogContent,
@@ -11,16 +12,36 @@ import {
   DialogTitle,
   TextField,
 } from "@mui/material";
+import { Button } from "@material-ui/core"
 import SendIcon from "@mui/icons-material/Send";
 import APIService from "../../Services/APIServices";
 
-const NewList = ({open,setOpen,corId}) => {
+const PopupCreateButton = withStyles({
+  root: {
+    backgroundColor: "#001e3c",
+    color: "white",
+    width: "100%",
+    "&:hover": {
+      backgroundColor: "#66B2FF",
+      color: "white"
+    },
+  }
+})((props) => <Button  {...props} />);
+const PopupCloseButton = withStyles({
+  root: {
+    // backgroundColor: "#DE675F",
+    color: "#DE675F",
+    "&:hover": {
+      backgroundColor: "#FFFFF",
+      color: "#DE675F"
+    },
+  }
+})((props) => <Button  {...props} />);
+
+
+const NewList = ({ open, setOpen, corId, list, setList }) => {
   const [listName, setListName] = useState("");
   const apiServices = new APIService();
-
-  // const handleClickOpen = () => {
-  //   setOpen(true);
-  // };
 
   const handleClose = () => {
     setOpen(false);
@@ -30,12 +51,25 @@ const NewList = ({open,setOpen,corId}) => {
     setListName(event.target.value);
   };
 
-  const newCorList = () => {
-    console.log("send Re", { name:listName, corId });
+  useEffect(() => {
     apiServices
-      .createNewList({ name:listName, corId })
+      .getUserCorListAll()
       .then((response) => {
         if (response.status === 200) {
+          setList(response.data);
+        }
+      })
+      .catch((err) => {
+      });
+  }, [list]);
+  const newCorList = () => {
+    apiServices
+      .createNewList({ name: listName, corId })
+      .then((response) => {
+        if (response.status === 200) {
+          const listNew = [...list];
+          listNew.push(response.data);
+          setList(listNew);
           setOpen(false);
         }
       })
@@ -56,7 +90,7 @@ const NewList = ({open,setOpen,corId}) => {
         <DialogContent>
           <Box
             noValidate
-            component="form"
+            autoComplete="off"
             sx={{
               display: "flex",
               flexDirection: "column",
@@ -66,10 +100,8 @@ const NewList = ({open,setOpen,corId}) => {
             }}
           >
             <TextField
-              id="outlined-multiline-flexible"
+              id="standard-basic"
               label="List Name"
-              multiline
-              maxRows={4}
               value={listName}
               onChange={handleChange}
             />
@@ -82,22 +114,34 @@ const NewList = ({open,setOpen,corId}) => {
                 paddingTop: "15px",
               }}
             >
-              <Button
+              <PopupCreateButton
                 onClick={() => newCorList()}
-                variant="contained"
-                endIcon={<SendIcon />}
               >
                 Create
-              </Button>
+              </PopupCreateButton>
             </Box>
           </Box>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Close</Button>
+          <PopupCloseButton onClick={handleClose}>Close</PopupCloseButton>
         </DialogActions>
       </Dialog>
     </>
   );
 };
 
-export default NewList;
+const mapStateToProps = (state) => {
+  return {
+    list: state.list
+  };
+};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setList: (list) =>
+      dispatch({ type: actionTypes.SET_LIST, list }),
+  };
+};
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(useStyles)(NewList));

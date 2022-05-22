@@ -96,31 +96,31 @@ const Library = props => {
                 key={track.track.id}
                 style={
                   props.currentlyPlaying === track.track.name && props.isPlaying
-                    ? { background: "#1db954" }
+                    ? { background: "#001e3c" }
                     : null
                 }
               >
                 <ListItemIcon style={{ cursor: "pointer" }}>
                   {props.currentlyPlaying === track.track.name &&
-                  props.isPlaying ? (
-                    <PauseIcon
-                      style={{ color: "green" }}
-                      onClick={props.pauseSong}
-                    />
-                  ) : (
-                    <PlayArrowIcon
-                      onClick={() =>
-                        props.playSong(
-                          JSON.stringify({
-                            context_uri: track.track.album.uri,
-                            offset: {
-                              uri: track.track.ui
-                            }
-                          })
-                        )
-                      }
-                    />
-                  )}
+                    props.isPlaying ? (
+                      <PauseIcon
+                        style={{ color: "green" }}
+                        onClick={props.pauseSong}
+                      />
+                    ) : (
+                      <PlayArrowIcon
+                        onClick={() =>
+                          props.playSong(
+                            JSON.stringify({
+                              context_uri: track.track.album.uri,
+                              offset: {
+                                uri: track.track.ui
+                              }
+                            })
+                          )
+                        }
+                      />
+                    )}
                 </ListItemIcon>
                 <ListItemText>{track.track.name}</ListItemText>
               </ListItem>

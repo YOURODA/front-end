@@ -230,7 +230,7 @@ class APIServices {
     };
     return await axios(serviceData);
   }
-  async createCoreography(name, trackName, file, trackId, ownerId,isShared) {
+  async createCoreography(name, trackName, file, trackId, ownerId, isShared) {
     const createCorData = {
       name,
       trackName,
@@ -273,7 +273,7 @@ class APIServices {
   }
   async getMyEditingCor(corId) {
     let userIdData = {
-    corId
+      corId
     }
     const serviceData = {
       method: 'POST',
@@ -292,11 +292,11 @@ class APIServices {
     return await axios(serviceData);
   }
 
-  async overwriteCor({corId,file,name}) {
+  async overwriteCor({ corId, file, name }) {
     let userIdData = {
-    corId,
-    file,
-    name
+      corId,
+      file,
+      name
     }
     const serviceData = {
       method: 'POST',
@@ -307,7 +307,7 @@ class APIServices {
   }
 
 
-  async sendReviews({review, rating, corId}) {
+  async sendReviews({ review, rating, corId }) {
     let ratings = {
       review, rating, corId
     }
@@ -319,7 +319,7 @@ class APIServices {
     };
     return await axios(serviceData);
   }
-  async readCorReviews({corId}) {
+  async readCorReviews({ corId }) {
     let ratings = {
       corId
     }
@@ -331,12 +331,11 @@ class APIServices {
     };
     return await axios(serviceData);
   }
-  async createNewList({name,corId}) {
+  async createNewList({ name, corId }) {
     let data = {
       name,
       corId
     }
-    console.log('token', token)
     const serviceData = {
       method: 'POST',
       headers: { Authorization: `Bearer ${token}` },
@@ -345,7 +344,7 @@ class APIServices {
     };
     return await axios(serviceData);
   }
-  async getUserCorListAll({name,corId}) {
+  async getUserCorListAll() {
     const serviceData = {
       method: 'POST',
       headers: { Authorization: `Bearer ${token}` },
@@ -353,11 +352,11 @@ class APIServices {
     };
     return await axios(serviceData);
   }
-  async addNewSongToList({newSong, corListId}){
-    const serviceData ={
-      headers: { Authorization: `Bearer ${token}` },method:'POST',
+  async addNewSongToList({ newSong, corListId }) {
+    const serviceData = {
+      headers: { Authorization: `Bearer ${token}` }, method: 'POST',
       url: userApiService + '/choreographyList/addNewSong',
-      data:{newSong, corListId}
+      data: { newSong, corListId }
     }
     return await axios(serviceData);
   }

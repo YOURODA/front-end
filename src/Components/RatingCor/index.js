@@ -1,16 +1,26 @@
 import React, { useState } from "react";
-import { Box, Rating, Typography, Button,IconButton } from "@mui/material";
+import { Box, Rating, Typography, IconButton } from "@mui/material";
+import { Button } from "@material-ui/core"
 import SendRatingDialog from "./SendRatingDialog";
 import ReadRatingDialog from "./ReadRatingDialog";
-// import IconButton from '@mui/material/IconButton';
+import { withStyles } from "@material-ui/core/styles";
 
 // import Rating from '@mui/material/Rating';
 // import Typography from '@mui/material/Typography';
-
+const ReviewButton = withStyles({
+  root: {
+    backgroundColor: "#DE675F",
+    color: "white",
+    "&:hover": {
+      backgroundColor: "#66B2FF",
+      color: "white"
+    },
+  }
+})((props) => <Button color="default" {...props} />);
 const RatingCor = ({ rowData }) => {
   // console.log(first)
   const [value, setValue] = React.useState(
-    rowData?.ratings?.average ? rowData?.ratings?.average : 0
+    rowData ?.ratings ?.average ? rowData ?.ratings ?.average : 0
   );
   const [openSendDialog, setOpenSendDialog] = React.useState(false);
   const [openReadDialog, setOpenReadDialog] = React.useState(false);
@@ -26,12 +36,11 @@ const RatingCor = ({ rowData }) => {
         }}
       />
 
-      <Button
-        variant="outlined"
+      <ReviewButton
         onClick={() => setOpenReadDialog(!openReadDialog)}
       >
         Reviews
-      </Button>
+      </ReviewButton>
 
       {openSendDialog && (
         <SendRatingDialog

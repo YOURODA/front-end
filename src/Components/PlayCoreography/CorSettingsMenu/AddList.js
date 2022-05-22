@@ -1,31 +1,76 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import {
   Box,
-  Rating,
-  Typography,
-  Button,
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
-  TextField,
+  ButtonGroup,
+  Paper,
+  List
 } from "@mui/material";
-import SendIcon from "@mui/icons-material/Send";
+// import SendIcon from "@mui/icons-material/Send";
 import APIService from "../../Services/APIServices";
+import { withStyles } from "@material-ui/core/styles";
+import {
+  Button
+} from "@material-ui/core"
+import * as actionTypes from "../../../store/actions/actionTypes";
 
-const AddList = ({ open, setOpen, corId,list }) => {
+const apiService = new APIService();
+
+const ChooseList = withStyles({
+  root: {
+    backgroundColor: "#001e3c",
+    color: "white",
+    width: "100%",
+    "&:hover": {
+      backgroundColor: "#66B2FF",
+      color: "white"
+    },
+  }
+})((props) => <Button  {...props} />);
+const PopupCloseButton = withStyles({
+  root: {
+    // backgroundColor: "#DE675F",
+    color: "#DE675F",
+    "&:hover": {
+      backgroundColor: "#FFFFF",
+      color: "#DE675F"
+    },
+  }
+})((props) => <Button  {...props} />);
+const AddList = ({ open, setOpen, corId, list, setList }) => {
   const [listName, setListName] = useState("");
   const apiServices = new APIService();
-
-  // const handleClickOpen = () => {
-  //   setOpen(true);
-  // };
-  
-  const addToTheList = ({corListId}) => {
+  const [windowSize, setWindowSize] = useState({
+    width: 1000,
+    height: 1000,
+  });
+  useEffect(() => {
+    function handleResize() {
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    }
+    apiService
+      .getUserCorListAll()
+      .then((response) => {
+        if (response.status === 200) {
+          setList(response.data);
+        }
+      })
+      .catch((err) => {
+      });
+    window.addEventListener("resize", handleResize);
+    handleResize();
+    return () => window.removeEventListener("resize", handleResize);
+  }, [list]);
+  const addToTheList = ({ corListId }) => {
     apiServices
-      .addNewSongToList({newSong:corId, corListId})
+      .addNewSongToList({ newSong: corId, corListId })
       .then((response) => {
         if (response.status === 200) {
           console.log("Added", response);
@@ -36,29 +81,36 @@ const AddList = ({ open, setOpen, corId,list }) => {
         console.log("sentReviews Err", err);
       });
   };
-  
+
 
   const handleClose = () => {
     setOpen(false);
   };
 
 
-  const showListingCorList=({})=>{
-    console.log("setListingCorList",list)
-    return list.map((corList)=>{
-      return (
-        <div style={{marginBottom:"15px"}}>
+  // const showListingCorList = () => {
+  //   return list.map((corList) => {
+  //     return (
+  //       // <Box sx={{
+  //       //   display: 'flex',
+  //       //   flexDirection: 'column',
+  //       //   alignItems: 'center',
+  //       //   '& > *': {
+  //       //     m: 1,
+  //       //   },
+  //       // }}>
+  //       <ButtonGroup aria-label="text button group">
+  //         <ChooseList onClick={() => addToTheList({ corListId: corList._id })}>{corList.name}</ChooseList>
+  //       </ButtonGroup>
+  //       // </Box>
+  //     )
 
-        <Button variant="outlined" onClick={()=>addToTheList({corListId:corList._id})}>{corList.name}</Button>
-        </div>
-      )
-
-    })
-      
+  //   })
 
 
-  }
-  
+
+  // }
+
 
   return (
     <>
@@ -70,25 +122,19 @@ const AddList = ({ open, setOpen, corId,list }) => {
       >
         <DialogTitle>Select the list you want added</DialogTitle>
         <DialogContent>
-          <Box
-            noValidate
-            component="form"
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              padding: "10px",
-              maxWidth: "30%",
-              justifyContent: "space-between",
-              marginLeft:"20px",
-              // textAlign:"center"
-            }}
-          >
-            {showListingCorList({})}
-
-          </Box>
+          <Paper style={{ maxHeight: windowSize.height - 340, overflow: "auto", backgroundColor: "#001e3c" }}>
+            <List>
+              {
+                list.map((corList) => {
+                  return (
+                    <ChooseList onClick={() => addToTheList({ corListId: corList._id })}>{corList.name}</ChooseList>
+                  );
+                })}
+            </List>
+          </Paper>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Close</Button>
+          <PopupCloseButton onClick={handleClose}>Close</PopupCloseButton>
         </DialogActions>
       </Dialog>
     </>
@@ -100,6 +146,11 @@ const mapStateToProps = (state) => {
     list: state.list,
   };
 };
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setList: (list) =>
+      dispatch({ type: actionTypes.SET_LIST, list }),
+  };
+};
 
-export default connect(mapStateToProps)(AddList);
-// export default AddList;
+export default connect(mapStateToProps, mapDispatchToProps)(AddList);

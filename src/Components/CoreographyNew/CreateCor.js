@@ -222,7 +222,7 @@ class CreateCor extends Component {
           <>
             {checkedMultiple && (
               <React.Fragment>
-                <AppBarSettings />
+                <AppBarSettings isOpen={true} />
                 {this.props.songCor.length !== 0 && (
                   <Grid container spacing={0}>
                     <Grid item xs={3}>

@@ -6,7 +6,6 @@ import MaterialTable from "material-table";
 import { useStyles } from "./useStyles";
 import * as actionTypes from "../../../store/actions/actionTypes";
 import APIServices from "../../Services/APIServices";
-import SelectedDevicePopUp from "../../CoreographyNew/SelectedDevicePopUp";
 import { tableIcons } from "./tableIcons";
 import { getCore, milisToMinutesAndSeconds } from "./functions";
 import { regulatorCorLoop } from "../../../utils";
@@ -17,13 +16,8 @@ import Check from "@material-ui/icons/Check";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import useLocalStorage from "../../../hooks/useLocalStorage";
 import RatingCor from "../../RatingCor"
-import Skeleton from '@mui/material/Skeleton';
-import MenuIcon from '@mui/icons-material/Menu';
 import CorSettingsMenu from "../CorSettingsMenu/CorSettingsMenu";
-import LinearProgress from '@mui/material/LinearProgress';
-// import {Button,IconButton } from "@mui/material";
-
-const AllChoreographiesTable = ({
+const PlayChoreographiesTable = ({
   setIsReturnMusic,
   setCurrentTrackId,
   popUpAll,
@@ -31,7 +25,8 @@ const AllChoreographiesTable = ({
   durationStamps,
   socket,
   playChoreographyScreen,
-  list
+  list,
+  setList
 }) => {
   const [loading, setLoading] = useState(false);
   const [getAllCorData, setAllCorData] = useState([]);
@@ -81,11 +76,10 @@ const AllChoreographiesTable = ({
       setAllCorData(getCore(findList));
     }
 
-  }, [selected]);
+  }, [selected, list]);
   const closeSelectDevicePopUp = () => {
     setSelectedDevicePopUp(false);
   };
-  console.log("getAllCorData", getAllCorData)
   const goToEditPage = useCallback(
     () => history.push("/create-party"),
     [history]
@@ -111,28 +105,28 @@ const AllChoreographiesTable = ({
     setIsReturnMusic(id);
   };
 
-  if (loading) {
-    return (
-      <div style={{ height: "100%", width: "100%", paddingTop: "50%", paddingBottom: "50%" }}>
-        <LinearProgress color="success" />
-        <LinearProgress color="success" />
-        <LinearProgress color="success" />
-      </div>
-    )
-  }
+  // if (loading) {
+  //   return (
+  //     <div style={{ height: "100%", width: "100%", paddingTop: "50%", paddingBottom: "50%" }}>
+  //       <LinearProgress color="success" />
+  //       <LinearProgress color="success" />
+  //       <LinearProgress color="success" />
+  //     </div>
+  //   )
+  // }
 
   return (
-    <div>
-      {/* <Grid item lg={12} md={12} xl={12} xs={12}> */}
-      <Card>
+    <Grid style={{ backgroundColor: '#001e3c', paddingLeft: '20vh', minHeight: '45vw' }}>
+      <Grid item lg={12} md={12} xl={12} xs={12}>
         <MaterialTable
+          style={{ backgroundColor: "#66B2FF" }}
           icons={tableIcons}
           title=" "
           columns={[
             { title: "Track Name", field: "trackName" },
-            { title: "Coreography Name", field: "name" },
+            { title: "Choreography Name", field: "name" },
             {
-              title: "Coreography Date",
+              title: "Choreography Date",
               field: "date",
             },
             selected === "My"
@@ -189,17 +183,16 @@ const AllChoreographiesTable = ({
             },
           ]}
           options={{
-            // pageSize: 10,
+            pageSize: 8,
             // search: false
             // exportDelimiter: ",\t",
             // exportButton: false,
             // exportFileName: "Rapor",
-            // headerStyle: { backgroundColor: "#EAEDED" },
+            headerStyle: { backgroundColor: "#66B2FF" },
           }}
         />
-      </Card>
-      {/* </Grid> */}
-    </div>
+      </Grid>
+    </Grid>
   );
 };
 
@@ -223,9 +216,11 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({ type: actionTypes.IS_RETURN_MUSIC, isReturnMusic }),
     setCurrentTrackId: (currentTrackId) =>
       dispatch({ type: actionTypes.CURRENT_TRACK_ID, currentTrackId }),
+    setList: (list) =>
+      dispatch({ type: actionTypes.SET_LIST, list }),
   };
 };
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(useStyles)(AllChoreographiesTable));
+)(withStyles(useStyles)(PlayChoreographiesTable));

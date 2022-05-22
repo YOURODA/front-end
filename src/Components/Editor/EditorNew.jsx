@@ -18,6 +18,7 @@ import {
 import { Local_API, Prod_API } from '../Config/Env'
 import SpotifyFooterMakeCor from "../../Containers/SpotifyFooter/SpotifyFooterMakeCor";
 import EditCorLocalStorage from "../Control/EditCorLocalStorage";
+import GoSpotifySelection from "./GoSpotifySelection"
 
 const useStyles = createTheme((theme) => ({
   button: {
@@ -146,6 +147,7 @@ export const EditorNew = (props) => {
           <CreateCor />
         </Grid>
       )}
+      <GoSpotifySelection />
       <SpotifyFooterMakeCor
         style={{
           fontFamily:

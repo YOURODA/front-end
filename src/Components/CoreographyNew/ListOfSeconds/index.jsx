@@ -122,7 +122,7 @@ const ListOfSeconds = ({
           Array.isArray(selectedSeconds) &&
           selectedSeconds.length > 0 && (
             <>
-              <Stack spacing={5} direction="row" style={{paddingTop:'5vh'}}>
+              <Stack spacing={5} direction="row" style={{ paddingTop: '5vh' }}>
                 <Button
                   variant="contained"
                   className={classes.button}

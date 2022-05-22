@@ -115,10 +115,10 @@ class PlaylistView extends Component {
                         key={track.track.id}
                         style={
                           this.props.currentlyPlaying === track.track.name &&
-                          this.props.isPlaying
+                            this.props.isPlaying
                             ? {
-                                background: '#1db954'
-                              }
+                              background: '#001e3c'
+                            }
                             : null
                         }
                       >
@@ -128,15 +128,15 @@ class PlaylistView extends Component {
                           }}
                         >
                           {this.props.currentlyPlaying === track.track.name &&
-                          this.props.isPlaying ? (
-                            <PauseIcon onClick={this.props.pauseSong} />
-                          ) : (
-                            <PlayArrowIcon
-                              onClick={() =>
-                                this.playSongHandler(track.track, playlist)
-                              }
-                            />
-                          )}
+                            this.props.isPlaying ? (
+                              <PauseIcon onClick={this.props.pauseSong} />
+                            ) : (
+                              <PlayArrowIcon
+                                onClick={() =>
+                                  this.playSongHandler(track.track, playlist)
+                                }
+                              />
+                            )}
                         </ListItemIcon>
                         <ListItemText
                           primary={track.track.name}

@@ -46,8 +46,8 @@ export function SignIn(props) {
         returnValue = await apiService.login(email, password);
         if (returnValue.status == 200) {
             setUser(email);
-            setCreateUserPopup(true);
-            // window.location = "/party-selection"
+            // setCreateUserPopup(true);
+            window.location = "/party-selection"
         }
         else {
             setAlertMessage(returnValue.data.message);

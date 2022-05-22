@@ -10,60 +10,58 @@ import ListItemText from "@mui/material/ListItemText";
 import MailIcon from "@mui/icons-material/Mail";
 import { connect } from "react-redux";
 import * as actionTypes from "../../../store/actions/actionTypes";
-// import * as actionTypes from "../../../store/actions/actionTypes";
+// const drawerWidth = 200;
 
-const drawerWidth = 200;
 
-const DrawerHeader = styled("div")(({ theme }) => ({
-  display: "flex",
-  alignItems: "center",
-  padding: theme.spacing(0, 1),
-  // necessary for content to be below app bar
-  ...theme.mixins.toolbar,
-  justifyContent: "flex-end",
-}));
+// const DrawerHeader = styled("div")(({ theme }) => ({
+//   display: "flex",
+//   alignItems: "center",
+//   padding: theme.spacing(0, 1),
+//   // necessary for content to be below app bar
+//   ...theme.mixins.toolbar,
+//   justifyContent: "flex-end",
+// }));
 
-// isApi:true,isYourList:false,selected:"All"
-
-const CorListDrawer = ({ list ,setCorScreen}) => {
+const CorListDrawer = ({ list, setCorScreen }) => {
   const theme = useTheme();
   return (
+    // <Grid container style={{ backgroundColor: '#001e3c' }} >
     <Drawer
       sx={{
-        width: drawerWidth,
+        width: "50vh",
         flexShrink: 0,
         "& .MuiDrawer-paper": {
-          width: drawerWidth,
+          // width: "50vh",
           boxSizing: "border-box",
+          marginY: "10vh",
+          bgcolor: "#001e3c"
         },
       }}
       variant="persistent"
       anchor="left"
       open={true}
     >
-      <DrawerHeader></DrawerHeader>
-      <Divider />
       <List>
         {["All", "My", "Hit"].map((text, index) => (
-          <ListItem button key={text} onClick={() => setCorScreen({isYourList:false,selected:text})}>
-            <ListItemIcon>
+          <ListItem button key={text} onClick={() => setCorScreen({ isYourList: false, selected: text })}>
+            <ListItemIcon style={{ color: "#6F7E8C" }}>
               {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
             </ListItemIcon>
-            <ListItemText primary={text} />
+            <ListItemText style={{ color: "#6F7E8C" }} primary={text} />
           </ListItem>
         ))}
       </List>
       <Divider />
       <List>
         {list.length > 0 ? (
-          list.map((corList, index) => (
-            <ListItem button key={corList._id} onClick={()=> setCorScreen({isYourList:true,selected:corList.name})}>
-              <ListItemText primary={corList.name} />
+          list.map((corList) => (
+            <ListItem button key={corList._id} onClick={() => setCorScreen({ isYourList: true, selected: corList.name })}>
+              <ListItemText style={{ color: "#6F7E8C" }} primary={corList.name} />
             </ListItem>
           ))
         ) : (
-          <>Loading</>
-        )}
+            <>Loading</>
+          )}
       </List>
     </Drawer>
   );

@@ -9,7 +9,7 @@ import {
   DialogContent,
   DialogActions,
 } from '@material-ui/core';
-import AllChoreographiesTable from './PlayChoreographiesTable';
+import PlayChoreographiesTable from './PlayChoreographiesTable';
 const useStyles = (theme) => ({
   root: {
     flexGrow: 2,
@@ -85,7 +85,7 @@ class PlayCoreographiesPopUp extends Component {
             {popUpAll}
           </DialogTitle>
           <DialogContent>
-            <AllChoreographiesTable popUpAll={"All"} />
+            <PlayChoreographiesTable popUpAll={"All"} />
           </DialogContent>
           <DialogActions>
             <Button style={{ color: 'red' }} onClick={this.handleClose}>
