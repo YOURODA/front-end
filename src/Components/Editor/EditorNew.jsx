@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import * as actionTypes from "../../store/actions/actionTypes";
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { createTheme } from '@mui/material/styles';
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import socketIo from "socket.io-client";
 import CreateCor from "../CoreographyNew/CreateCor";
 import APIServices from "../Services/APIServices";
+import SpotifyAPIServices from "../Services/SpotifyAPIServices";
 import {
   Typography,
   CardHeader,
@@ -15,7 +16,6 @@ import {
   CardActions,
   Grid,
 } from "@material-ui/core";
-import { Local_API, Prod_API } from '../Config/Env'
 import SpotifyFooterMakeCor from "../../Containers/SpotifyFooter/SpotifyFooterMakeCor";
 import EditCorLocalStorage from "../Control/EditCorLocalStorage";
 import GoSpotifySelection from "./GoSpotifySelection"
@@ -36,13 +36,17 @@ export const EditorNew = (props) => {
     setSocketIO,
     isUserAvailable,
     createUserPopUp,
+    odaUser,
     currentUser,
+    setOdaUser,
+    currentTrackId
   } = props;
   const [goCoreography, setGoCoreography] = useState(false);
   const [odaNick, setOdaNick] = useState(null);
   const [continueCor, setContinueCor] = useState(false);
 
   const apiService = new APIServices();
+  const spotifyAPIServices = new SpotifyAPIServices();
   if (!goCoreography) {
     setGoCoreography(true);
   }
@@ -63,12 +67,13 @@ export const EditorNew = (props) => {
     });
   };
   let interval;
-  let timeOfSum;
-  let odaName;
   const socketio_url = "http://localhost:5001/";
   // const socketio_url = "https://your-oda-back-end.herokuapp.com/";
   useEffect(() => {
-    if (currentUser && currentUser.email) {
+    if (currentUser && currentUser.email && currentTrackId) {
+      spotifyAPIServices.getTracksAudioAnalysis(currentUser.access_token, currentTrackId).then((response) => {
+        console.log("getTracksAudioAnalysis", response.data)
+      });
       setInterval(() => askTemperature(), 8000);
       var connectionStrings = {
         "force new connection": true,
@@ -76,22 +81,20 @@ export const EditorNew = (props) => {
         timeout: 10000,
         transports: ["websocket"],
       };
-      odaName = { email: "eray.eroglu59@gmail.com" };
-
       let _socket = socketIo.connect(socketio_url, connectionStrings);
-      console.log("kimim ben ", currentUser.email);
-      _socket.emit("Odaya Katil", { email: currentUser.email });
+      console.log("kimim ben ", odaUser);
+      _socket.emit("Odaya Katil", { email: 'eroglueray@yahoo.com' });
       setSocketIO(_socket);
     }
     return () => {
       if (currentUser && currentUser.email) {
         clearInterval(interval);
         let _socket = socketIo.connect(socketio_url, connectionStrings);
-        _socket.emit("Odaya Katil", currentUser.email);
+        _socket.emit("Odaya Katil", { email: 'eroglueray@yahoo.com' });
         setSocketIO(_socket);
       }
     };
-  }, [currentUser]);
+  }, [currentUser, currentTrackId]);
 
   const addOdaName = (e) => {
     setOdaNick(e.target.value);
@@ -141,7 +144,7 @@ export const EditorNew = (props) => {
       {goCoreography === true && durationStamps > 0 && (
         <Grid item lg={12} md={12} xl={12} xs={12} style={{ backgroundColor: '#001e3c', height: '100vh' }}>
           {!continueCor &&
-            // currentUser && currentUser.email &&
+            // odaUser && odaUser.email &&
             (
               <EditCorLocalStorage setContinueCor={(e) => setContinueCor(e)} />
             )}
@@ -164,11 +167,13 @@ export const EditorNew = (props) => {
 const mapStateToProps = (state) => {
   return {
     durationStamps: state.durationStamps,
-    currentUser: state.current_user,
+    odaUser: state.odaUser,
     socket: state.socket,
     createUserPopUp: state.createUserPopup,
     isUserAvailable: state.isUserAvailable,
     isSmokeActive: state.isSmokeActive,
+    currentUser: state.current_user,
+    currentTrackId: state.currentTrackId,
   };
 };
 const mapDispatchToProps = (dispatch) => {
@@ -178,6 +183,8 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({ type: actionTypes.SMOKE_TEMPERATURE, smokeTemperature }),
     setCreateUserPopup: (createUserPopup) =>
       dispatch({ type: actionTypes.CREATE_USER_POPUP, createUserPopup }),
+    setOdaUser: (odaUser) =>
+      dispatch({ type: actionTypes.SET_ODAUSER, odaUser }),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(EditorNew);

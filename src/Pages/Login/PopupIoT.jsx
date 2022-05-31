@@ -6,28 +6,33 @@ import {
 import * as actionTypes from "../../store/actions/actionTypes";
 import { connect } from "react-redux";
 import APIService from '../../Components/Services/APIServices'
-import Logo from '../../images/odaLogo.png'
+import Logo from '../../images/odaLogoBlack.png'
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-
+import Stack from '@mui/material/Stack';
+import Alert from '@mui/material/Alert';
+import { useHistory } from 'react-router-dom';
 
 export const PopupIoT = (props) => {
-    const { createUserPopup, user, setCreateUserPopup } = props
+    const { createUserPopup, odaUser, setCreateUserPopup } = props
     const [open, setOpen] = useState(false);
     const [odaName, setOdaName] = useState();
     const [defaultOdaName, setDefaultOdaName] = useState('');
     const [ipList, setIpList] = useState([]);
     const [checked, setChecked] = useState([1]);
+    const [alertMessage, setAlertMessage] = useState('');
     const [newUserResponse, setNewUserResponse] = useState(false)
     const apiServices = new APIService()
+    const history = useHistory();
+
     useEffect(() => {
-        const getOda = apiServices.myOdas(user);
+        console.log("odaUser59: ", odaUser)
+        const getOda = apiServices.myOdas(odaUser);
         getOda.then(response => {
-            console.log("response.data", response.data)
+            console.log("response.data.myodas", response.data)
             if (response.data.odas) {
                 setDefaultOdaName(response.data.odas.odaName);
                 setNewUserResponse(true)
-                console.log("defaultOdaName", defaultOdaName)
             }
         })
         apiServices.loginRaspi(setIpList, ipList);
@@ -46,13 +51,18 @@ export const PopupIoT = (props) => {
 
         setChecked(newChecked);
     };
-    const sendOdaName = (raspiIp, defaultOdaName) => {
-        apiServices.recognizeRaspi(raspiIp, defaultOdaName).then(response => {
-            console.log("response", response);
-            if (response && response.status === 200) {
-                console.log("raspii", response.data)
-                window.location = "/party-selection"
+    const connectSocket = async (odaName) => {
+        history.push("/party-selection");
 
+        await apiServices.connectSocket(odaName).then(response => {
+        }).catch((err) => {
+            setAlertMessage(err.response)
+        })
+    }
+    const sendOdaName = async (raspiIp, defaultOdaName) => {
+        await apiServices.recognizeRaspi(raspiIp, defaultOdaName).then(response => {
+            if (response && response.status === 200) {
+                connectSocket(response.data);
             }
         })
     }
@@ -73,6 +83,11 @@ export const PopupIoT = (props) => {
 
     return (
         <ThemeProvider>
+            {alertMessage &&
+                <Stack sx={{ width: '100%' }} spacing={2}>
+                    <Alert variant="filled" severity="error">{alertMessage}</Alert>
+                </Stack>
+            }
             <Dialog onClose={handleClose} open={createUserPopup}>
                 <CssBaseline />
                 <DialogTitle id="form-dialog-title">ODA NICK</DialogTitle>
@@ -123,7 +138,6 @@ export const PopupIoT = (props) => {
                     <List dense sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
                         {ipList.map((value) => {
                             const labelId = `checkbox-list-secondary-label-${value}`;
-                            console.log("value", value)
                             return (
                                 <ListItem
                                     key={value}
@@ -137,7 +151,7 @@ export const PopupIoT = (props) => {
                                     }
                                     disablePadding
                                 >
-                                    <ListItemButton onClick={() => sendOdaName(value.localIp, defaultOdaName)}>
+                                    <ListItemButton onClick={() => sendOdaName(checked, defaultOdaName)}>
                                         <ListItemAvatar>
                                             <Avatar
                                                 alt={Logo}
@@ -158,7 +172,7 @@ export const PopupIoT = (props) => {
 const mapStateToProps = state => {
     return {
         createUserPopup: state.createUserPopup,
-        user: state.current_user,
+        odaUser: state.odaUser,
     };
 };
 

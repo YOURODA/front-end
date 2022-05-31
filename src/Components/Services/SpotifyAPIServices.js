@@ -15,6 +15,16 @@ class SpotifyAPI {
     };
     return await axios(serviceData);
   }
+  async getTracksAudioAnalysis(access_token, id) {
+    const serviceData = {
+      method: 'GET',
+      url: spotifyApiUrl + '/v1/audio-analysis/' + id,
+      headers: {
+        Authorization: `Bearer ${access_token}`,
+      },
+    };
+    return await axios(serviceData);
+  }
 }
 
 export default SpotifyAPI;

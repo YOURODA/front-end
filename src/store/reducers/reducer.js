@@ -56,7 +56,8 @@ const initialState = {
   goToSecond: { second: 0, isGo: false },
   corSaveInfo: { corID: "" },
   list: [],
-  playChoreographyScreen: { isYourList: false, selected: "All" }
+  playChoreographyScreen: { isYourList: false, selected: "All" },
+  odaUser: null
 };
 
 const reducer = (state = initialState, action) => {
@@ -66,6 +67,11 @@ const reducer = (state = initialState, action) => {
         ...state,
         isLoggedIn: true,
         current_user: action.user,
+      };
+    case actionTypes.SET_ODAUSER:
+      return {
+        ...state,
+        odaUser: action.odaUser,
       };
     case actionTypes.SET_RECENTLY_PLAYED:
       return {

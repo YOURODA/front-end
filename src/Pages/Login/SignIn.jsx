@@ -33,7 +33,7 @@ function Copyright(props) {
 const theme = createTheme();
 
 export function SignIn(props) {
-    const { accessToken, setRefreshToken, setCreateUserPopup, createUserPopup, setUser } = props;
+    const { accessToken, setRefreshToken, setCreateUserPopup, createUserPopup, setOdaUser, odaUser } = props;
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [alertMessage, setAlertMessage] = useState('');
@@ -45,8 +45,11 @@ export function SignIn(props) {
         e.preventDefault();
         returnValue = await apiService.login(email, password);
         if (returnValue.status == 200) {
-            setUser(email);
+            setOdaUser(email);
+            // console.log("email", email)
+            console.log("odaUser: ", odaUser)
             // setCreateUserPopup(true);
+
             window.location = "/party-selection"
         }
         else {
@@ -178,13 +181,16 @@ export function SignIn(props) {
 const mapStateToProps = state => {
     return {
         createUserPopup: state.createUserPopup,
-        user: state.current_user,
+        currentUser: state.current_user,
+        odaUser: state.odaUser
     };
 };
 const mapDispatchToProps = dispatch => {
     return {
         setCreateUserPopup: createUserPopup => dispatch({ type: actionTypes.CREATE_USER_POPUP, createUserPopup }),
-        setUser: current_user => dispatch({ type: actionTypes.SET_USER, current_user })
+        setCurrentUser: current_user => dispatch({ type: actionTypes.SET_USER, current_user }),
+        setOdaUser: odaUser => dispatch({ type: actionTypes.SET_ODAUSER, odaUser }),
+
     };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(SignIn);

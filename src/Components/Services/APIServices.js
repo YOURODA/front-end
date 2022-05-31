@@ -37,8 +37,8 @@ class APIServices {
 
     try {
       for (let i = 0; i < 256; i++) {
-        newIp = axios.get(ips + `${i}` + ':5000/local').then((response) => {
-          // ipList.push(response);
+        newIp = axios.get(ips + `${i}` + ':8080/local').then((response) => {
+          console.log("response.dataLoginRaspi:", response.data)
           let newListState = [...ipList];
           newListState.push(response.data)
           setState(newListState)
@@ -52,16 +52,16 @@ class APIServices {
     }
   }
   async recognizeRaspi(raspIp, odaName) {
-    console.log(raspIp);
-    console.log(odaName);
+    // console.log(raspIp);
+    // console.log(odaName);
     try {
       let newUserData = {
         "odaName": odaName
       }
-      console.log(newUserData)
+      // console.log(newUserData)
       const serviceData = {
         method: 'POST',
-        url: 'http://' + raspIp + ':5000/odaName',
+        url: 'http://' + raspIp[1].localIp + ':8080/odaName',
         data: newUserData,
       };
       return await axios(serviceData);
@@ -71,6 +71,23 @@ class APIServices {
     }
 
   }
+  async connectSocket(odaName) {
+    try {
+      let newUserData = {
+        "odaName": odaName
+      }
+      const serviceData = {
+        method: 'POST',
+        url: 'http://192.168.1.105:8080/connectSocket',
+        data: newUserData
+      };
+      return await axios(serviceData);
+
+    } catch (error) {
+      return error.response
+    }
+  }
+
   async register(firstName, secondName, email, password, confPassword) {
     try {
       let newUserData = {

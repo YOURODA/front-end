@@ -106,7 +106,7 @@ class PlayCoreography extends Component {
     // var socketio_url = "https://your-oda-back-end.herokuapp.com";
     // this.odaName = { name: "Corlu" };
     const socketio_url = "http://localhost:5001/";
-    this.odaName = { email: "eray.eroglu59@gmail.com" };
+    this.odaName = { email: this.props.odaUser };
     let _socket = socketIo.connect(socketio_url, connectionStrings);
     _socket.emit("Odaya Katil", this.odaName);
     this.props.setScoketIO(_socket);
@@ -153,7 +153,8 @@ const mapStateToProps = (state) => {
   return {
     userId: state.userId,
     socket: state.socket,
-    playChoreographyScreen: state.playChoreographyScreen
+    playChoreographyScreen: state.playChoreographyScreen,
+    odaUser: state.odaUser,
   };
 };
 const mapDispatchToProps = (dispatch) => {
