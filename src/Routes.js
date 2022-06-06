@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Component } from 'react'
-import { Redirect, Switch } from "react-router-dom";
+import { Redirect, Switch, useHistory } from "react-router-dom";
 import RouteWithLayout from "./Components/RouteWithLayout/RouteWithLayout";
 import Editor from "./Components/Editor/EditorNew";
 import PartySelectionNew from "./Components/PartySelection/PartySelectionNew";
@@ -10,7 +10,6 @@ import apiService from "./Components/Services/APIServices";
 import axios from 'axios';
 import jwt_decode from "jwt-decode";
 import { createBrowserHistory } from 'history';
-import { useHistory } from 'react-router-dom';
 
 
 const browserHistory = createBrowserHistory();

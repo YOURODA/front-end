@@ -2,6 +2,7 @@ import axios from "axios";
 
 export const SET_USER = "SET_USER";
 export const SET_ODAUSER = "SET_ODAUSER";
+export const SET_ODANAME = "SET_ODANAME";
 export const GET_RECENTLY_PLAYED = "GET_RECENTLY_PLAYED";
 export const SET_RECENTLY_PLAYED = "SET_RECENTLY_PLAYED";
 export const SET_PLAY_NOW = "SET_PLAY_NOW";

@@ -33,7 +33,7 @@ function Copyright(props) {
 const theme = createTheme();
 
 export function SignIn(props) {
-    const { accessToken, setRefreshToken, setCreateUserPopup, createUserPopup, setOdaUser, odaUser } = props;
+    const { setCreateUserPopup, createUserPopup, setOdaUser, odaUser } = props;
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [alertMessage, setAlertMessage] = useState('');

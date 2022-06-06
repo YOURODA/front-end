@@ -87,7 +87,7 @@ class PlayCoreography extends Component {
       setSmokeTemperature,
     } = this.props;
     // if (isSmokeActive) {
-    socket.emit("askTemperature", { isSmokeActive: false });
+    socket.emit("askTemperature", { isSmokeActive: true });
     socket.on("temperature", (data) => {
       console.log("temperature in the oda", data.temperatureToCelsius);
       setSmokeTemperature(data.temperatureToCelsius);
@@ -108,7 +108,7 @@ class PlayCoreography extends Component {
     const socketio_url = "http://localhost:5001/";
     this.odaName = { email: this.props.odaUser };
     let _socket = socketIo.connect(socketio_url, connectionStrings);
-    _socket.emit("Odaya Katil", this.odaName);
+    _socket.emit("Odaya Katil", { email: 'eroglueray@yahoo.com' });
     this.props.setScoketIO(_socket);
     console.log("odaname", this.odaName);
     const apiServices = new APIService();

@@ -11,12 +11,11 @@ import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Stack from '@mui/material/Stack';
 import Alert from '@mui/material/Alert';
-import { useHistory } from 'react-router-dom';
-
+import { useHistory, Redirect } from 'react-router-dom';
 export const PopupIoT = (props) => {
-    const { createUserPopup, odaUser, setCreateUserPopup } = props
+    const { createUserPopup, odaUser, setCreateUserPopup, odaName, setOdaName } = props
     const [open, setOpen] = useState(false);
-    const [odaName, setOdaName] = useState();
+    // const [odaName, setOdaName] = useState();
     const [defaultOdaName, setDefaultOdaName] = useState('');
     const [ipList, setIpList] = useState([]);
     const [checked, setChecked] = useState([1]);
@@ -31,6 +30,7 @@ export const PopupIoT = (props) => {
         getOda.then(response => {
             console.log("response.data.myodas", response.data)
             if (response.data.odas) {
+                setOdaName(response.data.odas.odaName)
                 setDefaultOdaName(response.data.odas.odaName);
                 setNewUserResponse(true)
             }
@@ -48,25 +48,16 @@ export const PopupIoT = (props) => {
         } else {
             newChecked.splice(currentIndex, 1);
         }
-
         setChecked(newChecked);
     };
-    const connectSocket = async (odaName) => {
-        history.push("/party-selection");
-
-        await apiServices.connectSocket(odaName).then(response => {
-        }).catch((err) => {
-            setAlertMessage(err.response)
-        })
-    }
     const sendOdaName = async (raspiIp, defaultOdaName) => {
         await apiServices.recognizeRaspi(raspiIp, defaultOdaName).then(response => {
             if (response && response.status === 200) {
-                connectSocket(response.data);
+                setOdaName(response.data)
+                window.location = "/party-selection"
             }
         })
     }
-
     const handleClose = () => {
         setOpen(false);
         setCreateUserPopup(open)
@@ -171,6 +162,7 @@ export const PopupIoT = (props) => {
 }
 const mapStateToProps = state => {
     return {
+        odaName: state.odaName,
         createUserPopup: state.createUserPopup,
         odaUser: state.odaUser,
     };
@@ -178,7 +170,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        setCreateUserPopup: createUserPopup => dispatch({ type: actionTypes.CREATE_USER_POPUP, createUserPopup })
+        setCreateUserPopup: createUserPopup => dispatch({ type: actionTypes.CREATE_USER_POPUP, createUserPopup }),
+        setOdaName: odaName => dispatch({ type: actionTypes.SET_ODANAME, odaName })
+
     };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(PopupIoT);

@@ -2,8 +2,6 @@ import React, { Component } from "react";
 import * as actionTypes from "../../store/actions/actionTypes";
 import { connect } from "react-redux";
 import {
-  Card,
-  CardContent,
   Grid,
 } from "@material-ui/core";
 import SmokeStatus from "./SmokeStatus";

@@ -57,7 +57,8 @@ const initialState = {
   corSaveInfo: { corID: "" },
   list: [],
   playChoreographyScreen: { isYourList: false, selected: "All" },
-  odaUser: null
+  odaUser: null,
+  odaName: null,
 };
 
 const reducer = (state = initialState, action) => {
@@ -67,6 +68,11 @@ const reducer = (state = initialState, action) => {
         ...state,
         isLoggedIn: true,
         current_user: action.user,
+      };
+    case actionTypes.SET_ODANAME:
+      return {
+        ...state,
+        odaName: action.odaName,
       };
     case actionTypes.SET_ODAUSER:
       return {
