@@ -6,6 +6,7 @@ import PartySelectionNew from "./Components/PartySelection/PartySelectionNew";
 import PlayCoreography from "./Components/PlayCoreography/PlayCoreography";
 import SignIn from "./Pages/Login/SignIn"
 import Register from "./Pages/Register/SignUp"
+import LiveParty from "./Pages/LiveParty/LiveParty"
 import apiService from "./Components/Services/APIServices";
 import axios from 'axios';
 import jwt_decode from "jwt-decode";
@@ -73,6 +74,7 @@ export const Routes = (props) => {
             path="/go-party"
           />
           <RouteWithLayout exact layout={Editor} path="/create-party" />
+          <RouteWithLayout exact layout={LiveParty} path="live-Party" />
         </>
       }
     </Switch>
