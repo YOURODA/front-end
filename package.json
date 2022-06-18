@@ -11,6 +11,7 @@
     "@mui/icons-material": "^5.3.1",
     "@mui/lab": "^5.0.0-alpha.79",
     "@mui/material": "^5.4.0",
+    "@trendyol-js/react-carousel": "^3.0.0",
     "axios": "^0.19.0",
     "jwt-decode": "^3.1.2",
     "lodash.debounce": "^4.0.8",

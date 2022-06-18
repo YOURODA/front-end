@@ -57,7 +57,8 @@ const initialState = {
   corSaveInfo: { corID: "" },
   list: [],
   playChoreographyScreen: { isYourList: false, selected: "All" },
-  odaUser: null
+  odaUser: null,
+  livePartyCategories : []
 };
 
 const reducer = (state = initialState, action) => {
@@ -295,6 +296,11 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         playChoreographyScreen: action.playChoreographyScreen
+      }
+    case actionTypes.LIVE_PARTY_CATEGORIES:
+      return {
+        ...state,
+        livePartyCategories: action.livePartyCategories
       }
     default:
       return state;

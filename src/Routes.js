@@ -75,7 +75,7 @@ export const Routes = (props) => {
             path="/go-party"
           />
           <RouteWithLayout exact layout={Editor} path="/create-party" />
-          <RouteWithLayout exact layout={LiveParty} path="live-Party" />
+          <RouteWithLayout exact layout={LiveParty} path="/live-party" />
         </>
       }
     </Switch>

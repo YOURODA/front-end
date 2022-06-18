@@ -378,6 +378,35 @@ class APIServices {
     return await axios(serviceData);
   }
 
+
+  async livePartCreateCategory({ name }) {
+    const serviceData = {
+      headers: { Authorization: `Bearer ${token}` }, method: 'POST',
+      url: userApiService + '/live-party/create-category',
+      data: { name }
+    }
+    return await axios(serviceData);
+  }
+
+  
+  async getLivePartAllCategory() {
+    const serviceData = {
+      headers: { Authorization: `Bearer ${token}` }, method: 'POST',
+      url: userApiService + '/live-party/all-category',
+    }
+    return await axios(serviceData);
+  }
+
+  
+  async livePartAddFileToCategory({ categoryId, name, color, file }) {
+    const serviceData = {
+      headers: { Authorization: `Bearer ${token}` }, method: 'POST',
+      url: userApiService + '/live-party/add-file-to-category',
+      data: { categoryId, name, color, file }
+    }
+    return await axios(serviceData);
+  }
+
 }
 
 export default APIServices;

@@ -1,15 +1,73 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React, { useEffect, useState } from "react";
+import { connect } from "react-redux";
+import * as actionTypes from "../../store/actions/actionTypes";
+
+import APIService from "../../Components/Services/APIServices";
+import FirstCategory from "../../Components/LiveParty/FirstCategory/FirstCategory";
 
 /*
-*Live parti için ana sayfa
-*/
-const LiveParty=(props)=> {
-  return (
-    <div>LiveParty</div>
-  )
-}
+ *Live parti için ana sayfa
+ */
 
-LiveParty.propTypes = {}
+const apiService = new APIService();
 
-export default LiveParty
+const LiveParty = ({livePartyCategories,setCategories}) => {
+  const [loading, setLoading] = useState(false);
+
+
+  useEffect(() => {
+    console.log("use effect");
+    setLoading(true)
+    apiService
+      .getLivePartAllCategory()
+      .then((response) => {
+        console.log("response", response);
+        if (response.status === 200) {
+          console.log("response", response);
+          if(response.data && Object.keys(response.data).length === 0){
+            setCategories([])
+            
+          }else {
+            // setCategories([]);
+            setCategories([response.data]);
+          }
+          setLoading(false)
+          
+        }
+      })
+      .catch((err) => {
+        console.log("err", err);
+      });
+
+    return () => {};
+  }, []);
+
+  if(loading){
+    return <>Loading</>
+  }
+  console.log("livePartAllCategory",livePartyCategories)
+  if (livePartyCategories.length === 0) {
+    return (
+      <FirstCategory/ >    );
+  }
+
+  return <div>Category List</div>;
+};
+
+const mapStateToProps = (state) => {
+  return {
+    livePartyCategories: state.livePartyCategories,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setCategories: (livePartyCategories) => dispatch({
+      type: actionTypes.LIVE_PARTY_CATEGORIES,
+      livePartyCategories
+    }),
+
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(LiveParty);
