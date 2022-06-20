@@ -106,6 +106,7 @@ const ListOfSeconds = ({
           {clearSecondList &&
             Array.isArray(clearSecondList) &&
             clearSecondList.map((value, index) => {
+              console.log("SecondItem",value)
               return (
                 <SecondItem value={value} index={index} classes={classes} />
               );

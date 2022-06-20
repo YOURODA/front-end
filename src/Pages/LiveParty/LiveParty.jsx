@@ -4,6 +4,7 @@ import * as actionTypes from "../../store/actions/actionTypes";
 
 import APIService from "../../Components/Services/APIServices";
 import FirstCategory from "../../Components/LiveParty/FirstCategory/FirstCategory";
+import CategoriesList from "../../Components/LiveParty/CategoriesList/CategoriesList";
 
 /*
  *Live parti için ana sayfa
@@ -51,7 +52,7 @@ const LiveParty = ({livePartyCategories,setCategories}) => {
       <FirstCategory/ >    );
   }
 
-  return <div>Category List</div>;
+  return <CategoriesList/>;
 };
 
 const mapStateToProps = (state) => {

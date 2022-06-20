@@ -12,6 +12,7 @@ import axios from 'axios';
 import jwt_decode from "jwt-decode";
 import { createBrowserHistory } from 'history';
 import { useHistory } from 'react-router-dom';
+import LivePartyCorScreen from './Pages/LiveParty/LivePartyCorScreen';
 
 
 const browserHistory = createBrowserHistory();
@@ -76,6 +77,7 @@ export const Routes = (props) => {
           />
           <RouteWithLayout exact layout={Editor} path="/create-party" />
           <RouteWithLayout exact layout={LiveParty} path="/live-party" />
+          <RouteWithLayout exact layout={LivePartyCorScreen} path="/live-party/make-cor" />
         </>
       }
     </Switch>
