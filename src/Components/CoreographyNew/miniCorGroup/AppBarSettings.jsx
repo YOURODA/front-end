@@ -15,7 +15,7 @@ import SaveCorButton from "../SaveCorButton"
 import Logo from '../../../images/odaLogo.png';
 import './LogoSizing.css'
 import Controller from "./Controller"
-
+import { Redirect, withRouter } from 'react-router-dom';
 
 const RedSwitch = withStyles({
   switchBase: {
@@ -83,6 +83,7 @@ export const AppBarSettings = ({
   isOpen
 }) => {
   const [isConsoleActive, setConsoleActive] = useState(false);
+  const [goPartySelection, setGoPartySelection] = useState(false);
   const classes = useStyles();
   const apiServices = new APIService();
 
@@ -125,7 +126,7 @@ export const AppBarSettings = ({
                         response.status === 200 &&
                         response.data.odas[0].localIp
                       ) {
-                        localOdaIp = response.data.odas[0].localIp;
+                        localOdaIp = localStorage.getItem('localIp');
                         robotModel = response.data.odas[0].robotModel;
                       }
                       setIsLiveTry({
@@ -153,11 +154,14 @@ export const AppBarSettings = ({
   return (
     <div className={classes.root}>
       <Grid container >
+        {goPartySelection &&
+          <Redirect to="/party-selection" />
+        }
         <Grid item xs={4}>
           <img style={{
             height: "30px",
             width: "auto", paddingLeft: "5%"
-          }} src={Logo} onClick={() => window.location = "/party-selection"} />
+          }} src={Logo} onClick={() => setGoPartySelection(true)} />
         </Grid>
         <Grid item xs={4} />
         {isOpen &&
@@ -185,4 +189,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AppBarSettings);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)((AppBarSettings)));

@@ -59,6 +59,7 @@ const initialState = {
   playChoreographyScreen: { isYourList: false, selected: "All" },
   odaUser: null,
   odaName: null,
+  selectedTrackIds: 0
 };
 
 const reducer = (state = initialState, action) => {
@@ -68,6 +69,11 @@ const reducer = (state = initialState, action) => {
         ...state,
         isLoggedIn: true,
         current_user: action.user,
+      };
+    case actionTypes.SET_SELECTED_TRACK_IDS:
+      return {
+        ...state,
+        selectedTrackIds: action.selectedTrackIds,
       };
     case actionTypes.SET_ODANAME:
       return {

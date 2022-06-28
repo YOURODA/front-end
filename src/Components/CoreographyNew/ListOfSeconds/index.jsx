@@ -79,8 +79,10 @@ const ListOfSeconds = ({
     const tryLoop = tryRegulatorCorLoop({ selectedSeconds, songCor, smoke: false, robotModel: isLiveTry.robotModel });
     let stringCSV = JSON.stringify({ corData: tryLoop });
     const encodedString = {
+      isActive: 1,
       base: new Buffer(stringCSV).toString("base64"),
       time: 2,
+      odaNameLocal: localStorage.getItem('odaName')
     };
     socket.emit("corData", encodedString)
   };

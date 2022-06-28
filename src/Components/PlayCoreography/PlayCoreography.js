@@ -4,13 +4,13 @@ import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import * as actionTypes from "../../store/actions/actionTypes";
 import SpotifyFooter from "../../Containers/SpotifyFooter/SpotifyFooter";
-// import CssBaseline from "@material-ui/core/CssBaseline/CssBaseline";
+import CssBaseline from "@material-ui/core/CssBaseline/CssBaseline";
 import socketIo from "socket.io-client";
 import { Grid } from "@material-ui/core";
 import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 import APIService from "../Services/APIServices";
-import ListTab from "./ListTab/ListTab";
+// import ListTab from "./ListTab/ListTab";
 import PlayChoreographiesTable from "./PlayChoreographiesTable/index";
 import CorListDrawer from "./Drawer";
 import MuiAppBar from '@mui/material/AppBar';
@@ -144,6 +144,17 @@ class PlayCoreography extends Component {
         <Main>
           <PlayChoreographiesTable />
         </Main>
+        )}
+        <ThemeProvider theme={theme}>
+          <CssBaseline>
+            <SpotifyFooter
+              style={{
+                fontFamily:
+                  "spotify-circular,Helvetica Neue,Helvetica,Arial,Hiragino Kaku Gothic Pro,Meiryo,MS Gothic,sans-serif",
+              }}
+            ></SpotifyFooter>
+          </CssBaseline>
+        </ThemeProvider>
       </Grid>
     );
   }

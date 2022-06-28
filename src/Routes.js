@@ -4,6 +4,7 @@ import RouteWithLayout from "./Components/RouteWithLayout/RouteWithLayout";
 import Editor from "./Components/Editor/EditorNew";
 import PartySelectionNew from "./Components/PartySelection/PartySelectionNew";
 import PlayCoreography from "./Components/PlayCoreography/PlayCoreography";
+import PlayChoreographies from "./Components/PlayCoreography/PlayChoreographies";
 import SignIn from "./Pages/Login/SignIn"
 import Register from "./Pages/Register/SignUp"
 import LiveParty from "./Pages/LiveParty/LiveParty"
@@ -70,7 +71,7 @@ export const Routes = (props) => {
           <RouteWithLayout exact layout={PartySelectionNew} path="/party-selection" />
           <RouteWithLayout
             exact
-            layout={PlayCoreography}
+            layout={PlayChoreographies}
             path="/go-party"
           />
           <RouteWithLayout exact layout={Editor} path="/create-party" />

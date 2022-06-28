@@ -168,8 +168,10 @@ class CreateCor extends Component {
     const { corData } = this.state;
     let stringCSV = JSON.stringify({ corData });
     const encodedString = {
+      isActive: 0,
       base: new Buffer(stringCSV).toString("base64"),
       time: this.milisToMinutesAndSeconds(this.props.durationStamps),
+      odaNameLocal: localStorage.getItem('odaName')
     };
     this.props.socket.emit("corData", encodedString);
     this.props.setCorData(this.state.corData);

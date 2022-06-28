@@ -4,24 +4,24 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import goPartyLocation from '../../images/goParty.png'
 import makePartyLocation from '../../images/createParty.png'
-import APIServices from "../Services/APIServices";
+import { Redirect, withRouter } from 'react-router-dom';
 
 const theme = createTheme();
 
 export const PartySelectionNew = () => {
-    const [ipList, setIpList] = useState([]);
-    const apiService = new APIServices();
-    // useEffect(() => {
-    //     apiService.loginRaspi(setIpList, ipList).then(response => {
-    //         console.log(response.data)
-    //     });
-    // }, [])
-    // console.log("ipList", ipList[0])
+    const [goParty, setGoParty] = useState(false);
+    const [createParty, setCreateParty] = useState(false);
 
     return (
         <ThemeProvider theme={theme}>
             <Grid container component="main" sx={{ height: '100vh' }}>
                 <CssBaseline />
+                {goParty &&
+                    <Redirect to="/go-party" />
+                }
+                {createParty &&
+                    <Redirect to="/create-party" />
+                }
                 <Grid
                     item
                     xs={6}
@@ -35,7 +35,8 @@ export const PartySelectionNew = () => {
                         backgroundSize: 'cover',
                         backgroundPosition: 'center',
                     }}
-                    onClick={() => window.location = "/go-party"}
+                    onClick={() => setGoParty(true)}
+
                 >
                 </Grid>
 
@@ -52,11 +53,11 @@ export const PartySelectionNew = () => {
                         backgroundSize: 'cover',
                         backgroundPosition: 'center',
                     }}
-                    onClick={() => window.location = "/create-party"}
+                    onClick={() => setCreateParty(true)}
                 >
                 </Grid>
             </Grid>
         </ThemeProvider>
     );
 }
-export default PartySelectionNew;
+export default withRouter(PartySelectionNew);

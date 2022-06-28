@@ -16,7 +16,8 @@ import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
 import { validEmail, validPassword } from '../../utils/regex/Regex'
 import { LOGIN_FAIL_EMAIL, LOGIN_FAIL_PASSWORD } from '../../utils/alerts/AlertMessages'
-
+import { connect } from "react-redux";
+import { Redirect, withRouter } from 'react-router-dom';
 function Copyright(props) {
     return (
         <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -31,13 +32,14 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-export default function SignUp() {
+function SignUp() {
     const [firstName, setFirstName] = useState('');
     const [secondName, setSecondName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confPassword, setConfPassword] = useState('');
     const [alertMessage, setAlertMessage] = useState('');
+    const [goLogin, setGoLogin] = useState(false);
     const apiService = new APIServices();
 
 
@@ -51,12 +53,11 @@ export default function SignUp() {
             setAlertMessage(LOGIN_FAIL_PASSWORD);
         }
         if (validPassword.test(password) && validEmail.test(email)) {
-            console.log('successfull')
             const returnValue = await apiService.register(firstName, secondName, email, password, confPassword);
             if (returnValue.status == 200) {
-                window.location = "/login";
+               setGoLogin(true);
             } else {
-                setAlertMessage(returnValue.data.message)
+                setAlertMessage(returnValue.data.message);
             }
         }
     }
@@ -64,6 +65,9 @@ export default function SignUp() {
         <ThemeProvider theme={theme}>
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
+                {goLogin &&
+                <Redirect to="/login" />
+                }
                 <Box
                     sx={{
                         marginTop: 8,
@@ -181,3 +185,4 @@ export default function SignUp() {
     );
 }
 
+export default withRouter(SignUp);
