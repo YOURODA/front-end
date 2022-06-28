@@ -51,6 +51,7 @@ export const SET_COR_INFO = "SET_COR_INFO";
 export const SET_LIST = "SET_LIST";
 export const PLAY_CHOREOGRAPH_SCREEN = "PLAY_CHOREOGRAPH_SCREEN";
 export const LIVE_PARTY_CATEGORIES = "LIVE_PARTY_CATEGORIES" 
+export const SETTINGS = "SETTINGS" 
 
 
 

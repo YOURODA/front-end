@@ -5,6 +5,7 @@ import * as actionTypes from "../../store/actions/actionTypes";
 import APIService from "../../Components/Services/APIServices";
 import FirstCategory from "../../Components/LiveParty/FirstCategory/FirstCategory";
 import CategoriesList from "../../Components/LiveParty/CategoriesList/CategoriesList";
+import AppBarSettings from "../../Components/CoreographyNew/miniCorGroup/AppBarSettings";
 
 /*
  *Live parti için ana sayfa
@@ -12,28 +13,21 @@ import CategoriesList from "../../Components/LiveParty/CategoriesList/Categories
 
 const apiService = new APIService();
 
-const LiveParty = ({livePartyCategories,setCategories}) => {
+const LiveParty = ({ livePartyCategories, setCategories }) => {
   const [loading, setLoading] = useState(false);
 
-
-  useEffect(() => {
-    console.log("use effect");
-    setLoading(true)
+  useEffect(() => {;
+    setLoading(true);
     apiService
       .getLivePartAllCategory()
       .then((response) => {
-        console.log("response", response);
         if (response.status === 200) {
-          console.log("response", response);
-          if(response.data && Object.keys(response.data).length === 0){
-            setCategories([])
-            
-          }else {
-            // setCategories([]);
-            setCategories([response.data]);
+          if (response.data && Object.keys(response.data).length === 0) {
+            setCategories([]);
+          } else {
+            setCategories([...response.data]);
           }
-          setLoading(false)
-          
+          setLoading(false);
         }
       })
       .catch((err) => {
@@ -43,16 +37,25 @@ const LiveParty = ({livePartyCategories,setCategories}) => {
     return () => {};
   }, []);
 
-  if(loading){
-    return <>Loading</>
+  if (loading) {
+    return <>Loading</>;
   }
-  console.log("livePartAllCategory",livePartyCategories)
   if (livePartyCategories.length === 0) {
-    return (
-      <FirstCategory/ >    );
+    return <FirstCategory />;
   }
 
-  return <CategoriesList/>;
+  return (
+    <div style={{ backgroundColor: "#001e3c", height: "100vh" }}>
+      <AppBarSettings
+        isOpen={true}
+        isShowSaveButton={false}
+        isShowLiveTry={false}
+        isShowConsole={false}
+        isShowSmokeStatus={true}
+      />
+      <CategoriesList />;
+    </div>
+  );
 };
 
 const mapStateToProps = (state) => {
@@ -63,11 +66,11 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setCategories: (livePartyCategories) => dispatch({
-      type: actionTypes.LIVE_PARTY_CATEGORIES,
-      livePartyCategories
-    }),
-
+    setCategories: (livePartyCategories) =>
+      dispatch({
+        type: actionTypes.LIVE_PARTY_CATEGORIES,
+        livePartyCategories,
+      }),
   };
 };
 

@@ -58,7 +58,10 @@ const initialState = {
   list: [],
   playChoreographyScreen: { isYourList: false, selected: "All" },
   odaUser: null,
-  livePartyCategories : []
+  livePartyCategories : [],
+  settings:{
+    isMakeCor:false
+  }
 };
 
 const reducer = (state = initialState, action) => {
@@ -301,6 +304,11 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         livePartyCategories: action.livePartyCategories
+      }
+    case actionTypes.SETTINGS:
+      return {
+        ...state,
+        settings: action.settings
       }
     default:
       return state;

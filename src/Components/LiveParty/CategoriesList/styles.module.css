@@ -1,0 +1,37 @@
+.livePartyContainer {
+  /* padding: 2%; */
+}
+.unselectable {
+  -moz-user-select: -moz-none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -o-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.neonBox {
+  border-radius: 10%;
+}
+.corBox {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.categoryName {
+  color: #ffffff;
+  font-family: "Raleway", sans-serif;
+  font-size: medium;
+  /* font-weight: 800;
+  line-height: 72px; */
+  /* text-transform: uppercase; */
+  text-shadow: 1px 1px 2px black;
+}
+
+.categoryTitle {
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  padding-left: 2%;
+}

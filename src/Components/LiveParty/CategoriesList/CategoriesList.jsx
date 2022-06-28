@@ -1,49 +1,66 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
+import { Button, Dialog, Box, IconButton } from "@mui/material";
+
 import NewCategoryDialog from "../NewCategoryDialog/NewCategoryDialog";
+import { Link } from "react-router-dom";
+import CorBox from "./CorBox";
 
-import { Carousel } from '@trendyol-js/react-carousel';
+import { Carousel } from "@trendyol-js/react-carousel";
+import styles from "./styles.module.css";
+import SendIcon from "@mui/icons-material/Send";
+import AddIcon from "@mui/icons-material/Add";
 
-export const CategoriesList = ({livePartyCategories}) => {
-
-
+export const CategoriesList = ({ livePartyCategories }) => {
   const [dialogOpen, setDialogOpen] = useState(false);
   return (
-    <div>
-      {livePartyCategories.map(category=>{
-        console.log("category",category.name)
-        return(
-          <>
-          <div>
-          {category.name}
-          <Button variant="contained" onClick={()=> console.log("add Choreografi")}> Add Choreografi </Button>
-          </div>
-          
-          <Carousel show={3.5} slide={3} swiping={true}>
-              <> Coreografi adı buraya gelecek</>
-              <> Coreografi adı buraya gelecek</>
-              <> Coreografi adı buraya gelecek</>
-              <> Coreografi adı buraya gelecek</>
-              <> Coreografi adı buraya gelecek</>
-              <> Coreografi adı buraya gelecek</>
-              <> Coreografi adı buraya gelecek</>
-              <> Coreografi adı buraya gelecek</>
-              <> Coreografi adı buraya gelecek</>
+    <div className={styles.livePartyContainer}>
+      {Array.isArray(livePartyCategories) &&
+        livePartyCategories.map((category) => {
+          console.log("category", category);
+          return (
+            <>
+              <div className={styles.categoryTitle}>
+                <div className={styles.categoryName}>{category.name}</div>
+                <div>
+                  <Link to={`/live-party/make-cor/${category._id}`}>
+                    <IconButton
+                      color="primary"
+                      aria-label="upload picture"
+                      component="span"
+                    >
+                      <AddIcon />
+                    </IconButton>
+                  </Link>
+                </div>
+              </div>
 
-          </Carousel>
-          </>
-        )
+              <Carousel
+                // show={10}
+                slide={5}
+                swiping={true}
+                // dynamic={true}
+                show={10}
+                // transition={0.5}
+              >
+                {category &&
+                  category.cors &&
+                  Array.isArray(category.cors) &&
+                  category?.cors?.map((cor, index) => {
+                    console.log("cor before corbox", cor);
+                    return <CorBox cor={cor} />;
+                  })}
+              </Carousel>
+            </>
+          );
+        })}
 
-      })}
-
-
-      <Button variant="contained" onClick={()=> setDialogOpen(true)}> + </Button>
+      <IconButton color="primary" aria-label="Add category" component="span"  onClick={() => setDialogOpen(true)}>
+        <AddIcon />
+      </IconButton>
       <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
         <NewCategoryDialog setCreateCorPopup={(e) => setDialogOpen(e)} />
       </Dialog>
-    
     </div>
   );
 };
