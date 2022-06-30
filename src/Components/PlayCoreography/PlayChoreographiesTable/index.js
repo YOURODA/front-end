@@ -15,7 +15,7 @@ import Edit from "@material-ui/icons/Edit";
 import Check from "@material-ui/icons/Check";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import useLocalStorage from "../../../hooks/useLocalStorage";
-import RatingCor from "../../RatingCor"
+import RatingCor from "../../RatingCor";
 import CorSettingsMenu from "../CorSettingsMenu/CorSettingsMenu";
 import SelectedDevicePopUp from "../../CoreographyNew/SelectedDevicePopUp";
 import socketIo from "socket.io-client";
@@ -34,7 +34,7 @@ const PlayChoreographiesTable = ({
   isSmokeActive,
   setSmokeTemperature,
   setSocketIO,
-  setSelectedTrackIds
+  setSelectedTrackIds,
 }) => {
   const [loading, setLoading] = useState(false);
   const [getAllCorData, setAllCorData] = useState([]);
@@ -46,12 +46,14 @@ const PlayChoreographiesTable = ({
     "editCorId",
     ""
   );
-  const socketio_url = localStorage.getItem('localIp') + ':8080/odaName'
+  const socketio_url = localStorage.getItem("localIp") + ":8080/odaName";
   let odaNameLocal = localStorage.getItem("odaName");
   const apiService = new APIServices();
   const history = useHistory();
+  let tryCor;
+  let stringCSV;
   //isYourList:false,selected:"All"
-  const { isYourList, selected } = playChoreographyScreen
+  const { isYourList, selected } = playChoreographyScreen;
   const getUserCorListAll = async () => {
     await apiService
       .getUserCorListAll()
@@ -64,19 +66,19 @@ const PlayChoreographiesTable = ({
       .catch((err) => {
         console.log("sentReviews Err", err);
       });
-  }
+  };
   const joinRoom = async (_socket) => {
-    console.log('joine geldi');
-    _socket.emit("join", { name: "eray" });
-    await _socket.on('join', (data) => {
-      console.log("data.msg: ", data.msg)
-      interval = data.msg
+    console.log("joine geldi");
+    _socket.emit("join", { name: odaNameLocal });
+    await _socket.on("join", (data) => {
+      console.log("data.msg: ", data.msg);
+      interval = data.msg;
     });
-  }
+  };
   const askTemperature = async (_socket) => {
-    console.log('asktemperatureeee')
+    console.log("asktemperatureeee");
     if (interval !== null) {
-      console.log("interval", interval)
+      console.log("interval", interval);
       _socket.emit("askTemperature", { isSmokeActive, odaNameLocal });
       await _socket.on("temperature", (data) => {
         console.log("temperature in the oda", data.temperature);
@@ -84,6 +86,37 @@ const PlayChoreographiesTable = ({
       });
     }
   };
+
+  const socketRequest = async () => {
+    socket.on("corData", (data) => {
+      // if()
+      console.log("sıracı 2", data.message);
+      if (version === "v.1.0") {
+        tryCor = regulatorCorLoop({ songCorLoop: choreograph, smoke: false });
+      } else {
+        tryCor = choreograph;
+      }
+      stringCSV = JSON.stringify({ corData: tryCor });
+
+      const encodedString = {
+        isActive: 0,
+        base: new Buffer(stringCSV).toString("base64"),
+        time: milisToMinutesAndSeconds(durationStamps),
+        odaNameLocal: localStorage.getItem("odaName"),
+      };
+      // setTimeout(() => {
+        console.log("sıracı 3", encodedString);
+        socket.emit("corData", encodedString);
+      // }, 5000);
+    });
+  };
+
+  useEffect(() => {
+    if (socket && socket.on) {
+       socketRequest();
+    }
+  }, [socket]);
+
   useEffect(() => {
     getUserCorListAll();
     const _socket = socketIo(`${socketio_url}`);
@@ -93,40 +126,41 @@ const PlayChoreographiesTable = ({
     return () => {
       _socket.close();
     };
-  }, [setSocketIO]);
+  }, []);
   useEffect(() => {
-    console.log("selected", selected)
-    setLoading(true)
+    console.log("selected", selected);
+    setLoading(true);
     if (!isYourList) {
       switch (selected) {
         case "All":
           console.log("get all api");
           apiService.getAllCoreographies().then((response) => {
-            setLoading(false)
+            setLoading(false);
             setAllCorData(getCore(response.data.cor));
           });
           break;
         case "My":
           apiService.getMyCoreographies(userId).then((response) => {
-            setLoading(false)
+            setLoading(false);
             setAllCorData(getCore(response.data.cor));
           });
           break;
         case "Hit":
           apiService.getHitsCoreographies().then((response) => {
-            setLoading(false)
+            setLoading(false);
             setAllCorData(getCore(response.data.cor));
           });
           break;
         default:
       }
     } else {
-      const findList = list.find(item => item.name === selected).list.map(item => item.ChoreographyId)
-      console.log("findList", findList)
-      setLoading(false)
+      const findList = list
+        .find((item) => item.name === selected)
+        .list.map((item) => item.ChoreographyId);
+      console.log("findList", findList);
+      setLoading(false);
       setAllCorData(getCore(findList));
     }
-
   }, [selected, list]);
   const closeSelectDevicePopUp = () => {
     setSelectedDevicePopUp(false);
@@ -137,8 +171,8 @@ const PlayChoreographiesTable = ({
   );
 
   const goParty = (id) => {
-    console.log("goParty", id)
-    let tryCor;
+    console.log("goParty", id);
+
     if (version === "v.1.0") {
       tryCor = regulatorCorLoop({ songCorLoop: choreograph, smoke: false });
     } else {
@@ -148,19 +182,27 @@ const PlayChoreographiesTable = ({
     closeSelectDevicePopUp();
     setCurrentTrackId(selectTrackId);
 
-    let stringCSV = JSON.stringify({ corData: tryCor });
+    stringCSV = JSON.stringify({ corData: tryCor });
     const encodedString = {
-      isActive: 0,
+      isActive: 1,
       base: new Buffer(stringCSV).toString("base64"),
       time: milisToMinutesAndSeconds(durationStamps),
-      odaNameLocal: localStorage.getItem('odaName')
+      odaNameLocal: localStorage.getItem("odaName"),
     };
     socket.emit("corData", encodedString);
+    console.log("sıracı 1");
+
     setIsReturnMusic(id);
   };
 
   return (
-    <Grid style={{ backgroundColor: '#001e3c', paddingLeft: '20vh', minHeight: '45vw' }}>
+    <Grid
+      style={{
+        backgroundColor: "#001e3c",
+        paddingLeft: "20vh",
+        minHeight: "45vw",
+      }}
+    >
       {selectedDevicePopUp && (
         <SelectedDevicePopUp
           send={(id) => goParty(id)}
@@ -181,43 +223,43 @@ const PlayChoreographiesTable = ({
             },
             selected === "My"
               ? {
-                title: "Share",
-                field: "isShared",
-                render: (rowData) => {
-                  console.log(rowData);
-                  if (!rowData.isShared && rowData._id) {
-                    return (
-                      <IconButton
-                        color="primary"
-                        aria-label="upload picture"
-                        component="span"
-                      >
-                        <Edit
-                          onClick={(e) => {
-                            setLocalDbEditCor(rowData._id);
-                            goToEditPage();
-                          }}
-                        />
-                      </IconButton>
-                    );
-                  }
-                  return <Check />;
-                },
-              }
+                  title: "Share",
+                  field: "isShared",
+                  render: (rowData) => {
+                    console.log(rowData);
+                    if (!rowData.isShared && rowData._id) {
+                      return (
+                        <IconButton
+                          color="primary"
+                          aria-label="upload picture"
+                          component="span"
+                        >
+                          <Edit
+                            onClick={(e) => {
+                              setLocalDbEditCor(rowData._id);
+                              goToEditPage();
+                            }}
+                          />
+                        </IconButton>
+                      );
+                    }
+                    return <Check />;
+                  },
+                }
               : {
-                title: "Rating",
-                field: "rating",
-                render: (rowData) => {
-                  return <RatingCor rowData={rowData} />;
+                  title: "Rating",
+                  field: "rating",
+                  render: (rowData) => {
+                    return <RatingCor rowData={rowData} />;
+                  },
                 },
-              },
             {
               title: "Settings",
               field: "rating",
               render: (rowData) => {
                 return <CorSettingsMenu rowData={rowData} />;
               },
-            }
+            },
           ]}
           data={getAllCorData}
           actions={[
@@ -229,7 +271,7 @@ const PlayChoreographiesTable = ({
                 setSelectedDevicePopUp(true);
                 setChoreograph(rowData.file);
                 setVersion(rowData.version);
-                setSelectedTrackIds(rowData.trackId)
+                setSelectedTrackIds(rowData.trackId);
               },
             },
           ]}
@@ -255,7 +297,8 @@ const mapStateToProps = (state) => {
     socket: state.socket,
     isReturnMusic: state.isReturnMusic,
     playChoreographyScreen: state.playChoreographyScreen,
-    list: state.list
+    list: state.list,
+    isSmokeActive: state.isSmokeActive,
   };
 };
 const mapDispatchToProps = (dispatch) => {
@@ -268,9 +311,11 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({ type: actionTypes.IS_RETURN_MUSIC, isReturnMusic }),
     setCurrentTrackId: (currentTrackId) =>
       dispatch({ type: actionTypes.CURRENT_TRACK_ID, currentTrackId }),
-    setList: (list) =>
-      dispatch({ type: actionTypes.SET_LIST, list }),
-    setSelectedTrackIds: (selectedTrackIds) => dispatch({ type: actionTypes.SET_SELECTED_TRACK_IDS, selectedTrackIds }),
+    setList: (list) => dispatch({ type: actionTypes.SET_LIST, list }),
+    setSelectedTrackIds: (selectedTrackIds) =>
+      dispatch({ type: actionTypes.SET_SELECTED_TRACK_IDS, selectedTrackIds }),
+    setSmokeTemperature: (smokeTemperature) =>
+      dispatch({ type: actionTypes.SMOKE_TEMPERATURE, smokeTemperature }),
   };
 };
 export default connect(

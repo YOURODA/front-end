@@ -222,7 +222,7 @@ class MusicPlayer extends Component {
       seek = val
     } else {
 
-      dur = this.state.playingInfo.duration;
+      dur = this.state?.playingInfo?.duration;
       seek = Math.floor((val * dur) / 100); // round number
     }
     this.setState({ positionSliderValue: val });
@@ -266,6 +266,7 @@ class MusicPlayer extends Component {
   };
 
   render() {
+    console.log("music Player")
     if (!!this.props.isReturnMusic) {
       console.log("başa alma çalıştı", !!this.props.isReturnMusic, this.props.isReturnMusic)
       this.onSeekSliderChange("", 0)
@@ -328,10 +329,9 @@ class MusicPlayer extends Component {
                     margin: 10,
                   }}
                   image={
-                    this.state.playingInfo.track_window.current_track.album
-                      .images[0].url
+                    this.state?.playingInfo?.track_window?.current_track?.album?.images[0]?.url
                   }
-                  title={this.state.playingInfo.track_window.current_track.name}
+                  title={this.state.playingInfo?.track_window?.current_track?.name}
                 />
                 <div
                   style={{

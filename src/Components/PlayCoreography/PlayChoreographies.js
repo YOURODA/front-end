@@ -146,7 +146,6 @@ const mapStateToProps = (state) => {
         socket: state.socket,
         isSmokeActive: state.isSmokeActive,
         currentUser: state.current_user,
-        currentTrackId: state.currentTrackId,
         currently_playing: state.currently_playing,
         user: state.current_user,
         odaName: state.odaName

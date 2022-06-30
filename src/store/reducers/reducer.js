@@ -61,7 +61,7 @@ const initialState = {
   livePartyCategories : [],
   settings:{
     isMakeCor:false
-  }
+  },
   odaName: null,
   selectedTrackIds: 0
 };
