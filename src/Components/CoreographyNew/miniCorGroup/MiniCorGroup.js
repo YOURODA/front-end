@@ -223,8 +223,10 @@ export const MiniCorGroup = ({
     });
     let stringCSV = JSON.stringify({ corData: tryLoop });
     const encodedString = {
+      isActive: 0,
       base: new Buffer(stringCSV).toString("base64"),
       time: 2,
+      odaNameLocal: localStorage.getItem('odaName')
     };
     socket.emit("corData", encodedString);
   };

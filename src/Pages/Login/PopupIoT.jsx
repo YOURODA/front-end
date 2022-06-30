@@ -11,19 +11,19 @@ import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Stack from '@mui/material/Stack';
 import Alert from '@mui/material/Alert';
-import { useHistory } from 'react-router-dom';
-
+import { Redirect, withRouter } from 'react-router-dom';
 export const PopupIoT = (props) => {
-    const { createUserPopup, odaUser, setCreateUserPopup } = props
+    const { createUserPopup, odaUser, setCreateUserPopup, odaName, setOdaName } = props
     const [open, setOpen] = useState(false);
-    const [odaName, setOdaName] = useState();
+    // const [odaName, setOdaName] = useState();
     const [defaultOdaName, setDefaultOdaName] = useState('');
     const [ipList, setIpList] = useState([]);
     const [checked, setChecked] = useState([1]);
     const [alertMessage, setAlertMessage] = useState('');
+    const [redirect, setRedirect] = useState(false);
     const [newUserResponse, setNewUserResponse] = useState(false)
+
     const apiServices = new APIService()
-    const history = useHistory();
 
     useEffect(() => {
         console.log("odaUser59: ", odaUser)
@@ -31,13 +31,13 @@ export const PopupIoT = (props) => {
         getOda.then(response => {
             console.log("response.data.myodas", response.data)
             if (response.data.odas) {
+                // setOdaName(response.data.odas.odaName)
                 setDefaultOdaName(response.data.odas.odaName);
                 setNewUserResponse(true)
             }
         })
         apiServices.loginRaspi(setIpList, ipList);
     }, [])
-    console.log("ipList", ipList[0])
 
     const handleToggle = (value) => () => {
         const currentIndex = checked.indexOf(value);
@@ -48,31 +48,24 @@ export const PopupIoT = (props) => {
         } else {
             newChecked.splice(currentIndex, 1);
         }
-
         setChecked(newChecked);
     };
-    const connectSocket = async (odaName) => {
-        history.push("/party-selection");
-
-        await apiServices.connectSocket(odaName).then(response => {
-        }).catch((err) => {
-            setAlertMessage(err.response)
-        })
-    }
     const sendOdaName = async (raspiIp, defaultOdaName) => {
         await apiServices.recognizeRaspi(raspiIp, defaultOdaName).then(response => {
             if (response && response.status === 200) {
-                connectSocket(response.data);
+                localStorage.setItem('odaName', response.data);
+                setOdaName(response.data);
+                setRedirect(true)
             }
         })
     }
-
     const handleClose = () => {
         setOpen(false);
         setCreateUserPopup(open)
     };
     const getOdaName = (e) => {
-        setOdaName(e.target.value)
+        setOdaName(e.target.value);
+        localStorage.setItem('odaName', e.target.value);
     };
     const createNewUserAPI = () => {
         const resp = apiServices.newUser(props.user.email, odaName);
@@ -87,6 +80,9 @@ export const PopupIoT = (props) => {
                 <Stack sx={{ width: '100%' }} spacing={2}>
                     <Alert variant="filled" severity="error">{alertMessage}</Alert>
                 </Stack>
+            }
+            {redirect &&
+                < Redirect to="/party-selection" />
             }
             <Dialog onClose={handleClose} open={createUserPopup}>
                 <CssBaseline />
@@ -158,7 +154,7 @@ export const PopupIoT = (props) => {
                                                 src={Logo}
                                             />
                                         </ListItemAvatar>
-                                        <ListItemText id={labelId} primary={`Line item ${value.localIp}`} />
+                                        <ListItemText id={labelId} primary={`${value.localIp}`} />
                                     </ListItemButton>
                                 </ListItem>
                             );
@@ -171,6 +167,7 @@ export const PopupIoT = (props) => {
 }
 const mapStateToProps = state => {
     return {
+        odaName: state.odaName,
         createUserPopup: state.createUserPopup,
         odaUser: state.odaUser,
     };
@@ -178,7 +175,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        setCreateUserPopup: createUserPopup => dispatch({ type: actionTypes.CREATE_USER_POPUP, createUserPopup })
+        setCreateUserPopup: createUserPopup => dispatch({ type: actionTypes.CREATE_USER_POPUP, createUserPopup }),
+        setOdaName: odaName => dispatch({ type: actionTypes.SET_ODANAME, odaName })
+
     };
 };
-export default connect(mapStateToProps, mapDispatchToProps)(PopupIoT);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)((PopupIoT)));

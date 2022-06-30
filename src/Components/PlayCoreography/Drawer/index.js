@@ -60,7 +60,7 @@ const CorListDrawer = ({ list, setCorScreen }) => {
             </ListItem>
           ))
         ) : (
-            <>Loading</>
+            <>5959</>
           )}
       </List>
     </Drawer>

@@ -42,6 +42,7 @@ class APIServices {
           let newListState = [...ipList];
           newListState.push(response.data)
           setState(newListState)
+          localStorage.setItem('localIp', response.data.localIp)
         }).catch(error => {
           console.log(error)
         })

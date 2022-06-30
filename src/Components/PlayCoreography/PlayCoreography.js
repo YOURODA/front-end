@@ -4,13 +4,13 @@ import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import * as actionTypes from "../../store/actions/actionTypes";
 import SpotifyFooter from "../../Containers/SpotifyFooter/SpotifyFooter";
-// import CssBaseline from "@material-ui/core/CssBaseline/CssBaseline";
+import CssBaseline from "@material-ui/core/CssBaseline/CssBaseline";
 import socketIo from "socket.io-client";
 import { Grid } from "@material-ui/core";
 import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 import APIService from "../Services/APIServices";
-import ListTab from "./ListTab/ListTab";
+// import ListTab from "./ListTab/ListTab";
 import PlayChoreographiesTable from "./PlayChoreographiesTable/index";
 import CorListDrawer from "./Drawer";
 import MuiAppBar from '@mui/material/AppBar';
@@ -87,7 +87,7 @@ class PlayCoreography extends Component {
       setSmokeTemperature,
     } = this.props;
     // if (isSmokeActive) {
-    socket.emit("askTemperature", { isSmokeActive: false });
+    socket.emit("askTemperature", { isSmokeActive: true });
     socket.on("temperature", (data) => {
       console.log("temperature in the oda", data.temperatureToCelsius);
       setSmokeTemperature(data.temperatureToCelsius);
@@ -108,7 +108,7 @@ class PlayCoreography extends Component {
     const socketio_url = "http://localhost:5001/";
     this.odaName = { email: this.props.odaUser };
     let _socket = socketIo.connect(socketio_url, connectionStrings);
-    _socket.emit("Odaya Katil", this.odaName);
+    _socket.emit("Odaya Katil", { email: 'eroglueray@yahoo.com' });
     this.props.setScoketIO(_socket);
     console.log("odaname", this.odaName);
     const apiServices = new APIService();
@@ -144,6 +144,17 @@ class PlayCoreography extends Component {
         <Main>
           <PlayChoreographiesTable />
         </Main>
+        )}
+        <ThemeProvider theme={theme}>
+          <CssBaseline>
+            <SpotifyFooter
+              style={{
+                fontFamily:
+                  "spotify-circular,Helvetica Neue,Helvetica,Arial,Hiragino Kaku Gothic Pro,Meiryo,MS Gothic,sans-serif",
+              }}
+            ></SpotifyFooter>
+          </CssBaseline>
+        </ThemeProvider>
       </Grid>
     );
   }

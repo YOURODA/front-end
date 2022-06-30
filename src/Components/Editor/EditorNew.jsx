@@ -41,27 +41,41 @@ export const EditorNew = (props) => {
     setOdaUser,
     currentTrackId,
     currently_playing,
+    setOdaName,
+    odaName
   } = props;
   const [goCoreography, setGoCoreography] = useState(false);
   const [odaNick, setOdaNick] = useState(null);
+  const [statusMessage, setStatusMessage] = useState('');
   const [continueCor, setContinueCor] = useState(false);
-  const socketio_url = "http://localhost:5001/";
+  const socketio_url = localStorage.getItem('localIp') + ':8080/odaName'
 
   let interval;
-
+  let odaNameLocal = localStorage.getItem("odaName");
   const apiService = new APIServices();
   const spotifyAPIServices = new SpotifyAPIServices();
   if (!goCoreography) {
     setGoCoreography(true);
   }
-  const askTemperature = (_socket) => {
-    console.log("askTemp _socket", _socket);
-    // if (currentUser && currentUser.email && socketa && socketa.id) {
-      _socket.emit("askTemperature", { isSmokeActive });
-      _socket.on("temperature", (data) => {
-      console.log("temperature in the oda", data.temperatureToCelsius);
-      setSmokeTemperature(data.temperatureToCelsius);
+  const joinRoom = async (_socket) => {
+    console.log('joine geldi');
+    _socket.emit("join", { name: "eray" });
+    await _socket.on('join', (data) => {
+      console.log("data.msg: ", data.msg)
+      interval = data.msg
     });
+  }
+  const askTemperature = async (_socket) => {
+    console.log('asktemperatureeee')
+    // // if (currentUser && currentUser.email && socketa && socketa.id) {
+    if (interval !== null) {
+      console.log("interval", interval)
+      _socket.emit("askTemperature", { isSmokeActive, odaNameLocal });
+      await _socket.on("temperature", (data) => {
+        console.log("temperature in the oda", data.temperature);
+        setSmokeTemperature(data.temperature);
+      });
+    }
   };
 
   const isAvailableOdaNickRes = () => {
@@ -70,24 +84,23 @@ export const EditorNew = (props) => {
     });
   };
 
-  // const socketio_url = "https://your-oda-back-end.herokuapp.com/";
 
   useEffect(() => {
     // spotifyAPIServices.getTracksAudioAnalysis(currentUser.access_token, currentTrackId).then((response) => {
     //   console.log("getTracksAudioAnalysis", response.data)
     // });
-    console.log("currently_playing useEffect", currently_playing);
-    const connectionStrings = {
-      "force new connection": true,
-      reconnectionAttempts: "Infiniy",
-      timeout: 10000,
-      transports: ["websocket"],
-    };
-    let _socket = socketIo.connect(socketio_url, connectionStrings);
+    // console.log("currently_playing useEffect", currently_playing);
+    // const connectionStrings = {
+    //   "force new connection": true,
+    //   reconnectionAttempts: "Infiniy",
+    //   timeout: 10000,
+    //   transports: ["websocket"],
+    // };
+    const _socket = socketIo(`${socketio_url}`);
+    console.log("_socket", _socket)
     setSocketIO(_socket);
-    _socket.emit("Odaya Katil", { email: "eroglueray@yahoo.com" });
+    joinRoom(_socket);
     interval = setInterval(() => askTemperature(_socket), 10000);
-
     return () => {
       _socket.close();
       // clearInterval(interval);
@@ -179,6 +192,7 @@ const mapStateToProps = (state) => {
     currentUser: state.current_user,
     currentTrackId: state.currentTrackId,
     currently_playing: state.currently_playing,
+    odaName: state.odaName
   };
 };
 const mapDispatchToProps = (dispatch) => {
@@ -190,6 +204,8 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({ type: actionTypes.CREATE_USER_POPUP, createUserPopup }),
     setOdaUser: (odaUser) =>
       dispatch({ type: actionTypes.SET_ODAUSER, odaUser }),
+    setOdaName: odaName => dispatch({ type: actionTypes.SET_ODANAME, odaName })
+
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(EditorNew);

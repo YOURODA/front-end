@@ -14,6 +14,7 @@ import PersonIcon from "@material-ui/icons/Person";
 import AddIcon from "@material-ui/icons/Add";
 import Typography from "@material-ui/core/Typography";
 import { blue } from "@material-ui/core/colors";
+import * as actionTypes from "../../store/actions/actionTypes";
 
 const useStyles = makeStyles({
   avatar: {
@@ -24,7 +25,7 @@ const useStyles = makeStyles({
 
 const SelectedDevicePopUp = (props) => {
   const classes = useStyles();
-  const { onClose, selectedValue, user ,send} = props;
+  const { onClose, selectedValue, user, send, currentTrackId, selectedTrackIds } = props;
   const [deviceList, setDeviceList] = useState(null);
   const [open, setOpen] = useState(true);
 
@@ -33,11 +34,31 @@ const SelectedDevicePopUp = (props) => {
     setOpen(false);
   };
 
-  const handleListItemClick = (id,name) => {
+  const handleListItemClick = (id, name) => {
     setOpen(false)
     onClose();
     send(id)
+    playChorTrack(id);
   };
+  const playChorTrack = (id) => {
+    console.log("selectedTrackIdsselectedTrackIdsselectedTrackIds", selectedTrackIds)
+    console.log("user.access_token", user.access_token)
+    const url = `https://api.spotify.com/v1/me/player/play?device_id=${id}`;
+    axios({
+      url,
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${user.access_token}`,
+      },
+      data: { "uris": [`spotify:track:${selectedTrackIds}`] }
+    })
+      .then((response) => {
+        console.log("spotifyDATA: ", response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
 
   useEffect(() => {
     axios({
@@ -66,7 +87,7 @@ const SelectedDevicePopUp = (props) => {
         {deviceList.data.devices.map((device) => (
           <ListItem
             button
-            onClick={() => handleListItemClick(device.id,device.name)}
+            onClick={() => handleListItemClick(device.id, device.name)}
             key={device.name}
           >
             <ListItemAvatar>
@@ -75,7 +96,7 @@ const SelectedDevicePopUp = (props) => {
               </Avatar>
             </ListItemAvatar>
             <ListItemText primary={device.name} />
-            {device.is_active ?"active":"no-active"}
+            {device.is_active ? "active" : "no-active"}
           </ListItem>
         ))}
       </List>
@@ -86,6 +107,9 @@ const SelectedDevicePopUp = (props) => {
 const mapStateToProps = (state) => {
   return {
     user: state.current_user,
+    selectedTrackIds: state.selectedTrackIds,
+    currentTrackId: state.currentTrackId,
+
   };
 };
 const mapDispatchToProps = (dispatch) => {
@@ -99,6 +123,7 @@ const mapDispatchToProps = (dispatch) => {
     //     dispatch({ type: actionTypes.UPDATE_COLOUR, colour }),
     //   setIsReturnMusic: isReturnMusic =>
     //     dispatch({ type: actionTypes.IS_RETURN_MUSIC, isReturnMusic })
+
   };
 };
 

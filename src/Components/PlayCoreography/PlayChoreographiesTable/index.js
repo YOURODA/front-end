@@ -17,6 +17,10 @@ import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import useLocalStorage from "../../../hooks/useLocalStorage";
 import RatingCor from "../../RatingCor"
 import CorSettingsMenu from "../CorSettingsMenu/CorSettingsMenu";
+import SelectedDevicePopUp from "../../CoreographyNew/SelectedDevicePopUp";
+import socketIo from "socket.io-client";
+
+let interval;
 const PlayChoreographiesTable = ({
   setIsReturnMusic,
   setCurrentTrackId,
@@ -26,7 +30,11 @@ const PlayChoreographiesTable = ({
   socket,
   playChoreographyScreen,
   list,
-  setList
+  setList,
+  isSmokeActive,
+  setSmokeTemperature,
+  setSocketIO,
+  setSelectedTrackIds
 }) => {
   const [loading, setLoading] = useState(false);
   const [getAllCorData, setAllCorData] = useState([]);
@@ -38,10 +46,54 @@ const PlayChoreographiesTable = ({
     "editCorId",
     ""
   );
+  const socketio_url = localStorage.getItem('localIp') + ':8080/odaName'
+  let odaNameLocal = localStorage.getItem("odaName");
   const apiService = new APIServices();
   const history = useHistory();
   //isYourList:false,selected:"All"
   const { isYourList, selected } = playChoreographyScreen
+  const getUserCorListAll = async () => {
+    await apiService
+      .getUserCorListAll()
+      .then((response) => {
+        if (response.status === 200) {
+          console.log("Create New List", response.data);
+          setList(response.data);
+        }
+      })
+      .catch((err) => {
+        console.log("sentReviews Err", err);
+      });
+  }
+  const joinRoom = async (_socket) => {
+    console.log('joine geldi');
+    _socket.emit("join", { name: "eray" });
+    await _socket.on('join', (data) => {
+      console.log("data.msg: ", data.msg)
+      interval = data.msg
+    });
+  }
+  const askTemperature = async (_socket) => {
+    console.log('asktemperatureeee')
+    if (interval !== null) {
+      console.log("interval", interval)
+      _socket.emit("askTemperature", { isSmokeActive, odaNameLocal });
+      await _socket.on("temperature", (data) => {
+        console.log("temperature in the oda", data.temperature);
+        setSmokeTemperature(data.temperature);
+      });
+    }
+  };
+  useEffect(() => {
+    getUserCorListAll();
+    const _socket = socketIo(`${socketio_url}`);
+    setSocketIO(_socket);
+    joinRoom(_socket);
+    interval = setInterval(() => askTemperature(_socket), 10000);
+    return () => {
+      _socket.close();
+    };
+  }, [setSocketIO]);
   useEffect(() => {
     console.log("selected", selected)
     setLoading(true)
@@ -50,7 +102,6 @@ const PlayChoreographiesTable = ({
         case "All":
           console.log("get all api");
           apiService.getAllCoreographies().then((response) => {
-            console.log("response", response);
             setLoading(false)
             setAllCorData(getCore(response.data.cor));
           });
@@ -86,6 +137,7 @@ const PlayChoreographiesTable = ({
   );
 
   const goParty = (id) => {
+    console.log("goParty", id)
     let tryCor;
     if (version === "v.1.0") {
       tryCor = regulatorCorLoop({ songCorLoop: choreograph, smoke: false });
@@ -98,25 +150,23 @@ const PlayChoreographiesTable = ({
 
     let stringCSV = JSON.stringify({ corData: tryCor });
     const encodedString = {
+      isActive: 0,
       base: new Buffer(stringCSV).toString("base64"),
       time: milisToMinutesAndSeconds(durationStamps),
+      odaNameLocal: localStorage.getItem('odaName')
     };
     socket.emit("corData", encodedString);
     setIsReturnMusic(id);
   };
 
-  // if (loading) {
-  //   return (
-  //     <div style={{ height: "100%", width: "100%", paddingTop: "50%", paddingBottom: "50%" }}>
-  //       <LinearProgress color="success" />
-  //       <LinearProgress color="success" />
-  //       <LinearProgress color="success" />
-  //     </div>
-  //   )
-  // }
-
   return (
     <Grid style={{ backgroundColor: '#001e3c', paddingLeft: '20vh', minHeight: '45vw' }}>
+      {selectedDevicePopUp && (
+        <SelectedDevicePopUp
+          send={(id) => goParty(id)}
+          onClose={closeSelectDevicePopUp}
+        />
+      )}
       <Grid item lg={12} md={12} xl={12} xs={12}>
         <MaterialTable
           style={{ backgroundColor: "#66B2FF" }}
@@ -175,10 +225,11 @@ const PlayChoreographiesTable = ({
               icon: () => <PlayArrowIcon />,
               // tooltip: "Play Choreography",
               onClick: (event, rowData) => {
-                setSelectTrackId(rowData.trackId);
+                // setSelectTrackId(rowData.trackId);
                 setSelectedDevicePopUp(true);
                 setChoreograph(rowData.file);
                 setVersion(rowData.version);
+                setSelectedTrackIds(rowData.trackId)
               },
             },
           ]}
@@ -209,6 +260,7 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
   return {
+    setSocketIO: (socket) => dispatch({ type: actionTypes.SOCKET, socket }),
     setCorData: (corData) => dispatch({ type: actionTypes.COR_DATA, corData }),
     setCreateCorPopup: (createCorPopup) =>
       dispatch({ type: actionTypes.CREATE_COR_POPUP, createCorPopup }),
@@ -218,6 +270,7 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({ type: actionTypes.CURRENT_TRACK_ID, currentTrackId }),
     setList: (list) =>
       dispatch({ type: actionTypes.SET_LIST, list }),
+    setSelectedTrackIds: (selectedTrackIds) => dispatch({ type: actionTypes.SET_SELECTED_TRACK_IDS, selectedTrackIds }),
   };
 };
 export default connect(

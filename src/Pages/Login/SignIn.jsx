@@ -33,7 +33,7 @@ function Copyright(props) {
 const theme = createTheme();
 
 export function SignIn(props) {
-    const { accessToken, setRefreshToken, setCreateUserPopup, createUserPopup, setOdaUser, odaUser } = props;
+    const { setCreateUserPopup, createUserPopup, setOdaUser, odaUser } = props;
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [alertMessage, setAlertMessage] = useState('');
@@ -45,12 +45,13 @@ export function SignIn(props) {
         e.preventDefault();
         returnValue = await apiService.login(email, password);
         if (returnValue.status == 200) {
+            localStorage.setItem('odaUser', email)
             setOdaUser(email);
             // console.log("email", email)
             console.log("odaUser: ", odaUser)
-            // setCreateUserPopup(true);
+            setCreateUserPopup(true);
 
-            window.location = "/party-selection"
+            // window.location = "/party-selection"
         }
         else {
             setAlertMessage(returnValue.data.message);

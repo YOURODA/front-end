@@ -1,9 +1,10 @@
 import React, { useState, useEffect, Component } from 'react'
-import { Redirect, Switch } from "react-router-dom";
+import { Redirect, Switch, useHistory } from "react-router-dom";
 import RouteWithLayout from "./Components/RouteWithLayout/RouteWithLayout";
 import Editor from "./Components/Editor/EditorNew";
 import PartySelectionNew from "./Components/PartySelection/PartySelectionNew";
 import PlayCoreography from "./Components/PlayCoreography/PlayCoreography";
+import PlayChoreographies from "./Components/PlayCoreography/PlayChoreographies";
 import SignIn from "./Pages/Login/SignIn"
 import Register from "./Pages/Register/SignUp"
 import LiveParty from "./Pages/LiveParty/LiveParty"
@@ -11,7 +12,6 @@ import apiService from "./Components/Services/APIServices";
 import axios from 'axios';
 import jwt_decode from "jwt-decode";
 import { createBrowserHistory } from 'history';
-import { useHistory } from 'react-router-dom';
 import LivePartyCorScreen from './Pages/LiveParty/LivePartyCorScreen';
 
 
@@ -72,7 +72,7 @@ export const Routes = (props) => {
           <RouteWithLayout exact layout={PartySelectionNew} path="/party-selection" />
           <RouteWithLayout
             exact
-            layout={PlayCoreography}
+            layout={PlayChoreographies}
             path="/go-party"
           />
           <RouteWithLayout exact layout={Editor} path="/create-party" />

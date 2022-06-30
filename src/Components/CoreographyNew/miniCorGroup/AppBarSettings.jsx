@@ -12,6 +12,7 @@ import "./LogoSizing.css";
 import Controller from "./Controller";
 import SaveLivePartyButton from "../SaveLivePartyButton";
 import SmokeStatus from "../SmokeStatus";
+import { Redirect, withRouter } from 'react-router-dom';
 
 const RedSwitch = withStyles({
   switchBase: {
@@ -84,6 +85,7 @@ export const AppBarSettings = ({
   isShowSmokeStatus = false,
 }) => {
   const [isConsoleActive, setConsoleActive] = useState(false);
+  const [goPartySelection, setGoPartySelection] = useState(false);
   const classes = useStyles();
   const apiServices = new APIService();
 
@@ -139,7 +141,7 @@ export const AppBarSettings = ({
                             response.status === 200 &&
                             response.data.odas[0].localIp
                           ) {
-                            localOdaIp = response.data.odas[0].localIp;
+                            localOdaIp = localStorage.getItem('localIp');;
                             robotModel = response.data.odas[0].robotModel;
                           }
                           setIsLiveTry({
@@ -171,17 +173,15 @@ export const AppBarSettings = ({
 
   return (
     <div className={classes.root}>
-      <Grid container>
-        <Grid item xs={4} xl>
-          <img
-            style={{
-              height: "30px",
-              width: "auto",
-              paddingLeft: "5%",
-            }}
-            src={Logo}
-            onClick={() => (window.location = "/party-selection")}
-          />
+      <Grid container >
+        {goPartySelection &&
+          <Redirect to="/party-selection" />
+        }
+        <Grid item xs={4}>
+          <img style={{
+            height: "30px",
+            width: "auto", paddingLeft: "5%"
+          }} src={Logo} onClick={() => setGoPartySelection(true)} />
         </Grid>
         <Grid item xs={4}>
           {isShowSmokeStatus && <SmokeStatus />}
@@ -213,4 +213,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AppBarSettings);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)((AppBarSettings)));
