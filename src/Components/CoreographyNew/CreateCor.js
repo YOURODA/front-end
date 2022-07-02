@@ -168,7 +168,7 @@ class CreateCor extends Component {
     const { corData } = this.state;
     let stringCSV = JSON.stringify({ corData });
     const encodedString = {
-      isActive: 0,
+      isClose: 0,
       base: new Buffer(stringCSV).toString("base64"),
       time: this.milisToMinutesAndSeconds(this.props.durationStamps),
       odaNameLocal: localStorage.getItem('odaName')
@@ -222,7 +222,7 @@ class CreateCor extends Component {
           <>
             {checkedMultiple && (
               <React.Fragment>
-                <AppBarSettings isOpen={true} />
+                <AppBarSettings  isShowSaveButton  isShowLiveTry isShowConsole isShowHeat isShowStopButton/>
                 {this.props.songCor.length !== 0 && (
                   <Grid container spacing={0}>
                     <Grid item xs={3}>

@@ -60,10 +60,13 @@ const initialState = {
   odaUser: null,
   livePartyCategories : [],
   settings:{
-    isMakeCor:false
+    isMakeCor:false,
+    livePartyWaitSeconds:1
   },
   odaName: null,
-  selectedTrackIds: 0
+  selectedTrackIds: 0,
+  secondsQueue:{liveCor:[],seconds:0}
+
 };
 
 const reducer = (state = initialState, action) => {
@@ -322,6 +325,11 @@ const reducer = (state = initialState, action) => {
         ...state,
         settings: action.settings
       }
+    case actionTypes.SET_SECOUNDS_QUEUE:
+        return {
+          ...state,
+          secondsQueue:action.secondsQueue
+        }
     default:
       return state;
   }

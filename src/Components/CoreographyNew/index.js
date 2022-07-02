@@ -87,6 +87,35 @@ const PlayChoreographiesTable = ({
     }
   };
 
+  // const socketRequest = async () => {
+  //   socket.on("corData", (data) => {
+  //     // if()
+  //     console.log("sıracı 2", data.message);
+  //     if (version === "v.1.0") {
+  //       tryCor = regulatorCorLoop({ songCorLoop: choreograph, smoke: false });
+  //     } else {
+  //       tryCor = choreograph;
+  //     }
+  //     stringCSV = JSON.stringify({ corData: tryCor });
+
+  //     const encodedString = {
+  //       isStop: 0,
+  //       base: new Buffer(stringCSV).toString("base64"),
+  //       time: milisToMinutesAndSeconds(durationStamps),
+  //       odaNameLocal: localStorage.getItem("odaName"),
+  //     };
+  //     // setTimeout(() => {
+  //       console.log("sıracı 3", encodedString);
+  //       socket.emit("corData", encodedString);
+  //     // }, 5000);
+  //   });
+  // };
+
+  // useEffect(() => {
+  //   if (socket && socket.on) {
+  //      socketRequest();
+  //   }
+  // }, [socket]);
 
   useEffect(() => {
     getUserCorListAll();

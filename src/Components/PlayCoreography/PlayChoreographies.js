@@ -120,7 +120,7 @@ export const PlayChoreographies = (props) => {
     return (
         <Grid container style={{ backgroundColor: '#001e3c', height: "100%" }} >
             <Grid item lg={12} md={12} xl={12} xs={12}>
-                <AppBarSettings isOpen={false} />
+                <AppBarSettings isShowSmokeStatus isShowStopButton isShowHeat />
             </Grid>
             <Grid item lg={12} md={12} xl={12} xs={12}>
                 <CorListDrawer />

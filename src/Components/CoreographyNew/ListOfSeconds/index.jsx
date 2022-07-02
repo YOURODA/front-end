@@ -110,7 +110,7 @@ const ListOfSeconds = ({
     });
     let stringCSV = JSON.stringify({ corData: tryLoop });
     const encodedString = {
-      isActive: 1,
+      isStop: 0,
       base: new Buffer(stringCSV).toString("base64"),
       time: 2,
       odaNameLocal: localStorage.getItem('odaName')

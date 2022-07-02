@@ -1,7 +1,13 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import * as actionTypes from "../../../store/actions/actionTypes";
-import { FormGroup, FormControlLabel, Switch, Grid } from "@material-ui/core";
+import {
+  FormGroup,
+  FormControlLabel,
+  Switch,
+  Grid,
+  Button,
+} from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { withStyles } from "@material-ui/core/styles";
 import { purple, red, blue } from "@material-ui/core/colors";
@@ -12,7 +18,8 @@ import "./LogoSizing.css";
 import Controller from "./Controller";
 import SaveLivePartyButton from "../SaveLivePartyButton";
 import SmokeStatus from "../SmokeStatus";
-import { Redirect, withRouter } from 'react-router-dom';
+import { Redirect, withRouter } from "react-router-dom";
+import { emptyCor } from "../../../utils/cor/emptyCor";
 
 const RedSwitch = withStyles({
   switchBase: {
@@ -77,17 +84,46 @@ export const AppBarSettings = ({
   setIsLiveTry,
   setIsSmokeActive,
   user,
-  isOpen,
   settings,
-  isShowSaveButton = true,
-  isShowLiveTry = true,
-  isShowConsole = true,
+  isShowSaveButton = false,
+  isShowLiveTry = false,
+  isShowConsole = false,
   isShowSmokeStatus = false,
+  isShowHeat = false,
+  isShowSmokeButton=false,
+  isShowStopButton =false,
+
+
+  setSecondsQueue,
+  socket,
 }) => {
   const [isConsoleActive, setConsoleActive] = useState(false);
   const [goPartySelection, setGoPartySelection] = useState(false);
   const classes = useStyles();
   const apiServices = new APIService();
+
+  const stopButton = () => {
+    setSecondsQueue({ liveCor: [], seconds: 0 });
+
+    const corData = emptyCor(2);
+    let stringCSV = JSON.stringify({ corData });
+    const encodedString = {
+      isStop: 1,
+      base: new Buffer(stringCSV).toString("base64"),
+      time: 2,
+      odaNameLocal: localStorage.getItem("odaName"),
+    };
+    socket.emit("corData", encodedString);
+  };
+
+  const runSmokeSocket = () => {
+    console.log("run onlySmoke ");
+    socket.emit("onlySmoke", {
+      time: 5,
+      smoke: 1,
+      odaNameLocal: localStorage.getItem("odaName"),
+    });
+  };
 
   const SaveButton = () => {
     if (isShowSaveButton) {
@@ -114,17 +150,18 @@ export const AppBarSettings = ({
               label="Console"
             />
           )}
-
-          <FormControlLabel
-            control={
-              <RedSwitch
-                checked={isSmokeActive}
-                onChange={() => setIsSmokeActive(!isSmokeActive)}
-                color="secondary"
-              />
-            }
-            label="Heat"
-          />
+          {isShowHeat && (
+            <FormControlLabel
+              control={
+                <RedSwitch
+                  checked={isSmokeActive}
+                  onChange={() => setIsSmokeActive(!isSmokeActive)}
+                  color="secondary"
+                />
+              }
+              label="Heat"
+            />
+          )}
           {isShowLiveTry && (
             <FormControlLabel
               control={
@@ -135,13 +172,13 @@ export const AppBarSettings = ({
                       let localOdaIp = "";
                       let robotModel = "";
                       apiServices
-                        .myOdaOnlyEmail({ email: user.email })
+                        .myOdaOnlyEmail({ email: "okan-_94@hotmail.com" })
                         .then((response) => {
                           if (
                             response.status === 200 &&
                             response.data.odas[0].localIp
                           ) {
-                            localOdaIp = localStorage.getItem('localIp');;
+                            localOdaIp = localStorage.getItem("localIp");
                             robotModel = response.data.odas[0].robotModel;
                           }
                           setIsLiveTry({
@@ -164,8 +201,6 @@ export const AppBarSettings = ({
 
           {isConsoleActive && <Controller />}
           <SaveButton />
-          {/* {settings.isMakeCor ? <SaveLivePartyButton/> :<SaveCorButton />} */}
-          {/* <SaveCorButton /> */}
         </FormGroup>
       </>
     );
@@ -173,24 +208,45 @@ export const AppBarSettings = ({
 
   return (
     <div className={classes.root}>
-      <Grid container >
-        {goPartySelection &&
-          <Redirect to="/party-selection" />
-        }
+      <Grid container>
+        {goPartySelection && <Redirect to="/party-selection" />}
         <Grid item xs={4}>
-          <img style={{
-            height: "30px",
-            width: "auto", paddingLeft: "5%"
-          }} src={Logo} onClick={() => setGoPartySelection(true)} />
+          <img
+            style={{
+              height: "30px",
+              width: "auto",
+              paddingLeft: "5%",
+            }}
+            src={Logo}
+            onClick={() => setGoPartySelection(true)}
+          />
         </Grid>
         <Grid item xs={4}>
-          {isShowSmokeStatus && <SmokeStatus />}
+          <div style={{ display: "flex" }}>
+            {isShowSmokeStatus && <SmokeStatus />}
+            {isShowSmokeButton && (
+            <Button
+              variant="outlined"
+              color="primary"
+              onClick={() => runSmokeSocket()}
+            >
+              Smoke
+            </Button>
+            )}
+            {isShowStopButton && (
+            <Button
+              variant="outlined"
+              color="secondary"
+              onClick={() => stopButton()}
+            >
+              Stop Party
+            </Button>
+            ) }
+          </div>
         </Grid>
-        {isOpen && (
           <Grid item xs={4}>
             <SwitchGroup />
           </Grid>
-        )}
       </Grid>
     </div>
   );
@@ -210,7 +266,11 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({ type: actionTypes.IS_LIVE_TRY, isLiveTry }),
     setIsSmokeActive: (isSmokeActive) =>
       dispatch({ type: actionTypes.IS_SMOKE_ACTIVE, isSmokeActive }),
+    setSecondsQueue: (secondsQueue) =>
+      dispatch({ type: actionTypes.SET_SECOUNDS_QUEUE, secondsQueue }),
   };
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)((AppBarSettings)));
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(AppBarSettings)
+);

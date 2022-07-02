@@ -1,11 +1,17 @@
 import React from "react";
 import { Box } from "@mui/material";
 import styles from "./styles.module.css";
+import { connect } from "react-redux";
+import * as actionTypes from "../../../store/actions/actionTypes";
 
-const CorBox = ({ cor }) => {
+const CorBox = ({ cor, secondsQueue, setSecondsQueue }) => {
+  const showSecondsQueue = () => {
+    setSecondsQueue({ liveCor: cor.file, seconds: 0 });
+  };
+
   return (
     <Box
-      onClick={() => console.log("cor")}
+      onClick={() => showSecondsQueue()}
       className={[styles.unselectable, styles.neonBox]}
       sx={{
         width: 100,
@@ -21,7 +27,6 @@ const CorBox = ({ cor }) => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        // padding:2,
         margin: 1,
         boxShadow: `
         10px 20px 50px rgba(0,0,0,.8)
@@ -37,4 +42,15 @@ const CorBox = ({ cor }) => {
   );
 };
 
-export default CorBox;
+const mapStateToProps = (state) => ({
+  secondsQueue: state.secondsQueue,
+});
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setSecondsQueue: (secondsQueue) =>
+      dispatch({ type: actionTypes.SET_SECOUNDS_QUEUE, secondsQueue }),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CorBox);

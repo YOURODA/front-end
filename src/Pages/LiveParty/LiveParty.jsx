@@ -5,7 +5,9 @@ import * as actionTypes from "../../store/actions/actionTypes";
 import APIService from "../../Components/Services/APIServices";
 import FirstCategory from "../../Components/LiveParty/FirstCategory/FirstCategory";
 import CategoriesList from "../../Components/LiveParty/CategoriesList/CategoriesList";
+import SecondsListSender from "../../Components/LiveParty/SecondsListSender/SecondsListSender";
 import AppBarSettings from "../../Components/CoreographyNew/miniCorGroup/AppBarSettings";
+import SocketLogin from "../../Components/Socket/SocketLogin";
 
 /*
  *Live parti için ana sayfa
@@ -46,12 +48,13 @@ const LiveParty = ({ livePartyCategories, setCategories }) => {
 
   return (
     <div style={{ backgroundColor: "#001e3c", height: "100vh" }}>
+      <SocketLogin/>
+      <SecondsListSender/>
       <AppBarSettings
-        isOpen={true}
-        isShowSaveButton={false}
-        isShowLiveTry={false}
-        isShowConsole={false}
-        isShowSmokeStatus={true}
+        isShowLiveTry
+        isShowSmokeStatus
+        isShowSmokeButton
+        isShowStopButton
       />
       <CategoriesList />;
     </div>

@@ -8,7 +8,6 @@ import CorBox from "./CorBox";
 
 import { Carousel } from "@trendyol-js/react-carousel";
 import styles from "./styles.module.css";
-import SendIcon from "@mui/icons-material/Send";
 import AddIcon from "@mui/icons-material/Add";
 
 export const CategoriesList = ({ livePartyCategories }) => {
@@ -38,7 +37,7 @@ export const CategoriesList = ({ livePartyCategories }) => {
               <Carousel
                 // show={10}
                 slide={5}
-                swiping={true}
+                swiping={category.cors.length > 10}
                 // dynamic={true}
                 show={10}
                 // transition={0.5}

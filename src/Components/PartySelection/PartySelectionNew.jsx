@@ -11,6 +11,7 @@ const theme = createTheme();
 export const PartySelectionNew = () => {
     const [goParty, setGoParty] = useState(false);
     const [createParty, setCreateParty] = useState(false);
+    const [liveParty, setLiveParty] = useState(false);
 
     return (
         <ThemeProvider theme={theme}>
@@ -21,6 +22,9 @@ export const PartySelectionNew = () => {
                 }
                 {createParty &&
                     <Redirect to="/create-party" />
+                }
+                {liveParty &&
+                    <Redirect to="/live-party" />
                 }
                 <Grid
                     item
@@ -54,6 +58,22 @@ export const PartySelectionNew = () => {
                         backgroundPosition: 'center',
                     }}
                     onClick={() => setCreateParty(true)}
+                >
+                </Grid>
+                <Grid
+                    item
+                    xs={6}
+                    sm={6}
+                    md={6}
+                    sx={{
+                        backgroundImage: `url(${makePartyLocation})`,
+                        backgroundRepeat: 'no-repeat',
+                        backgroundColor: (t) =>
+                            t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                    }}
+                    onClick={() => setLiveParty(true)}
                 >
                 </Grid>
             </Grid>
