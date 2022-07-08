@@ -55,6 +55,7 @@ const LiveParty = ({ livePartyCategories, setCategories }) => {
         isShowSmokeStatus
         isShowSmokeButton
         isShowStopButton
+        isShowHeat
       />
       <CategoriesList />;
     </div>

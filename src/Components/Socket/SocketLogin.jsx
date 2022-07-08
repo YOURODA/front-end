@@ -1,29 +1,27 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import * as actionTypes from "../../store/actions/actionTypes";
 import socketIo from "socket.io-client";
 
 const SocketLogin = ({ isSmokeActive, setSmokeTemperature, setSocketIO }) => {
+  const [timer, setTimer] = useState(0);
   const socketio_url = localStorage.getItem("localIp") + ":8080/odaName";
   let odaNameLocal = localStorage.getItem("odaName");
   let interval;
 
   const joinRoom = async (_socket) => {
-    console.log("joine geldi");
     _socket.emit("join", { name: odaNameLocal });
     await _socket.on("join", (data) => {
-      console.log("data.msg: ", data.msg);
       interval = data.msg;
     });
   };
 
+
   const askTemperature = async (_socket) => {
-    console.log("asktemperatureeee");
     // // if (currentUser && currentUser.email && socketa && socketa.id) {
     if (interval !== null) {
-      console.log("interval", interval);
-      console.log("isSmokeActive", { isSmokeActive, odaNameLocal });
-      _socket.emit("askTemperature", { isSmokeActive, odaNameLocal });
+
+      _socket.emit("askTemperature", { isSmokeActive: false, odaNameLocal });
       await _socket.on("temperature", (data) => {
         console.log("temperature in the oda", data.temperature);
         setSmokeTemperature(data.temperature);
@@ -33,20 +31,18 @@ const SocketLogin = ({ isSmokeActive, setSmokeTemperature, setSocketIO }) => {
 
   useEffect(() => {
     const _socket = socketIo(`${socketio_url}`);
-    console.log("_socket", _socket);
     setSocketIO(_socket);
     joinRoom(_socket);
-    interval = setInterval(() => askTemperature(_socket), 10000);
+    askTemperature(_socket);
+    window.setTimeout(() => {
+      setTimer(time=> time+1)
+    }, 10000);
     return () => {
+      // window.clearInterval(interval);
       _socket.close();
     };
-  }, [setSocketIO]);
+  }, [timer,isSmokeActive]);
 
-  useEffect(() => {
-      
-  
-  }, [])
-  
 
   return null;
 };
