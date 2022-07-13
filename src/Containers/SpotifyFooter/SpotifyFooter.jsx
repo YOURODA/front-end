@@ -93,8 +93,6 @@ class Layout extends Component {
     ) : (
         <Switch>
           <Route path="/login" component={Login} />
-          {/* <Route path="/login" component={Login} />
-          <Route path="/login" component={Login} /> */}
         </Switch>
 
       );

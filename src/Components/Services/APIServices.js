@@ -243,6 +243,7 @@ class APIServices {
     }
     const serviceData = {
       method: 'POST',
+      headers: { Authorization: `Bearer ${token}` },
       url: userApiService + '/user/isUserAvailable',
       data: userEmail,
     };
@@ -389,7 +390,7 @@ class APIServices {
     return await axios(serviceData);
   }
 
-  
+
   async getLivePartAllCategory() {
     const serviceData = {
       headers: { Authorization: `Bearer ${token}` }, method: 'POST',
@@ -398,7 +399,7 @@ class APIServices {
     return await axios(serviceData);
   }
 
-  
+
   async livePartAddFileToCategory({ categoryId, name, color, file }) {
     const serviceData = {
       headers: { Authorization: `Bearer ${token}` }, method: 'POST',

@@ -26,7 +26,6 @@ export const PopupIoT = (props) => {
     const apiServices = new APIService()
 
     useEffect(() => {
-        console.log("odaUser59: ", odaUser)
         const getOda = apiServices.myOdas(odaUser);
         getOda.then(response => {
             console.log("response.data.myodas", response.data)

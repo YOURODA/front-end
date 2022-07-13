@@ -3,7 +3,9 @@ import { Grid } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import goPartyLocation from '../../images/goParty.png'
-import makePartyLocation from '../../images/createParty.png'
+import createPartyLocation from '../../images/createParty.png'
+import makePartyLocation from '../../images/noInstall.jpg'
+
 import { Redirect, withRouter } from 'react-router-dom';
 
 const theme = createTheme();
@@ -28,9 +30,9 @@ export const PartySelectionNew = () => {
                 }
                 <Grid
                     item
-                    xs={6}
-                    sm={6}
-                    md={6}
+                    xs={4}
+                    sm={4}
+                    md={4}
                     sx={{
                         backgroundImage: `url(${goPartyLocation})`,
                         backgroundRepeat: 'no-repeat',
@@ -46,11 +48,11 @@ export const PartySelectionNew = () => {
 
                 <Grid
                     item
-                    xs={6}
-                    sm={6}
-                    md={6}
+                    xs={4}
+                    sm={4}
+                    md={4}
                     sx={{
-                        backgroundImage: `url(${makePartyLocation})`,
+                        backgroundImage: `url(${createPartyLocation})`,
                         backgroundRepeat: 'no-repeat',
                         backgroundColor: (t) =>
                             t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
@@ -62,9 +64,9 @@ export const PartySelectionNew = () => {
                 </Grid>
                 <Grid
                     item
-                    xs={6}
-                    sm={6}
-                    md={6}
+                    xs={4}
+                    sm={4}
+                    md={4}
                     sx={{
                         backgroundImage: `url(${makePartyLocation})`,
                         backgroundRepeat: 'no-repeat',
