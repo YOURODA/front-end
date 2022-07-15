@@ -26,7 +26,7 @@ const milisToMinutesAndSecondsToClearly = (mil) => {
   let minutes = Math.floor(mil / 60000);
   let seconds = ((mil % 60000) / 1000).toFixed(0);
   let secondsOfSum = Math.floor(Number(minutes) * 60 + Number(seconds));
-  return Array.from(Array(Math.round(secondsOfSum/2)).keys())
+  return Array.from(Array(Math.round(secondsOfSum / 2)).keys())
 };
 
 
@@ -91,17 +91,17 @@ const ListOfSeconds = ({
 
 
   useEffect(() => {
-    const clearSecond=  milisToMinutesAndSecondsToClearly(durationStamps)
+    const clearSecond = milisToMinutesAndSecondsToClearly(durationStamps)
     setClearSecondList(clearSecond)
 
   }, [durationStamps])
 
-  
+
   if (!clearSecondList) {
     return null;
   }
 
-  const onClickTyr = () => {
+  const onClickTry = () => {
     const tryLoop = tryRegulatorCorLoop({
       selectedSeconds,
       songCor,
@@ -132,7 +132,7 @@ const ListOfSeconds = ({
   };
 
   const addSeconds = () => {
-    const newClearSecondList =  [...clearSecondList]
+    const newClearSecondList = [...clearSecondList]
     newClearSecondList.push(clearSecondList.length)
     const newSongCor = [...songCor];
     newSongCor.push({
@@ -148,7 +148,7 @@ const ListOfSeconds = ({
         RBrightness: 0,
         RBlinker: 0,
         RSpeed: 0,
-        
+
         colour: {
           lColor1: 0,
           lColor2: 0,
@@ -162,7 +162,6 @@ const ListOfSeconds = ({
       },
       smoke: false,
     });
-    console.log("clearSecondList",clearSecondList)
     setSongCor(newSongCor);
     setClearSecondList(newClearSecondList)
   };
@@ -210,7 +209,7 @@ const ListOfSeconds = ({
                   variant="contained"
                   className={classes.button}
                   // color="primary"
-                  onClick={() => onClickTyr()}
+                  onClick={() => onClickTry()}
                 >
                   Try Selected
                 </Button>

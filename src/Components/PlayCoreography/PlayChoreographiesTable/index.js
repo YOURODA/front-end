@@ -142,8 +142,6 @@ const PlayChoreographiesTable = ({
   );
 
   const goParty = (id) => {
-    console.log("goParty", id);
-
     if (version === "v.1.0") {
       tryCor = regulatorCorLoop({ songCorLoop: choreograph, smoke: false });
     } else {
@@ -194,36 +192,36 @@ const PlayChoreographiesTable = ({
             },
             selected === "My"
               ? {
-                  title: "Share",
-                  field: "isShared",
-                  render: (rowData) => {
-                    console.log(rowData);
-                    if (!rowData.isShared && rowData._id) {
-                      return (
-                        <IconButton
-                          color="primary"
-                          aria-label="upload picture"
-                          component="span"
-                        >
-                          <Edit
-                            onClick={(e) => {
-                              setLocalDbEditCor(rowData._id);
-                              goToEditPage();
-                            }}
-                          />
-                        </IconButton>
-                      );
-                    }
-                    return <Check />;
-                  },
-                }
-              : {
-                  title: "Rating",
-                  field: "rating",
-                  render: (rowData) => {
-                    return <RatingCor rowData={rowData} />;
-                  },
+                title: "Share",
+                field: "isShared",
+                render: (rowData) => {
+                  console.log(rowData);
+                  if (!rowData.isShared && rowData._id) {
+                    return (
+                      <IconButton
+                        color="primary"
+                        aria-label="upload picture"
+                        component="span"
+                      >
+                        <Edit
+                          onClick={(e) => {
+                            setLocalDbEditCor(rowData._id);
+                            goToEditPage();
+                          }}
+                        />
+                      </IconButton>
+                    );
+                  }
+                  return <Check />;
                 },
+              }
+              : {
+                title: "Rating",
+                field: "rating",
+                render: (rowData) => {
+                  return <RatingCor rowData={rowData} />;
+                },
+              },
             {
               title: "Settings",
               field: "rating",
