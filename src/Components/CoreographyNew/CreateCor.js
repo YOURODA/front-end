@@ -210,6 +210,7 @@ class CreateCor extends Component {
       selectedDevicePopUp,
       clearSecondList,
     } = this.state;
+    console.log("CreateCor render")
     return (
       <Grid container style={{ backgroundColor: '#001e3c' }} >
         {selectedDevicePopUp && (

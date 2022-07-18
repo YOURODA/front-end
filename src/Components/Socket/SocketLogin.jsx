@@ -4,6 +4,7 @@ import * as actionTypes from "../../store/actions/actionTypes";
 import socketIo from "socket.io-client";
 
 const SocketLogin = ({ isSmokeActive, setSmokeTemperature, setSocketIO }) => {
+  const [stateSocket, setStateSocket] = useState(null)
   const [timer, setTimer] = useState(0);
   const socketio_url = localStorage.getItem("localIp") + ":8080/odaName";
   let odaNameLocal = localStorage.getItem("odaName");
@@ -32,15 +33,21 @@ const SocketLogin = ({ isSmokeActive, setSmokeTemperature, setSocketIO }) => {
   useEffect(() => {
     const _socket = socketIo(`${socketio_url}`);
     setSocketIO(_socket);
-    joinRoom(_socket);
-    askTemperature(_socket);
+    joinRoom(_socket)
+    setStateSocket(_socket)
+    return () => {
+      _socket.close();
+    };
+  }, [])
+  
+
+  useEffect(() => {
+    if(stateSocket){
+      askTemperature(stateSocket);
+    }
     window.setTimeout(() => {
       setTimer(time=> time+1)
     }, 10000);
-    return () => {
-      // window.clearInterval(interval);
-      _socket.close();
-    };
   }, [timer,isSmokeActive]);
 
 

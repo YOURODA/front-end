@@ -44,8 +44,6 @@ const changeDateFormat = (date) => {
 };
 
 const EditCorLocalStorage = ({
-  setContinueCor,
-  userId,
   setCurrentTrackId,
   setSongCor,
   setIsReturnMusic,
@@ -69,7 +67,6 @@ const EditCorLocalStorage = ({
   const apiService = new APIServices();
   const spotifyService = new SpotifyAPIServices();
   useEffect(() => {
-    console.log("userID", userId);
     apiService
       .getMyEditableCors(getLocalDbEditCor)
       .then((response) => {
@@ -162,10 +159,6 @@ const EditCorLocalStorage = ({
                   }
                 />
               </ListItemButton>
-
-              // <FormControlLabel
-              // onChange={(e,index)=> setSelectCor(index)}
-              // value={cor._id} control={<Radio />} label={cor.name} />
             );
           })}
           <ListItemButton
@@ -181,39 +174,7 @@ const EditCorLocalStorage = ({
             <ListItemText primary="New" />
           </ListItemButton>
         </List>
-        {/* <FormControl>
-          <FormLabel id="demo-radio-buttons-group-label">
-            How to start cor
-          </FormLabel>
-          <RadioGroup
-            aria-labelledby="demo-radio-buttons-group-label"
-            defaultValue="female"
-            name="radio-buttons-group"
-          >
-            {corLocalStorage.map((cor, index) => {
-              return (
-                <FormControlLabel
-                  onChange={(e, index) => setSelectCor(index)}
-                  value={cor._id}
-                  control={<Radio />}
-                  label={cor.name}
-                />
-              );
-            })}
-            <FormControlLabel
-              value={-1}
-              control={<Radio />}
-              label="New"
-              onChange={() => setSelectCor(-1)}
-            />
-          </RadioGroup>
-        </FormControl> */}
-        {/* 
-        <DialogActions>
-          <Button autoFocus onClick={continueCor}>
-            Continue Choreograph
-          </Button>
-        </DialogActions> */}
+     
       </Dialog>
     </div>
   );
@@ -221,14 +182,12 @@ const EditCorLocalStorage = ({
 
 const mapStateToProps = (state) => {
   return {
-    userId: state.userId,
     currentUser: state.current_user,
   };
 };
 const mapDispatchToProps = (dispatch) => {
   return {
     setSongCor: (songCor) => dispatch({ type: actionTypes.SONG_COR, songCor }),
-    setCorData: (corData) => dispatch({ type: actionTypes.COR_DATA, corData }),
     setCorInfo: (corSaveInfo) =>
       dispatch({ type: actionTypes.SET_COR_INFO, corSaveInfo }),
     setCurrentTrackId: (currentTrackId) =>
@@ -242,27 +201,3 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(EditCorLocalStorage);
-
-const BootstrapDialogTitle = (props) => {
-  const { children, onClose, ...other } = props;
-
-  return (
-    <DialogTitle sx={{ m: 0, p: 2 }} {...other}>
-      {children}
-      {onClose ? (
-        <IconButton
-          aria-label="close"
-          onClick={onClose}
-          sx={{
-            position: "absolute",
-            right: 8,
-            top: 8,
-            color: (theme) => theme.palette.grey[500],
-          }}
-        >
-          <CloseIcon />
-        </IconButton>
-      ) : null}
-    </DialogTitle>
-  );
-};
