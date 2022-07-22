@@ -21,7 +21,7 @@ const SocketLogin = ({ isSmokeActive, setSmokeTemperature, setSocketIO }) => {
     // // if (currentUser && currentUser.email && socketa && socketa.id) {
     if (interval !== null) {
 
-      _socket.emit("askTemperature", { isSmokeActive: false, odaNameLocal });
+      _socket.emit("askTemperature", { isSmokeActive: isSmokeActive, odaNameLocal });
       await _socket.on("temperature", (data) => {
         console.log("temperature in the oda", data.temperature);
         setSmokeTemperature(data.temperature);
@@ -35,13 +35,13 @@ const SocketLogin = ({ isSmokeActive, setSmokeTemperature, setSocketIO }) => {
     joinRoom(_socket);
     askTemperature(_socket);
     window.setTimeout(() => {
-      setTimer(time=> time+1)
+      setTimer(time => time + 1)
     }, 10000);
     return () => {
       // window.clearInterval(interval);
       _socket.close();
     };
-  }, [timer,isSmokeActive]);
+  }, [timer, isSmokeActive]);
 
 
   return null;

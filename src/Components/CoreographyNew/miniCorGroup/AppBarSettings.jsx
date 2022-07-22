@@ -90,8 +90,8 @@ export const AppBarSettings = ({
   isShowConsole = false,
   isShowSmokeStatus = false,
   isShowHeat = false,
-  isShowSmokeButton=false,
-  isShowStopButton =false,
+  isShowSmokeButton = false,
+  isShowStopButton = false,
 
 
   setSecondsQueue,
@@ -225,28 +225,28 @@ export const AppBarSettings = ({
           <div style={{ display: "flex" }}>
             {isShowSmokeStatus && <SmokeStatus />}
             {isShowSmokeButton && (
-            <Button
-              variant="outlined"
-              color="primary"
-              onClick={() => runSmokeSocket()}
-            >
-              Smoke
+              <Button
+                variant="outlined"
+                color="primary"
+                onClick={() => runSmokeSocket()}
+              >
+                Smoke
             </Button>
             )}
             {isShowStopButton && (
-            <Button
-              variant="outlined"
-              color="secondary"
-              onClick={() => stopButton()}
-            >
-              Stop Party
+              <Button
+                variant="outlined"
+                color="secondary"
+                onClick={() => stopButton()}
+              >
+                Stop Party
             </Button>
-            ) }
+            )}
           </div>
         </Grid>
-          <Grid item xs={4}>
-            <SwitchGroup />
-          </Grid>
+        <Grid item xs={4}>
+          <SwitchGroup />
+        </Grid>
       </Grid>
     </div>
   );
