@@ -58,14 +58,14 @@ const initialState = {
   list: [],
   playChoreographyScreen: { isYourList: false, selected: "All" },
   odaUser: null,
-  livePartyCategories : [],
-  settings:{
-    isMakeCor:false,
-    livePartyWaitSeconds:1
+  livePartyCategories: [],
+  settings: {
+    isMakeCor: false,
+    livePartyWaitSeconds: 1
   },
   odaName: null,
   selectedTrackIds: 0,
-  secondsQueue:{liveCor:[],seconds:0}
+  secondsQueue: { liveCor: [], seconds: 0 }
 
 };
 
@@ -326,10 +326,10 @@ const reducer = (state = initialState, action) => {
         settings: action.settings
       }
     case actionTypes.SET_SECOUNDS_QUEUE:
-        return {
-          ...state,
-          secondsQueue:action.secondsQueue
-        }
+      return {
+        ...state,
+        secondsQueue: action.secondsQueue
+      }
     default:
       return state;
   }

@@ -43,6 +43,7 @@ const SaveCorButton = ({
   const apiServices = new APIService();
 
   const handleClose = () => {
+    console.log("handleClose ile kapatildi")
     setOpen(false);
   };
   const createSaveCor = () => {
@@ -99,7 +100,7 @@ const SaveCorButton = ({
       </>
     )
   }
-
+console.log("open",open)
   return (
     <div>
       <SaveButton onClick={() => setOpen(true)}>Save Chr</SaveButton>
@@ -107,7 +108,7 @@ const SaveCorButton = ({
         <div>
           <Dialog
             open={open}
-            onClose={() => handleClose(false)}
+            // onClose={() => handleClose(false)}
             aria-labelledby="form-dialog-title"
           >
             <DialogTitle id="form-dialog-title">

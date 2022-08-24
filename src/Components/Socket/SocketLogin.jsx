@@ -4,6 +4,7 @@ import * as actionTypes from "../../store/actions/actionTypes";
 import socketIo from "socket.io-client";
 
 const SocketLogin = ({ isSmokeActive, setSmokeTemperature, setSocketIO }) => {
+  const [stateSocket, setStateSocket] = useState(null)
   const [timer, setTimer] = useState(0);
   const socketio_url = localStorage.getItem("localIp") + ":8080/odaName";
   let odaNameLocal = localStorage.getItem("odaName");
@@ -21,7 +22,7 @@ const SocketLogin = ({ isSmokeActive, setSmokeTemperature, setSocketIO }) => {
     // // if (currentUser && currentUser.email && socketa && socketa.id) {
     if (interval !== null) {
 
-      _socket.emit("askTemperature", { isSmokeActive: false, odaNameLocal });
+      _socket.emit("askTemperature", { isSmokeActive: isSmokeActive, odaNameLocal });
       await _socket.on("temperature", (data) => {
         console.log("temperature in the oda", data.temperature);
         setSmokeTemperature(data.temperature);
@@ -32,16 +33,22 @@ const SocketLogin = ({ isSmokeActive, setSmokeTemperature, setSocketIO }) => {
   useEffect(() => {
     const _socket = socketIo(`${socketio_url}`);
     setSocketIO(_socket);
-    joinRoom(_socket);
-    askTemperature(_socket);
-    window.setTimeout(() => {
-      setTimer(time=> time+1)
-    }, 10000);
+    joinRoom(_socket)
+    setStateSocket(_socket)
     return () => {
-      // window.clearInterval(interval);
       _socket.close();
     };
-  }, [timer,isSmokeActive]);
+  }, [])
+
+
+  useEffect(() => {
+    if (stateSocket) {
+      askTemperature(stateSocket);
+    }
+    window.setTimeout(() => {
+      setTimer(time => time + 1)
+    }, 10000);
+  }, [timer, isSmokeActive]);
 
 
   return null;
