@@ -51,12 +51,12 @@ export const GO_TO_SECONDS = "GO_TO_SECONDS";
 export const SET_COR_INFO = "SET_COR_INFO";
 export const SET_LIST = "SET_LIST";
 export const PLAY_CHOREOGRAPH_SCREEN = "PLAY_CHOREOGRAPH_SCREEN";
-export const LIVE_PARTY_CATEGORIES = "LIVE_PARTY_CATEGORIES" 
-export const SETTINGS = "SETTINGS" ;
+export const LIVE_PARTY_CATEGORIES = "LIVE_PARTY_CATEGORIES"
+export const SETTINGS = "SETTINGS";
 export const SET_SELECTED_TRACK_IDS = "SET_SELECTED_TRACK_IDS";
-export const SET_SECOUNDS_QUEUE ="SET_SECOUNDS_QUEUE";
-
-
+export const SET_SECOUNDS_QUEUE = "SET_SECOUNDS_QUEUE";
+export const AUDIO_FEATURES_OF_TRACK = "AUDIO_FEATURES_OF_TRACK";
+export const AUDIO_ANALYSIS_OF_TRACK = "AUDIO_ANALYSIS_OF_TRACK";
 
 export const playSong = (uris, deviceId) => {
   return (dispatch, getState) => {

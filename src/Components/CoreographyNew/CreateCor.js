@@ -13,6 +13,7 @@ import SelectedDevicePopUp from "./SelectedDevicePopUp";
 import MiniCorGroup from "./miniCorGroup/MiniCorGroup";
 import AppBarSettings from "./miniCorGroup/AppBarSettings";
 import ListOfSeconds from "./ListOfSeconds/index";
+import Chart from "../Chart/Chart"
 const useStyles = (theme) => ({
   active: {
     backgroundColor: "#66B2FF",
@@ -43,6 +44,22 @@ class CreateCor extends Component {
       changeSecondsColor: false,
       clearSecondList: [],
       selectedDevicePopUp: false,
+      width: 2000,
+      height: 250,
+      pitches: {
+        'C': true,
+        'C#': true,
+        'D': true,
+        'D#': true,
+        'E': true,
+        'F': true,
+        'F#': true,
+        'G': true,
+        'G#': true,
+        'A': true,
+        'A#': true,
+        'B': true
+      },
     };
     this.apiService = new APIServices();
   }
@@ -113,20 +130,13 @@ class CreateCor extends Component {
       if (!saveCorData[seconds]) {
         saveCorData[seconds] = {
           startDate: seconds,
-          robot: `${
-            this.props.leftHorValue ? this.props.leftHorValue : "0"
-            },0,${this.props.leftVerValue ? this.props.leftVerValue : "0"},0,0,${
-            this.props.brightnessValue.L ? this.props.brightnessValue.L : "0"
-            },${lColor1},${lColor2},${lColor3},"59",${
-            this.props.blinkerValue.L ? this.props.blinkerValue.L : "0"
-            },0,0,${
-            this.props.rightHorValue ? this.props.rightHorValue : "0"
-            },0,${
-            this.props.rightVerValue ? this.props.rightVerValue : "0"
-            },0,0,${
-            this.props.brightnessValue.R ? this.props.brightnessValue.R : "0"
-            },${rColor1},${rColor2},${rColor3},0,${
-            this.props.blinkerValue.R ? this.props.blinkerValue.R : "0"
+          robot: `${this.props.leftHorValue ? this.props.leftHorValue : "0"
+            },0,${this.props.leftVerValue ? this.props.leftVerValue : "0"},0,0,${this.props.brightnessValue.L ? this.props.brightnessValue.L : "0"
+            },${lColor1},${lColor2},${lColor3},"59",${this.props.blinkerValue.L ? this.props.blinkerValue.L : "0"
+            },0,0,${this.props.rightHorValue ? this.props.rightHorValue : "0"
+            },0,${this.props.rightVerValue ? this.props.rightVerValue : "0"
+            },0,0,${this.props.brightnessValue.R ? this.props.brightnessValue.R : "0"
+            },${rColor1},${rColor2},${rColor3},0,${this.props.blinkerValue.R ? this.props.blinkerValue.R : "0"
             },0,0`,
           smoke: this.state.checkSmoke === true ? "1" : "0", //L
           smoke: this.state.checkSmoke, //L
@@ -135,20 +145,13 @@ class CreateCor extends Component {
       if (saveCorData[seconds] && saveCorData[seconds].startDate !== seconds) {
         saveCorData[seconds] = {
           startDate: seconds,
-          robot: `${
-            this.props.leftHorValue ? this.props.leftHorValue : "0"
-            },0,${this.props.leftVerValue ? this.props.leftVerValue : "0"},0,0,${
-            this.props.brightnessValue.L ? this.props.brightnessValue.L : "0"
-            },${lColor1},${lColor2},${lColor3},"59",${
-            this.props.blinkerValue.L ? this.props.blinkerValue.L : "0"
-            },0,0,${
-            this.props.rightHorValue ? this.props.rightHorValue : "0"
-            },0,${
-            this.props.rightVerValue ? this.props.rightVerValue : "0"
-            },0,0,${
-            this.props.brightnessValue.R ? this.props.brightnessValue.R : "0"
-            },${rColor1},${rColor2},${rColor3},0,${
-            this.props.blinkerValue.R ? this.props.blinkerValue.R : "0"
+          robot: `${this.props.leftHorValue ? this.props.leftHorValue : "0"
+            },0,${this.props.leftVerValue ? this.props.leftVerValue : "0"},0,0,${this.props.brightnessValue.L ? this.props.brightnessValue.L : "0"
+            },${lColor1},${lColor2},${lColor3},"59",${this.props.blinkerValue.L ? this.props.blinkerValue.L : "0"
+            },0,0,${this.props.rightHorValue ? this.props.rightHorValue : "0"
+            },0,${this.props.rightVerValue ? this.props.rightVerValue : "0"
+            },0,0,${this.props.brightnessValue.R ? this.props.brightnessValue.R : "0"
+            },${rColor1},${rColor2},${rColor3},0,${this.props.blinkerValue.R ? this.props.blinkerValue.R : "0"
             },0,0`,
           smoke: this.state.checkSmoke === true ? "1" : "0", //L
           smoke: this.state.checkSmoke === true ? "1" : "0", //L
@@ -210,7 +213,7 @@ class CreateCor extends Component {
       selectedDevicePopUp,
       clearSecondList,
     } = this.state;
-    console.log("CreateCor render")
+    console.log("CreateCor render", this.props.audioFeaturesOfTrack)
     return (
       <Grid container style={{ backgroundColor: '#001e3c' }} >
         {selectedDevicePopUp && (
@@ -223,7 +226,7 @@ class CreateCor extends Component {
           <>
             {checkedMultiple && (
               <React.Fragment>
-                <AppBarSettings  isShowSaveButton  isShowLiveTry isShowConsole isShowHeat isShowStopButton/>
+                <AppBarSettings isShowSaveButton isShowLiveTry isShowConsole isShowHeat isShowStopButton />
                 {this.props.songCor.length !== 0 && (
                   <Grid container spacing={0}>
                     <Grid item xs={3}>
@@ -240,6 +243,15 @@ class CreateCor extends Component {
                     <Grid item xs={1} />
                     <Grid item xs={5} />
                     <Grid item xs={4}>
+                      {/* {this.props.audioAnalysisOfTrack.segments ?
+                        <Chart
+                          segments={this.props.audioAnalysisOfTrack.segments}
+                          width={this.state.width}
+                          height={this.state.height}
+                          pitches={this.state.pitches}
+                        /> :
+                        <SmokeStatus />
+                      } */}
                       <SmokeStatus />
                     </Grid>
                     <Grid item xs={1}>
@@ -275,6 +287,7 @@ const mapStateToProps = (state) => {
     songCor: state.songCor,
     songCor: state.songCor,
     selectedSecond: state.selectedSecond,
+    audioAnalysisOfTrack: state.audioAnalysisOfTrack
   };
 };
 const mapDispatchToProps = (dispatch) => {

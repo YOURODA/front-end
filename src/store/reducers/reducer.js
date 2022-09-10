@@ -65,7 +65,9 @@ const initialState = {
   },
   odaName: null,
   selectedTrackIds: 0,
-  secondsQueue: { liveCor: [], seconds: 0 }
+  secondsQueue: { liveCor: [], seconds: 0 },
+  audioFeaturesOfTrack: {},
+  audioAnalysisOfTrack: {}
 
 };
 
@@ -329,6 +331,16 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         secondsQueue: action.secondsQueue
+      }
+    case actionTypes.AUDIO_FEATURES_OF_TRACK:
+      return {
+        ...state,
+        audioFeaturesOfTrack: action.audioFeaturesOfTrack
+      }
+    case actionTypes.AUDIO_ANALYSIS_OF_TRACK:
+      return {
+        ...state,
+        audioAnalysisOfTrack: action.audioAnalysisOfTrack
       }
     default:
       return state;

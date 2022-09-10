@@ -19,6 +19,11 @@ import { withStyles } from "@material-ui/styles";
 import { tryRegulatorCorLoop } from "../../../utils";
 import Stack from "@mui/material/Stack";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
+import Chart from "../../Chart/Chart"
+import SectionChart from "../../Chart/SectionChart"
+import { useTheme } from '@mui/material/styles';
+import SpotifyAPIServices from "../../Services/SpotifyAPIServices";
+import { ResponsiveContainer } from 'recharts'
 
 
 
@@ -58,7 +63,6 @@ const useStyles = (theme) => ({
   },
 });
 const ListOfSeconds = ({
-  // clearSecondList,
   classes,
   selectedSeconds,
   songCor,
@@ -67,15 +71,41 @@ const ListOfSeconds = ({
   isLiveTry,
   settings,
   setSongCor,
-  durationStamps
+  durationStamps,
+  currentUser,
+  currentTrackId,
+  currently_playing,
+  setAudioFeaturesOfTrack,
+  setAudioAnalysisOfTrack
 }) => {
   const [windowSize, setWindowSize] = useState({
     width: 1000,
     height: 1000,
   });
+  const theme = useTheme();
   const [isOpenSavePopUp, setIsOpenSavePopUp] = useState(false);
+  const [isOpenTrackAnalysis, setIsOpenTrackAnalysis] = useState(false);
   const [miniCorName, setMiniCorName] = useState("");
   const [clearSecondList, setClearSecondList] = useState([]);
+  const [featureOfTrack, setFeatureOfTrack] = useState([]);
+  const [width, setWidth] = useState(2000);
+  const [height, setHeight] = useState(250);
+  const [pitches, setPitches] = useState({
+    'C': true,
+    'C#': true,
+    'D': true,
+    'D#': true,
+    'E': true,
+    'F': true,
+    'F#': true,
+    'G': true,
+    'G#': true,
+    'A': true,
+    'A#': true,
+    'B': true
+  });
+  const spotifyAPIServices = new SpotifyAPIServices();
+
   useEffect(() => {
     function handleResize() {
       setWindowSize({
@@ -116,6 +146,18 @@ const ListOfSeconds = ({
       odaNameLocal: localStorage.getItem('odaName')
     };
     socket.emit("corData", encodedString);
+  };
+  const handleClose = () => {
+    setIsOpenTrackAnalysis(false);
+  };
+  const onClickAnalysis = () => {
+    if (currentUser && currentUser.email && currentTrackId) {
+      spotifyAPIServices.getTracksAudioAnalysis(currentUser.access_token, currentTrackId).then((response) => {
+        setAudioAnalysisOfTrack(response.data);
+        setFeatureOfTrack(response.data)
+      });
+    }
+    setIsOpenTrackAnalysis(true);
   };
   const onClickSave = () => {
     const miniCor = selectedSeconds.map((sec) => {
@@ -165,7 +207,6 @@ const ListOfSeconds = ({
     setSongCor(newSongCor);
     setClearSecondList(newClearSecondList)
   };
-
   return (
     <Grid item lg={12} md={12} xl={12} xs={12}>
       <Paper
@@ -184,6 +225,7 @@ const ListOfSeconds = ({
               );
             })}
         </List>
+
         {settings && settings.isMakeCor && (
           <IconButton
             color="primary"
@@ -224,6 +266,51 @@ const ListOfSeconds = ({
               </Stack>
             </>
           )}
+        {isOpenTrackAnalysis &&
+          <Dialog onClose={handleClose} open={isOpenTrackAnalysis}>
+            <DialogTitle id="form-dialog-title">{currently_playing} Track</DialogTitle>
+            <DialogContent>
+              <div style={{ maxWidth: '98%', overflowX: 'auto', overflowY: 'hidden' }}>
+                {/* <SectionChart
+                  sections={featureOfTrack.sections}
+                  segments={featureOfTrack.segments}
+                  width={width}
+                  height={height}
+                  pitches={pitches}
+                /> */}
+                <Chart
+                  segments={featureOfTrack.segments}
+                  width={width}
+                  height={height}
+                  pitches={pitches}
+                />
+              </div>
+              <DialogActions>
+                <Button onClick={handleClose} color="primary">
+                  Cancel
+                </Button>
+              </DialogActions>
+            </DialogContent>
+          </Dialog>
+        }
+        <Grid
+          item lg={3} md={3} xl={3} xs={3}
+        />
+        <Grid
+          item lg={6} md={6} xl={6} xs={6} style={{ paddingTop: "5vh" }}
+        >
+          <Button
+            variant="contained"
+            className={classes.button}
+            // color="primary"
+            onClick={() => onClickAnalysis()}
+          >
+            Track Analysis
+          </Button>
+        </Grid>
+        <Grid
+          item lg={3} md={3} xl={3} xs={3}
+        />
         <Dialog
           open={isOpenSavePopUp}
           onClose={() => setIsOpenSavePopUp(false)}
@@ -266,12 +353,18 @@ const mapStateToProps = (state) => ({
   socket: state.socket,
   isLiveTry: state.isLiveTry,
   settings: state.settings,
+  currentUser: state.current_user,
+  currentTrackId: state.currentTrackId,
+  currently_playing: state.currently_playing,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   setAddSongCor: (miniCor) =>
     dispatch({ type: actionTypes.COR_LOOP_ADD, miniCor }),
   setSongCor: (songCor) => dispatch({ type: actionTypes.SONG_COR, songCor }),
+  setAudioFeaturesOfTrack: (audioFeaturesOfTrack) => dispatch({ type: actionTypes.AUDIO_FEATURES_OF_TRACK, audioFeaturesOfTrack }),
+  setAudioAnalysisOfTrack: (audioAnalysisOfTrack) => dispatch({ type: actionTypes.AUDIO_ANALYSIS_OF_TRACK, audioAnalysisOfTrack })
+
 });
 
 export default connect(

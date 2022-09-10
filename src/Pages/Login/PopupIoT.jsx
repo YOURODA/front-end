@@ -95,7 +95,7 @@ export const PopupIoT = (props) => {
   return (
     <ThemeProvider>
       {alertMessage && (
-        <Stack sx={{ width: "100%" }} spacing={2}>
+        <Stack sx={{ width: "100px" }} spacing={2}>
           <Alert variant="filled" severity="error">
             {alertMessage}
           </Alert>
@@ -106,9 +106,7 @@ export const PopupIoT = (props) => {
         <CssBaseline />
         <DialogTitle id="form-dialog-title">ODA NICK</DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            Please enter your ODA name for conneciton with your ODABOX.
-          </DialogContentText>
+
           {defaultOdaName && (
             <TextField
               onChange={(e) => getOdaName(e)}
@@ -116,7 +114,7 @@ export const PopupIoT = (props) => {
               defaultValue={defaultOdaName}
               margin="dense"
               id="name"
-              label="ODA Name"
+              label="Nick"
               type="odaName"
               fullWidth
               InputProps={{
@@ -126,12 +124,15 @@ export const PopupIoT = (props) => {
           )}
           {!defaultOdaName && (
             <>
+              <DialogContentText>
+                Please enter your ODA name for conneciton with your ODABOX.
+              </DialogContentText>
               <TextField
                 onChange={(e) => getOdaName(e)}
                 // autoFocus
                 margin="dense"
                 id="name"
-                label="ODA Name"
+                label="Nick"
                 type="odaName"
                 fullWidth
               />

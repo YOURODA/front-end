@@ -266,7 +266,6 @@ class MusicPlayer extends Component {
   };
 
   render() {
-    console.log("music Player")
     if (!!this.props.isReturnMusic) {
       console.log("başa alma çalıştı", !!this.props.isReturnMusic, this.props.isReturnMusic)
       this.onSeekSliderChange("", 0)

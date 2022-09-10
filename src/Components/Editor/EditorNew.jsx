@@ -20,7 +20,6 @@ import SpotifyFooterMakeCor from "../../Containers/SpotifyFooter/SpotifyFooterMa
 import EditCorLocalStorage from "../Control/EditCorLocalStorage";
 import GoSpotifySelection from "./GoSpotifySelection";
 import SocketLogin from "../Socket/SocketLogin";
-
 const useStyles = createTheme((theme) => ({
   button: {
     margin: theme.spacing(1),
@@ -32,6 +31,8 @@ export const EditorNew = (props) => {
     setCreateUserPopup,
     durationStamps,
     isUserAvailable,
+    currentUser,
+    currentTrackId
   } = props;
   const [goCoreography, setGoCoreography] = useState(false);
   const [odaNick, setOdaNick] = useState(null);
@@ -47,7 +48,13 @@ export const EditorNew = (props) => {
       if (response.data.odaNick === odaNick) setGoCoreography(true);
     });
   };
-
+  // useEffect(() => {
+  //   if (currentUser && currentUser.email && currentTrackId) {
+  //     spotifyAPIServices.getTracksAudioAnalysis(currentUser.access_token, currentTrackId).then((response) => {
+  //       console.log("getTracksAudioAnalysis", response.data)
+  //     });
+  //   }
+  // }, [currentTrackId])
   const addOdaName = (e) => {
     setOdaNick(e.target.value);
   };
@@ -104,7 +111,7 @@ export const EditorNew = (props) => {
             // odaUser && odaUser.email &&
             <EditCorLocalStorage setContinueCor={(e) => setContinueCor(e)} />
           )}
-          <SocketLogin/>
+          <SocketLogin />
           <CreateCor />
         </Grid>
       )}
