@@ -14,6 +14,7 @@ import MiniCorGroup from "./miniCorGroup/MiniCorGroup";
 import AppBarSettings from "./miniCorGroup/AppBarSettings";
 import ListOfSeconds from "./ListOfSeconds/index";
 import Chart from "../Chart/Chart"
+import AnalysisOfTrack from "./AnalysisOfTrack";
 const useStyles = (theme) => ({
   active: {
     backgroundColor: "#66B2FF",
@@ -240,9 +241,10 @@ class CreateCor extends Component {
                     </Grid>
                     <RobotOptions robot={"L"} />
                     <RobotOptions robot={"R"} />
-                    <Grid item xs={1} />
-                    <Grid item xs={5} />
-                    <Grid item xs={4}>
+                    {/*<AnalysisOfTrack/>*/}
+                    {/*<Grid item xs={1} />*/}
+                    {/*<Grid item xs={5} />*/}
+                    <Grid item xs={12} style={{backgroundColor:"red"}}>
                       {/* {this.props.audioAnalysisOfTrack.segments ?
                         <Chart
                           segments={this.props.audioAnalysisOfTrack.segments}
@@ -252,12 +254,14 @@ class CreateCor extends Component {
                         /> :
                         <SmokeStatus />
                       } */}
-                      <SmokeStatus />
+                    {/*  <SmokeStatus />*/}
+                    {/*</Grid>*/}
+                    {/*<Grid item xs={1}>*/}
+                    {/*  /!*<Smoke />*!/*/}
+
+                      <AnalysisOfTrack/>
                     </Grid>
-                    <Grid item xs={1}>
-                      <Smoke />
-                    </Grid>
-                    <Grid item xs={2} />
+                    {/*<Grid item xs={2} />*/}
 
                   </Grid>
                 )}
@@ -285,14 +289,12 @@ const mapStateToProps = (state) => {
     colourNumber: state.colourNumber,
     isReturnMusic: state.isReturnMusic,
     songCor: state.songCor,
-    songCor: state.songCor,
     selectedSecond: state.selectedSecond,
     audioAnalysisOfTrack: state.audioAnalysisOfTrack
   };
 };
 const mapDispatchToProps = (dispatch) => {
   return {
-    setCorData: (corData) => dispatch({ type: actionTypes.COR_DATA, corData }),
     setCreateCorPopup: (createCorPopup) =>
       dispatch({ type: actionTypes.CREATE_COR_POPUP, createCorPopup }),
     setCorData: (corData) => dispatch({ type: actionTypes.COR_DATA, corData }),

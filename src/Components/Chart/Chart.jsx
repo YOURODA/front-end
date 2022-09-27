@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react'
 import moment from 'moment'
 import { ComposedChart, ResponsiveContainer, XAxis, YAxis, Tooltip, Legend, Area } from 'recharts'
+import {unstable_ClassNameGenerator} from "@mui/material";
 
 var momentDurationFormatSetup = require("moment-duration-format")
 momentDurationFormatSetup(moment);
@@ -21,28 +22,35 @@ export default class Chart extends PureComponent {
                     }}
                 >
                     <XAxis dataKey='start' tickFormatter={time => {
-                        let timeStr = time.toString().split('')
-                        if (timeStr.includes('.')) {
-                            const sec = timeStr.slice(0, timeStr.findIndex(el => el === '.')).join('')
-                            let milsec = timeStr.slice(timeStr.findIndex(el => el === '.') + 1).join('')
-                            if (milsec.length === 2) {
-                                milsec = milsec.concat('0')
-                            } else {
-                                milsec = milsec.concat('00')
-                            }
-                            let t = moment.duration.format([
-                                moment.duration({
-                                    seconds: sec,
-                                    milliseconds: milsec
-                                })], 'm:ss.S')[0]
-                            return t.substring(0, t.length - 1)
-                        } else {
+                        console.log("time",time)
                             return moment.duration.format([
                                 moment.duration({
                                     seconds: time
                                 })
-                            ], 'm:ss.S')
-                        }
+                            ], 'm:ss')
+                        let timeStr = time.toString().split('')
+                        // if (timeStr.includes('.')) {
+                        //     const sec = timeStr.slice(0, timeStr.findIndex(el => el === '.')).join('')
+                        //     console.log("sec",sec)
+                        //     let milsec = timeStr.slice(timeStr.findIndex(el => el === '.') + 1).join('')
+                        //     if (milsec.length === 2) {
+                        //         milsec = milsec.concat('0')
+                        //     } else {
+                        //         milsec = milsec.concat('00')
+                        //     }
+                        //     let t = moment.duration.format([
+                        //         moment.duration({
+                        //             seconds: sec,
+                        //             // milliseconds: milsec
+                        //         })], 'm:ss')[0]
+                        //     return t.substring(0, t.length - 1)
+                        // } else {
+                        //     return moment.duration.format([
+                        //         moment.duration({
+                        //             seconds: time
+                        //         })
+                        //     ], 'm:ss')
+                        // }
                     }
                     } />
                     {/* <YAxis

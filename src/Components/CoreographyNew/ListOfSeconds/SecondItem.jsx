@@ -129,6 +129,11 @@ const SecondItem = ({
       setSongCor(newRobot);
     }
   }
+  const handleChangeSmoke = (index) => {
+    const newRobot = [...songCor];
+    newRobot[index].smoke = !songCor[index].smoke;
+    setSongCor(newRobot);
+  };
   if (
     songCor &&
     Array.isArray(songCor) &&
@@ -153,6 +158,12 @@ const SecondItem = ({
           <Grid container>
             <ListItemTextColor primary={`${value * 2} - ${value * 2 + 2}`} />
             {windowSize.width > 1140 && <ListItemTextColor />}
+            <Checkbox
+              checked={songCor[index].smoke}
+              onChange={() => handleChangeSmoke(index)}
+              name="checkSmoke"
+              color="primary"
+            />
             <ListItemAvatar>
               <Avatar
                 onClick={() => iterableCor()}
