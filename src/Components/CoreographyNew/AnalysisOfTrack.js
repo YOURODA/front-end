@@ -58,6 +58,8 @@ const AnalysisOfTrack = ({
                            audioAnalysisOfTrack,
                            currentUser,
                            currentTrackId,
+                           setSongCor,
+                           songCor
                          }) => {
   const [windowSize, setWindowSize] = useState(getWindowSize());
 
@@ -90,8 +92,10 @@ const AnalysisOfTrack = ({
 console.log("width",windowSize.innerWidth)
   return (
     <div  style={{height:'100%', width:"100%", backgroundColor:"blue",marginBottom:"10%"}} >
-      <Button onClick={ ()=>{
-        guessingForCor({segments:audioAnalysisOfTrack.segments})
+      <Button onClick={async ()=>{
+        const fillCor= await guessingForCor({segments:audioAnalysisOfTrack.segments,songCor})
+        console.log("fillCor",fillCor)
+        setSongCor(fillCor)
       }} >
         Try
       </Button>

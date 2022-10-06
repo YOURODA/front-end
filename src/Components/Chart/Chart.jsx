@@ -22,7 +22,7 @@ export default class Chart extends PureComponent {
                     }}
                 >
                     <XAxis dataKey='start' tickFormatter={time => {
-                        console.log("time",time)
+                       
                             return moment.duration.format([
                                 moment.duration({
                                     seconds: time
