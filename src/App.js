@@ -1,9 +1,9 @@
-import React from 'react'
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+import React from "react";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
 // import { ThemeProvider } from '@material-ui/styles';
-import Routes from './Routes'
-import { createBrowserHistory } from 'history';
+import Routes from "./Routes";
+import { createBrowserHistory } from "history";
 
 const browserHistory = createBrowserHistory();
 const theme = createTheme({
@@ -12,22 +12,23 @@ const theme = createTheme({
       light: "#757ce8",
       main: "#001e3c",
       dark: "#191414",
-      contrastText: "#fff"
+      contrastText: "#fff",
     },
     secondary: {
       light: "#ff7961",
       main: "#ffffff",
       dark: "#191414",
-      contrastText: "#000"
-    }
+      contrastText: "#000",
+    },
   },
   typography: {
     useNextVariants: true,
     backgroundColor: "#ffffff",
-    textColor: "#ffffff"
-  }
+    textColor: "#ffffff",
+  },
 });
 export const App = () => {
+  console.log("REACT_APP_BACKEND_URL", process.env.REACT_APP_BACKEND_URL);
   return (
     <ThemeProvider theme={theme}>
       <Router history={browserHistory}>
@@ -35,7 +36,6 @@ export const App = () => {
       </Router>
     </ThemeProvider>
   );
-}
-
+};
 
 export default App;
