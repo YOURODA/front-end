@@ -31,8 +31,6 @@ export const EditorNew = (props) => {
     setCreateUserPopup,
     durationStamps,
     isUserAvailable,
-    currentUser,
-    currentTrackId
   } = props;
   const [goCoreography, setGoCoreography] = useState(false);
   const [odaNick, setOdaNick] = useState(null);
@@ -48,13 +46,7 @@ export const EditorNew = (props) => {
       if (response.data.odaNick === odaNick) setGoCoreography(true);
     });
   };
-  // useEffect(() => {
-  //   if (currentUser && currentUser.email && currentTrackId) {
-  //     spotifyAPIServices.getTracksAudioAnalysis(currentUser.access_token, currentTrackId).then((response) => {
-  //       console.log("getTracksAudioAnalysis", response.data)
-  //     });
-  //   }
-  // }, [currentTrackId])
+
   const addOdaName = (e) => {
     setOdaNick(e.target.value);
   };
@@ -108,7 +100,6 @@ export const EditorNew = (props) => {
           style={{ backgroundColor: "#001e3c", height: "100vh" }}
         >
           {!continueCor && (
-            // odaUser && odaUser.email &&
             <EditCorLocalStorage setContinueCor={(e) => setContinueCor(e)} />
           )}
           <SocketLogin />

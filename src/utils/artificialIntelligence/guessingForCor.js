@@ -1,4 +1,4 @@
-import{corFillColour} from './fillColor'
+import { corFillColour } from './fillColor'
 //import {emptyCor} from '../cor/emptyCor'
 // istenilen saniyeler arasında segmentleri böl
 const setTakeIntervalSeconds = (segments, interval) => {
@@ -12,7 +12,7 @@ const setTakeIntervalSeconds = (segments, interval) => {
     second < lastSecond;
     second = second + interval
   ) {
-    const lastIndeWx = newSegmets.findIndex(
+    const lastIndex = newSegmets.findIndex(
       (segment) => segment.start >= second
     );
     const thisSeconts = newSegmets.splice(0, lastIndex);
@@ -39,21 +39,21 @@ const getAverage = (groupSeconts) => {
   // return {pitches:pitchesAverage, start: groupSeconts[0] }
 };
 
-const fillInTheCor = (average,songCor) =>{  
-  const cloneSongCor= [...songCor]
+const fillInTheCor = (average, songCor) => {
+  const cloneSongCor = [...songCor]
   // const empty=emptyCor(average.length)
   // console.log("empty",empty)
-  console.log("average",average)
-  console.log("songCor",songCor)
-  const fullcor= cloneSongCor.map((seconstCor,index)=>{
-    let pitches= [...average[index].pitches]
-    const cloneSecont={...seconstCor}
+  console.log("average", average)
+  console.log("songCor", songCor)
+  const fullcor = cloneSongCor.map((seconstCor, index) => {
+    let pitches = [...average[index].pitches]
+    const cloneSecont = { ...seconstCor }
     const indexOfMaxPitches = pitches.reduce((iMax, x, i, arr) => x > arr[iMax] ? i : iMax, 0);
-    const maxPitche= pitches.splice(indexOfMaxPitches, 1, 0)[0]
+    const maxPitche = pitches.splice(indexOfMaxPitches, 1, 0)[0]
     const indexOfMaxPitches2 = pitches.reduce((iMax, x, i, arr) => x > arr[iMax] ? i : iMax, 0);
-    const maxPitche2= pitches.splice(indexOfMaxPitches2, 1, 0)[0]
+    const maxPitche2 = pitches.splice(indexOfMaxPitches2, 1, 0)[0]
 
-    cloneSecont.robot.colour={
+    cloneSecont.robot.colour = {
       "lColor1": corFillColour[indexOfMaxPitches].R,
       "lColor2": corFillColour[indexOfMaxPitches].G,
       "lColor3": corFillColour[indexOfMaxPitches].B,
@@ -70,7 +70,7 @@ const fillInTheCor = (average,songCor) =>{
   return fullcor
 }
 
-export const guessingForCor = ({ segments,songCor }) => {
+export const guessingForCor = ({ segments, songCor }) => {
   console.log("segments", segments);
 
   // belirli saniye aralarında grupla
@@ -83,8 +83,8 @@ export const guessingForCor = ({ segments,songCor }) => {
   const average = getAverage(takeTwoSeconds);
   //console.log("average", average);
 
-  const fillCor = fillInTheCor(average,songCor)
-  console.log("fillCor",fillCor)
+  const fillCor = fillInTheCor(average, songCor)
+  console.log("fillCor", fillCor)
 
   // empty Coru doldur
 
