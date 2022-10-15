@@ -32,7 +32,7 @@ class APIServices {
   }
   async loginRaspi(setState, ipList) {
     // const ipList = [];
-    let ips = 'http://192.168.1.';
+    let ips = 'https://192.168.1.';
     let newIp;
 
     try {
@@ -62,7 +62,7 @@ class APIServices {
       // console.log(newUserData)
       const serviceData = {
         method: 'POST',
-        url: 'http://' + raspIp[1].localIp + ':8080/odaName',
+        url: 'https://' + raspIp[1].localIp + ':8080/odaName',
         data: newUserData,
       };
       return await axios(serviceData);
