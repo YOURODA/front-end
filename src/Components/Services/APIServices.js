@@ -1,53 +1,54 @@
-import axios from 'axios';
+import axios from "axios";
 
-const userApiService = process.env.REACT_APP_BACKEND_URL
+const userApiService = process.env.REACT_APP_BACKEND_URL;
 let returnValue;
-const token = localStorage.getItem("refreshToken")
-const config = { headers: { Authorization: `Bearer ${token}` } }
+const token = localStorage.getItem("refreshToken");
+const config = { headers: { Authorization: `Bearer ${token}` } };
 
 class APIServices {
   async login(email, password) {
     try {
       let newUserData = {
-        "email": email,
-        "password": password
-      }
+        email: email,
+        password: password,
+      };
       const serviceData = {
-        method: 'POST',
-        url: userApiService + '/user/login',
+        method: "POST",
+        url: userApiService + "/user/login",
         data: newUserData,
         withCredentials: true,
       };
       await axios(serviceData).then((response) => {
         returnValue = response;
-        localStorage.setItem("refreshToken", response.data.refreshToken)
+        localStorage.setItem("refreshToken", response.data.refreshToken);
       });
-    }
-    catch (error) {
-      return error.response
+    } catch (error) {
+      return error.response;
     }
     return returnValue;
   }
   async loginRaspi(setState, ipList) {
     // const ipList = [];
-    let ips = 'http://192.168.1.';
+    let ips = "https://192.168.1.";
     let newIp;
 
     try {
       for (let i = 0; i < 256; i++) {
-        newIp = axios.get(ips + `${i}` + ':8080/local').then((response) => {
-          console.log("response.dataLoginRaspi:", response.data)
-          let newListState = [...ipList];
-          newListState.push(response.data)
-          setState(newListState)
-          localStorage.setItem('localIp', response.data.localIp)
-        }).catch(error => {
-          console.log(error)
-        })
+        newIp = axios
+          .get(ips + `${i}` + ":8080/local")
+          .then((response) => {
+            console.log("response.dataLoginRaspi:", response.data);
+            let newListState = [...ipList];
+            newListState.push(response.data);
+            setState(newListState);
+            localStorage.setItem("localIp", response.data.localIp);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       }
-    }
-    catch (error) {
-      return error.response
+    } catch (error) {
+      return error.response;
     }
   }
   async recognizeRaspi(raspIp, odaName) {
@@ -55,194 +56,187 @@ class APIServices {
     // console.log(odaName);
     try {
       let newUserData = {
-        "odaName": odaName
-      }
+        odaName: odaName,
+      };
       // console.log(newUserData)
       const serviceData = {
-        method: 'POST',
-        url: 'http://' + raspIp[1].localIp + ':8080/odaName',
+        method: "POST",
+        url: "http://" + raspIp[1].localIp + ":8080/odaName",
         data: newUserData,
       };
       return await axios(serviceData);
-
     } catch (error) {
-      return error.response
+      return error.response;
     }
-
   }
   async connectSocket(odaName) {
     try {
       let newUserData = {
-        "odaName": odaName
-      }
+        odaName: odaName,
+      };
       const serviceData = {
-        method: 'POST',
-        url: 'http://192.168.1.105:8080/connectSocket',
-        data: newUserData
+        method: "POST",
+        url: "http://192.168.1.105:8080/connectSocket",
+        data: newUserData,
       };
       return await axios(serviceData);
-
     } catch (error) {
-      return error.response
+      return error.response;
     }
   }
 
   async register(firstName, secondName, email, password, confPassword) {
     try {
       let newUserData = {
-        "firstName": firstName,
-        "secondName": secondName,
-        "email": email,
-        "password": password,
-        "confPassword": confPassword
-      }
-      console.log(newUserData)
+        firstName: firstName,
+        secondName: secondName,
+        email: email,
+        password: password,
+        confPassword: confPassword,
+      };
+      console.log(newUserData);
       const serviceData = {
-        method: 'POST',
-        url: userApiService + '/user/register',
+        method: "POST",
+        url: userApiService + "/user/register",
         data: newUserData,
       };
       return await axios(serviceData);
-
     } catch (error) {
-      return error.response
+      return error.response;
     }
-
   }
   async getUsers(email) {
     const serviceData = {
-      method: 'GET',
-      url: userApiService + '/user/getUsers',
+      method: "GET",
+      url: userApiService + "/user/getUsers",
       data: email,
     };
     return await axios(serviceData, config);
   }
   async logout() {
     const serviceData = {
-      method: 'DELETE',
-      url: userApiService + '/user/logout',
+      method: "DELETE",
+      url: userApiService + "/user/logout",
     };
-    localStorage.removeItem("refreshToken")
+    localStorage.removeItem("refreshToken");
     return await axios(serviceData);
   }
   async refreshToken() {
     try {
       const serviceData = {
-        method: 'GET',
-        url: userApiService + '/token/refreshToken',
+        method: "GET",
+        url: userApiService + "/token/refreshToken",
       };
       returnValue = await axios(serviceData);
-    }
-    catch (error) {
-      return error.response
+    } catch (error) {
+      return error.response;
     }
     return returnValue;
   }
   async newCustomer(email) {
     try {
       let newUserData = {
-        "email": email,
-      }
+        email: email,
+      };
       const serviceData = {
-        method: 'POST',
-        url: userApiService + '/customer/newCustomer',
-        data: newUserData
+        method: "POST",
+        url: userApiService + "/customer/newCustomer",
+        data: newUserData,
       };
       returnValue = await axios(serviceData);
-    }
-    catch (error) {
-      return error.response
+    } catch (error) {
+      return error.response;
     }
     return returnValue;
   }
   async newUser(email, odaName, odaNick) {
     let newUserData = {
-      "email": email,
-      "odaName": odaName,
-      "odaNick": odaNick
-    }
+      email: email,
+      odaName: odaName,
+      odaNick: odaNick,
+    };
     const serviceData = {
-      method: 'POST',
+      method: "POST",
       headers: { Authorization: `Bearer ${token}` },
-      url: userApiService + '/user/newuser',
+      url: userApiService + "/user/newuser",
       data: newUserData,
     };
     return await axios(serviceData);
   }
   async newOda(odaName) {
     const serviceData = {
-      method: 'POST',
+      method: "POST",
       headers: { Authorization: `Bearer ${token}` },
-      url: userApiService + '/odaIdentify/newOda',
+      url: userApiService + "/odaIdentify/newOda",
       data: odaName,
     };
     return await axios(serviceData);
   }
   async isAvailableOdaNick(userData) {
     let odaNickData = {
-      "odaNick": userData
-    }
+      odaNick: userData,
+    };
     const serviceData = {
-      method: 'POST',
+      method: "POST",
       headers: { Authorization: `Bearer ${token}` },
-      url: userApiService + '/odaIdentify/isAvailableOdaNick',
-      data: odaNickData
+      url: userApiService + "/odaIdentify/isAvailableOdaNick",
+      data: odaNickData,
     };
     return await axios(serviceData);
   }
 
   async myOdas(email) {
     let getEmail = {
-      "email": email
-    }
-    console.log("myOdas", getEmail)
-    console.log("myOdasToken", token)
+      email: email,
+    };
+    console.log("myOdas", getEmail);
+    console.log("myOdasToken", token);
 
     const serviceData = {
-      method: 'POST',
+      method: "POST",
       headers: { Authorization: `Bearer ${token}` },
-      url: userApiService + '/user/myOdas',
-      data: getEmail
+      url: userApiService + "/user/myOdas",
+      data: getEmail,
     };
     return await axios(serviceData);
   }
 
   async getAllCoreographies() {
-    const serviceData = userApiService + '/choreography/allcor';
+    const serviceData = userApiService + "/choreography/allcor";
     return await axios.get(serviceData, config);
   }
   async getMyCoreographies(ownerId) {
     let userIdData = {
-      "ownerId": ownerId
-    }
+      ownerId: ownerId,
+    };
     const serviceData = {
-      method: 'POST',
+      method: "POST",
       headers: { Authorization: `Bearer ${token}` },
-      url: userApiService + '/choreography/mycor',
+      url: userApiService + "/choreography/mycor",
       data: userIdData,
     };
     return await axios(serviceData);
   }
   async getHitsCoreographies() {
     let userData = {
-      "limit": 2
-    }
+      limit: 2,
+    };
     const serviceData = {
-      method: 'POST',
+      method: "POST",
       headers: { Authorization: `Bearer ${token}` },
-      url: userApiService + '/choreography/hits',
+      url: userApiService + "/choreography/hits",
       data: userData,
     };
     return await axios(serviceData);
   }
   async isUserAvailable(email) {
     const userEmail = {
-      "email": email
-    }
+      email: email,
+    };
     const serviceData = {
-      method: 'POST',
+      method: "POST",
       headers: { Authorization: `Bearer ${token}` },
-      url: userApiService + '/user/isUserAvailable',
+      url: userApiService + "/user/isUserAvailable",
       data: userEmail,
     };
     return await axios(serviceData);
@@ -255,21 +249,21 @@ class APIServices {
       trackId,
       ownerId,
       isShared,
-      "version": "v.1.0"
-    }
+      version: "v.1.0",
+    };
     const serviceData = {
-      method: 'POST',
+      method: "POST",
       headers: { Authorization: `Bearer ${token}` },
-      url: userApiService + '/choreography/create',
+      url: userApiService + "/choreography/create",
       data: createCorData,
     };
     return await axios(serviceData);
   }
   async myOdaOnlyEmail({ email }) {
     const serviceData = {
-      method: 'POST',
+      method: "POST",
       headers: { Authorization: `Bearer ${token}` },
-      url: userApiService + '/user/myOdaOnlyEmail',
+      url: userApiService + "/user/myOdaOnlyEmail",
       data: { email },
     };
     return await axios(serviceData);
@@ -279,7 +273,7 @@ class APIServices {
     form.append("u", "59");
     form.append("d", cor);
     const serviceData = {
-      method: 'POST',
+      method: "POST",
       headers: { Authorization: `Bearer ${token}` },
       url: `http://${odaIP}:9090/set_dmx`,
       data: form,
@@ -290,11 +284,11 @@ class APIServices {
   }
   async getMyEditingCor(corId) {
     let userIdData = {
-      corId
-    }
+      corId,
+    };
     const serviceData = {
-      method: 'POST',
-      url: userApiService + '/choreography/getEditCor',
+      method: "POST",
+      url: userApiService + "/choreography/getEditCor",
       data: userIdData,
     };
     return await axios(serviceData);
@@ -302,9 +296,9 @@ class APIServices {
 
   async getMyEditableCors(corId) {
     const serviceData = {
-      method: 'POST',
+      method: "POST",
       headers: { Authorization: `Bearer ${token}` },
-      url: userApiService + '/choreography/getEditableCors',
+      url: userApiService + "/choreography/getEditableCors",
     };
     return await axios(serviceData);
   }
@@ -313,37 +307,38 @@ class APIServices {
     let userIdData = {
       corId,
       file,
-      name
-    }
+      name,
+    };
     const serviceData = {
-      method: 'POST',
-      url: userApiService + '/choreography/overwrite',
+      method: "POST",
+      url: userApiService + "/choreography/overwrite",
       data: userIdData,
     };
     return await axios(serviceData);
   }
 
-
   async sendReviews({ review, rating, corId }) {
     let ratings = {
-      review, rating, corId
-    }
+      review,
+      rating,
+      corId,
+    };
     const serviceData = {
-      method: 'POST',
+      method: "POST",
       headers: { Authorization: `Bearer ${token}` },
-      url: userApiService + '/choreography/addReview',
+      url: userApiService + "/choreography/addReview",
       data: ratings,
     };
     return await axios(serviceData);
   }
   async readCorReviews({ corId }) {
     let ratings = {
-      corId
-    }
+      corId,
+    };
     const serviceData = {
-      method: 'POST',
+      method: "POST",
       headers: { Authorization: `Bearer ${token}` },
-      url: userApiService + '/choreography/readCorReviews',
+      url: userApiService + "/choreography/readCorReviews",
       data: ratings,
     };
     return await axios(serviceData);
@@ -351,62 +346,62 @@ class APIServices {
   async createNewList({ name, corId }) {
     let data = {
       name,
-      corId
-    }
+      corId,
+    };
     const serviceData = {
-      method: 'POST',
+      method: "POST",
       headers: { Authorization: `Bearer ${token}` },
-      url: userApiService + '/choreographyList/create',
+      url: userApiService + "/choreographyList/create",
       data,
     };
     return await axios(serviceData);
   }
   async getUserCorListAll() {
     const serviceData = {
-      method: 'POST',
+      method: "POST",
       headers: { Authorization: `Bearer ${token}` },
-      url: userApiService + '/choreographyList/all',
+      url: userApiService + "/choreographyList/all",
     };
     return await axios(serviceData);
   }
   async addNewSongToList({ newSong, corListId }) {
     const serviceData = {
-      headers: { Authorization: `Bearer ${token}` }, method: 'POST',
-      url: userApiService + '/choreographyList/addNewSong',
-      data: { newSong, corListId }
-    }
+      headers: { Authorization: `Bearer ${token}` },
+      method: "POST",
+      url: userApiService + "/choreographyList/addNewSong",
+      data: { newSong, corListId },
+    };
     return await axios(serviceData);
   }
-
 
   async livePartCreateCategory({ name }) {
     const serviceData = {
-      headers: { Authorization: `Bearer ${token}` }, method: 'POST',
-      url: userApiService + '/live-party/create-category',
-      data: { name }
-    }
+      headers: { Authorization: `Bearer ${token}` },
+      method: "POST",
+      url: userApiService + "/live-party/create-category",
+      data: { name },
+    };
     return await axios(serviceData);
   }
-
 
   async getLivePartAllCategory() {
     const serviceData = {
-      headers: { Authorization: `Bearer ${token}` }, method: 'POST',
-      url: userApiService + '/live-party/all-category',
-    }
+      headers: { Authorization: `Bearer ${token}` },
+      method: "POST",
+      url: userApiService + "/live-party/all-category",
+    };
     return await axios(serviceData);
   }
-
 
   async livePartAddFileToCategory({ categoryId, name, color, file }) {
     const serviceData = {
-      headers: { Authorization: `Bearer ${token}` }, method: 'POST',
-      url: userApiService + '/live-party/add-file-to-category',
-      data: { categoryId, name, color, file }
-    }
+      headers: { Authorization: `Bearer ${token}` },
+      method: "POST",
+      url: userApiService + "/live-party/add-file-to-category",
+      data: { categoryId, name, color, file },
+    };
     return await axios(serviceData);
   }
-
 }
 
 export default APIServices;
