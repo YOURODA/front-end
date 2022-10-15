@@ -61,7 +61,7 @@ class APIServices {
       // console.log(newUserData)
       const serviceData = {
         method: "POST",
-        url: "http://" + raspIp[1].localIp + ":8080/odaName",
+        url: "https://" + raspIp[1].localIp + ":8080/odaName",
         data: newUserData,
       };
       return await axios(serviceData);
