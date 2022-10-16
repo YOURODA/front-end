@@ -69,7 +69,7 @@ const PlayChoreographiesTable = ({
   };
   const joinRoom = async (_socket) => {
     console.log("joine geldi");
-    _socket.emit("join", { name: odaNameLocal });
+    _socket.emit("join", { name: "okanserbest" });
     await _socket.on("join", (data) => {
       console.log("data.msg: ", data.msg);
       interval = data.msg;

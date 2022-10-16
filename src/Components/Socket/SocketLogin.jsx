@@ -4,15 +4,16 @@ import * as actionTypes from "../../store/actions/actionTypes";
 import socketIo from "socket.io-client";
 const userApiService = process.env.REACT_APP_BACKEND_URL;
 
+const protocol= process.env.REACT_APP_NODE_ENV==="develop" ? "ws": "wss"
 const SocketLogin = ({ isSmokeActive, setSmokeTemperature, setSocketIO, localIp,setIpList ,ipList }) => {
   const [stateSocket, setStateSocket] = useState(null)
   const [timer, setTimer] = useState(0);
-  const socketio_url =`wss://${userApiService}`;
+  const socketio_url =`${protocol}://${userApiService}`;
   let odaNameLocal = localStorage.getItem("odaName");
   let interval;
 
   const joinRoom = async (_socket) => {
-    _socket.emit("join", { name: odaNameLocal });
+    _socket.emit("join", { name: "okanserbest" });
     await _socket.on("join", (data) => {
       interval = data.msg;
     });
