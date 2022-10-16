@@ -7,7 +7,7 @@ const userApiService = process.env.REACT_APP_BACKEND_URL;
 const SocketLogin = ({ isSmokeActive, setSmokeTemperature, setSocketIO, localIp,setIpList ,ipList }) => {
   const [stateSocket, setStateSocket] = useState(null)
   const [timer, setTimer] = useState(0);
-  const socketio_url =`ws://${userApiService}`;
+  const socketio_url =`wss://${userApiService}`;
   let odaNameLocal = localStorage.getItem("odaName");
   let interval;
 

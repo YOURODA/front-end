@@ -1,7 +1,7 @@
 import axios from "axios";
 import socketIo from "socket.io-client";
 
-const userApiService = `http://${process.env.REACT_APP_BACKEND_URL}`;
+const userApiService = `https://${process.env.REACT_APP_BACKEND_URL}`;
 let returnValue;
 const token = localStorage.getItem("refreshToken");
 const config = { headers: { Authorization: `Bearer ${token}` } };
