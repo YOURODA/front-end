@@ -2,23 +2,18 @@ import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import * as actionTypes from "../../store/actions/actionTypes";
 import socketIo from "socket.io-client";
+const userApiService = process.env.REACT_APP_BACKEND_URL;
 
 const SocketLogin = ({ isSmokeActive, setSmokeTemperature, setSocketIO, localIp,setIpList ,ipList }) => {
   const [stateSocket, setStateSocket] = useState(null)
   const [timer, setTimer] = useState(0);
-  const socketio_url =(localIp?localIp: localStorage.getItem("localIp"))+ ":8080/odaName";
+  const socketio_url =userApiService;
   let odaNameLocal = localStorage.getItem("odaName");
   let interval;
 
   const joinRoom = async (_socket) => {
     _socket.emit("join", { name: odaNameLocal });
     await _socket.on("join", (data) => {
-      if(localIp){
-        const newIpList= [...ipList]
-        newIpList.push(localIp)
-        setIpList(newIpList)
-        localStorage.setItem("localIp", localIp)
-      }
       interval = data.msg;
     });
   };

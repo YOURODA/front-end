@@ -40,7 +40,6 @@ export const PopupIoT = (props) => {
 
   useEffect(() => {
     // apiServices.loginRaspi(setIpList, ipList);
-    localStorage.setItem("localIp", "192.168.1.108")
     // localStorage.setItem("odaName", "okanserberst")
     const getOda = apiServices.myOdas(odaUser);
     getOda.then((response) => {
@@ -152,7 +151,7 @@ export const PopupIoT = (props) => {
           )}
         </DialogContent>
         <Button onClick={() => noDeviceContinue()}>
-          Continue Without Device
+          Continue
         </Button>
         {ipList.length > 0 && newUserResponse && (
           <List
