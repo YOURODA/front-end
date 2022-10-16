@@ -13,6 +13,8 @@ const SocketLogin = ({ isSmokeActive, setSmokeTemperature, setSocketIO, localIp,
   let interval;
 
   const joinRoom = async (_socket) => {
+    console.log("joinRoom 16")
+    // socket.emit("hello", { name: "John" });
     _socket.emit("join", { name: "okanserbest" });
     await _socket.on("join", (data) => {
       interval = data.msg;
