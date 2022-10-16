@@ -1,4 +1,5 @@
 import axios from "axios";
+import socketIo from "socket.io-client";
 
 const userApiService = process.env.REACT_APP_BACKEND_URL;
 let returnValue;
@@ -28,28 +29,50 @@ class APIServices {
     return returnValue;
   }
   async loginRaspi(setState, ipList) {
+    console.log("loginRaspi");
     // const ipList = [];
-    let ips = "https://192.168.1.";
+    let ips = "192.168.1.";
     let newIp;
 
-    try {
-      for (let i = 0; i < 256; i++) {
-        newIp = axios
-          .get(ips + `${i}` + ":8080/local")
-          .then((response) => {
-            console.log("response.dataLoginRaspi:", response.data);
-            let newListState = [...ipList];
-            newListState.push(response.data);
-            setState(newListState);
-            localStorage.setItem("localIp", response.data.localIp);
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      }
-    } catch (error) {
-      return error.response;
-    }
+    const joinRoom = async (_socket) => {
+      console.log("joinRoom");
+      _socket.emit("join", { name: "okanserbest" });
+      return await _socket.on("join", (data) => {
+        console.log("join data", data);
+        localStorage.setItem("localIp", data.localIp);
+        return { data };
+        // interval = data.msg;
+      });
+    };
+
+    const arr1 = new Array(255).fill(0);
+    let iplist = [];
+    const _socket = socketIo(`192.168.1.108:8080/odaName}`);
+    const oda = joinRoom(_socket);
+    // try {
+
+    //   // arr1.map(con)
+
+    //   for (let i = 0; i < 256; i++) {
+    //     const _socket = socketIo(`${ips}${i}:8080/odaName}`);
+    //     const oda = joinRoom(_socket);
+
+    //     // newIp = axios
+    //     //   .get(ips + `${i}` + ":8080/local")
+    //     //   .then((response) => {
+    //     //     console.log("response.dataLoginRaspi:", response.data);
+    //     //     let newListState = [...ipList];
+    //     //     newListState.push(response.data);
+    //     //     setState(newListState);
+    //     //     localStorage.setItem("localIp", response.data.localIp);
+    //     //   })
+    //     //   .catch((error) => {
+    //     //      console.log(error);
+    //     //   });
+    //   }
+    // } catch (error) {
+    //   return error.response;
+    // }
   }
   async recognizeRaspi(raspIp, odaName) {
     // console.log(raspIp);

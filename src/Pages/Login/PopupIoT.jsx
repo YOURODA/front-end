@@ -39,6 +39,9 @@ export const PopupIoT = (props) => {
   const apiServices = new APIService();
 
   useEffect(() => {
+    // apiServices.loginRaspi(setIpList, ipList);
+    localStorage.setItem("localIp", "192.168.1.108")
+    // localStorage.setItem("odaName", "okanserberst")
     const getOda = apiServices.myOdas(odaUser);
     getOda.then((response) => {
       console.log("response.data.myodas", response.data);
@@ -48,7 +51,7 @@ export const PopupIoT = (props) => {
         setNewUserResponse(true);
       }
     });
-    apiServices.loginRaspi(setIpList, ipList);
+
   }, []);
 
   const handleToggle = (value) => () => {
@@ -91,9 +94,11 @@ export const PopupIoT = (props) => {
   const noDeviceContinue = () => {
     setRedirect(true);
   };
-
+  const iplistArrayEmty = new Array(255).fill(0);
   return (
     <ThemeProvider>
+      {/* {iplistArrayEmty} */}
+
       {alertMessage && (
         <Stack sx={{ width: "100%" }} spacing={2}>
           <Alert variant="filled" severity="error">
@@ -154,6 +159,7 @@ export const PopupIoT = (props) => {
             dense
             sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
           >
+
             {ipList.map((value) => {
               const labelId = `checkbox-list-secondary-label-${value}`;
               return (
