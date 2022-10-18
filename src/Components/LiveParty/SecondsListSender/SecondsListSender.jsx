@@ -31,9 +31,10 @@ const SecondsListSender = ({
           robotModel,
         });
         const stringCSV = JSON.stringify({ corData: regularCor });
+        console.log("stringCSV",stringCSV)
         const encodedString = {
           isStop: 0,
-          base: new Buffer(stringCSV).toString("base64"),
+          base: regularCor,
           time:0,
           odaNameLocal: localStorage.getItem("odaName"),
         };

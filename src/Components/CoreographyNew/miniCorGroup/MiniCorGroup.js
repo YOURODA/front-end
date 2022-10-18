@@ -17,7 +17,7 @@ import {
   Switch,
   Grid,
   Divider,
-  ListItem
+  ListItem,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { regulatorCorLoop } from "../../../utils";
@@ -26,7 +26,7 @@ import { purple } from "@material-ui/core/colors";
 import APIService from "../../Services/APIServices";
 import { regulatorCorTry } from "../../../utils";
 import SaveCorButton from "../SaveCorButton";
-import Controller from "./Controller"
+import Controller from "./Controller";
 
 const ListItemColor = withStyles({
   root: {
@@ -39,8 +39,8 @@ const ListItemColor = withStyles({
     },
     "&$selected:hover": {
       backgroundColor: "#4994DE",
-    }
-  }
+    },
+  },
 })((props) => <ListItem color="default" {...props} />);
 const NumberFormatCustom = (props) => {
   const { inputRef, onChange, ...other } = props;
@@ -85,8 +85,8 @@ const useStyles = makeStyles((theme) => ({
   },
   switchStyle: {
     display: "flex",
-    justifyContent: "flex-end"
-  }
+    justifyContent: "flex-end",
+  },
 }));
 
 export const MiniCorGroup = ({
@@ -116,7 +116,7 @@ export const MiniCorGroup = ({
   const apiServices = new APIService();
 
   const startTime = 15;
-  const minicorLength = selectCorMini ?.loop ?.miniCor ?.length;
+  const minicorLength = selectCorMini?.loop?.miniCor?.length;
   const songcorlength = 350;
   const [pushCor, setPushCor] = useState([
     startTime,
@@ -129,20 +129,23 @@ export const MiniCorGroup = ({
         height: window.innerHeight,
       });
     }
-  },[]);
+  }, []);
 
   useEffect(() => {
-    const regularCor = regulatorCorTry({ cor: songCor[selectedSecond], robotModel: isLiveTry.robotModel });
+    const regularCor = regulatorCorTry({
+      cor: songCor[selectedSecond],
+      robotModel: isLiveTry.robotModel,
+    });
     const stringCSV = JSON.stringify({ corData: regularCor });
+    console.log("stringCSV", stringCSV);
     const encodedString = {
       isStop: 0,
-      base: new Buffer(stringCSV).toString("base64"),
+      base: regularCor,
       time: 0,
       odaNameLocal: localStorage.getItem("odaName"),
     };
     socket.emit("liveTryForRobots", encodedString);
-
-  },[selectedSecond,songCor,isLiveTry.status]);
+  }, [selectedSecond, songCor, isLiveTry.status]);
 
   const handleChange = (event, newValue) => {
     const newPushCor = [...pushCor];
@@ -156,7 +159,6 @@ export const MiniCorGroup = ({
     setTextTime(newPushCor[0]);
     setPushCor(newPushCor);
   };
-
 
   const onDeleteMiniCor = () => {
     console.log("delete", selectCorMini);
@@ -184,7 +186,11 @@ export const MiniCorGroup = ({
     const newPushCor = [...pushCor];
 
     let newStart = parseInt(textInput);
-    if (typeof newStart === "number" && newStart % 2 === 0 && 0 < newStart < songcorlength - minicorLength) {
+    if (
+      typeof newStart === "number" &&
+      newStart % 2 === 0 &&
+      0 < newStart < songcorlength - minicorLength
+    ) {
       console.log("ife girdi");
       if (newStart % 2 !== 0) {
         newStart = newStart - 1;
@@ -198,7 +204,6 @@ export const MiniCorGroup = ({
       setPushCor(newPushCor);
     }
   }, [textInput]);
-
 
   const TextInputSecond = (event) => {
     const newPushCor = [...pushCor];
@@ -218,21 +223,31 @@ export const MiniCorGroup = ({
     const tryLoop = regulatorCorLoop({
       songCorLoop: selectCorMini.loop.miniCor,
       smoke: false,
-      robotModel: isLiveTry.robotModel
+      robotModel: isLiveTry.robotModel,
     });
     let stringCSV = JSON.stringify({ corData: tryLoop });
     const encodedString = {
       isStop: 0,
       base: new Buffer(stringCSV).toString("base64"),
       time: 2,
-      odaNameLocal: localStorage.getItem('odaName')
+      odaNameLocal: localStorage.getItem("odaName"),
     };
     socket.emit("corData", encodedString);
   };
 
   return (
     <>
-      <Paper style={{ marginLeft: "8%", marginRight: "25%", marginTop: "6%", maxHeight: windowSize.height - 480, maxWidth: windowSize.width - 700, overflow: "auto", backgroundColor: '#66B2FF' }}>
+      <Paper
+        style={{
+          marginLeft: "8%",
+          marginRight: "25%",
+          marginTop: "6%",
+          maxHeight: windowSize.height - 480,
+          maxWidth: windowSize.width - 700,
+          overflow: "auto",
+          backgroundColor: "#66B2FF",
+        }}
+      >
         {corLoop.map((loop, index) => {
           return (
             <>
@@ -278,7 +293,11 @@ export const MiniCorGroup = ({
             value={textInput}
           />
 
-          <Button onClick={() => onChangeChoreography()} color="primary" disabled={isApply}>
+          <Button
+            onClick={() => onChangeChoreography()}
+            color="primary"
+            disabled={isApply}
+          >
             Apply
           </Button>
 
@@ -319,7 +338,7 @@ const mapDispatchToProps = (dispatch) => {
     setIsLiveTry: (isLiveTry) =>
       dispatch({ type: actionTypes.IS_LIVE_TRY, isLiveTry }),
     setIsSmokeActive: (isSmokeActive) =>
-      dispatch({ type: actionTypes.IS_SMOKE_ACTIVE, isSmokeActive })
+      dispatch({ type: actionTypes.IS_SMOKE_ACTIVE, isSmokeActive }),
   };
 };
 
