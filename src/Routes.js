@@ -13,6 +13,7 @@ import axios from 'axios';
 import jwt_decode from "jwt-decode";
 import { createBrowserHistory } from 'history';
 import LivePartyCorScreen from './Pages/LiveParty/LivePartyCorScreen';
+import SocketLogin from "./Components/Socket/SocketLogin";
 
 
 const browserHistory = createBrowserHistory();
@@ -69,6 +70,7 @@ export const Routes = (props) => {
       <RouteWithLayout exact layout={Register} path="/register" />
       {localStorage.getItem("refreshToken") &&
         <>
+          <SocketLogin/>
           <RouteWithLayout exact layout={PartySelectionNew} path="/party-selection" />
           <RouteWithLayout
             exact

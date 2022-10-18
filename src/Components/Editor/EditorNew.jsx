@@ -19,7 +19,6 @@ import {
 import SpotifyFooterMakeCor from "../../Containers/SpotifyFooter/SpotifyFooterMakeCor";
 import EditCorLocalStorage from "../Control/EditCorLocalStorage";
 import GoSpotifySelection from "./GoSpotifySelection";
-import SocketLogin from "../Socket/SocketLogin";
 
 const useStyles = createTheme((theme) => ({
   button: {
@@ -104,7 +103,6 @@ export const EditorNew = (props) => {
             // odaUser && odaUser.email &&
             <EditCorLocalStorage setContinueCor={(e) => setContinueCor(e)} />
           )}
-          <SocketLogin/>
           <CreateCor />
         </Grid>
       )}

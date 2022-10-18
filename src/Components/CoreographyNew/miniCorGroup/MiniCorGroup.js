@@ -129,21 +129,20 @@ export const MiniCorGroup = ({
         height: window.innerHeight,
       });
     }
-  });
-  if (
-    songCor &&
-    songCor.length > 0 &&
-    isLiveTry.status &&
-    isLiveTry.localOdaIp
-  ) {
+  },[]);
+
+  useEffect(() => {
     const regularCor = regulatorCorTry({ cor: songCor[selectedSecond], robotModel: isLiveTry.robotModel });
-    apiServices
-      .liveTry({ odaIP: isLiveTry.localOdaIp, cor: regularCor })
-      .then((response) => {
-        if (response.status === 200) {
-        }
-      });
-  }
+    const stringCSV = JSON.stringify({ corData: regularCor });
+    const encodedString = {
+      isStop: 0,
+      base: new Buffer(stringCSV).toString("base64"),
+      time: 0,
+      odaNameLocal: localStorage.getItem("odaName"),
+    };
+    socket.emit("liveTryForRobots", encodedString);
+
+  },[selectedSecond,songCor,isLiveTry.status]);
 
   const handleChange = (event, newValue) => {
     const newPushCor = [...pushCor];

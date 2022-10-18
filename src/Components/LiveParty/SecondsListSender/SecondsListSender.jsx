@@ -11,6 +11,7 @@ const SecondsListSender = ({
   secondsQueue,
   settings,
   isLiveTry,
+  socket
 }) => {
   const changeSecondCoreSeconds = (seconds) => {
     setSecondsQueue({ ...secondsQueue, seconds });
@@ -20,8 +21,8 @@ const SecondsListSender = ({
     const timeout = (settings.livePartyWaitSeconds || 2) * 1000;
     const { liveCor, seconds } = secondsQueue;
     console.log("isLiveTry",isLiveTry)
-    const { robotModel, localOdaIp } = isLiveTry;
-    if (localOdaIp) {
+    const { robotModel, localOdaIp,status } = isLiveTry;
+    if (status) {
       if (secondsQueue.liveCor.length > 0) {
         const secondCor = liveCor[seconds];
 
@@ -29,14 +30,15 @@ const SecondsListSender = ({
           cor: secondCor,
           robotModel,
         });
-        console.log("regularCor", regularCor);
-        apiServices
-          .liveTry({ odaIP: localOdaIp, cor: regularCor })
-          .then((response) => {
-            if (response.status === 200) {
-              console.log("response", response);
-            }
-          });
+        const stringCSV = JSON.stringify({ corData: regularCor });
+        const encodedString = {
+          isStop: 0,
+          base: new Buffer(stringCSV).toString("base64"),
+          time:0,
+          odaNameLocal: localStorage.getItem("odaName"),
+        };
+        socket.emit("liveTryForRobots", encodedString);
+        // socket.emit("liveTryForRobots", regularCor);
         const timeoutID = setTimeout(() => {
           const newSeconds = seconds + 1 < liveCor.length ? seconds + 1 : 0;
           console.log("newSeconds", newSeconds);
@@ -53,6 +55,7 @@ const mapStateToProps = (state) => ({
   secondsQueue: state.secondsQueue,
   settings: state.settings,
   isLiveTry: state.isLiveTry,
+  socket: state.socket,
 });
 
 const mapDispatchToProps = (dispatch) => {

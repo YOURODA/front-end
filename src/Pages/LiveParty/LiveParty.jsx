@@ -7,7 +7,6 @@ import FirstCategory from "../../Components/LiveParty/FirstCategory/FirstCategor
 import CategoriesList from "../../Components/LiveParty/CategoriesList/CategoriesList";
 import SecondsListSender from "../../Components/LiveParty/SecondsListSender/SecondsListSender";
 import AppBarSettings from "../../Components/CoreographyNew/miniCorGroup/AppBarSettings";
-import SocketLogin from "../../Components/Socket/SocketLogin";
 
 /*
  *Live parti için ana sayfa
@@ -48,7 +47,6 @@ const LiveParty = ({ livePartyCategories, setCategories }) => {
 
   return (
     <div style={{ backgroundColor: "#001e3c", height: "100vh" }}>
-      <SocketLogin/>
       <SecondsListSender/>
       <AppBarSettings
         isShowLiveTry
