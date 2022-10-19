@@ -5,7 +5,7 @@ import socketIo from "socket.io-client";
 const userApiService = process.env.REACT_APP_BACKEND_URL;
 
 const protocol= process.env.REACT_APP_NODE_ENV==="develop" ? "ws": "wss"
-const SocketLogin = ({ isSmokeActive, setSmokeTemperature, setSocketIO, localIp,setIpList ,ipList }) => {
+const SocketLogin = ({ isSmokeActive, setSmokeTemperature, setSocketIO }) => {
   const [stateSocket, setStateSocket] = useState(null)
   const [timer, setTimer] = useState(0);
   const socketio_url =`${protocol}://${userApiService}`;

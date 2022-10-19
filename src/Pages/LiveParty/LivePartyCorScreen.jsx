@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { connect } from "react-redux";
+import React, {useEffect, useState} from "react";
+import {connect} from "react-redux";
 import * as actionTypes from "../../store/actions/actionTypes";
-import APIService from "../../Components/Services/APIServices";
-import { Grid } from "@material-ui/core";
-import { useParams } from "react-router-dom";
+import {Grid} from "@material-ui/core";
 import CreateCor from "../../Components/CoreographyNew/CreateCor";
+
 const useStyles = (theme) => ({
   active: {
     backgroundColor: "#66B2FF",
@@ -29,11 +28,7 @@ const useStyles = (theme) => ({
  *Live parti için Choreografi yapma sayfası
  */
 
-const apiService = new APIService();
-
 const LivePartyCorScreen = ({
-  setSongCor,
-  songCor,
   setDurationStamps,
   setPositionStamp,
   setSettings,

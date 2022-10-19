@@ -4,7 +4,6 @@ import * as actionTypes from "../../store/actions/actionTypes";
 import { createTheme } from "@mui/material/styles";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
-import socketIo from "socket.io-client";
 import CreateCor from "../CoreographyNew/CreateCor";
 import APIServices from "../Services/APIServices";
 import SpotifyAPIServices from "../Services/SpotifyAPIServices";
@@ -121,7 +120,6 @@ const mapStateToProps = (state) => {
   return {
     durationStamps: state.durationStamps,
     odaUser: state.odaUser,
-    socket: state.socket,
     createUserPopUp: state.createUserPopup,
     isUserAvailable: state.isUserAvailable,
     isSmokeActive: state.isSmokeActive,
@@ -133,7 +131,6 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
   return {
-    setSocketIO: (socket) => dispatch({ type: actionTypes.SOCKET, socket }),
     setSmokeTemperature: (smokeTemperature) =>
       dispatch({ type: actionTypes.SMOKE_TEMPERATURE, smokeTemperature }),
     setCreateUserPopup: (createUserPopup) =>

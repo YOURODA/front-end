@@ -1,23 +1,20 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import {
   Button,
-  TextField,
-  DialogTitle,
-  DialogContentText,
-  DialogContent,
-  DialogActions,
   Dialog,
-  Checkbox,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   Grid,
+  TextField,
 } from "@material-ui/core";
 import * as actionTypes from "../../store/actions/actionTypes";
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 import APIService from "../Services/APIServices";
-import useLocalStorage from "../../hooks/useLocalStorage";
-import { withStyles } from "@material-ui/core/styles";
-import { useParams } from "react-router-dom";
-import { CirclePicker } from "react-color";
-import { useHistory } from "react-router-dom";
+import {withStyles} from "@material-ui/core/styles";
+import {useHistory, useParams} from "react-router-dom";
+import {CirclePicker} from "react-color";
 
 
 const SaveButton = withStyles({

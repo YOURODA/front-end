@@ -65,15 +65,16 @@ export const PopupIoT = (props) => {
     setChecked(newChecked);
   };
   const sendOdaName = async (raspiIp, defaultOdaName) => {
-    await apiServices
-      .recognizeRaspi(raspiIp, defaultOdaName)
-      .then((response) => {
-        if (response && response.status === 200) {
-          localStorage.setItem("odaName", response.data);
-          setOdaName(response.data);
-          setRedirect(true);
-        }
-      });
+    console.log("sendOdaName")
+    // await apiServices
+    //   .recognizeRaspi(raspiIp, defaultOdaName)
+    //   .then((response) => {
+    //     if (response && response.status === 200) {
+    //       localStorage.setItem("odaName", response.data);
+    //       setOdaName(response.data);
+    //       setRedirect(true);
+    //     }
+    //   });
   };
   const handleClose = () => {
     setOpen(false);
@@ -81,7 +82,7 @@ export const PopupIoT = (props) => {
   };
   const getOdaName = (e) => {
     setOdaName(e.target.value);
-    localStorage.setItem("odaName", e.target.value);
+    // localStorage.setItem("odaName", e.target.value);
   };
   const createNewUserAPI = () => {
     const resp = apiServices.newUser(props.user.email, odaName);

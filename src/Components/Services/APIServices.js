@@ -1,5 +1,4 @@
 import axios from "axios";
-import socketIo from "socket.io-client";
 
 const protocol =
   process.env.REACT_APP_NODE_ENV === "develop" ? "http" : "https";
@@ -23,9 +22,9 @@ class APIServices {
         withCredentials: true,
       };
       await axios(serviceData).then((response) => {
-        returnValue = response;
         localStorage.setItem("refreshToken", response.data.refreshToken);
-      });
+        returnValue = response;
+      }).catch(err=> console.log("login err",err));
     } catch (error) {
       return error.response;
     }

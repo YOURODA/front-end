@@ -172,7 +172,7 @@ export const AppBarSettings = ({
                       let localOdaIp = "";
                       let robotModel = "";
                       apiServices
-                        .myOdaOnlyEmail({ email: "okan-_94@hotmail.com" })
+                        .myOdaOnlyEmail({ email: "okan-_94@hotmail.com" }) // TODO acil
                         .then((response) => {
                           if (
                             response.status === 200 &&
@@ -184,7 +184,7 @@ export const AppBarSettings = ({
                           setIsLiveTry({
                             ...isLiveTry,
                             status: !isLiveTry.status,
-                            localOdaIp,
+                            // localOdaIp,
                             robotModel,
                           });
                         });

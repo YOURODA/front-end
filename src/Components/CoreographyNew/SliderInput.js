@@ -1,7 +1,7 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import * as actionTypes from "../../store/actions/actionTypes";
-import { connect } from "react-redux";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
+import {connect} from "react-redux";
+import {makeStyles, withStyles} from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Slider from "@material-ui/core/Slider";
@@ -69,7 +69,7 @@ const marksY = [
 ];
 
 function SliderInput(props) {
-  const { songCor, selectedSecond, setSongCor, robot } = props;
+  const {songCor, selectedSecond, setSongCor, robot} = props;
   const classes = useStyles();
   const [valueY, setValueY] = useState(0);
   const [valueX, setValueX] = useState(0);
@@ -128,7 +128,7 @@ function SliderInput(props) {
             scale={(x) => x}
             orientation="vertical"
             value={valueY}
-            classes={{ markLabel: classes.mark }}
+            classes={{markLabel: classes.mark}}
             onChange={(e, newValue) => {
               onChange(newValue, "Ver", setValueY);
               // setValueY(newValue);
@@ -148,7 +148,7 @@ function SliderInput(props) {
             marks={marksX}
             step={1}
             value={valueX}
-            classes={{ markLabel: classes.mark }}
+            classes={{markLabel: classes.mark}}
             scale={(x) => x}
             onChange={(e, newValue) => {
               onChange(newValue, "Hor", setValueX);
@@ -161,6 +161,7 @@ function SliderInput(props) {
     </div>
   );
 }
+
 const mapStateToProps = (state) => {
   return {
     colour: state.colour,
@@ -172,14 +173,14 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     setLeftHorValue: (leftHorValue) =>
-      dispatch({ type: actionTypes.LEFT_HOR_VALUE, leftHorValue }),
+      dispatch({type: actionTypes.LEFT_HOR_VALUE, leftHorValue}),
     setLeftVerValue: (leftVerValue) =>
-      dispatch({ type: actionTypes.LEFT_VER_VALUE, leftVerValue }),
+      dispatch({type: actionTypes.LEFT_VER_VALUE, leftVerValue}),
     setRightHorValue: (rightHorValue) =>
-      dispatch({ type: actionTypes.RIGHT_HOR_VALUE, rightHorValue }),
+      dispatch({type: actionTypes.RIGHT_HOR_VALUE, rightHorValue}),
     setRightVerValue: (rightVerValue) =>
-      dispatch({ type: actionTypes.RIGHT_VER_VALUE, rightVerValue }),
-    setSongCor: (songCor) => dispatch({ type: actionTypes.SONG_COR, songCor }),
+      dispatch({type: actionTypes.RIGHT_VER_VALUE, rightVerValue}),
+    setSongCor: (songCor) => dispatch({type: actionTypes.SONG_COR, songCor}),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(SliderInput);

@@ -18,7 +18,6 @@ import useLocalStorage from "../../../hooks/useLocalStorage";
 import RatingCor from "../../RatingCor";
 import CorSettingsMenu from "../CorSettingsMenu/CorSettingsMenu";
 import SelectedDevicePopUp from "../../CoreographyNew/SelectedDevicePopUp";
-import socketIo from "socket.io-client";
 
 let interval;
 const PlayChoreographiesTable = ({
@@ -33,7 +32,6 @@ const PlayChoreographiesTable = ({
   setList,
   isSmokeActive,
   setSmokeTemperature,
-  setSocketIO,
   setSelectedTrackIds,
 }) => {
   const [loading, setLoading] = useState(false);
@@ -46,58 +44,13 @@ const PlayChoreographiesTable = ({
     "editCorId",
     ""
   );
-  const socketio_url = localStorage.getItem("localIp") + ":8080/odaName";
-  let odaNameLocal = localStorage.getItem("odaName");
   const apiService = new APIServices();
   const history = useHistory();
   let tryCor;
   let stringCSV;
   //isYourList:false,selected:"All"
   const { isYourList, selected } = playChoreographyScreen;
-  const getUserCorListAll = async () => {
-    await apiService
-      .getUserCorListAll()
-      .then((response) => {
-        if (response.status === 200) {
-          console.log("Create New List", response.data);
-          setList(response.data);
-        }
-      })
-      .catch((err) => {
-        console.log("sentReviews Err", err);
-      });
-  };
-  const joinRoom = async (_socket) => {
-    console.log("joine geldi");
-    _socket.emit("join", { name: odaNameLocal });
-    await _socket.on("join", (data) => {
-      console.log("data.msg: ", data.msg);
-      interval = data.msg;
-    });
-  };
-  const askTemperature = async (_socket) => {
-    console.log("asktemperatureeee");
-    if (interval !== null) {
-      console.log("interval", interval);
-      _socket.emit("askTemperature", { isSmokeActive, odaNameLocal });
-      await _socket.on("temperature", (data) => {
-        console.log("temperature in the oda", data.temperature);
-        setSmokeTemperature(data.temperature);
-      });
-    }
-  };
 
-
-  useEffect(() => {
-    getUserCorListAll();
-    const _socket = socketIo(`${socketio_url}`);
-    setSocketIO(_socket);
-    joinRoom(_socket);
-    interval = setInterval(() => askTemperature(_socket), 10000);
-    return () => {
-      _socket.close();
-    };
-  }, []);
   useEffect(() => {
     console.log("selected", selected);
     setLoading(true);
@@ -192,36 +145,36 @@ const PlayChoreographiesTable = ({
             },
             selected === "My"
               ? {
-                title: "Share",
-                field: "isShared",
-                render: (rowData) => {
-                  console.log(rowData);
-                  if (!rowData.isShared && rowData._id) {
-                    return (
-                      <IconButton
-                        color="primary"
-                        aria-label="upload picture"
-                        component="span"
-                      >
-                        <Edit
-                          onClick={(e) => {
-                            setLocalDbEditCor(rowData._id);
-                            goToEditPage();
-                          }}
-                        />
-                      </IconButton>
-                    );
-                  }
-                  return <Check />;
-                },
-              }
+                  title: "Share",
+                  field: "isShared",
+                  render: (rowData) => {
+                    console.log(rowData);
+                    if (!rowData.isShared && rowData._id) {
+                      return (
+                        <IconButton
+                          color="primary"
+                          aria-label="upload picture"
+                          component="span"
+                        >
+                          <Edit
+                            onClick={(e) => {
+                              setLocalDbEditCor(rowData._id);
+                              goToEditPage();
+                            }}
+                          />
+                        </IconButton>
+                      );
+                    }
+                    return <Check />;
+                  },
+                }
               : {
-                title: "Rating",
-                field: "rating",
-                render: (rowData) => {
-                  return <RatingCor rowData={rowData} />;
+                  title: "Rating",
+                  field: "rating",
+                  render: (rowData) => {
+                    return <RatingCor rowData={rowData} />;
+                  },
                 },
-              },
             {
               title: "Settings",
               field: "rating",
@@ -272,7 +225,6 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
   return {
-    setSocketIO: (socket) => dispatch({ type: actionTypes.SOCKET, socket }),
     setCorData: (corData) => dispatch({ type: actionTypes.COR_DATA, corData }),
     setCreateCorPopup: (createCorPopup) =>
       dispatch({ type: actionTypes.CREATE_COR_POPUP, createCorPopup }),

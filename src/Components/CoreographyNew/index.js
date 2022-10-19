@@ -18,7 +18,6 @@ import useLocalStorage from "../../../hooks/useLocalStorage";
 import RatingCor from "../../RatingCor";
 import CorSettingsMenu from "../CorSettingsMenu/CorSettingsMenu";
 import SelectedDevicePopUp from "../../CoreographyNew/SelectedDevicePopUp";
-import socketIo from "socket.io-client";
 
 let interval;
 const PlayChoreographiesTable = ({
@@ -33,7 +32,6 @@ const PlayChoreographiesTable = ({
   setList,
   isSmokeActive,
   setSmokeTemperature,
-  setSocketIO,
   setSelectedTrackIds,
 }) => {
   const [loading, setLoading] = useState(false);
@@ -46,7 +44,6 @@ const PlayChoreographiesTable = ({
     "editCorId",
     ""
   );
-  const socketio_url = localStorage.getItem("localIp") + ":8080/odaName";
   let odaNameLocal = localStorage.getItem("odaName");
   const apiService = new APIServices();
   const history = useHistory();
@@ -66,25 +63,6 @@ const PlayChoreographiesTable = ({
       .catch((err) => {
         console.log("sentReviews Err", err);
       });
-  };
-  const joinRoom = async (_socket) => {
-    console.log("joine geldi");
-    _socket.emit("join", { name: "okanserbest" });
-    await _socket.on("join", (data) => {
-      console.log("data.msg: ", data.msg);
-      interval = data.msg;
-    });
-  };
-  const askTemperature = async (_socket) => {
-    console.log("asktemperatureeee");
-    if (interval !== null) {
-      console.log("interval", interval);
-      _socket.emit("askTemperature", { isSmokeActive, odaNameLocal });
-      await _socket.on("temperature", (data) => {
-        console.log("temperature in the oda", data.temperature);
-        setSmokeTemperature(data.temperature);
-      });
-    }
   };
 
   // const socketRequest = async () => {
@@ -119,13 +97,6 @@ const PlayChoreographiesTable = ({
 
   useEffect(() => {
     getUserCorListAll();
-    const _socket = socketIo(`${socketio_url}`);
-    setSocketIO(_socket);
-    joinRoom(_socket);
-    interval = setInterval(() => askTemperature(_socket), 10000);
-    return () => {
-      _socket.close();
-    };
   }, []);
   useEffect(() => {
     console.log("selected", selected);
@@ -181,7 +152,6 @@ const PlayChoreographiesTable = ({
 
     closeSelectDevicePopUp();
     setCurrentTrackId(selectTrackId);
-
     stringCSV = JSON.stringify({ corData: tryCor });
     const encodedString = {
       isStop: 0,
@@ -190,8 +160,6 @@ const PlayChoreographiesTable = ({
       odaNameLocal: localStorage.getItem("odaName"),
     };
     socket.emit("corData", encodedString);
-    console.log("sıracı 1");
-
     setIsReturnMusic(id);
   };
 
@@ -303,7 +271,6 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
   return {
-    setSocketIO: (socket) => dispatch({ type: actionTypes.SOCKET, socket }),
     setCorData: (corData) => dispatch({ type: actionTypes.COR_DATA, corData }),
     setCreateCorPopup: (createCorPopup) =>
       dispatch({ type: actionTypes.CREATE_COR_POPUP, createCorPopup }),
