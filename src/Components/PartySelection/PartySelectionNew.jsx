@@ -4,7 +4,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import goPartyLocation from '../../images/goParty.png'
 import createPartyLocation from '../../images/createParty.png'
-import makePartyLocation from '../../images/noInstall.jpg'
+import makePartyLocation from '../../images/livePeformance.png'
 
 import { Redirect, withRouter } from 'react-router-dom';
 

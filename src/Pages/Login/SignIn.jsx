@@ -13,11 +13,10 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Logo from '../../images/odaLogoBlack.png';
 import OdaBox from '../../images/togetherParty.jpg';
-import { useHistory } from 'react-router-dom';
+import { useHistory , Redirect,withRouter} from 'react-router-dom';
 import APIServices from "../../Components/Services/APIServices";
 import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
-import PopupIoT from "./PopupIoT"
 import * as actionTypes from "../../store/actions/actionTypes";
 function Copyright(props) {
     return (
@@ -47,11 +46,7 @@ export function SignIn(props) {
         if (returnValue.status == 200) {
             localStorage.setItem('odaUser', email)
             setOdaUser(email);
-            // console.log("email", email)
-            console.log("odaUser: ", odaUser)
             setCreateUserPopup(true);
-
-            // window.location = "/party-selection"
         }
         else {
             setAlertMessage(returnValue.data.message);
@@ -174,7 +169,7 @@ export function SignIn(props) {
                     </Box>
                 </Grid>
             </Grid>
-            {createUserPopup && <PopupIoT />}
+            {createUserPopup &&  <Redirect to="/party-selection" />}
         </ThemeProvider>
 
     );
@@ -194,4 +189,4 @@ const mapDispatchToProps = dispatch => {
 
     };
 };
-export default connect(mapStateToProps, mapDispatchToProps)(SignIn);
+export default  withRouter(connect(mapStateToProps, mapDispatchToProps)(SignIn));

@@ -4,6 +4,7 @@ import { makeStyles, withStyles } from "@material-ui/core/styles";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import Checkbox from "@material-ui/core/Checkbox";
 import { green } from "@material-ui/core/colors";
+import fogMachineActive from "../../../images/fog-machine-active.png";
 
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
@@ -21,14 +22,17 @@ import ListItemText from "@material-ui/core/ListItemText";
 import * as actionTypes from "../../../store/actions/actionTypes";
 import Typography from "@material-ui/core/Typography";
 
+import CloudIcon from "@mui/icons-material/Cloud";
+import CloudQueueIcon from "@mui/icons-material/CloudQueue";
+import CloudRoundedIcon from "@mui/icons-material/CloudRounded";
+
 const GreenCheckbox = withStyles({
   root: {
     color: "#DE675F",
     "&$checked": {
       color: "#DE675F",
-    }
-
-  }
+    },
+  },
 })((props) => <Checkbox color="default" {...props} />);
 
 const ListItemTextColor = withStyles({
@@ -42,9 +46,10 @@ const ListItemTextColor = withStyles({
     },
     "&$selected:hover": {
       color: "#001e3c",
-    }
-  }
+    },
+  },
 })((props) => <ListItemText color="default" {...props} />);
+
 const SecondItem = ({
   value,
   index,
@@ -121,14 +126,21 @@ const SecondItem = ({
       newRobot[index] = JSON.parse(JSON.stringify(newRobot[index - 1]));
       setSongCor(newRobot);
     }
-  }
+  };
   const reverseIterableCor = () => {
     if (index + 1 !== songCor.length) {
       const newRobot = JSON.parse(JSON.stringify(songCor));
       newRobot[index] = JSON.parse(JSON.stringify(newRobot[index + 1]));
       setSongCor(newRobot);
     }
-  }
+  };
+
+  const handleChangeSmoke = (index) => {
+    const newRobot = [...songCor];
+    newRobot[index].smoke = !songCor[index].smoke;
+    setSongCor(newRobot);
+  };
+
   if (
     songCor &&
     Array.isArray(songCor) &&
@@ -153,14 +165,27 @@ const SecondItem = ({
           <Grid container>
             <ListItemTextColor primary={`${value * 2} - ${value * 2 + 2}`} />
             {windowSize.width > 1140 && <ListItemTextColor />}
+            <div style={{ marginRight: "15px" }}>
+              <Checkbox
+                // size="small"
+                checked={songCor[index].smoke}
+                onChange={() => handleChangeSmoke(index)}
+                name="checkSmoke"
+                // color="primary"
+
+                icon={<CloudQueueIcon color="primary" />}
+                checkedIcon={
+                  <CloudRoundedIcon color="primary" fontSize="medium" />
+                }
+              />
+            </div>
             <ListItemAvatar>
               <Avatar
                 onClick={() => iterableCor()}
                 style={{
                   backgroundColor: songCor[index].robot.colour.Lhex,
                 }}
-              >
-              </Avatar>
+              ></Avatar>
             </ListItemAvatar>
             <ListItemAvatar>
               <Avatar
@@ -168,8 +193,7 @@ const SecondItem = ({
                 style={{
                   backgroundColor: songCor[index].robot.colour.Rhex,
                 }}
-              >
-              </Avatar>
+              ></Avatar>
             </ListItemAvatar>
           </Grid>
           <ListItemSecondaryAction>
