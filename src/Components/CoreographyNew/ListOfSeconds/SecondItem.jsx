@@ -1,28 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
+import { withStyles } from "@material-ui/core/styles";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import Checkbox from "@material-ui/core/Checkbox";
-import { green } from "@material-ui/core/colors";
-import fogMachineActive from "../../../images/fog-machine-active.png";
 
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
 import {
-  List,
   ListItem,
-  ListItemIcon,
   Divider,
   Grid,
   Paper,
   Popper,
 } from "@material-ui/core";
-import IconButton from "@material-ui/core/IconButton";
 import ListItemText from "@material-ui/core/ListItemText";
 import * as actionTypes from "../../../store/actions/actionTypes";
 import Typography from "@material-ui/core/Typography";
 
-import CloudIcon from "@mui/icons-material/Cloud";
 import CloudQueueIcon from "@mui/icons-material/CloudQueue";
 import CloudRoundedIcon from "@mui/icons-material/CloudRounded";
 
