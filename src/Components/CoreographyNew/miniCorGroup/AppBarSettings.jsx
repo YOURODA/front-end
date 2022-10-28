@@ -147,7 +147,7 @@ export const AppBarSettings = ({
                   color="primary"
                 />
               }
-              label="Console"
+              label="Joystick"
             />
           )}
           {isShowHeat && (
