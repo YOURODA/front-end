@@ -113,20 +113,13 @@ class CreateCor extends Component {
       if (!saveCorData[seconds]) {
         saveCorData[seconds] = {
           startDate: seconds,
-          robot: `${
-            this.props.leftHorValue ? this.props.leftHorValue : "0"
-            },0,${this.props.leftVerValue ? this.props.leftVerValue : "0"},0,0,${
-            this.props.brightnessValue.L ? this.props.brightnessValue.L : "0"
-            },${lColor1},${lColor2},${lColor3},"59",${
-            this.props.blinkerValue.L ? this.props.blinkerValue.L : "0"
-            },0,0,${
-            this.props.rightHorValue ? this.props.rightHorValue : "0"
-            },0,${
-            this.props.rightVerValue ? this.props.rightVerValue : "0"
-            },0,0,${
-            this.props.brightnessValue.R ? this.props.brightnessValue.R : "0"
-            },${rColor1},${rColor2},${rColor3},0,${
-            this.props.blinkerValue.R ? this.props.blinkerValue.R : "0"
+          robot: `${this.props.leftHorValue ? this.props.leftHorValue : "0"
+            },0,${this.props.leftVerValue ? this.props.leftVerValue : "0"},0,0,${this.props.brightnessValue.L ? this.props.brightnessValue.L : "0"
+            },${lColor1},${lColor2},${lColor3},"59",${this.props.blinkerValue.L ? this.props.blinkerValue.L : "0"
+            },0,0,${this.props.rightHorValue ? this.props.rightHorValue : "0"
+            },0,${this.props.rightVerValue ? this.props.rightVerValue : "0"
+            },0,0,${this.props.brightnessValue.R ? this.props.brightnessValue.R : "0"
+            },${rColor1},${rColor2},${rColor3},0,${this.props.blinkerValue.R ? this.props.blinkerValue.R : "0"
             },0,0`,
           smoke: this.state.checkSmoke === true ? "1" : "0", //L
           smoke: this.state.checkSmoke, //L
@@ -135,20 +128,13 @@ class CreateCor extends Component {
       if (saveCorData[seconds] && saveCorData[seconds].startDate !== seconds) {
         saveCorData[seconds] = {
           startDate: seconds,
-          robot: `${
-            this.props.leftHorValue ? this.props.leftHorValue : "0"
-            },0,${this.props.leftVerValue ? this.props.leftVerValue : "0"},0,0,${
-            this.props.brightnessValue.L ? this.props.brightnessValue.L : "0"
-            },${lColor1},${lColor2},${lColor3},"59",${
-            this.props.blinkerValue.L ? this.props.blinkerValue.L : "0"
-            },0,0,${
-            this.props.rightHorValue ? this.props.rightHorValue : "0"
-            },0,${
-            this.props.rightVerValue ? this.props.rightVerValue : "0"
-            },0,0,${
-            this.props.brightnessValue.R ? this.props.brightnessValue.R : "0"
-            },${rColor1},${rColor2},${rColor3},0,${
-            this.props.blinkerValue.R ? this.props.blinkerValue.R : "0"
+          robot: `${this.props.leftHorValue ? this.props.leftHorValue : "0"
+            },0,${this.props.leftVerValue ? this.props.leftVerValue : "0"},0,0,${this.props.brightnessValue.L ? this.props.brightnessValue.L : "0"
+            },${lColor1},${lColor2},${lColor3},"59",${this.props.blinkerValue.L ? this.props.blinkerValue.L : "0"
+            },0,0,${this.props.rightHorValue ? this.props.rightHorValue : "0"
+            },0,${this.props.rightVerValue ? this.props.rightVerValue : "0"
+            },0,0,${this.props.brightnessValue.R ? this.props.brightnessValue.R : "0"
+            },${rColor1},${rColor2},${rColor3},0,${this.props.blinkerValue.R ? this.props.blinkerValue.R : "0"
             },0,0`,
           smoke: this.state.checkSmoke === true ? "1" : "0", //L
           smoke: this.state.checkSmoke === true ? "1" : "0", //L
@@ -223,30 +209,26 @@ class CreateCor extends Component {
           <>
             {checkedMultiple && (
               <React.Fragment>
-                <AppBarSettings  isShowSaveButton  isShowLiveTry isShowConsole isShowHeat isShowStopButton/>
+                <AppBarSettings isShowSmokeStatus isShowSaveButton isShowLiveTry isShowConsole isShowHeat isShowStopButton />
                 {this.props.songCor.length !== 0 && (
                   <Grid container spacing={0}>
-                    <Grid item xs={3}>
+                    <Grid item xl={3} lg={3} md={3} xs={3}>
                       <ListOfSeconds
                         clearSecondList={clearSecondList}
                         classes={classes}
                       />
                     </Grid>
-                    <Grid item xs={2} >
+                    <Grid item xl={2} lg={2} md={2} xs={2} >
                       <MiniCorGroup />
                     </Grid>
-                    <RobotOptions robot={"L"} />
-                    <RobotOptions robot={"R"} />
-                    <Grid item xs={1} />
-                    <Grid item xs={5} />
-                    <Grid item xs={4}>
-                      <SmokeStatus />
+                    <Grid item xl={2} lg={2} md={2} xs={2}>
+                      <RobotOptions robot={"L"} />
                     </Grid>
-                    <Grid item xs={1}>
-                      <Smoke />
+                    <Grid item xl={1} lg={2} md={2} xs={2} />
+                    <Grid item xl={2} lg={2} md={2} xs={2}>
+                      <RobotOptions robot={"R"} />
                     </Grid>
-                    <Grid item xs={2} />
-
+                    <Grid item xl={2} lg={1} md={1} xs={1} />
                   </Grid>
                 )}
               </React.Fragment>

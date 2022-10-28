@@ -210,7 +210,7 @@ export const AppBarSettings = ({
     <div className={classes.root}>
       <Grid container>
         {goPartySelection && <Redirect to="/party-selection" />}
-        <Grid item xs={4}>
+        <Grid item lg={4} md={4} xl={4} xs={4}>
           <img
             style={{
               height: "30px",
@@ -221,30 +221,35 @@ export const AppBarSettings = ({
             onClick={() => setGoPartySelection(true)}
           />
         </Grid>
-        <Grid item xs={4}>
+        <Grid item lg={4} md={4} xl={4} xs={4}>
           <div style={{ display: "flex" }}>
-            {isShowSmokeStatus && <SmokeStatus />}
-            {isShowSmokeButton && (
-              <Button
-                variant="outlined"
-                color="primary"
-                onClick={() => runSmokeSocket()}
-              >
-                Smoke
-            </Button>
-            )}
-            {isShowStopButton && (
-              <Button
-                variant="outlined"
-                color="secondary"
-                onClick={() => stopButton()}
-              >
-                Stop Party
-            </Button>
-            )}
+            <Grid item lg={6} md={6} xl={6} xs={6}>
+              {isShowSmokeStatus && <SmokeStatus />}
+              {isShowSmokeButton && (
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  onClick={() => runSmokeSocket()}
+                >
+                  Smoke
+                </Button>
+              )}
+            </Grid>
+            <Grid item lg={2} md={2} xl={2} xs={2} />
+            <Grid item lg={4} md={4} xl={4} xs={4}>
+              {isShowStopButton && (
+                <Button
+                  variant="outlined"
+                  color="secondary"
+                  onClick={() => stopButton()}
+                >
+                  Stop Party
+                </Button>
+              )}
+            </Grid>
           </div>
         </Grid>
-        <Grid item xs={4}>
+        <Grid item lg={4} md={4} xl={4} xs={4}>
           <SwitchGroup />
         </Grid>
       </Grid>
