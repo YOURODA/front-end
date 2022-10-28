@@ -10,7 +10,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import Logo from '../../images/odaLogo.png';
+import Logo from '../../images/odaLogoBlack.png';
 import APIServices from "../../Components/Services/APIServices";
 import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
@@ -24,7 +24,7 @@ function Copyright(props) {
             {'Copyright © '}
             <Link color="inherit" href="https://mui.com/">
                 Your Website
-      </Link>
+            </Link>
             {new Date().getFullYear()}
         </Typography>
     );
@@ -55,7 +55,7 @@ function SignUp() {
         if (validPassword.test(password) && validEmail.test(email)) {
             const returnValue = await apiService.register(firstName, secondName, email, password, confPassword);
             if (returnValue.status == 200) {
-               setGoLogin(true);
+                setGoLogin(true);
             } else {
                 setAlertMessage(returnValue.data.message);
             }
@@ -66,7 +66,7 @@ function SignUp() {
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
                 {goLogin &&
-                <Redirect to="/login" />
+                    <Redirect to="/login" />
                 }
                 <Box
                     sx={{
@@ -174,7 +174,7 @@ function SignUp() {
                             <Grid item>
                                 <Link href="/login" variant="body2">
                                     Already have an account? Sign in
-                </Link>
+                                </Link>
                             </Grid>
                         </Grid>
                     </Box>
