@@ -218,17 +218,17 @@ class CreateCor extends Component {
                         classes={classes}
                       />
                     </Grid>
-                    <Grid item xl={2} lg={2} md={2} xs={2} >
+                    <Grid item xl={1} lg={1} md={1} xs={1} >
                       <MiniCorGroup />
                     </Grid>
-                    <Grid item xl={2} lg={2} md={2} xs={2}>
+                    <Grid item xl={3} lg={3} md={3} xs={3}>
                       <RobotOptions robot={"L"} />
                     </Grid>
-                    <Grid item xl={1} lg={2} md={2} xs={2} />
-                    <Grid item xl={2} lg={2} md={2} xs={2}>
+                    <Grid item xl={1} lg={1} md={1} xs={1} />
+                    <Grid item xl={3} lg={3} md={3} xs={3}>
                       <RobotOptions robot={"R"} />
                     </Grid>
-                    <Grid item xl={2} lg={1} md={1} xs={1} />
+                    <Grid item xl={1} lg={1} md={1} xs={1} />
                   </Grid>
                 )}
               </React.Fragment>

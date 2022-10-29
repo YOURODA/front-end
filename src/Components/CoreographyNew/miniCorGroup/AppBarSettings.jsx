@@ -210,7 +210,7 @@ export const AppBarSettings = ({
     <div className={classes.root}>
       <Grid container>
         {goPartySelection && <Redirect to="/party-selection" />}
-        <Grid item lg={4} md={4} xl={4} xs={4}>
+        <Grid item lg={2} md={2} xl={2} xs={2}>
           <img
             style={{
               height: "30px",
@@ -249,7 +249,9 @@ export const AppBarSettings = ({
             </Grid>
           </div>
         </Grid>
-        <Grid item lg={4} md={4} xl={4} xs={4}>
+        <Grid item lg={6} md={6} xl={6} xs={6} style={{
+          paddingRight: "1%",
+        }}>
           <SwitchGroup />
         </Grid>
       </Grid>
