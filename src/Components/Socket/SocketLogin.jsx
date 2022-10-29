@@ -4,16 +4,16 @@ import * as actionTypes from "../../store/actions/actionTypes";
 import socketIo from "socket.io-client";
 const userApiService = process.env.REACT_APP_BACKEND_URL;
 
-const protocol= process.env.REACT_APP_NODE_ENV==="develop" ? "ws": "wss"
+const protocol = process.env.REACT_APP_NODE_ENV === "develop" ? "ws" : "wss";
 const SocketLogin = ({ isSmokeActive, setSmokeTemperature, setSocketIO }) => {
-  const [stateSocket, setStateSocket] = useState(null)
+  const [stateSocket, setStateSocket] = useState(null);
   const [timer, setTimer] = useState(0);
-  const socketio_url =`${protocol}://${userApiService}`;
+  const socketio_url = `${protocol}://${userApiService}`;
   let odaNameLocal = localStorage.getItem("odaName");
   let interval;
 
   const joinRoom = async (_socket) => {
-    console.log("joinRoom 16")
+    console.log("joinRoom 16");
     // socket.emit("hello", { name: "John" });
     _socket.emit("join", { name: "okanserbest" });
     await _socket.on("join", (data) => {
@@ -21,15 +21,16 @@ const SocketLogin = ({ isSmokeActive, setSmokeTemperature, setSocketIO }) => {
     });
   };
 
-
   const askTemperature = async (_socket) => {
     // // if (currentUser && currentUser.email && socketa && socketa.id) {
     if (interval !== null) {
-
-      _socket.emit("askTemperature", { isSmokeActive: isSmokeActive, odaNameLocal });
+      _socket.emit("askTemperature", {
+        isSmokeActive: isSmokeActive,
+        odaNameLocal,
+      });
       await _socket.on("temperature", (data) => {
-        console.log("temperature in the oda", data.temperature);
-        setSmokeTemperature(data.temperature);
+        console.log("temperature in the oda", data);
+        setSmokeTemperature(data.temperatureToCelsius);
       });
     }
   };
@@ -37,23 +38,21 @@ const SocketLogin = ({ isSmokeActive, setSmokeTemperature, setSocketIO }) => {
   useEffect(() => {
     const _socket = socketIo(`${socketio_url}`);
     setSocketIO(_socket);
-    joinRoom(_socket)
-    setStateSocket(_socket)
+    joinRoom(_socket);
+    setStateSocket(_socket);
     return () => {
       _socket.close();
     };
-  }, [])
-
+  }, []);
 
   useEffect(() => {
     if (stateSocket) {
       askTemperature(stateSocket);
     }
     window.setTimeout(() => {
-      setTimer(time => time + 1)
+      setTimer((time) => time + 1);
     }, 10000);
   }, [timer, isSmokeActive]);
-
 
   return null;
 };

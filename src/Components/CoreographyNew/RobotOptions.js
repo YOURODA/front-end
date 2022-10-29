@@ -23,7 +23,7 @@ function RobotOptions(props) {
         <OneLine robot={robot} option="Blinker" />
       </Grid>
       <Grid item lg={4} md={4} xl={4} xs={4}>
-        <OneLine robot={robot} option="Speed" />
+        <OneLine robot={robot} option="Slow" />
       </Grid>
     </Grid>
   );
