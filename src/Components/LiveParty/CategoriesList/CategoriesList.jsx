@@ -9,14 +9,17 @@ import CorBox from "./CorBox";
 import { Carousel } from "@trendyol-js/react-carousel";
 import styles from "./styles.module.css";
 import AddIcon from "@mui/icons-material/Add";
+import useWindowSize from "../../../hooks/useWindowDimensions";
 
 export const CategoriesList = ({ livePartyCategories }) => {
+  const size = useWindowSize();
+  const showingCors = size.width / 130;
+
   const [dialogOpen, setDialogOpen] = useState(false);
   return (
     <div className={styles.livePartyContainer}>
       {Array.isArray(livePartyCategories) &&
         livePartyCategories.map((category) => {
-          console.log("category", category);
           return (
             <>
               <div className={styles.categoryTitle}>
@@ -35,12 +38,13 @@ export const CategoriesList = ({ livePartyCategories }) => {
               </div>
 
               <Carousel
-                // show={10}
-                slide={5}
-                swiping={category.cors.length > 10}
-                // dynamic={true}
-                show={10}
-                // transition={0.5}
+                swiping={true}
+                show={~~showingCors}
+                slide={3}
+                rightArrow={false}
+                leftArrow={false}
+                useArrowKeys={"true"}
+                responsive={"true"}
               >
                 {category &&
                   category.cors &&
@@ -54,7 +58,12 @@ export const CategoriesList = ({ livePartyCategories }) => {
           );
         })}
 
-      <IconButton color="primary" aria-label="Add category" component="span"  onClick={() => setDialogOpen(true)}>
+      <IconButton
+        color="primary"
+        aria-label="Add category"
+        component="span"
+        onClick={() => setDialogOpen(true)}
+      >
         <AddIcon />
       </IconButton>
       <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>

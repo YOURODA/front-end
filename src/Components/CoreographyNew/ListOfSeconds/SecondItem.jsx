@@ -6,13 +6,7 @@ import Checkbox from "@material-ui/core/Checkbox";
 
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
-import {
-  ListItem,
-  Divider,
-  Grid,
-  Paper,
-  Popper,
-} from "@material-ui/core";
+import { ListItem, Divider, Grid, Paper, Popper } from "@material-ui/core";
 import ListItemText from "@material-ui/core/ListItemText";
 import * as actionTypes from "../../../store/actions/actionTypes";
 import Typography from "@material-ui/core/Typography";
@@ -167,10 +161,8 @@ const SecondItem = ({
                 name="checkSmoke"
                 // color="primary"
 
-                icon={<CloudQueueIcon color="primary" />}
-                checkedIcon={
-                  <CloudRoundedIcon color="primary" fontSize="medium" />
-                }
+                icon={<CloudQueueIcon style={{ color: "#DE675F" }} />}
+                checkedIcon={<CloudRoundedIcon style={{ color: "#DE675F" }} />}
               />
             </div>
             <ListItemAvatar>
