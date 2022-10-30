@@ -55,7 +55,7 @@ export const regulatorCorTry = ({ cor, smoke, robotModel }) => {
       regulatorRobotModel(LBrightness, LBlinker)
         ? regulatorRobotModel(LBrightness, LBlinker)
         : "0"
-    },${lColor1},${lColor2},${lColor3},0,0,0,${RHor ? RHor : "0"},0,${
+    },${lColor1},${lColor2},${lColor3},0,0,0,0,0,${RHor ? RHor : "0"},0,${
       RVer ? RVer : "0"
     },0,${RSpeed ? RSpeed : "0"},${
       regulatorRobotModel(RBrightness, RBlinker)
