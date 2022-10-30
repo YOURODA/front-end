@@ -45,7 +45,9 @@ export const regulatorCorTry = ({ cor, smoke, robotModel }) => {
     RBlinker ? RBlinker : "0"
   },0,0`;
 
-  if (robotModel === "14chw") {
+  if (true) {
+    // if (robotModel === "14chw")
+    // unutma
     console.log("result: ", regulatorRobotModel(LBrightness, LBlinker));
     result = `${LHor ? LHor : "0"},0,${LVer ? LVer : "0"},0,${
       LSpeed ? LSpeed : "0"
