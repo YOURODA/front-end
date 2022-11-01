@@ -34,8 +34,8 @@ export const regulatorCorTry = ({ cor, smoke, robotModel }) => {
       colour: { lColor1, lColor2, lColor3, rColor1, rColor2, rColor3 },
     },
   } = cor;
-
-  let result = `${LHor ? LHor : "0"},0,${LVer ? LVer : "0"},0,${
+  let result = {};
+  result.main = `${LHor ? LHor : "0"},0,${LVer ? LVer : "0"},0,${
     LSpeed ? LSpeed : "0"
   },${LBrightness ? LBrightness : "0"},${lColor1},${lColor2},${lColor3},0,${
     LBlinker ? LBlinker : "0"
@@ -45,24 +45,24 @@ export const regulatorCorTry = ({ cor, smoke, robotModel }) => {
     RBlinker ? RBlinker : "0"
   },0,0`;
 
-  if (true) {
-    // if (robotModel === "14chw")
-    // unutma
-    console.log("result: ", regulatorRobotModel(LBrightness, LBlinker));
-    result = `${LHor ? LHor : "0"},0,${LVer ? LVer : "0"},0,${
-      LSpeed ? LSpeed : "0"
-    },${
-      regulatorRobotModel(LBrightness, LBlinker)
-        ? regulatorRobotModel(LBrightness, LBlinker)
-        : "0"
-    },${lColor1},${lColor2},${lColor3},0,0,0,0,0,${RHor ? RHor : "0"},0,${
-      RVer ? RVer : "0"
-    },0,${RSpeed ? RSpeed : "0"},${
-      regulatorRobotModel(RBrightness, RBlinker)
-        ? regulatorRobotModel(RBrightness, RBlinker)
-        : "0"
-    },${rColor1},${rColor2},${rColor3},0,0,0`;
-  }
+  // if (true) {
+  // if (robotModel === "14chw")
+  // unutma
+  // console.log("result: ", regulatorRobotModel(LBrightness, LBlinker));
+  result.cue = `${LHor ? LHor : "0"},0,${LVer ? LVer : "0"},0,${
+    LSpeed ? LSpeed : "0"
+  },${
+    regulatorRobotModel(LBrightness, LBlinker)
+      ? regulatorRobotModel(LBrightness, LBlinker)
+      : "0"
+  },${lColor1},${lColor2},${lColor3},0,0,0,0,0,${RHor ? RHor : "0"},0,${
+    RVer ? RVer : "0"
+  },0,${RSpeed ? RSpeed : "0"},${
+    regulatorRobotModel(RBrightness, RBlinker)
+      ? regulatorRobotModel(RBrightness, RBlinker)
+      : "0"
+  },${rColor1},${rColor2},${rColor3},0,0,0`;
+  // }
 
   return result;
 };
