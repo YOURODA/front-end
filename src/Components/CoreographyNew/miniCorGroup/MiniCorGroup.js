@@ -136,6 +136,7 @@ export const MiniCorGroup = ({
       cor: songCor[selectedSecond],
       robotModel: isLiveTry.robotModel,
     });
+    console.log(regularCor, "regularCor");
     const stringCSV = JSON.stringify({ corData: regularCor });
     console.log("stringCSV", stringCSV);
     const encodedString = {
