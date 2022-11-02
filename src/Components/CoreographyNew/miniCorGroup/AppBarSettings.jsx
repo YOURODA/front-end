@@ -210,7 +210,7 @@ export const AppBarSettings = ({
     <div className={classes.root}>
       <Grid container>
         {goPartySelection && <Redirect to="/party-selection" />}
-        <Grid item lg={2} md={2} xl={2} xs={2}>
+        <Grid item xs={2} md={2} lg={4} xl={4} >
           <img
             style={{
               height: "30px",
@@ -221,10 +221,13 @@ export const AppBarSettings = ({
             onClick={() => setGoPartySelection(true)}
           />
         </Grid>
-        <Grid item lg={4} md={4} xl={4} xs={4}>
+        <Grid item xs={3} md={3} lg={4} xl={4} >
           <div style={{ display: "flex" }}>
-            <Grid item lg={6} md={6} xl={6} xs={6}>
+            <Grid item lg={5} md={5} xl={5} xs={5}>
               {isShowSmokeStatus && <SmokeStatus />}
+            </Grid>
+            <Grid item lg={1} md={1} xl={1} xs={1} />
+            <Grid item lg={3} md={3} xl={3} xs={3}>
               {isShowSmokeButton && (
                 <Button
                   variant="outlined"
@@ -235,21 +238,20 @@ export const AppBarSettings = ({
                 </Button>
               )}
             </Grid>
-            <Grid item lg={2} md={2} xl={2} xs={2} />
-            <Grid item lg={4} md={4} xl={4} xs={4}>
+            <Grid item lg={3} md={3} xl={3} xs={3}>
               {isShowStopButton && (
                 <Button
                   variant="outlined"
                   color="secondary"
                   onClick={() => stopButton()}
                 >
-                  Stop Party
+                  Stop
                 </Button>
               )}
             </Grid>
           </div>
         </Grid>
-        <Grid item lg={6} md={6} xl={6} xs={6} style={{
+        <Grid item xs={7} md={7} lg={4} xl={4} style={{
           paddingRight: "1%",
         }}>
           <SwitchGroup />
