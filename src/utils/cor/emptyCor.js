@@ -8,12 +8,12 @@ export const emptyCor = (second) => {
         LVer: 0,
         LBrightness: 0,
         LBlinker: 0,
-        LSpeed: 0,
+        LSlow: 0,
         RHor: 0,
         RVer: 0,
         RBrightness: 0,
         RBlinker: 0,
-        RSpeed: 0,
+        RSlow: 0,
 
         colour: {
           lColor1: 0,

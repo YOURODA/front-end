@@ -132,20 +132,22 @@ export const MiniCorGroup = ({
   }, []);
 
   useEffect(() => {
-    const regularCor = regulatorCorTry({
-      cor: songCor[selectedSecond],
-      robotModel: isLiveTry.robotModel,
-    });
-    console.log(regularCor, "regularCor");
-    const stringCSV = JSON.stringify({ corData: regularCor });
-    console.log("stringCSV", stringCSV);
-    const encodedString = {
-      isStop: 0,
-      base: regularCor,
-      time: 0,
-      odaNameLocal: localStorage.getItem("odaName"),
-    };
-    socket.emit("liveTryForRobots", encodedString);
+    if (isLiveTry && isLiveTry.status) {
+      const regularCor = regulatorCorTry({
+        cor: songCor[selectedSecond],
+        robotModel: isLiveTry.robotModel,
+      });
+      console.log(regularCor, "regularCor");
+      const stringCSV = JSON.stringify({ corData: regularCor });
+      console.log("stringCSV", stringCSV);
+      const encodedString = {
+        isStop: 0,
+        base: regularCor,
+        time: 0,
+        odaNameLocal: localStorage.getItem("odaName"),
+      };
+      socket.emit("liveTryForRobots", encodedString);
+    }
   }, [selectedSecond, songCor, isLiveTry.status]);
 
   const handleChange = (event, newValue) => {

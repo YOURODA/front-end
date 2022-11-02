@@ -11,7 +11,7 @@ const SecondsListSender = ({
   secondsQueue,
   settings,
   isLiveTry,
-  socket
+  socket,
 }) => {
   const changeSecondCoreSeconds = (seconds) => {
     setSecondsQueue({ ...secondsQueue, seconds });
@@ -20,8 +20,7 @@ const SecondsListSender = ({
   useEffect(() => {
     const timeout = (settings.livePartyWaitSeconds || 2) * 1000;
     const { liveCor, seconds } = secondsQueue;
-    console.log("isLiveTry",isLiveTry)
-    const { robotModel, localOdaIp,status } = isLiveTry;
+    const { robotModel, status } = isLiveTry;
     if (status) {
       if (secondsQueue.liveCor.length > 0) {
         const secondCor = liveCor[seconds];
@@ -30,12 +29,11 @@ const SecondsListSender = ({
           cor: secondCor,
           robotModel,
         });
-        const stringCSV = JSON.stringify({ corData: regularCor });
-        console.log("stringCSV",stringCSV)
+        // const stringCSV = JSON.stringify({ corData: regularCor });
         const encodedString = {
           isStop: 0,
           base: regularCor,
-          time:0,
+          time: 0,
           odaNameLocal: localStorage.getItem("odaName"),
         };
         socket.emit("liveTryForRobots", encodedString);
