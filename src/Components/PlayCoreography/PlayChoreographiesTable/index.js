@@ -95,11 +95,14 @@ const PlayChoreographiesTable = ({
   );
 
   const goParty = (id) => {
-    if (version === "v.1.0") {
-      tryCor = regulatorCorLoop({ songCorLoop: choreograph, smoke: false });
-    } else {
-      tryCor = choreograph;
-    }
+    
+    tryCor = regulatorCorLoop({ songCorLoop: choreograph, smoke: false });
+    console.log(tryCor,tryCor)
+    // if (version === "v.1.0") {
+    //   tryCor = regulatorCorLoop({ songCorLoop: choreograph, smoke: false });
+    // } else {
+    //   tryCor = choreograph;
+    // }
 
     closeSelectDevicePopUp();
     setCurrentTrackId(selectTrackId);
@@ -107,7 +110,8 @@ const PlayChoreographiesTable = ({
     stringCSV = JSON.stringify({ corData: tryCor });
     const encodedString = {
       isStop: 0,
-      base: new Buffer(stringCSV).toString("base64"),
+      // base: new Buffer(stringCSV).toString("base64"),
+      base: stringCSV,
       time: milisToMinutesAndSeconds(durationStamps),
       odaNameLocal: localStorage.getItem("odaName"),
     };

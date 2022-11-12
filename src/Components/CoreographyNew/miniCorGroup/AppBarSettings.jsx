@@ -109,7 +109,8 @@ export const AppBarSettings = ({
     let stringCSV = JSON.stringify({ corData });
     const encodedString = {
       isStop: 1,
-      base: new Buffer(stringCSV).toString("base64"),
+      base: stringCSV,
+      // base: new Buffer(stringCSV).toString("base64"),
       time: 2,
       odaNameLocal: localStorage.getItem("odaName"),
     };
