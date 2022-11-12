@@ -221,13 +221,13 @@ export const AppBarSettings = ({
             onClick={() => setGoPartySelection(true)}
           />
         </Grid>
-        <Grid item xs={3} md={3} lg={4} xl={4} >
+        <Grid item xs={4} md={4} lg={4} xl={4} >
           <div style={{ display: "flex" }}>
             <Grid item lg={5} md={5} xl={5} xs={5}>
               {isShowSmokeStatus && <SmokeStatus />}
             </Grid>
             <Grid item lg={1} md={1} xl={1} xs={1} />
-            <Grid item lg={3} md={3} xl={3} xs={3}>
+            <Grid item lg={2} md={2} xl={2} xs={2}>
               {isShowSmokeButton && (
                 <Button
                   variant="outlined"
@@ -238,7 +238,8 @@ export const AppBarSettings = ({
                 </Button>
               )}
             </Grid>
-            <Grid item lg={3} md={3} xl={3} xs={3}>
+            <Grid item lg={2} md={2} xl={2} xs={2} />
+            <Grid item lg={2} md={2} xl={2} xs={2}>
               {isShowStopButton && (
                 <Button
                   variant="outlined"
@@ -251,7 +252,7 @@ export const AppBarSettings = ({
             </Grid>
           </div>
         </Grid>
-        <Grid item xs={7} md={7} lg={4} xl={4} style={{
+        <Grid item xs={6} md={6} lg={4} xl={4} style={{
           paddingRight: "1%",
         }}>
           <SwitchGroup />
