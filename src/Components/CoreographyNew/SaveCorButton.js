@@ -48,15 +48,15 @@ const SaveCorButton = ({
   };
   const createSaveCor = () => {
     const file = { ...songCor };
-    console.log("file", file);
-    console.log({
-      name: corName,
-      trackName: currently_playing,
-      file,
-      trackId: currentTrackId,
-      ownerId: userId,
-      isShared,
-    });
+    // console.log("file", file);
+    // console.log({
+    //   name: corName,
+    //   trackName: currently_playing,
+    //   file,
+    //   trackId: currentTrackId,
+    //   ownerId: userId,
+    //   isShared,
+    // });
     apiServices
       .createCoreography(
         corName,
@@ -76,10 +76,8 @@ const SaveCorButton = ({
   };
 
   const overwriteCor = () => {
-    console.log("overwriteCor", songCor)
     apiServices.overwriteCor({ file: songCor, name: corSaveInfo.name, corId: corSaveInfo._id }).then((response) => {
       if (response.status === 200) {
-        console.log("cor save", response);
         setOpen(false);
       }
     }).catch((err) => {
@@ -93,14 +91,14 @@ const SaveCorButton = ({
       <>
         <DialogContentText>
           Do you want to update the previously written Cor?
-      </DialogContentText>
+        </DialogContentText>
         <Button onClick={overwriteCor} color="primary">
           update
-      </Button>
+        </Button>
       </>
     )
   }
-console.log("open",open)
+  console.log("open", open)
   return (
     <div>
       <SaveButton onClick={() => setOpen(true)}>Save Chr</SaveButton>

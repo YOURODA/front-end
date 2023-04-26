@@ -50,14 +50,25 @@ const PlayChoreographiesTable = ({
   let stringCSV;
   //isYourList:false,selected:"All"
   const { isYourList, selected } = playChoreographyScreen;
-
+  const getUserCorListAll = async () => {
+    console.log("kaç kere");
+    await apiService
+      .getUserCorListAll()
+      .then((response) => {
+        if (response.status === 200) {
+          setList(response.data);
+        }
+      })
+      .catch((err) => {
+        console.log("sentReviews Err", err);
+      });
+  };
   useEffect(() => {
-    console.log("selected", selected);
+    getUserCorListAll();
     setLoading(true);
     if (!isYourList) {
       switch (selected) {
         case "All":
-          console.log("get all api");
           apiService.getAllCoreographies().then((response) => {
             setLoading(false);
             setAllCorData(getCore(response.data.cor));
@@ -85,7 +96,7 @@ const PlayChoreographiesTable = ({
       setLoading(false);
       setAllCorData(getCore(findList));
     }
-  }, [selected, list]);
+  }, [selected]);
   const closeSelectDevicePopUp = () => {
     setSelectedDevicePopUp(false);
   };
@@ -95,9 +106,9 @@ const PlayChoreographiesTable = ({
   );
 
   const goParty = (id) => {
-    
+
     tryCor = regulatorCorLoop({ songCorLoop: choreograph, smoke: false });
-    console.log(tryCor,tryCor)
+    console.log(tryCor, tryCor)
     // if (version === "v.1.0") {
     //   tryCor = regulatorCorLoop({ songCorLoop: choreograph, smoke: false });
     // } else {
@@ -116,8 +127,6 @@ const PlayChoreographiesTable = ({
       odaNameLocal: localStorage.getItem("odaName"),
     };
     socket.emit("corData", encodedString);
-    console.log("sıracı 1");
-
     setIsReturnMusic(id);
   };
 
@@ -149,36 +158,36 @@ const PlayChoreographiesTable = ({
             },
             selected === "My"
               ? {
-                  title: "Share",
-                  field: "isShared",
-                  render: (rowData) => {
-                    console.log(rowData);
-                    if (!rowData.isShared && rowData._id) {
-                      return (
-                        <IconButton
-                          color="primary"
-                          aria-label="upload picture"
-                          component="span"
-                        >
-                          <Edit
-                            onClick={(e) => {
-                              setLocalDbEditCor(rowData._id);
-                              goToEditPage();
-                            }}
-                          />
-                        </IconButton>
-                      );
-                    }
-                    return <Check />;
-                  },
-                }
-              : {
-                  title: "Rating",
-                  field: "rating",
-                  render: (rowData) => {
-                    return <RatingCor rowData={rowData} />;
-                  },
+                title: "Share",
+                field: "isShared",
+                render: (rowData) => {
+                  console.log(rowData);
+                  if (!rowData.isShared && rowData._id) {
+                    return (
+                      <IconButton
+                        color="primary"
+                        aria-label="upload picture"
+                        component="span"
+                      >
+                        <Edit
+                          onClick={(e) => {
+                            setLocalDbEditCor(rowData._id);
+                            goToEditPage();
+                          }}
+                        />
+                      </IconButton>
+                    );
+                  }
+                  return <Check />;
                 },
+              }
+              : {
+                title: "Rating",
+                field: "rating",
+                render: (rowData) => {
+                  return <RatingCor rowData={rowData} />;
+                },
+              },
             {
               title: "Settings",
               field: "rating",

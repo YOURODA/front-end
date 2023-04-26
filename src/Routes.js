@@ -37,7 +37,6 @@ export const Routes = (props) => {
         setName(decoded.name);
       }
       if (response.status === 401) {
-        console.log("logine git");
         history.push("/login");
       }
     } catch (error) {
@@ -49,7 +48,6 @@ export const Routes = (props) => {
   axiosJWT.interceptors.request.use(
     async (config) => {
       const currentDate = new Date();
-      console.log("interceptors", token);
       if (expire * 1000 < currentDate.getTime()) {
         const response = await apiService.refreshToken();
         config.headers.Authorization = `Bearer ${response.data.accessToken}`;

@@ -41,8 +41,6 @@ const SelectedDevicePopUp = (props) => {
     playChorTrack(id);
   };
   const playChorTrack = (id) => {
-    console.log("selectedTrackIdsselectedTrackIdsselectedTrackIds", selectedTrackIds)
-    console.log("user.access_token", user.access_token)
     const url = `https://api.spotify.com/v1/me/player/play?device_id=${id}`;
     axios({
       url,

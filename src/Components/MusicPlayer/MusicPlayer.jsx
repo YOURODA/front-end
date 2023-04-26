@@ -226,7 +226,6 @@ class MusicPlayer extends Component {
       seek = Math.floor((val * dur) / 100); // round number
     }
     this.setState({ positionSliderValue: val });
-    console.log("isReturnMusic", isReturnMusic)
     await this.player.seek(seek).then(() => {
       console.log(`Seek song to ${seek} ms`);
     });

@@ -305,7 +305,6 @@ const reducer = (state = initialState, action) => {
         corSaveInfo: action.corSaveInfo
       }
     case actionTypes.SET_LIST:
-      console.log("set cor info reducer çalıştı", action.list)
       return {
         ...state,
         list: action.list

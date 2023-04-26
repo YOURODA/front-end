@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import {
   Button,
   Dialog,
@@ -10,11 +10,11 @@ import {
   TextField,
 } from "@material-ui/core";
 import * as actionTypes from "../../store/actions/actionTypes";
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 import APIService from "../Services/APIServices";
-import {withStyles} from "@material-ui/core/styles";
-import {useHistory, useParams} from "react-router-dom";
-import {CirclePicker} from "react-color";
+import { withStyles } from "@material-ui/core/styles";
+import { useHistory, useParams } from "react-router-dom";
+import { CirclePicker } from "react-color";
 
 
 const SaveButton = withStyles({
@@ -33,30 +33,29 @@ const SaveLivePartyButton = ({
 }) => {
   let { categoryId } = useParams();
   let history = useHistory();
-  console.log("id", categoryId);
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
   const [color, setColor] = useState("#FF0000");
   const apiServices = new APIService();
 
- 
+
   const handleClose = () => {
     setOpen(false);
   };
   const saveLoop = () => {
     apiServices
-      .livePartAddFileToCategory({ categoryId, name, color, file:songCor })
+      .livePartAddFileToCategory({ categoryId, name, color, file: songCor })
       .then((response) => {
         if (response.status === 200) {
-          if(response.data && Object.keys(response.data).length === 0){
+          if (response.data && Object.keys(response.data).length === 0) {
             setCategories([])
 
-          }else {
+          } else {
             setCategories([...response.data]);
           }
 
           history.push("/live-party");
-          
+
         }
       })
       .catch((err) => {
@@ -96,7 +95,7 @@ const SaveLivePartyButton = ({
                   <div style={{ float: "center" }}>
                     <CirclePicker
                       color={color}
-                      onChangeComplete={col=>setColor(col.hex)}
+                      onChangeComplete={col => setColor(col.hex)}
                       colors={[
                         "#FF0000",
                         "#f44336",

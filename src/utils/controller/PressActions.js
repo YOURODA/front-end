@@ -1,23 +1,20 @@
 import React from 'react';
-import {decreaseSecond} from "./index";
+import { decreaseSecond } from "./index";
 import { connect } from "react-redux";
 import * as actionTypes from "../../../store/actions/actionTypes";
 
 let oldPressButton = [];
 
 
-export const PressActions = (pressGamePad,redux) => {
-  console.log("redux pressActions",redux);
+export const PressActions = (pressGamePad, redux) => {
   if (oldPressButton.length === 0) {
-    console.log("tek tuşa basıldı", pressGamePad);
 
-    if(pressGamePad.length === 1){
-      if(pressGamePad[0].index === 12) {
+    if (pressGamePad.length === 1) {
+      if (pressGamePad[0].index === 12) {
         decreaseSecond(redux);
-      } 
-      if(pressGamePad[0].index === 13) {
-        console.log("saniyeyi arttır")
-      } 
+      }
+      if (pressGamePad[0].index === 13) {
+      }
     }
 
   }
@@ -27,7 +24,6 @@ export const PressActions = (pressGamePad,redux) => {
     oldPressButton[0].index === 4 &&
     pressGamePad[0].index === 0
   ) {
-    console.log("yeşili aç", pressGamePad);
   }
 
   oldPressButton = pressGamePad;

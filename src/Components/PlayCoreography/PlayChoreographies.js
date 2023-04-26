@@ -60,20 +60,6 @@ export const PlayChoreographies = (props) => {
   if (!goCoreography) {
     setGoCoreography(true);
   }
-  // const getUserCorListAll = async () => {
-  //     await apiService
-  //         .getUserCorListAll()
-  //         .then((response) => {
-  //             if (response.status === 200) {
-  //                 console.log("Create New List", response.data);
-  //                 setList(response.data);
-  //             }
-  //         })
-  //         .catch((err) => {
-  //             console.log("sentReviews Err", err);
-  //         });
-  // }
-
   const isAvailableOdaNickRes = () => {
     apiService.isAvailableOdaNick(odaNick).then((response) => {
       if (response.data.odaNick === odaNick) setGoCoreography(true);
@@ -83,7 +69,7 @@ export const PlayChoreographies = (props) => {
   return (
     <Grid container style={{ backgroundColor: "#001e3c", height: "100%" }}>
       <Grid item lg={12} md={12} xl={12} xs={12}>
-        <AppBarSettings isShowSmokeStatus isShowStopButton isShowHeat />
+        <AppBarSettings isShowSmokeStatus isShowStopButton isShowHeat isShowSmokeButton />
       </Grid>
       <Grid item lg={12} md={12} xl={12} xs={12}>
         <CorListDrawer />

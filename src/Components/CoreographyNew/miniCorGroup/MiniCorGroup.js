@@ -137,9 +137,7 @@ export const MiniCorGroup = ({
         cor: songCor[selectedSecond],
         robotModel: isLiveTry.robotModel,
       });
-      console.log(regularCor, "regularCor");
       const stringCSV = JSON.stringify({ corData: regularCor });
-      console.log("stringCSV", stringCSV);
       const encodedString = {
         isStop: 0,
         base: regularCor,
@@ -194,7 +192,6 @@ export const MiniCorGroup = ({
       newStart % 2 === 0 &&
       0 < newStart < songcorlength - minicorLength
     ) {
-      console.log("ife girdi");
       if (newStart % 2 !== 0) {
         newStart = newStart - 1;
       }
