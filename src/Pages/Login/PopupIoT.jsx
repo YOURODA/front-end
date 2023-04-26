@@ -43,7 +43,6 @@ export const PopupIoT = (props) => {
     // localStorage.setItem("odaName", "okanserberst")
     const getOda = apiServices.myOdas(odaUser);
     getOda.then((response) => {
-      console.log("response.data.myodas", response.data);
       if (response.data.odas) {
         // setOdaName(response.data.odas.odaName)
         setDefaultOdaName(response.data.odas.odaName);
@@ -65,7 +64,6 @@ export const PopupIoT = (props) => {
     setChecked(newChecked);
   };
   const sendOdaName = async (raspiIp, defaultOdaName) => {
-    console.log("sendOdaName")
     // await apiServices
     //   .recognizeRaspi(raspiIp, defaultOdaName)
     //   .then((response) => {

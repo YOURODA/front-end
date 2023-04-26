@@ -1,8 +1,8 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import useLocalStorage from "../../hooks/useLocalStorage";
 import APIServices from "../Services/APIServices";
 import SpotifyAPIServices from "../Services/SpotifyAPIServices";
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 import * as actionTypes from "../../store/actions/actionTypes";
 import Avatar from "@mui/material/Avatar";
 import List from "@mui/material/List";
@@ -14,7 +14,7 @@ import Typography from "@mui/material/Typography";
 import FileOpenIcon from "@mui/icons-material/FileOpen";
 import ListItemButton from "@mui/material/ListItemButton";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
-import {purple} from "@mui/material/colors";
+import { purple } from "@mui/material/colors";
 
 const changeDateFormat = (date) => {
   const d = new Date(date);
@@ -52,7 +52,6 @@ const EditCorLocalStorage = ({
     apiService
       .getMyEditableCors(getLocalDbEditCor)
       .then((response) => {
-        console.log("getMyEditingCor", response);
         if (response?.data?.cor.length > 0) {
           setCorLocalStorage(response.data.cor);
         }
@@ -101,7 +100,7 @@ const EditCorLocalStorage = ({
       >
         <DialogTitle
           id="customized-dialog-title"
-          // onClose={handleClose}
+        // onClose={handleClose}
         >
           Continue Choreograph
         </DialogTitle>

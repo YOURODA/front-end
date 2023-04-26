@@ -118,7 +118,6 @@ export const AppBarSettings = ({
   };
 
   const runSmokeSocket = () => {
-    console.log("run onlySmoke ");
     socket.emit("onlySmoke", {
       time: 5,
       smoke: 1,

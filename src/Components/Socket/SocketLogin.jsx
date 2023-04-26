@@ -29,7 +29,6 @@ const SocketLogin = ({ isSmokeActive, setSmokeTemperature, setSocketIO }) => {
         odaNameLocal,
       });
       await _socket.on("temperature", (data) => {
-        console.log("temperature in the oda", data);
         setSmokeTemperature(data.temperatureToCelsius);
       });
     }

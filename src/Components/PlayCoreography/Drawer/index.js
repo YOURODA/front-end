@@ -60,8 +60,8 @@ const CorListDrawer = ({ list, setCorScreen }) => {
             </ListItem>
           ))
         ) : (
-            <>5959</>
-          )}
+          <></>
+        )}
       </List>
     </Drawer>
   );
@@ -84,4 +84,3 @@ const mapDispatchToProps = (dispatch) => {
 
 export default connect(mapStateToProps, mapDispatchToProps)(CorListDrawer);
 
-// export default Drawer

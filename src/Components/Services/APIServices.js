@@ -24,7 +24,7 @@ class APIServices {
       await axios(serviceData).then((response) => {
         localStorage.setItem("refreshToken", response.data.refreshToken);
         returnValue = response;
-      }).catch(err=> console.log("login err",err));
+      }).catch(err => console.log("login err", err));
     } catch (error) {
       return error.response;
     }
@@ -73,7 +73,6 @@ class APIServices {
         password: password,
         confPassword: confPassword,
       };
-      console.log(newUserData);
       const serviceData = {
         method: "POST",
         url: userApiService + "/user/register",
@@ -168,9 +167,6 @@ class APIServices {
     let getEmail = {
       email: email,
     };
-    console.log("myOdas", getEmail);
-    console.log("myOdasToken", token);
-
     const serviceData = {
       method: "POST",
       headers: { Authorization: `Bearer ${token}` },
