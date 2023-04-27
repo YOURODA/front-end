@@ -29,7 +29,8 @@ const SaveButton = withStyles({
 })((props) => <Button color="default" {...props} />);
 const SaveLivePartyButton = ({
   songCor,
-  setCategories
+  setCategories,
+  setSongCor
 }) => {
   let { categoryId } = useParams();
   let history = useHistory();
@@ -49,13 +50,11 @@ const SaveLivePartyButton = ({
         if (response.status === 200) {
           if (response.data && Object.keys(response.data).length === 0) {
             setCategories([])
-
           } else {
             setCategories([...response.data]);
           }
-
+          setSongCor([])
           history.push("/live-party");
-
         }
       })
       .catch((err) => {
@@ -148,6 +147,7 @@ const SaveLivePartyButton = ({
 
 const mapStateToProps = (state) => ({
   songCor: state.songCor,
+
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -155,6 +155,7 @@ const mapDispatchToProps = (dispatch) => ({
     type: actionTypes.LIVE_PARTY_CATEGORIES,
     livePartyCategories
   }),
+  setSongCor: (songCor) => dispatch({ type: actionTypes.SONG_COR, songCor })
 });
 
 
